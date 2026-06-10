@@ -54,6 +54,25 @@ if [[ -n "$ICONDEST" && -d "$ICONSRC" ]]; then
   cp -R "$ICONSRC"/. "$ICONDEST"/
 fi
 
+# Patch the generated "Build Rust Code" phase script so it loads the
+# MOBILE tauri.conf.json rather than walking up and finding the desktop
+# one. The phase runs `tauri ios xcode-script` from `app/` (npm's cwd
+# resolution), which walks up looking for a Tauri project — and finds
+# `app/src-tauri/` (desktop) before `app/src-tauri-mobile/`. That gives
+# the child the WRONG bundle identifier, so it looks for the IPC addr
+# file at `${TMPDIR}/com.openhuman.app-server-addr` while the parent
+# wrote it as `${TMPDIR}/com.closeredge.ai-server-addr`. The result is
+# a `failed to read missing addr file` panic and a silent xcodebuild
+# failure (exit 65). Splice `-c <abs-path-to-mobile-config>` into the
+# CLI invocation so it loads the right project unambiguously.
+PBXPROJ=$(find "$MOBILE_DIR/gen/apple" -name project.pbxproj | head -1)
+MOBILE_CONFIG="$MOBILE_DIR/tauri.conf.json"
+if [[ -n "$PBXPROJ" && -f "$PBXPROJ" ]]; then
+  echo "[ios-init] patching Build Rust Code phase → $PBXPROJ"
+  # Bash on macos has BSD sed; use perl for portable in-place edit.
+  perl -i -pe "s|tauri ios xcode-script -v --platform|tauri ios xcode-script -c \"$MOBILE_CONFIG\" -v --platform|g" "$PBXPROJ"
+fi
+
 # Inject privacy usage descriptions into the generated Info.plist. The
 # barcode scanner (camera) is mandatory for QR pairing; mic + speech are
 # needed by the PTT plugin. Without these, iOS will hard-crash the app on
