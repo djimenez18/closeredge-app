@@ -89,6 +89,16 @@ pub(crate) async fn run_turn_engine(
     on_delta: Option<tokio::sync::mpsc::Sender<String>>,
     early_exit_tool_names: &[&str],
 ) -> Result<TurnEngineOutcome> {
+    // Subscription gate: every agent turn funnels through this engine,
+    // regardless of surface (RPC, Telegram, voice, cron), so this is the
+    // one enforcement point a modified client cannot route around. The
+    // reserve-then-check pattern counts the turn atomically before checking
+    // limits (refunding on refusal), so concurrent turns can't race past
+    // the cap. Inert unless CLOSEREDGE_SUBSCRIPTION_GATING=1.
+    if let Some(block) = crate::subscription::enforce::reserve_agent_turn().await {
+        anyhow::bail!("{}", block.user_message());
+    }
+
     let mut context_guard = context_window_for_model(model)
         .map(ContextGuard::with_context_window)
         .unwrap_or_else(ContextGuard::new);
@@ -290,6 +300,10 @@ pub(crate) async fn run_turn_engine(
                     context_guard.update_usage(usage);
                     turn_cost.add_call(model, usage);
                     observer.record_usage(model, usage);
+                    crate::subscription::enforce::record_llm_usage(
+                        usage.input_tokens,
+                        usage.output_tokens,
+                    );
                     tracing::debug!(
                         iteration,
                         input_tokens = usage.input_tokens,
@@ -611,6 +625,7 @@ pub(crate) async fn run_turn_engine(
     if let Some(ref u) = co.usage {
         turn_cost.add_call(model, u);
         observer.record_usage(model, u);
+        crate::subscription::enforce::record_llm_usage(u.input_tokens, u.output_tokens);
     }
     // Emit the terminal lifecycle event on this successful (checkpoint) exit
     // too, so consumers aren't left waiting — matching the final-response and

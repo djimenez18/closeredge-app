@@ -56,6 +56,22 @@ pub async fn dispatch(
     }
     let method = resolved;
 
+    // Subscription surface: always reachable (exempt in the gate middleware)
+    // so a suspended customer can still see their status and the desktop app
+    // can render usage meters.
+    if method == "subscription.status" {
+        return Ok(crate::subscription::enforce::status_report().await);
+    }
+    if method == "subscription.usage" {
+        return serde_json::to_value(crate::subscription::usage::current_snapshot())
+            .map_err(|e| format!("serialize usage snapshot: {e}"));
+    }
+    if method == "subscription.invalidate_cache" {
+        crate::subscription::flush_cache();
+        log::info!("[subscription] cache flushed via RPC");
+        return Ok(serde_json::json!({ "flushed": true }));
+    }
+
     // Tier 1: Internal core methods.
     // These are handled directly within the core module and don't require
     // a separate controller registration.

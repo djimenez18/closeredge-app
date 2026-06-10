@@ -28,10 +28,15 @@ dist-ssr
 dist-web
 *.local
 
-# Environment variables
+# Environment variables — match every variant (.env, .env.local,
+# .env.closeredge, .env.production, …). These files routinely hold live
+# secrets (Stripe/Anthropic/OpenAI keys, Supabase service-role key, JWTs);
+# the broad `.env*` glob prevents an accidental `git add -A` from leaking
+# them. `.env.example` is force-allowed below because it carries only
+# placeholder keys and is meant to be committed.
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # pnpm local store (created when --store-dir points into the repo)
 .pnpm-store/
@@ -113,3 +118,6 @@ test-map.md
 .claude/skills/
 .codex-tmp
 *.enc
+
+# Supabase CLI local state (project ref, tool versions)
+supabase/.temp/
