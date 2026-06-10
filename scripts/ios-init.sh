@@ -74,7 +74,11 @@ if [[ -n "$PBXPROJ" && -f "$PBXPROJ" ]]; then
   # has no spaces or shell-special chars (just A-Z, a-z, 0-9, /, -, _, .)
   # so we leave it unquoted inside the script — both bash and the plist
   # parser are happy.
-  perl -i -pe "s|tauri ios xcode-script -v --platform|tauri ios xcode-script -c $MOBILE_CONFIG -v --platform|g" "$PBXPROJ"
+  #
+  # `-c <config>` is a GLOBAL tauri CLI option, so it must come before the
+  # subcommand (`ios`). Splicing it after `xcode-script` would be parsed
+  # by xcode-script itself and rejected as an unknown flag.
+  perl -i -pe "s|tauri ios xcode-script|tauri -c $MOBILE_CONFIG ios xcode-script|g" "$PBXPROJ"
 fi
 
 # Inject privacy usage descriptions into the generated Info.plist. The
