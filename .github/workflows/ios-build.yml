@@ -93,11 +93,15 @@ jobs:
 
       # Runs the frontend build (beforeBuildCommand) + Rust for the
       # simulator arch + xcodebuild, with no archive/export and no signing.
+      # The developmentTeam override must be repeated here: ios-init.sh only
+      # passes it to `tauri ios init`, and `tauri ios build` re-reads
+      # tauri.conf.json (where it is deliberately empty).
       - name: Build simulator .app
         working-directory: app/src-tauri-mobile
         run: >
           bash ../../scripts/ci-cancel-aware.sh
           npx --package=@tauri-apps/cli@^2 tauri ios build --ci --debug --target aarch64-sim
+          -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
 
       - name: Zip simulator app
         working-directory: app/src-tauri-mobile
@@ -195,9 +199,8 @@ jobs:
 
       - name: Build signed IPA
         working-directory: app/src-tauri-mobile
-        run: >
-          bash ../../scripts/ci-cancel-aware.sh
-          npx --package=@tauri-apps/cli@^2 tauri ios build --ci --export-method app-store-connect
+        run: |
+          bash ../../scripts/ci-cancel-aware.sh             npx --package=@tauri-apps/cli@^2 tauri ios build --ci --export-method app-store-connect             -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$APPLE_DEVELOPMENT_TEAM\"}}}"
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
