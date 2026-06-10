@@ -71,6 +71,55 @@ build/signing; `pnpm tauri:ios:dev`, `pnpm tauri:android:dev`.
 - Keychain/Keystore storage for the tunnel symmetric key (upstream TODO).
 - Biometric app lock.
 
+## Shipping without a Mac (verified June 2026)
+
+Nobody on this team owns a Mac. The entire iOS pipeline runs on GitHub's
+macOS runners, which are **free and unlimited for this public repo**.
+`.github/workflows/ios-build.yml` has two lanes:
+
+| Lane | Needs | Produces |
+|---|---|---|
+| `simulator` | nothing (no Apple account) | unsigned simulator `.app` zip artifact; optional auto-upload to Appetize.io |
+| `device` | Apple Developer ($99/yr) + secrets below | signed IPA → TestFlight |
+
+**One-time setup, in order:**
+
+1. **Enable workflows** (fork repos ship with Actions unregistered): repo →
+   Actions tab → "I understand my workflows, go ahead and enable them".
+2. **Browser testing today, $0**: run the `iOS Build` workflow; download the
+   simulator zip artifact and upload it at appetize.io (free: 30 streaming
+   min/month, 2 concurrent devices). For automatic uploads add the
+   `APPETIZE_API_TOKEN` secret (and `APPETIZE_PUBLIC_KEY` after the first
+   upload so the same browser URL keeps updating). **Appetize has no
+   microphone input on any plan** — PTT voice is smoke-test only there.
+3. **TestFlight on a real iPhone** (full voice testing): enroll in the
+   Apple Developer Program ($99/yr — works entirely from a Windows
+   browser), then in App Store Connect → Users & Access → Integrations
+   create an **API key** (Admin role) and set repo secrets:
+   `APPLE_API_ISSUER` (issuer UUID), `APPLE_API_KEY_ID` (key id),
+   `APPLE_API_KEY_CONTENT` (the .p8 file, base64), `APPLE_TEAM_ID`
+   (10-char team id), then set repo **variable** `IOS_SIGNING_READY=true`.
+   Tauri's automatic signing creates certificates and profiles itself — no
+   human ever touches a certificate. Install builds on the iPhone via the
+   TestFlight app (internal testers: no review; first-ever build can take
+   ~24 h to process — later ones are minutes).
+4. **App Store release**: manage the listing/screenshots entirely from the
+   browser in App Store Connect; the same lane's IPA is the store build.
+
+**Escape hatches** (rarely needed):
+- USB sideload from Windows: Sideloadly (free Apple ID = 3 apps/7-day
+  resign; paid account = 1 year). iPhone UDID without any computer:
+  udid.tech in Safari.
+- Interactive macOS for one-off debugging: Scaleway Mac mini M4 at
+  €0.22/hr (24 h minimum ≈ €5.30/day, VNC+SSH from Windows) or MacinCloud
+  PAYG ($1/hr, ~$25 prepaid minimum, RDP).
+- Real-device cloud in the browser: BrowserStack App Live (~$29–39/mo)
+  once signing exists — it resigns dev IPAs automatically.
+
+CI image note: jobs pin `macos-15` (Xcode 16.4, iOS 18.x simulators) —
+`macos-latest` flips to macOS 26 in June 2026 and Xcode 26 still has CI
+hangs (actions/runner-images#13264). Revisit the pin when that closes.
+
 ## Merge plan across the three active streams
 
 | Stream | Repo / branch | Files touched | Conflicts with this branch |
