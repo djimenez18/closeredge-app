@@ -45,6 +45,35 @@ AI is connected to.
   forces the mobile shell in a desktop browser — dev-only
   (`import.meta.env.DEV`), never active in production.
 
+## Account pairing (log in instead of QR)
+
+Onboarding is login-first: `/welcome` offers **Log in** (primary) and
+**Pair with QR code** (secondary). Login = Supabase sign-in (same account
+as desktop) -> pick a registered desktop -> the exact same E2E handshake
+the QR uses (`connectFromPairPayload` is the shared code path).
+
+How a desktop appears in the list: Devices panel -> **Cloud pairing**
+toggle. While enabled and signed in, the desktop publishes its pairing
+payload (from the same `devices_create_pairing` core RPC the QR modal
+calls) to the `device_registry` Supabase table and refreshes it at ~70%
+of token validity ("QR over the cloud" — the Rust core can't tell the
+difference). RLS restricts rows to the owning account; the tunnel crypto
+is unchanged. Offline/expired desktops show as unselectable with a hint.
+
+**Activation checklist** (login pairing is dormant until all three):
+1. Desktop branch (Supabase auth) merged — this branch vendors its exact
+   `lib/supabase.ts` + `hooks/useAuth.ts` blobs so the merge dedupes.
+2. `supabase/migrations/010_device_registry.sql` applied to the project
+   (dashboard SQL editor or `supabase db push`).
+3. `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` present at build time
+   (CI: repo secrets, already wired into both build workflows; local:
+   repo-root `.env`). Without them the Welcome screen simply hides the
+   login button and offers QR only.
+
+Future: cloud-first login for Railway Eden tiers (no desktop in the
+loop) plugs into this same screen — an Eden instance is just another
+registry entry whose payload points at the cloud relay.
+
 ## Architecture (unchanged, now actually reachable)
 
 ```

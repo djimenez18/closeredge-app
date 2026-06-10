@@ -16,6 +16,12 @@ vi.mock('./pages/Settings', () => ({
 vi.mock('./pages/ios/PairScreen', () => ({
   PairScreen: () => <div data-testid="page-pair">pair</div>,
 }));
+vi.mock('./pages/mobile/WelcomeScreen', () => ({
+  WelcomeScreen: () => <div data-testid="page-welcome">welcome</div>,
+}));
+vi.mock('./pages/mobile/LoginScreen', () => ({
+  LoginScreen: () => <div data-testid="page-login">login</div>,
+}));
 vi.mock('./components/ios/MobileTabBar', () => ({
   default: () => <nav data-testid="mobile-tab-bar">tabs</nav>,
 }));
@@ -39,9 +45,9 @@ describe('AppRoutesIOS', () => {
   describe('unpaired (no saved profile)', () => {
     beforeEach(() => listProfiles.mockReturnValue([]));
 
-    it('redirects unknown paths to /pair', () => {
+    it('redirects unknown paths to /welcome', () => {
       renderAt('/');
-      expect(screen.getByTestId('page-pair')).toBeInTheDocument();
+      expect(screen.getByTestId('page-welcome')).toBeInTheDocument();
     });
 
     it('renders the PairScreen at /pair', () => {
@@ -49,15 +55,20 @@ describe('AppRoutesIOS', () => {
       expect(screen.getByTestId('page-pair')).toBeInTheDocument();
     });
 
-    it('bounces /home back to /pair when no profile exists', () => {
+    it('renders the LoginScreen at /login', () => {
+      renderAt('/login');
+      expect(screen.getByTestId('page-login')).toBeInTheDocument();
+    });
+
+    it('bounces /home back to /welcome when no profile exists', () => {
       renderAt('/home');
-      expect(screen.getByTestId('page-pair')).toBeInTheDocument();
+      expect(screen.getByTestId('page-welcome')).toBeInTheDocument();
       expect(screen.queryByTestId('page-home')).not.toBeInTheDocument();
     });
 
-    it('bounces /chat back to /pair when no profile exists', () => {
+    it('bounces /chat back to /welcome when no profile exists', () => {
       renderAt('/chat');
-      expect(screen.getByTestId('page-pair')).toBeInTheDocument();
+      expect(screen.getByTestId('page-welcome')).toBeInTheDocument();
       expect(screen.queryByTestId('page-chat')).not.toBeInTheDocument();
     });
   });

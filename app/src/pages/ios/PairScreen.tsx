@@ -21,23 +21,15 @@ import { useNavigate } from 'react-router-dom';
 
 import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
 import { useT } from '../../lib/i18n/I18nContext';
-import { base64urlEncode, generateKeypair } from '../../lib/tunnel/crypto';
-import { type ConnectionProfile, saveProfile } from '../../services/transport/profileStore';
-import { createTransportManager } from '../../services/transport/TransportManager';
-import { BACKEND_URL } from '../../utils/config';
+import {
+  connectFromPairPayload,
+  type PairPayload,
+} from '../../services/transport/connectFromPairPayload';
 
 const log = debug('ios:pair-screen');
 const logErr = debug('ios:pair-screen:error');
 
 // -- QR payload parsing -------------------------------------------------------
-
-interface PairPayload {
-  channelId: string;
-  pairingToken: string;
-  corePubkey: string;
-  rpcUrl?: string;
-  expiresAt: number; // unix timestamp
-}
 
 function parsePairUrl(raw: string): PairPayload | null {
   log('[ios] parsing pair URL len=%d', raw.length);
@@ -118,59 +110,27 @@ export const PairScreen: FC = () => {
       return;
     }
 
-    // 2. Check expiry
-    const nowSecs = Math.floor(Date.now() / 1000);
-    if (payload.expiresAt < nowSecs) {
-      log('[ios] QR expired at=%d now=%d', payload.expiresAt, nowSecs);
+    // 2. Shared connect path (expiry check → keypair → profile → probe);
+    // identical to the account-login flow in LoginScreen.
+    setState({ kind: 'connecting' });
+    const result = await connectFromPairPayload(payload, t('iosPair.desktopLabel'));
+    if (result.kind === 'expired') {
       setState({ kind: 'expired' });
       return;
     }
-    log('[ios] QR valid; expires in %ds', payload.expiresAt - nowSecs);
-
-    // 3. Generate device keypair
-    const keypair = generateKeypair();
-    const devicePubkeyB64 = base64urlEncode(keypair.publicKey);
-    const devicePrivkeyB64 = base64urlEncode(keypair.secretKey);
-    log('[ios] device keypair generated pubkey_len=%d', devicePubkeyB64.length);
-    // NOTE: Never log the private key value — log length only.
-    log('[ios] device privkey_len=%d (not logged)', devicePrivkeyB64.length);
-
-    // 4. Build and persist profile
-    const profile: ConnectionProfile = {
-      id: payload.channelId,
-      label: t('iosPair.desktopLabel'),
-      kind: 'tunnel',
-      channelId: payload.channelId,
-      pairingToken: payload.pairingToken,
-      corePubkey: payload.corePubkey,
-      rpcUrl: payload.rpcUrl,
-      devicePrivkey: devicePrivkeyB64,
-      // sessionToken will be written after the tunnel handshake completes.
-    };
-    saveProfile(profile);
-    log('[ios] profile saved id=%s kind=%s', profile.id, profile.kind);
-
-    // 5. Probe transport health
-    setState({ kind: 'connecting' });
-    try {
-      const manager = createTransportManager(profile, { backendSocketUrl: BACKEND_URL });
-      const transport = await manager.getTransport();
-      const healthy = await transport.isHealthy();
-      if (!healthy) {
-        logErr('[ios] transport health check failed kind=%s', transport.kind);
-        setState({ kind: 'error', message: t('iosPair.error.unreachableDesktop') });
-        return;
-      }
-      log('[ios] transport healthy kind=%s; navigating to /human', transport.kind);
-    } catch (err) {
-      logErr('[ios] transport probe error: %o', err);
+    if (result.kind === 'unhealthy') {
+      setState({ kind: 'error', message: t('iosPair.error.unreachableDesktop') });
+      return;
+    }
+    if (result.kind === 'error') {
+      logErr('[ios] connect error: %s', result.message);
       setState({ kind: 'error', message: t('iosPair.error.connectionFailed') });
       return;
     }
 
-    // 6. Navigate to the Human page now that pairing is established.
+    // 3. Navigate to Home now that pairing is established.
     setState({ kind: 'success' });
-    navigate('/human', { replace: true });
+    navigate('/home', { replace: true });
   }
 
   return (

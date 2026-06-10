@@ -4,8 +4,8 @@
  * The filename is iOS-historic; the routes apply to every mobile target.
  *
  * Two phases:
- *   1. Unpaired — /pair only. QR scan binds the phone to a desktop core,
- *      writes a profile to profileStore, then redirects to /home.
+ *   1. Unpaired — /welcome (log in with the CloserEdge account, or scan a
+ *      QR). Either path writes a profile to profileStore → /home.
  *   2. Paired — /home, /chat, /settings/* are reachable. A mobile tab bar
  *      sits at the bottom of the viewport. Any unknown path falls back to
  *      /home.
@@ -26,6 +26,8 @@ import MobileTabBar from './components/ios/MobileTabBar';
 import { MascotScreen } from './pages/ios/MascotScreen';
 import { PairScreen } from './pages/ios/PairScreen';
 import HomeScreen from './pages/mobile/HomeScreen';
+import { LoginScreen } from './pages/mobile/LoginScreen';
+import { WelcomeScreen } from './pages/mobile/WelcomeScreen';
 import Settings from './pages/Settings';
 import { listProfiles } from './services/transport/profileStore';
 
@@ -36,7 +38,7 @@ const isPaired = (): boolean => listProfiles().length > 0;
 const IOSDefaultRedirect: FC = () => {
   const paired = isPaired();
   log('[mobile] default redirect paired=%s', paired);
-  return <Navigate to={paired ? '/home' : '/pair'} replace />;
+  return <Navigate to={paired ? '/home' : '/welcome'} replace />;
 };
 
 /** Wraps a paired-state route with the mobile tab bar. */
@@ -50,8 +52,8 @@ const MobileShell: FC<{ children: React.ReactNode }> = ({ children }) => (
 /** Bounces to /pair when no profile exists; otherwise renders children. */
 const RequirePairing: FC<{ children: React.ReactNode }> = ({ children }) => {
   if (!isPaired()) {
-    log('[mobile] no pairing — redirecting to /pair');
-    return <Navigate to="/pair" replace />;
+    log('[mobile] no pairing — redirecting to /welcome');
+    return <Navigate to="/welcome" replace />;
   }
   return <MobileShell>{children}</MobileShell>;
 };
@@ -59,7 +61,9 @@ const RequirePairing: FC<{ children: React.ReactNode }> = ({ children }) => {
 const AppRoutesIOS: FC = () => {
   return (
     <Routes>
-      {/* Unpaired entry — QR scan handshake. */}
+      {/* Unpaired entry — log in (account pairing) or scan a QR. */}
+      <Route path="/welcome" element={<WelcomeScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
       <Route path="/pair" element={<PairScreen />} />
 
       {/* Home — the CloserEdge command center. */}

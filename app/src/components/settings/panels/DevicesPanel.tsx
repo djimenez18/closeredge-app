@@ -7,6 +7,7 @@ import type { ToastNotification } from '../../../types/intelligence';
 import { ToastContainer } from '../../intelligence/Toast';
 import SettingsHeader from '../components/SettingsHeader';
 import { useSettingsNavigation } from '../hooks/useSettingsNavigation';
+import CloudPairingCard from './devices/CloudPairingCard';
 import PairPhoneModal from './devices/PairPhoneModal';
 
 const log = createDebug('app:devices-ui');
@@ -289,6 +290,10 @@ const DevicesPanel = () => {
           className="text-xs font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors px-3 py-1.5 rounded-lg flex-shrink-0">
           {t('devices.pairIphone')}
         </button>
+      </div>
+
+      <div className="px-5 pb-3">
+        <CloudPairingCard />
       </div>
 
       <div className="px-5 pb-3 flex items-center gap-2">

@@ -107,6 +107,9 @@ jobs:
       # we would actually ship.
       - name: Build simulator .app (tauri ios build)
         working-directory: app/src-tauri-mobile
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: >
           bash ../../scripts/ci-cancel-aware.sh
           npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --target aarch64-sim
