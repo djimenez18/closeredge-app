@@ -105,10 +105,15 @@ describe('tauriCommands', () => {
     );
   });
 
-  test('openhumanServiceStatus throws when not running in Tauri', async () => {
+  test('openhumanServiceStatus returns a browser-mode stub when not running in Tauri', async () => {
+    // The CloserEdge web flavor no longer throws outside Tauri — service
+    // commands resolve to an inert "browser-mode" status without hitting RPC.
     mockIsTauri.mockReturnValue(false);
 
-    await expect(openhumanServiceStatus()).rejects.toThrow('Not running in Tauri');
+    await expect(openhumanServiceStatus()).resolves.toEqual({
+      result: { state: 'NotInstalled', label: 'browser-mode' },
+      logs: [],
+    });
     expect(mockCallCoreRpc).not.toHaveBeenCalled();
   });
 });

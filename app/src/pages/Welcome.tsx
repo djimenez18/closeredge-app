@@ -132,7 +132,7 @@ const Welcome = () => {
             </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-stone-900 dark:text-neutral-100 text-center mb-2">
+          <h1 className="text-2xl font-display font-bold text-stone-900 dark:text-neutral-100 text-center mb-2">
             {t('welcome.title')}
           </h1>
 

@@ -1,11 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
+import { SUBSCRIPTION_ROUTE } from '../../constants/links';
 import { useUsageState } from '../../hooks/useUsageState';
 import { useT } from '../../lib/i18n/I18nContext';
-import { BILLING_DASHBOARD_URL } from '../../utils/links';
-import { openUrl } from '../../utils/openUrl';
 import UpsellBanner from './UpsellBanner';
 
 export default function GlobalUpsellBanner() {
   const { t } = useT();
+  const navigate = useNavigate();
   const { teamUsage, isLoading, isAtLimit, isNearLimit, isFreeTier, usagePct } = useUsageState();
 
   if (isLoading || !teamUsage) return null;
@@ -20,7 +22,7 @@ export default function GlobalUpsellBanner() {
           ctaLabel={t('chat.upgrade')}
           rounded={false}
           onCtaClick={() => {
-            void openUrl(BILLING_DASHBOARD_URL);
+            navigate(SUBSCRIPTION_ROUTE);
           }}
         />
       </div>
@@ -38,7 +40,7 @@ export default function GlobalUpsellBanner() {
           ctaLabel={t('chat.upgrade')}
           rounded={false}
           onCtaClick={() => {
-            void openUrl(BILLING_DASHBOARD_URL);
+            navigate(SUBSCRIPTION_ROUTE);
           }}
         />
       </div>

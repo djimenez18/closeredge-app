@@ -7,22 +7,35 @@
  */
 import SubscriptionStatus from '../components/subscription/SubscriptionStatus';
 import UsageMeter from '../components/subscription/UsageMeter';
+import { getStripePortalUrl } from '../constants/links';
 import { useSubscription } from '../hooks/useSubscription';
 
-const STRIPE_PORTAL_URL =
-  import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL ?? 'https://billing.stripe.com/p/login/test';
+// Null when VITE_STRIPE_CUSTOMER_PORTAL_URL is unset or still the test
+// placeholder — portal CTAs render disabled with a tooltip in that case.
+const STRIPE_PORTAL_URL = getStripePortalUrl();
 
 export default function SubscriptionPage() {
   const { subscription, isLoading } = useSubscription();
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-stone-500 dark:text-neutral-400">
-            Loading subscription&hellip;
-          </p>
+      <div className="max-w-2xl mx-auto py-10 px-4 animate-fade-in">
+        <div className="ce-skeleton h-7 w-32 mb-6" />
+        <div className="rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 space-y-4">
+          <div className="ce-skeleton h-5 w-24" />
+          <div className="ce-skeleton h-4 w-48" />
+          <div className="ce-skeleton h-4 w-40" />
+          <div className="ce-skeleton h-4 w-56" />
+          <div className="flex gap-3 mt-4">
+            <div className="ce-skeleton h-10 w-32 rounded-lg" />
+            <div className="ce-skeleton h-10 w-24 rounded-lg" />
+          </div>
+        </div>
+        <div className="rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 mt-6 space-y-3">
+          <div className="ce-skeleton h-4 w-20" />
+          <div className="ce-skeleton h-1.5 w-full rounded-full" />
+          <div className="ce-skeleton h-4 w-36" />
+          <div className="ce-skeleton h-1.5 w-full rounded-full" />
         </div>
       </div>
     );
@@ -30,19 +43,37 @@ export default function SubscriptionPage() {
 
   if (!subscription) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-sm text-stone-500 dark:text-neutral-400">
-          No active subscription found.
-        </p>
+      <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
+        <div className="text-center">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-3">
+            <svg className="w-6 h-6 text-[#7C3AED]/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+            </svg>
+          </div>
+          <p className="text-sm font-medium text-stone-600 dark:text-neutral-300">
+            No active subscription found.
+          </p>
+          <p className="text-xs text-stone-400 dark:text-neutral-500 mt-1">
+            Contact support if you believe this is an error.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
-      <h1 className="text-xl font-bold text-stone-900 dark:text-neutral-100 mb-6">Subscription</h1>
-      <SubscriptionStatus subscription={subscription} stripeCustomerPortalUrl={STRIPE_PORTAL_URL} />
-      <UsageMeter />
+      <h1
+        className="text-xl font-bold text-stone-900 dark:text-neutral-100 mb-6 animate-stagger-fade-up"
+        style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
+        Subscription
+      </h1>
+      <div className="animate-stagger-fade-up" style={{ animationDelay: '80ms', animationFillMode: 'both' }}>
+        <SubscriptionStatus subscription={subscription} stripeCustomerPortalUrl={STRIPE_PORTAL_URL} />
+      </div>
+      <div className="animate-stagger-fade-up" style={{ animationDelay: '160ms', animationFillMode: 'both' }}>
+        <UsageMeter />
+      </div>
     </div>
   );
 }

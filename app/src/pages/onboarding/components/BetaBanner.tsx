@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { useT } from '../../../lib/i18n/I18nContext';
-import { DISCORD_INVITE_URL } from '../../../utils/links';
+import { COMMUNITY_URL } from '../../../utils/links';
 
-const DISMISSED_KEY = 'openhuman_beta_banner_dismissed';
+const DISMISSED_KEY = 'closeredge_beta_banner_dismissed';
 
 const BetaBanner = () => {
   const { t } = useT();
@@ -32,7 +32,7 @@ const BetaBanner = () => {
       <p className="flex-1 text-xs leading-relaxed text-stone-700 dark:text-neutral-200">
         {t('misc.beta')}{' '}
         <a
-          href={DISCORD_INVITE_URL}
+          href={COMMUNITY_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="font-medium text-amber-800 dark:text-amber-300 underline underline-offset-2 hover:text-amber-900 dark:hover:text-amber-200">

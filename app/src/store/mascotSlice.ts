@@ -11,6 +11,7 @@ import { MASCOT_VOICE_ID } from '../utils/config';
 import { resetUserScopedState } from './resetActions';
 
 export const SUPPORTED_MASCOT_COLORS: readonly MascotColor[] = [
+  'purple',
   'yellow',
   'burgundy',
   'black',
@@ -18,7 +19,7 @@ export const SUPPORTED_MASCOT_COLORS: readonly MascotColor[] = [
   'custom',
 ];
 
-export const DEFAULT_MASCOT_COLOR: MascotColor = 'yellow';
+export const DEFAULT_MASCOT_COLOR: MascotColor = 'purple';
 
 export type MascotVoiceGender = 'male' | 'female';
 

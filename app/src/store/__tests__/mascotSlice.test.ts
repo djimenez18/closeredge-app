@@ -50,9 +50,11 @@ describe('mascotSlice', () => {
     expect(selectMascotColor({ mascot: state })).toBe('black');
   });
 
-  it('exposes all five supported colors', () => {
+  it('exposes all six supported colors', () => {
+    // 'purple' is the CloserEdge brand color added in the rebrand (also the
+    // new DEFAULT_MASCOT_COLOR).
     expect(new Set(SUPPORTED_MASCOT_COLORS)).toEqual(
-      new Set(['yellow', 'burgundy', 'black', 'navy', 'custom'])
+      new Set(['purple', 'yellow', 'burgundy', 'black', 'navy', 'custom'])
     );
   });
 

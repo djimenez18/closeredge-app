@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import { PORTAL_UNCONFIGURED_HINT } from '../../constants/links';
 import type { AccessLevel } from '../../hooks/useSubscription';
 import { openUrl } from '../../utils/openUrl';
 
@@ -10,7 +11,8 @@ import { openUrl } from '../../utils/openUrl';
 interface PaymentBannerProps {
   accessLevel: AccessLevel;
   daysPastDue: number;
-  stripeCustomerPortalUrl: string;
+  /** Null when the Stripe portal is not configured — CTA disables with a tooltip. */
+  stripeCustomerPortalUrl: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -51,7 +53,7 @@ export default function PaymentBanner({
   }, []);
 
   const handleUpdatePayment = useCallback(() => {
-    void openUrl(stripeCustomerPortalUrl);
+    if (stripeCustomerPortalUrl) void openUrl(stripeCustomerPortalUrl);
   }, [stripeCustomerPortalUrl]);
 
   // Only show for grace or read_only access levels.
@@ -113,8 +115,10 @@ export default function PaymentBanner({
       <div className="flex items-center gap-2 flex-shrink-0">
         <button
           type="button"
+          disabled={!stripeCustomerPortalUrl}
+          title={stripeCustomerPortalUrl ? undefined : PORTAL_UNCONFIGURED_HINT}
           onClick={handleUpdatePayment}
-          className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${ctaClass}`}>
+          className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${ctaClass}`}>
           Update Payment
         </button>
         <button

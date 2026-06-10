@@ -14,7 +14,7 @@ import {
 import CustomWizardStep from '../steps/CustomWizardStep';
 
 const LOCAL_DEFAULT_DISABLED_REASON =
-  'Managed setup requires OpenHuman sign-in and is unavailable in local mode.';
+  'Managed setup requires CloserEdge AI sign-in and is unavailable in local mode.';
 
 interface CustomWizardConfigPageProps {
   stepKey: CustomStepKey;

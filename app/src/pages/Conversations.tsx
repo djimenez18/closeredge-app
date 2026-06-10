@@ -62,9 +62,8 @@ import type { AgentProfile } from '../types/agentProfile';
 import type { ConfirmationModal as ConfirmationModalType } from '../types/intelligence';
 import type { ThreadMessage } from '../types/thread';
 import type { TaskBoardCard, TaskBoardCardStatus } from '../types/turnState';
+import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import { splitAgentMessageIntoBubbles } from '../utils/agentMessageBubbles';
-import { BILLING_DASHBOARD_URL } from '../utils/links';
-import { openUrl } from '../utils/openUrl';
 import {
   isTauri,
   notifyOverlaySttState,
@@ -1995,7 +1994,7 @@ const Conversations = ({
                     )}
                     ctaLabel={t('chat.upgrade')}
                     onCtaClick={() => {
-                      void openUrl(BILLING_DASHBOARD_URL);
+                      navigate(SUBSCRIPTION_ROUTE);
                     }}
                     dismissible
                     onDismiss={() => dismissBanner('conversations-warning')}
@@ -2025,7 +2024,7 @@ const Conversations = ({
                 </div>
                 <button
                   onClick={() => {
-                    void openUrl(BILLING_DASHBOARD_URL);
+                    navigate(SUBSCRIPTION_ROUTE);
                   }}
                   className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-coral-500 hover:bg-coral-400 text-white text-xs font-medium transition-colors">
                   {t('chat.topUp')}

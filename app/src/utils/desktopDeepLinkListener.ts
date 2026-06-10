@@ -10,8 +10,8 @@ import {
   completeDeepLinkAuthProcessing,
   failDeepLinkAuthProcessing,
 } from '../store/deepLinkAuthState';
+import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import { getStoredCoreMode } from './configPersistence';
-import { BILLING_DASHBOARD_URL } from './links';
 import {
   evaluateOAuthAppVersionGate,
   oauthAuthReadinessUserMessage,
@@ -43,14 +43,14 @@ const getOAuthErrorMessage = (provider: string, errorCode: string): string => {
       return 'Twitter/X sign-in was cancelled. Try again and approve access to continue.';
     }
 
-    return 'Twitter/X sign-in failed before OpenHuman received authorization. Check the Twitter Developer Portal app settings: OAuth 2.0 must be enabled, callback URL must match the backend redirect URL exactly, and the client ID, client secret, and requested scopes must match the OpenHuman backend configuration.';
+    return 'Twitter/X sign-in failed before CloserEdge AI received authorization. Check the Twitter Developer Portal app settings: OAuth 2.0 must be enabled, callback URL must match the backend redirect URL exactly, and the client ID, client secret, and requested scopes must match the CloserEdge AI backend configuration.';
   }
 
   if (errorCode === 'access_denied' || errorCode === 'user_denied') {
     return 'Sign-in was cancelled. Try again and approve access to continue.';
   }
 
-  return 'OAuth sign-in failed before OpenHuman received authorization. Check the provider app settings and try again.';
+  return 'OAuth sign-in failed before CloserEdge AI received authorization. Check the provider app settings and try again.';
 };
 
 const emitOAuthError = (provider: string, errorCode: string, message: string) => {
@@ -166,7 +166,7 @@ const handleAuthDeepLink = async (parsed: URL) => {
     const rawMessage = error instanceof Error ? error.message : String(error);
     if (isDecryptionFailure(rawMessage)) {
       failDeepLinkAuthProcessing(
-        "Sign-in failed because OpenHuman couldn't decrypt locally stored data. " +
+        "Sign-in failed because CloserEdge AI couldn't decrypt locally stored data. " +
           'This usually means the encryption key on this device no longer matches ' +
           'your stored secrets. Clear app data to start fresh.',
         { requiresAppDataReset: true }
@@ -210,13 +210,13 @@ const handlePaymentDeepLink = async (parsed: URL) => {
     // payment completion events.
     window.dispatchEvent(new CustomEvent('payment:success', { detail: { sessionId } }));
 
-    await openUrl(BILLING_DASHBOARD_URL);
-    window.location.hash = '/home';
+    // Show the in-app subscription page (HashRouter) — the old external
+    // closeredge.ai/dashboard page no longer exists.
+    window.location.hash = SUBSCRIPTION_ROUTE;
   } else if (path === 'cancel') {
     console.log('[DeepLink] Payment cancelled');
     window.dispatchEvent(new CustomEvent('payment:cancel', {}));
-    await openUrl(BILLING_DASHBOARD_URL);
-    window.location.hash = '/home';
+    window.location.hash = SUBSCRIPTION_ROUTE;
   } else {
     console.warn('[DeepLink] Unknown payment path:', path);
   }
@@ -257,8 +257,8 @@ const handleOAuthDeepLink = async (parsed: URL) => {
     if (!versionGate.ok) {
       const msg =
         versionGate.current === 'unknown'
-          ? `OpenHuman could not verify this build against the minimum required for OAuth (${versionGate.minimum}). Install the latest release, then try connecting again.`
-          : `This OpenHuman build (${versionGate.current}) is older than the minimum required for OAuth (${versionGate.minimum}). Install the latest release, then try connecting again.`;
+          ? `CloserEdge AI could not verify this build against the minimum required for OAuth (${versionGate.minimum}). Install the latest release, then try connecting again.`
+          : `This CloserEdge AI build (${versionGate.current}) is older than the minimum required for OAuth (${versionGate.minimum}). Install the latest release, then try connecting again.`;
       console.warn(`[DeepLink][oauth:stale-app] ${msg}`);
       try {
         await openUrl(versionGate.downloadUrl);

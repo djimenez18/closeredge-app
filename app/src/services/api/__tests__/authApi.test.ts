@@ -18,7 +18,9 @@ describe('sendEmailMagicLink', () => {
     const backendUrl = process.env.VITEST_MOCK_API_URL ?? 'http://localhost:5005';
     expect(fetchSpy).toHaveBeenCalledWith(`${backendUrl}/auth/email/send-link`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-web-version': '0.0.0-test' },
+      // No x-web-version: the CloserEdge fork only attaches client version
+      // headers from the desktop (Tauri) runtime; browser mode sends none.
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'user@example.com', frontendRedirectUri: 'openhuman://' }),
       signal: expect.any(AbortSignal),
     });

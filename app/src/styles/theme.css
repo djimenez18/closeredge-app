@@ -588,31 +588,62 @@ body::before {
    Dark Mode — applied when <html class="dark">
    ============================================ */
 :root.dark {
-  /* Page bg is darker than card/surface so elevated content (cards, menus,
-     panels) stands out against it. neutral-950 (#0a0a0a) for the page,
-     neutral-900 (#171717) for cards gives ~9% lightness delta — visible
-     but calm. */
-  --color-background: #000000;
-  --color-surface: #171717;
-  --color-surface-elevated: #1f1f1f;
-  --color-border: #2d2d2d;
-  --color-border-subtle: #1f1f1f;
+  /* CloserEdge dark — warm near-black surfaces with the brand purple
+     #7C3AED as THE accent, matching the Closer Edge Mission Control
+     dashboard tokens: page bg #0f0f12 under panels at #141418, cards at
+     #1a1a22, borders #25252f. Never pure black, never GitHub-dark navy. */
+  --color-background: #0f0f12;
+  --color-surface: #141418;
+  --color-surface-elevated: #1a1a22;
+  --color-border: #25252f;
+  --color-border-subtle: #1f1f27;
 
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #a3a3a3;
-  --color-text-tertiary: #737373;
-  --color-text-muted: #525252;
+  --color-text-primary: #e8e8e8;
+  --color-text-secondary: #9ca3af;
+  --color-text-tertiary: #888888;
+  --color-text-muted: #55555f;
 
-  --color-hover: #1e293b;
-  --color-active: #1e3a8a;
-  --color-focus: #60a5fa;
+  --color-hover: #1f1f27;
+  --color-active: rgba(124, 58, 237, 0.12);
+  --color-focus: #7c3aed;
 
-  --color-success: #4ade80;
+  --color-success: #10b981;
   --color-warning: #fbbf24;
   --color-error: #f87171;
   --color-info: #60a5fa;
 
   --shadow-tint: 0, 0, 0;
+}
+
+/* ============================================
+   Theme switch transition
+   ============================================
+   ThemeProvider stamps `.theme-transition` on <html> for ~200ms around a
+   light/dark flip so every surface cross-fades (~150ms) instead of
+   hard-cutting. Scoped to the marker class so normal hover/focus
+   transitions keep their own (often longer) timings. */
+:root.theme-transition,
+:root.theme-transition *,
+:root.theme-transition *::before,
+:root.theme-transition *::after {
+  transition:
+    background-color 150ms ease-out,
+    border-color 150ms ease-out,
+    color 150ms ease-out,
+    fill 150ms ease-out,
+    stroke 150ms ease-out,
+    box-shadow 150ms ease-out !important;
+  transition-delay: 0s !important;
+}
+
+/* Users who opt out of motion get an instant theme cut. */
+@media (prefers-reduced-motion: reduce) {
+  :root.theme-transition,
+  :root.theme-transition *,
+  :root.theme-transition *::before,
+  :root.theme-transition *::after {
+    transition: none !important;
+  }
 }
 
 /* Dark-mode overrides for component classes that hardcode light colors.
@@ -646,7 +677,7 @@ body::before {
 :root.dark .input-elevated:focus {
   border-color: var(--color-focus);
   box-shadow:
-    0 0 0 3px rgba(96, 165, 250, 0.2),
+    0 0 0 3px rgba(124, 58, 237, 0.25),
     0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
@@ -661,7 +692,7 @@ body::before {
 
 :root.dark .nav-item-premium.active {
   color: var(--color-focus);
-  background: rgba(96, 165, 250, 0.12);
+  background: rgba(124, 58, 237, 0.12);
 }
 
 :root.dark .nav-item-premium.active::before {
@@ -685,7 +716,7 @@ body::before {
 }
 
 :root.dark .btn-outline::before {
-  background: rgba(96, 165, 250, 0.1);
+  background: rgba(124, 58, 237, 0.1);
 }
 
 :root.dark .btn-outline:hover {
@@ -694,7 +725,7 @@ body::before {
 }
 
 :root.dark .skeleton {
-  background: #262626;
+  background: #25252f;
 }
 
 :root.dark .skeleton::after {
@@ -707,25 +738,25 @@ body::before {
 }
 
 :root.dark .scrollbar-elegant {
-  scrollbar-color: #404040 transparent;
+  scrollbar-color: #2c2c38 transparent;
 }
 
 :root.dark .scrollbar-elegant::-webkit-scrollbar-thumb {
-  background: #404040;
+  background: #2c2c38;
 }
 
 :root.dark .scrollbar-elegant::-webkit-scrollbar-thumb:hover {
-  background: #525252;
+  background: #3a3a48;
 }
 
 :root.dark .chart-grid {
   background-image:
-    linear-gradient(0deg, #262626 1px, transparent 1px),
-    linear-gradient(90deg, #262626 1px, transparent 1px);
+    linear-gradient(0deg, #25252f 1px, transparent 1px),
+    linear-gradient(90deg, #25252f 1px, transparent 1px);
 }
 
 :root.dark .glass-surface {
-  background: rgba(23, 23, 23, 0.7);
+  background: rgba(20, 20, 24, 0.7);
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),

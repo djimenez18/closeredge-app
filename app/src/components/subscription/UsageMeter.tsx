@@ -8,6 +8,7 @@
  */
 import { useEffect, useState } from 'react';
 
+import { MARKETING_URLS, openPricingPage } from '../../constants/links';
 import { callCoreRpc } from '../../services/coreRpcClient';
 
 interface UsageSnapshot {
@@ -93,7 +94,7 @@ export default function UsageMeter() {
   const { usage, limits } = report;
 
   return (
-    <div className="mt-6 rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6">
+    <div className="ce-hover-lift mt-6 rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6">
       <h2 className="text-sm font-semibold text-stone-900 dark:text-neutral-100 mb-4">
         Plan usage
       </h2>
@@ -122,9 +123,15 @@ export default function UsageMeter() {
       <p className="mt-4 text-[11px] leading-relaxed text-stone-400 dark:text-neutral-500">
         Daily limits reset at midnight UTC; weekly limits reset Monday. Need more headroom?{' '}
         <a
-          href="https://closeredge.ai/pricing"
+          href={MARKETING_URLS.pricing}
           target="_blank"
           rel="noreferrer"
+          onClick={e => {
+            // Route through the shared CTA: system browser in prod,
+            // in-app subscription page in dev (marketing site may not exist).
+            e.preventDefault();
+            openPricingPage();
+          }}
           className="text-[#7C3AED] hover:underline">
           Upgrade your plan
         </a>

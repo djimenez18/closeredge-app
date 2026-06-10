@@ -73,7 +73,7 @@ const HumanPage = () => {
         {t('voice.pushToTalk')}
       </label>
 
-      {/* "Send OpenHuman to a meeting" — dev-only; opens the Flow A modal
+      {/* "Send CloserEdge AI to a meeting" — dev-only; opens the Flow A modal
           which spawns an off-screen CEF webview pointed at the Meet URL with
           the mascot canvas as the outbound camera and synthesized speech as
           the outbound mic. The user's OS mic is never wired to the meeting. */}

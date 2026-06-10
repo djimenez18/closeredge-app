@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
+import { openPricingPage, PORTAL_UNCONFIGURED_HINT } from '../../constants/links';
 import { useSubscription } from '../../hooks/useSubscription';
 import type { AccessLevel } from '../../hooks/useSubscription';
 import { supabaseConfigured } from '../../lib/supabase';
@@ -31,8 +32,11 @@ export const useIsReadOnly = () => useContext(ReadOnlyContext);
 
 interface SubscriptionGateProps {
   children: ReactNode;
-  /** URL for the Stripe Customer Portal (update payment / manage billing). */
-  stripeCustomerPortalUrl: string;
+  /**
+   * URL for the Stripe Customer Portal (update payment / manage billing).
+   * Null when not configured — portal CTAs render disabled with a tooltip.
+   */
+  stripeCustomerPortalUrl: string | null;
   /** Optional pricing / onboarding page URL shown when there is no subscription. */
   pricingUrl?: string;
 }
@@ -56,7 +60,7 @@ export function LoadingScreen() {
 }
 
 /** Rendered by the gate below when subscription state requires it. */
-export function SuspendedScreen({ portalUrl }: { portalUrl: string }) {
+export function SuspendedScreen({ portalUrl }: { portalUrl: string | null }) {
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-neutral-950 p-6">
       <div className="w-full max-w-md rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 text-center shadow-lg">
@@ -84,8 +88,12 @@ export function SuspendedScreen({ portalUrl }: { portalUrl: string }) {
         </p>
         <button
           type="button"
-          onClick={() => void openUrl(portalUrl)}
-          className="mt-6 w-full rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#6D28D9] transition-colors">
+          disabled={!portalUrl}
+          title={portalUrl ? undefined : PORTAL_UNCONFIGURED_HINT}
+          onClick={() => {
+            if (portalUrl) void openUrl(portalUrl);
+          }}
+          className="mt-6 w-full rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#6D28D9] transition-colors disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#7C3AED]">
           Update Payment
         </button>
       </div>
@@ -94,7 +102,7 @@ export function SuspendedScreen({ portalUrl }: { portalUrl: string }) {
 }
 
 /** Rendered by the gate below when subscription state requires it. */
-export function CanceledScreen({ portalUrl }: { portalUrl: string }) {
+export function CanceledScreen({ portalUrl }: { portalUrl: string | null }) {
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-neutral-950 p-6">
       <div className="w-full max-w-md rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 text-center shadow-lg">
@@ -121,8 +129,12 @@ export function CanceledScreen({ portalUrl }: { portalUrl: string }) {
         </p>
         <button
           type="button"
-          onClick={() => void openUrl(portalUrl)}
-          className="mt-6 w-full rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#6D28D9] transition-colors">
+          disabled={!portalUrl}
+          title={portalUrl ? undefined : PORTAL_UNCONFIGURED_HINT}
+          onClick={() => {
+            if (portalUrl) void openUrl(portalUrl);
+          }}
+          className="mt-6 w-full rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#6D28D9] transition-colors disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#7C3AED]">
           Resubscribe
         </button>
       </div>
@@ -132,7 +144,15 @@ export function CanceledScreen({ portalUrl }: { portalUrl: string }) {
 
 /** Rendered by the gate below when subscription state requires it. */
 export function NoSubscriptionScreen({ pricingUrl }: { pricingUrl?: string }) {
-  const targetUrl = pricingUrl ?? 'https://closeredge.ai/pricing';
+  // Explicit override wins; otherwise the shared pricing CTA (marketing
+  // site in prod, in-app subscription page in dev — see constants/links).
+  const handleViewPlans = () => {
+    if (pricingUrl) {
+      void openUrl(pricingUrl).catch(() => {});
+      return;
+    }
+    openPricingPage();
+  };
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-neutral-950 p-6">
       <div className="w-full max-w-lg rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 text-center shadow-lg">
@@ -160,7 +180,7 @@ export function NoSubscriptionScreen({ pricingUrl }: { pricingUrl?: string }) {
         </p>
         <button
           type="button"
-          onClick={() => void openUrl(targetUrl)}
+          onClick={handleViewPlans}
           className="mt-6 w-full rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#6D28D9] transition-colors">
           View Plans &amp; Pricing
         </button>

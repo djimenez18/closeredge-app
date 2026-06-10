@@ -10,7 +10,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { agentProfilesApi } from '../../services/api/agentProfilesApi';
@@ -186,6 +186,14 @@ function makeThread(overrides: Partial<Thread> = {}): Thread {
   };
 }
 
+/** Exposes the router's current pathname so tests can assert in-app
+ *  navigation (e.g. the subscription CTAs, which navigate() instead of
+ *  opening an external URL since the CloserEdge link rework). */
+function LocationProbe() {
+  const location = useLocation();
+  return <div data-testid="location-probe">{location.pathname}</div>;
+}
+
 async function renderConversations(preload: Record<string, unknown> = {}) {
   const store = buildStore(preload);
   const { default: Conversations } = await import('../Conversations');
@@ -194,6 +202,7 @@ async function renderConversations(preload: Record<string, unknown> = {}) {
     <Provider store={store}>
       <MemoryRouter initialEntries={['/conversations']}>
         <Conversations />
+        <LocationProbe />
       </MemoryRouter>
     </Provider>
   );
@@ -523,9 +532,7 @@ describe('Conversations — smoke render (#1123 welcome-lock removal)', () => {
   });
 
   // Covers lines 1399, 1409-1410: isNearLimit UpsellBanner render + onCtaClick
-  it('renders near-limit UpsellBanner and clicking Upgrade calls openUrl', async () => {
-    const { openUrl } = await import('../../utils/openUrl');
-
+  it('renders near-limit UpsellBanner and clicking Upgrade navigates to the subscription page', async () => {
     mockUseUsageState.mockReturnValue({
       teamUsage: null,
       currentPlan: null,
@@ -547,13 +554,15 @@ describe('Conversations — smoke render (#1123 welcome-lock removal)', () => {
     // UpsellBanner renders with "Approaching usage limit" (line 1399 branch)
     expect(screen.getByText('Approaching usage limit')).toBeInTheDocument();
 
-    // Click the "Upgrade" button — covers line 1409-1410 (onCtaClick callback)
+    // Click the "Upgrade" button — covers line 1409-1410 (onCtaClick callback).
+    // The CTA navigates in-app to SUBSCRIPTION_ROUTE since the CloserEdge
+    // link rework (no external closeredge.ai URL anymore).
     const upgradeBtn = screen.getByText('Upgrade');
     await act(async () => {
       fireEvent.click(upgradeBtn);
     });
 
-    expect(openUrl).toHaveBeenCalled();
+    expect(screen.getByTestId('location-probe')).toHaveTextContent('/subscription');
   });
 
   // Covers line 1413: onDismiss callback inside UpsellBanner
@@ -590,9 +599,7 @@ describe('Conversations — smoke render (#1123 welcome-lock removal)', () => {
   });
 
   // Covers line 1443: onClick inside "Top Up" button in budget-exceeded banner
-  it('clicking "Top Up" in the budget banner calls openUrl', async () => {
-    const { openUrl } = await import('../../utils/openUrl');
-
+  it('clicking "Top Up" in the budget banner navigates to the subscription page', async () => {
     const teamUsage = { cycleBudgetUsd: 10, remainingUsd: 0, cycleSpentUsd: 10, cycleEndsAt: null };
 
     mockUseUsageState.mockReturnValue({
@@ -616,13 +623,14 @@ describe('Conversations — smoke render (#1123 welcome-lock removal)', () => {
     // Budget banner renders — cycleBudgetUsd: 10 > 0 → cycle-budget exhausted copy
     expect(screen.getByText(/used your included cycle budget/i)).toBeInTheDocument();
 
-    // Click "Top Up" button — covers line 1442-1443 (onClick callback)
+    // Click "Top Up" button — covers line 1442-1443 (onClick callback).
+    // Navigates in-app to SUBSCRIPTION_ROUTE since the CloserEdge link rework.
     const topUpBtn = screen.getByText('Top Up');
     await act(async () => {
       fireEvent.click(topUpBtn);
     });
 
-    expect(openUrl).toHaveBeenCalled();
+    expect(screen.getByTestId('location-probe')).toHaveTextContent('/subscription');
   });
 
   it('handles /new from the composer without a selected thread or sending chat text', async () => {

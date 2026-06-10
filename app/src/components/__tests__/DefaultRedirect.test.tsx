@@ -36,7 +36,7 @@ describe('DefaultRedirect', () => {
     expect(screen.queryByText('Home')).not.toBeInTheDocument();
   });
 
-  it('redirects to / when no session token', () => {
+  it('redirects to /home when no session token (auth gate bypassed)', () => {
     mockUseCoreState.mockReturnValue({
       isBootstrapping: false,
       snapshot: { sessionToken: null, currentUser: null, onboardingCompleted: false },
@@ -44,7 +44,10 @@ describe('DefaultRedirect', () => {
 
     renderRedirect();
 
-    expect(screen.getByText('Welcome')).toBeInTheDocument();
+    // The auth gate is temporarily bypassed in the CloserEdge fork (see the
+    // TODO in DefaultRedirect.tsx) — no-token users land on /home, not the
+    // Welcome page, until Supabase auth replaces OpenHuman auth.
+    expect(screen.getByText('Home')).toBeInTheDocument();
   });
 
   it('shows loading when session token arrived but currentUser is not yet set (post-login race)', () => {
@@ -63,10 +66,12 @@ describe('DefaultRedirect', () => {
     expect(screen.queryByText('Home')).not.toBeInTheDocument();
     expect(screen.queryByText('Welcome')).not.toBeInTheDocument();
     // Positively assert the loading screen rendered (not just "nothing visible")
-    expect(screen.getByText('Initializing OpenHuman...')).toBeInTheDocument();
+    expect(screen.getByText('Initializing CloserEdge AI...')).toBeInTheDocument();
   });
 
-  it('redirects to /onboarding for a genuinely new user (currentUser set, onboarding false)', () => {
+  it('redirects a genuinely new user to /home while the onboarding gate is disabled', () => {
+    // The onboarding gate is commented out in DefaultRedirect.tsx (see the
+    // TODO) — new users currently land on /home like everyone else.
     mockUseCoreState.mockReturnValue({
       isBootstrapping: false,
       snapshot: {
@@ -78,7 +83,7 @@ describe('DefaultRedirect', () => {
 
     renderRedirect();
 
-    expect(screen.getByText('Onboarding')).toBeInTheDocument();
+    expect(screen.getByText('Home')).toBeInTheDocument();
   });
 
   it('redirects to /home for a returning user who already completed onboarding', () => {

@@ -129,17 +129,17 @@ function ConfirmRevokeDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30">
-      <div className="bg-white rounded-2xl max-w-sm w-full p-6 border border-stone-200 shadow-large">
-        <h3 className="text-base font-semibold text-stone-900 mb-2">
+      <div className="bg-white dark:bg-[#1a1a22] rounded-2xl max-w-sm w-full p-6 border border-stone-200 dark:border-neutral-800 shadow-large">
+        <h3 className="text-base font-semibold text-stone-900 dark:text-neutral-100 mb-2">
           {t('devices.confirmRevokeTitle')}
         </h3>
-        <p className="text-sm text-stone-600 mb-5">
+        <p className="text-sm text-stone-600 dark:text-neutral-400 mb-5">
           {t('devices.confirmRevokeBody').replace('{label}', device.label)}
         </p>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 px-4 py-2 rounded-lg border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors text-sm">
+            className="flex-1 px-4 py-2 rounded-lg border border-stone-200 dark:border-neutral-700 text-stone-700 dark:text-neutral-300 hover:bg-stone-50 dark:hover:bg-neutral-800/60 transition-colors text-sm">
             {t('common.cancel')}
           </button>
           <button

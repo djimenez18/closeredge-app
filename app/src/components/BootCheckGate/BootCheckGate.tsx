@@ -118,7 +118,7 @@ type TestStatus =
 // Desktop release artifact URL surfaced on the web build's mode picker so
 // users without a remote core have a clear path to install the app instead
 // of being trapped on the cloud-only form.
-const DESKTOP_DOWNLOAD_URL = 'https://github.com/tinyhumansai/openhuman/releases/latest';
+const DESKTOP_DOWNLOAD_URL = 'https://github.com/closeredgeai/closeredge/releases/latest';
 
 function ModePicker({ onConfirm }: PickerProps) {
   const { t } = useT();
@@ -321,7 +321,7 @@ function ModePicker({ onConfirm }: PickerProps) {
             <div className="flex flex-col gap-1">
               <label className="text-xs font-medium text-stone-700 dark:text-neutral-200">
                 {t('bootCheck.authToken')} (
-                <code className="text-[10px]">OPENHUMAN_CORE_TOKEN</code>)
+                <code className="text-[10px]">CLOSEREDGE_CORE_TOKEN</code>)
               </label>
               <input
                 type="text"

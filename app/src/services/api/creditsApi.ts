@@ -10,8 +10,8 @@ import { callCoreCommand } from '../coreCommandClient';
  */
 export interface CreditBalance {
   /**
-   * Promotional credit balance on the user document (signup bonus, coupons,
-   * referral rewards). Corresponds to `IUserUsage.promotionBalanceUsd`.
+   * Promotional credit balance on the user document (signup bonus,
+   * coupons). Corresponds to `IUserUsage.promotionBalanceUsd`.
    */
   promotionBalanceUsd: number;
   /**

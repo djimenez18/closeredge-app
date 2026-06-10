@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AppRoutes from './AppRoutes';
 import AppBackground from './components/AppBackground';
 import AppUpdatePrompt from './components/AppUpdatePrompt';
+import AuthProvider from './components/auth/AuthProvider';
 import BootCheckGate from './components/BootCheckGate/BootCheckGate';
 import BottomTabBar from './components/BottomTabBar';
 import CommandProvider from './components/commands/CommandProvider';
@@ -18,8 +19,10 @@ import LocalAIDownloadSnackbar from './components/LocalAIDownloadSnackbar';
 import SecretPromptDialog from './components/mcp-setup/SecretPromptDialog';
 import OpenhumanLinkModal from './components/OpenhumanLinkModal';
 import PersistRehydrationScreen from './components/PersistRehydrationScreen';
+import SubscriptionGate from './components/subscription/SubscriptionGate';
 import GlobalUpsellBanner from './components/upsell/GlobalUpsellBanner';
 import AppWalkthrough from './components/walkthrough/AppWalkthrough';
+import { getStripePortalUrl } from './constants/links';
 import { MascotFrameProducer } from './features/meet/MascotFrameProducer';
 import { I18nProvider } from './lib/i18n/I18nContext';
 import {
@@ -49,6 +52,10 @@ import { persistor, store } from './store';
 import { useAppSelector } from './store/hooks';
 import { isAccountsFullscreen } from './utils/accountsFullscreen';
 import { DEV_FORCE_ONBOARDING } from './utils/config';
+
+// Null when VITE_STRIPE_CUSTOMER_PORTAL_URL is unset or still the test
+// placeholder — portal CTAs render disabled with a tooltip in that case.
+const STRIPE_PORTAL_URL = getStripePortalUrl();
 
 // Attach the `webview:event` listener at app boot so background recipe
 // events (Google Meet captions → transcript flush, WhatsApp ingest, …)
@@ -98,24 +105,28 @@ function App() {
           <ThemeProvider>
             <I18nProvider>
               <BootCheckGate>
-                <CoreStateProvider>
-                  {socketWrapped(
-                    <ChatRuntimeProvider>
-                      <Router>
-                        <CommandProvider>
-                          <ServiceBlockingGate>
-                            <AppShell />
-                            {!onMobile && <DictationHotkeyManager />}
-                            {!onMobile && <LocalAIDownloadSnackbar />}
-                            {!onMobile && <AppUpdatePrompt />}
-                            <KeyringConsentOverlay />
-                            <SecretPromptDialog />
-                          </ServiceBlockingGate>
-                        </CommandProvider>
-                      </Router>
-                    </ChatRuntimeProvider>
-                  )}
-                </CoreStateProvider>
+                <AuthProvider>
+                  <SubscriptionGate stripeCustomerPortalUrl={STRIPE_PORTAL_URL}>
+                    <CoreStateProvider>
+                      {socketWrapped(
+                        <ChatRuntimeProvider>
+                          <Router>
+                            <CommandProvider>
+                              <ServiceBlockingGate>
+                                <AppShell />
+                                {!onMobile && <DictationHotkeyManager />}
+                                {!onMobile && <LocalAIDownloadSnackbar />}
+                                {!onMobile && <AppUpdatePrompt />}
+                                <KeyringConsentOverlay />
+                                <SecretPromptDialog />
+                              </ServiceBlockingGate>
+                            </CommandProvider>
+                          </Router>
+                        </ChatRuntimeProvider>
+                      )}
+                    </CoreStateProvider>
+                  </SubscriptionGate>
+                </AuthProvider>
               </BootCheckGate>
             </I18nProvider>
           </ThemeProvider>
@@ -165,16 +176,9 @@ function AppShellDesktop() {
   // onboarding route back to `/onboarding`. Once completed, bounce the
   // user off `/onboarding` so they don't get stuck on the stepper.
   useEffect(() => {
-    if (isBootstrapping || !snapshot.sessionToken) return;
-    if (onboardingPending && !onOnboardingRoute) {
-      console.debug(
-        `[onboarding-gate] redirecting ${location.pathname} -> /onboarding (onboarding incomplete)`
-      );
-      navigate('/onboarding', { replace: true });
-    } else if (!onboardingPending && onOnboardingRoute) {
-      console.debug(
-        `[onboarding-gate] redirecting ${location.pathname} -> /home (onboarding complete)`
-      );
+    // TODO: Re-enable onboarding gate once Supabase auth replaces OpenHuman auth.
+    if (isBootstrapping) return;
+    if (onOnboardingRoute) {
       navigate('/home', { replace: true });
     }
   }, [

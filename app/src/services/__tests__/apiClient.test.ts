@@ -26,7 +26,10 @@ describe('apiClient version headers', () => {
     vi.stubGlobal('fetch', vi.fn());
   });
 
-  it('adds x-web-version on non-Tauri backend requests', async () => {
+  it('sends no client version headers on non-Tauri backend requests', async () => {
+    // The CloserEdge fork only reports versions from the desktop (Tauri)
+    // runtime — getClientVersionHeaders() returns {} in browser mode, so no
+    // x-web-version is attached anymore.
     const fetchMock = vi.mocked(fetch);
     fetchMock.mockResolvedValueOnce({
       ok: true,
@@ -39,8 +42,9 @@ describe('apiClient version headers', () => {
 
     const requestInit = fetchMock.mock.calls[0][1] as RequestInit;
     const headers = requestInit.headers as Record<string, string>;
-    expect(headers['x-web-version']).toBe('0.0.0-test');
+    expect(headers).not.toHaveProperty('x-web-version');
     expect(headers).not.toHaveProperty('x-tauri-version');
+    expect(headers).not.toHaveProperty('x-core-version');
   });
 
   it('adds sanitized x-tauri-version and x-core-version on Tauri backend requests', async () => {

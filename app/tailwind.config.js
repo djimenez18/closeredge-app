@@ -8,11 +8,14 @@ module.exports = {
   theme: {
     extend: {
       // Premium font stack optimized for crypto professionals
+      // CloserEdge type system (mirrors the Mission Control client dashboard):
+      // body DM Sans, display Cormorant Garamond, mono DM Mono. Loaded via
+      // Google Fonts in index.html.
       fontFamily: {
-        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
-        'display': ['Cabinet Grotesk', 'Inter', '-apple-system', 'system-ui', 'sans-serif'],
-        'mono': ['JetBrains Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Courier', 'monospace'],
-        'serif': ['Newsreader', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
+        'sans': ['DM Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
+        'display': ['Cormorant Garamond', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
+        'mono': ['DM Mono', 'JetBrains Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Courier', 'monospace'],
+        'serif': ['Cormorant Garamond', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
       },
 
       // Elevated color system - Clean, light, professional
@@ -29,20 +32,25 @@ module.exports = {
         'cmd-accent':           'var(--cmd-accent)',
         'cmd-overlay':          'var(--cmd-overlay)',
 
-        // Neutral - Light theme grayscale (from Figma design tokens)
+        // Neutral - grayscale. The light end (0-300) stays warm-neutral for
+        // light mode surfaces; the dark end (400-950) follows the CloserEdge
+        // dark palette (warm near-black, from the Mission Control dashboard:
+        // base #0f0f12 / surface #141418 / card #1a1a22 / border #25252f) so
+        // the existing `dark:bg-neutral-900` / `dark:border-neutral-800`
+        // sweep lands on brand surfaces instead of pure gray/black.
         neutral: {
           0: '#FFFFFF',     // Base / surface
           50: '#FAFAFA',
-          100: '#F5F5F5',   // App background
+          100: '#F5F5F5',   // App background (light)
           200: '#E5E5E5',
           300: '#D4D4D4',
-          400: '#A3A3A3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717',
-          950: '#0A0A0A',
+          400: '#9CA3AF',   // Muted text (dark)
+          500: '#888888',
+          600: '#55555F',
+          700: '#30303A',
+          800: '#25252F',   // Borders / hover (dark)
+          900: '#1A1A22',   // Cards / panels (dark)
+          950: '#0F0F12',   // Page background (dark)
         },
 
         // Canvas - Background layers (mapped to neutral for compat)
@@ -154,6 +162,22 @@ module.exports = {
           stablecoin: '#5B9BF3', // Blue for stables
         },
 
+        // Brand - CloserEdge purple (canonical: #7C3AED, from the Mission
+        // Control dashboard --purple token; hover #6D28D9, light #A855F7).
+        brand: {
+          50: '#F5F3FF',
+          100: '#EDE9FE',
+          200: '#DDD6FE',
+          300: '#C4B5FD',
+          400: '#A855F7',   // Light accent
+          500: '#7C3AED',   // Primary purple
+          600: '#6D28D9',   // Hover
+          700: '#5B21B6',
+          800: '#4C1D95',
+          900: '#3B1577',
+          950: '#1A1025',   // Deep purple-black
+        },
+
         // Accent colors for special elements
         accent: {
           lavender: '#9B8AFB',   // Premium features
@@ -238,6 +262,10 @@ module.exports = {
         'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 3s ease-in-out infinite',
         'ticker': 'ticker 30s linear infinite',
+        'ambient-drift': 'ambientDrift 12s ease-in-out infinite',
+        'stagger-fade-up': 'staggerFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both',
+        'press-scale': 'pressScale 0.12s ease-out',
+        'skeleton-shimmer': 'skeletonShimmer 1.8s ease-in-out infinite',
       },
 
       keyframes: {
@@ -276,6 +304,24 @@ module.exports = {
         ticker: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
+        },
+        ambientDrift: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        staggerFadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        pressScale: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(0.97)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        skeletonShimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
         },
       },
 

@@ -1,6 +1,5 @@
 import { getVersion } from '@tauri-apps/api/app';
 
-import { APP_VERSION } from '../utils/config';
 import { isTauri } from '../utils/tauriCommands/common';
 import { callCoreRpc } from './coreRpcClient';
 
@@ -68,6 +67,5 @@ export async function getClientVersionHeaders(): Promise<Record<string, string>>
     return headers;
   }
 
-  const webVersion = sanitizeClientVersion(APP_VERSION);
-  return webVersion ? { 'x-web-version': webVersion } : {};
+  return {};
 }

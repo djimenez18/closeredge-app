@@ -124,7 +124,7 @@ export function MeetingBotsModal({ onClose, onToast }: ModalProps) {
   const { t } = useT();
   const [platform, setPlatform] = useState<MascotMeetPlatform>('gmeet');
   const [meetUrl, setMeetUrl] = useState('');
-  const [displayName, setDisplayName] = useState('OpenHuman');
+  const [displayName, setDisplayName] = useState('CloserEdge AI');
   // Privacy lock: the bot will only react to the wake word when this
   // exact name is the speaker in Meet's captions. Anyone else who
   // says "hey openhuman …" is silently ignored — preventing a
@@ -316,7 +316,7 @@ export function MeetingBotsModal({ onClose, onToast }: ModalProps) {
               <p
                 id="meeting-bots-owner-hint"
                 className="mt-1 text-[10px] leading-relaxed text-stone-500 dark:text-neutral-400">
-                Privacy lock. OpenHuman will only respond to the wake word when this exact name
+                Privacy lock. CloserEdge AI will only respond to the wake word when this exact name
                 is speaking — anyone else in the call cannot trigger tool calls in your name.
               </p>
             </label>

@@ -618,7 +618,7 @@ export async function aiGetConfig(): Promise<AIPreview> {
   return {
     soul: {
       raw: '',
-      name: 'OpenHuman',
+      name: 'CloserEdge AI',
       description: 'Agent',
       personalityPreview: [],
       safetyRulesPreview: [],

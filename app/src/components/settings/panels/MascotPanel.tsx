@@ -51,6 +51,7 @@ interface ColorOption {
 }
 
 const COLOR_OPTIONS: ColorOption[] = [
+  { id: 'purple', labelKey: 'settings.mascot.colorPurple' },
   { id: 'yellow', labelKey: 'settings.mascot.colorYellow' },
   { id: 'burgundy', labelKey: 'settings.mascot.colorBurgundy' },
   { id: 'black', labelKey: 'settings.mascot.colorBlack' },

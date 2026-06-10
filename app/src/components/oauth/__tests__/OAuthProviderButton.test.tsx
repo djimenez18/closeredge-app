@@ -239,7 +239,7 @@ describe('OAuthProviderButton', () => {
     });
 
     expect(screen.getByRole('alert')).toHaveTextContent(
-      'Twitter/X sign-in could not start. Check that the Twitter OAuth app callback URL, client ID/secret, and requested scopes match the OpenHuman backend, then try again.'
+      'Twitter/X sign-in could not start. Check that the Twitter OAuth app callback URL, client ID/secret, and requested scopes match the CloserEdge AI backend, then try again.'
     );
     expect(screen.getByRole('button', { name: 'Twitter' })).toBeEnabled();
     expect(completeDeepLinkAuthProcessing).toHaveBeenCalledTimes(1);
@@ -247,7 +247,7 @@ describe('OAuthProviderButton', () => {
 
   it('surfaces safe readiness messages when the pre-launch readiness check fails', async () => {
     const readinessMessage =
-      'OpenHuman could not reach its local runtime. Quit and reopen the app, then try signing in again.';
+      'CloserEdge AI could not reach its local runtime. Quit and reopen the app, then try signing in again.';
     vi.mocked(prepareOAuthLoginLaunch).mockRejectedValueOnce(new Error(readinessMessage));
 
     render(<OAuthProviderButton provider={stubProvider} />);
@@ -291,7 +291,7 @@ describe('OAuthProviderButton', () => {
 
       expect(openUrl).not.toHaveBeenCalled();
       expect(screen.getByRole('alert')).toHaveTextContent(
-        /OpenHuman cloud sign-in is temporarily unavailable/i
+        /CloserEdge AI cloud sign-in is temporarily unavailable/i
       );
       expect(screen.getByRole('button', { name: 'Google' })).toBeEnabled();
     }
@@ -352,7 +352,7 @@ describe('OAuthProviderButton', () => {
 
     expect(checkBackendHealthy).toHaveBeenCalledTimes(2);
     expect(screen.getByRole('alert')).toHaveTextContent(
-      /OpenHuman cloud sign-in is temporarily unavailable/i
+      /CloserEdge AI cloud sign-in is temporarily unavailable/i
     );
   });
 
@@ -396,7 +396,7 @@ describe('OAuthProviderButton', () => {
 
     expect(checkBackendHealthy).toHaveBeenCalledTimes(2);
     expect(screen.getByRole('alert')).toHaveTextContent(
-      /OpenHuman cloud sign-in is temporarily unavailable/i
+      /CloserEdge AI cloud sign-in is temporarily unavailable/i
     );
   });
 

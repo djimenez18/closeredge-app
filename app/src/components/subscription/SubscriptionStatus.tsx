@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import type { Subscription, SubscriptionTier } from '../../hooks/useSubscription';
+import { PORTAL_UNCONFIGURED_HINT } from '../../constants/links';
 import { openUrl } from '../../utils/openUrl';
 
 // ---------------------------------------------------------------------------
@@ -9,7 +10,8 @@ import { openUrl } from '../../utils/openUrl';
 
 interface SubscriptionStatusProps {
   subscription: Subscription;
-  stripeCustomerPortalUrl: string;
+  /** Null when the Stripe portal is not configured — CTAs disable with a tooltip. */
+  stripeCustomerPortalUrl: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -62,13 +64,15 @@ export default function SubscriptionStatus({
   subscription,
   stripeCustomerPortalUrl,
 }: SubscriptionStatusProps) {
+  const portalConfigured = stripeCustomerPortalUrl !== null;
+
   const handleManageBilling = useCallback(() => {
-    void openUrl(stripeCustomerPortalUrl);
+    if (stripeCustomerPortalUrl) void openUrl(stripeCustomerPortalUrl);
   }, [stripeCustomerPortalUrl]);
 
   const handleUpgrade = useCallback(() => {
     // Upgrade directs to the same portal — Stripe handles plan changes.
-    void openUrl(stripeCustomerPortalUrl);
+    if (stripeCustomerPortalUrl) void openUrl(stripeCustomerPortalUrl);
   }, [stripeCustomerPortalUrl]);
 
   const badge = STATUS_BADGES[subscription.status] ?? {
@@ -82,7 +86,7 @@ export default function SubscriptionStatus({
   const activeAddOns = subscription.addOns.filter(a => a.active);
 
   return (
-    <div className="rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
+    <div className="ce-hover-lift rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
       <h3 className="text-base font-semibold text-stone-900 dark:text-neutral-100">
         Subscription
       </h3>
@@ -136,15 +140,19 @@ export default function SubscriptionStatus({
       <div className="mt-5 flex items-center gap-3">
         <button
           type="button"
+          disabled={!portalConfigured}
+          title={portalConfigured ? undefined : PORTAL_UNCONFIGURED_HINT}
           onClick={handleManageBilling}
-          className="rounded-lg border border-stone-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-4 py-2 text-sm font-medium text-stone-700 dark:text-neutral-200 hover:bg-stone-50 dark:hover:bg-neutral-800/60 transition-colors">
+          className="ce-press-scale rounded-lg border border-stone-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-4 py-2 text-sm font-medium text-stone-700 dark:text-neutral-200 hover:bg-stone-50 dark:hover:bg-neutral-800/60 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#7C3AED]/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900">
           Manage Billing
         </button>
         {showUpgrade && (
           <button
             type="button"
+            disabled={!portalConfigured}
+            title={portalConfigured ? undefined : PORTAL_UNCONFIGURED_HINT}
             onClick={handleUpgrade}
-            className="rounded-lg bg-[#7C3AED] px-4 py-2 text-sm font-medium text-white hover:bg-[#6D28D9] transition-colors">
+            className="ce-press-scale rounded-lg bg-[#7C3AED] px-4 py-2 text-sm font-medium text-white hover:bg-[#6D28D9] transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#7C3AED] focus-visible:ring-2 focus-visible:ring-[#7C3AED]/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900">
             Upgrade
           </button>
         )}

@@ -52,7 +52,7 @@ export async function joinMeetCall(input: MeetJoinCallInput): Promise<MeetJoinCa
   // ignores them; matches the message the inline alert would show.
   if (!ownerDisplayName) {
     throw new Error(
-      'Please enter your own name as it will appear in the Meet so OpenHuman knows who to listen to.'
+      'Please enter your own name as it will appear in the Meet so CloserEdge AI knows who to listen to.'
     );
   }
   // Refuse early outside the desktop shell so the browser dev surface
@@ -186,7 +186,7 @@ export interface MascotJoinMeetingResult {
  * without leaking the underlying paid-plan rule.
  */
 export const SERVER_OVERLOADED_MESSAGE =
-  'OpenHuman is under heavy load right now. Please try again in a few minutes.';
+  'CloserEdge AI is under heavy load right now. Please try again in a few minutes.';
 
 export interface MascotJoinMeetingError {
   /** User-safe error text. Falls back to a generic message. */

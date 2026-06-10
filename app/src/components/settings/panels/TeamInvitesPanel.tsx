@@ -190,7 +190,7 @@ const TeamInvitesPanel = () => {
                         </code>
                         {status === 'expired' && (
                           <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-coral-500/20 text-coral-400 border border-coral-500/30">
-                            {t('rewards.referralSection.statusExpired')}
+                            {t('invites.statusExpired')}
                           </span>
                         )}
                         {status === 'used' && (
@@ -269,7 +269,7 @@ const TeamInvitesPanel = () => {
                       </span>
                       <span>
                         {status === 'expired'
-                          ? t('rewards.referralSection.statusExpired')
+                          ? t('invites.statusExpired')
                           : t('invites.expiresOn').replace(
                               '{date}',
                               new Date(invite.expiresAt).toLocaleDateString()

@@ -1,13 +1,20 @@
 import { screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { renderWithProviders } from '../../test/test-utils';
+import { isTauri } from '../../utils/tauriCommands/common';
 import ConnectionIndicator from '../ConnectionIndicator';
+
+// Default to Tauri mode so existing tests that assert backend-only behaviour
+// keep working. Individual tests can override via mockIsTauri.mockReturnValue.
+vi.mock('../../utils/tauriCommands/common', () => ({ isTauri: vi.fn(() => true) }));
+
+const mockIsTauri = vi.mocked(isTauri);
 
 describe('ConnectionIndicator', () => {
   it('renders connected state with override prop', () => {
     renderWithProviders(<ConnectionIndicator status="connected" />);
-    expect(screen.getByText(/Connected to OpenHuman AI/)).toBeInTheDocument();
+    expect(screen.getByText(/Connected to CloserEdge AI/)).toBeInTheDocument();
   });
 
   it('renders disconnected state', () => {
@@ -23,7 +30,7 @@ describe('ConnectionIndicator', () => {
   it('renders as a pill badge', () => {
     renderWithProviders(<ConnectionIndicator status="connected" />);
     // The indicator renders as an inline pill — status text is visible
-    expect(screen.getByText(/Connected to OpenHuman AI/)).toBeInTheDocument();
+    expect(screen.getByText(/Connected to CloserEdge AI/)).toBeInTheDocument();
   });
 
   it('falls back to connectivity store when no override', () => {
@@ -36,7 +43,7 @@ describe('ConnectionIndicator', () => {
 
   // ---- Store-driven branches (lines 43, 50, 57, 67) ----
 
-  it('shows "Connected to OpenHuman AI" when blocking=ok (line 43)', () => {
+  it('shows "Connected to CloserEdge AI" when blocking=ok (line 43)', () => {
     renderWithProviders(<ConnectionIndicator />, {
       preloadedState: {
         connectivity: {
@@ -47,7 +54,7 @@ describe('ConnectionIndicator', () => {
         },
       },
     });
-    expect(screen.getByText(/Connected to OpenHuman AI/)).toBeInTheDocument();
+    expect(screen.getByText(/Connected to CloserEdge AI/)).toBeInTheDocument();
   });
 
   it('shows "Offline" when blocking=internet-offline (line 50)', () => {
@@ -107,5 +114,21 @@ describe('ConnectionIndicator', () => {
       },
     });
     expect(screen.getByText(/Connecting|Reconnecting/)).toBeInTheDocument();
+  });
+
+  it('shows "Browser Mode" when blocking=browser-mode (non-Tauri)', () => {
+    mockIsTauri.mockReturnValue(false);
+    renderWithProviders(<ConnectionIndicator />, {
+      preloadedState: {
+        connectivity: {
+          internet: 'online',
+          core: 'reachable',
+          backend: 'disconnected',
+          lastError: {},
+        },
+      },
+    });
+    expect(screen.getByText('Browser Mode')).toBeInTheDocument();
+    mockIsTauri.mockReturnValue(true);
   });
 });

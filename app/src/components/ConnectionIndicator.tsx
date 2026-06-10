@@ -72,6 +72,13 @@ const ConnectionIndicator = ({
               : t('app.connectionIndicator.reconnecting'),
           pulse: false,
         };
+      case 'browser-mode':
+        return {
+          color: 'bg-sky-500',
+          textColor: 'text-sky-500',
+          text: t('app.connectionIndicator.browserMode'),
+          pulse: false,
+        };
     }
   })();
 

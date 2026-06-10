@@ -29,16 +29,16 @@ const InferenceBudget = ({ teamUsage, isLoadingCredits }: InferenceBudgetProps) 
   const { t } = useT();
 
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white p-3 space-y-3">
+    <div className="rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-[#1a1a22] p-3 space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-stone-900">
+        <h3 className="text-sm font-semibold text-stone-900 dark:text-neutral-100">
           {t('settings.billing.inferenceBudget.title')}
         </h3>
         {isLoadingCredits && (
-          <span className="text-[10px] text-stone-500">{t('common.loading')}</span>
+          <span className="text-[10px] text-stone-500 dark:text-neutral-400">{t('common.loading')}</span>
         )}
         {teamUsage && !isLoadingCredits && (
-          <span className="text-xs text-stone-400">
+          <span className="text-xs text-stone-400 dark:text-neutral-500">
             {teamUsage.cycleBudgetUsd > 0
               ? t('settings.billing.inferenceBudget.remainingSummary')
                   .replace('{remaining}', fmtUsd(teamUsage.remainingUsd))
@@ -52,7 +52,7 @@ const InferenceBudget = ({ teamUsage, isLoadingCredits }: InferenceBudgetProps) 
         <>
           {teamUsage.cycleBudgetUsd > 0 ? (
             <>
-              <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-stone-200 dark:bg-neutral-800 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
                     teamUsage.remainingUsd <= 0
@@ -70,13 +70,13 @@ const InferenceBudget = ({ teamUsage, isLoadingCredits }: InferenceBudgetProps) 
                 />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-stone-500">
+                <span className="text-[11px] text-stone-500 dark:text-neutral-400">
                   {t('settings.billing.inferenceBudget.spentThisCycle').replace(
                     '{amount}',
                     fmtUsd(teamUsage.cycleSpentUsd)
                   )}
                 </span>
-                <span className="text-[11px] text-stone-500">
+                <span className="text-[11px] text-stone-500 dark:text-neutral-400">
                   {t('settings.billing.inferenceBudget.cycleEndsOn').replace(
                     '{date}',
                     formatCycleEnds(
@@ -93,15 +93,15 @@ const InferenceBudget = ({ teamUsage, isLoadingCredits }: InferenceBudgetProps) 
               )}
             </>
           ) : (
-            <div className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5">
-              <p className="text-[11px] text-stone-600">
+            <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-stone-50 dark:bg-[#141418] px-3 py-2.5">
+              <p className="text-[11px] text-stone-600 dark:text-neutral-400">
                 {t('settings.billing.inferenceBudget.noRecurringWeeklyDesc')}
               </p>
             </div>
           )}
 
           {teamUsage.plan.discountVsPayAsYouGoPercent > 0 && (
-            <div className="rounded-xl border border-primary-100 bg-primary-50 px-3 py-2 text-[11px] text-primary-700">
+            <div className="rounded-xl border border-primary-100 dark:border-primary-500/20 bg-primary-50 dark:bg-primary-500/10 px-3 py-2 text-[11px] text-primary-700 dark:text-primary-300">
               <span className="font-semibold">{teamUsage.plan.name}:</span>{' '}
               {t('settings.billing.inferenceBudget.discountVsPayg').replace(
                 '{pct}',
@@ -126,9 +126,9 @@ const InferenceBudget = ({ teamUsage, isLoadingCredits }: InferenceBudgetProps) 
           </div>
         </>
       ) : isLoadingCredits ? (
-        <div className="h-1.5 w-full rounded-full bg-stone-200 animate-pulse" />
+        <div className="h-1.5 w-full rounded-full bg-stone-200 dark:bg-neutral-800 animate-pulse" />
       ) : (
-        <p className="text-xs text-stone-500">
+        <p className="text-xs text-stone-500 dark:text-neutral-400">
           {t('settings.billing.inferenceBudget.unableToLoad')}
         </p>
       )}
@@ -152,20 +152,20 @@ const UsageBreakdown = ({
   const { t } = useT();
 
   return (
-    <div className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
+    <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-stone-50 dark:bg-[#141418] px-3 py-2">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-stone-400">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 dark:text-neutral-500">
           {t('settings.billing.inferenceBudget.cycleSpend')}
         </span>
-        <span className="text-[11px] text-stone-600">
+        <span className="text-[11px] text-stone-600 dark:text-neutral-400">
           {t('settings.billing.inferenceBudget.totalAmount').replace('{amount}', fmtUsd(totalUsd))}
         </span>
       </div>
       <div className="grid grid-cols-2 gap-2 text-[11px]">
         <div>
-          <div className="text-stone-500">{t('settings.billing.inferenceBudget.inference')}</div>
-          <div className="text-stone-900 font-medium">{fmtUsd(inferenceUsd)}</div>
-          <div className="text-stone-400">
+          <div className="text-stone-500 dark:text-neutral-400">{t('settings.billing.inferenceBudget.inference')}</div>
+          <div className="text-stone-900 dark:text-neutral-100 font-medium">{fmtUsd(inferenceUsd)}</div>
+          <div className="text-stone-400 dark:text-neutral-500">
             {t('settings.billing.inferenceBudget.calls').replace(
               '{count}',
               inferenceCalls.toLocaleString()
@@ -173,9 +173,9 @@ const UsageBreakdown = ({
           </div>
         </div>
         <div>
-          <div className="text-stone-500">{t('settings.billing.inferenceBudget.integrations')}</div>
-          <div className="text-stone-900 font-medium">{fmtUsd(integrationsUsd)}</div>
-          <div className="text-stone-400">
+          <div className="text-stone-500 dark:text-neutral-400">{t('settings.billing.inferenceBudget.integrations')}</div>
+          <div className="text-stone-900 dark:text-neutral-100 font-medium">{fmtUsd(integrationsUsd)}</div>
+          <div className="text-stone-400 dark:text-neutral-500">
             {t('settings.billing.inferenceBudget.calls').replace(
               '{count}',
               integrationCalls.toLocaleString()
@@ -195,8 +195,8 @@ const DailyChart = ({ points }: { points: TeamUsageDailyPoint[] }) => {
   }
   const max = points.reduce((m, p) => Math.max(m, p.totalUsd), 0) || 1;
   return (
-    <div className="rounded-xl border border-stone-200 bg-white px-3 py-2">
-      <div className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 mb-2">
+    <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-[#1a1a22] px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 dark:text-neutral-500 mb-2">
         {t('settings.billing.inferenceBudget.dailySpend')}
       </div>
       <div className="flex items-end gap-1 h-16">
@@ -216,7 +216,7 @@ const DailyChart = ({ points }: { points: TeamUsageDailyPoint[] }) => {
           );
         })}
       </div>
-      <div className="flex items-center gap-3 mt-1.5 text-[10px] text-stone-500">
+      <div className="flex items-center gap-3 mt-1.5 text-[10px] text-stone-500 dark:text-neutral-400">
         <span className="flex items-center gap-1">
           <span className="w-2 h-2 bg-primary-400 inline-block" />{' '}
           {t('settings.billing.inferenceBudget.inference')}
@@ -234,12 +234,12 @@ const TopModels = ({ rows }: { rows: TeamUsageModelRow[] }) => {
   const { t } = useT();
 
   return (
-    <div className="rounded-xl border border-stone-200 bg-white px-3 py-2">
-      <div className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 mb-1.5">
+    <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-[#1a1a22] px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 dark:text-neutral-500 mb-1.5">
         {t('settings.billing.inferenceBudget.topModels')}
       </div>
       {rows.length === 0 ? (
-        <p className="text-[11px] text-stone-500">
+        <p className="text-[11px] text-stone-500 dark:text-neutral-400">
           {t('settings.billing.inferenceBudget.noInferenceUsage')}
         </p>
       ) : (
@@ -248,8 +248,8 @@ const TopModels = ({ rows }: { rows: TeamUsageModelRow[] }) => {
             <li
               key={`${r.provider}::${r.model}::${i}`}
               className="flex items-center justify-between text-[11px]">
-              <span className="text-stone-700 truncate mr-2">{r.model || r.provider}</span>
-              <span className="text-stone-500 flex-shrink-0">
+              <span className="text-stone-700 dark:text-neutral-300 truncate mr-2">{r.model || r.provider}</span>
+              <span className="text-stone-500 dark:text-neutral-400 flex-shrink-0">
                 {fmtUsd(r.spentUsd)} · {r.calls.toLocaleString()}
               </span>
             </li>
@@ -264,12 +264,12 @@ const TopIntegrations = ({ rows }: { rows: TeamUsageIntegrationRow[] }) => {
   const { t } = useT();
 
   return (
-    <div className="rounded-xl border border-stone-200 bg-white px-3 py-2">
-      <div className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 mb-1.5">
+    <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-[#1a1a22] px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-wide text-stone-400 dark:text-neutral-500 mb-1.5">
         {t('settings.billing.inferenceBudget.topIntegrations')}
       </div>
       {rows.length === 0 ? (
-        <p className="text-[11px] text-stone-500">
+        <p className="text-[11px] text-stone-500 dark:text-neutral-400">
           {t('settings.billing.inferenceBudget.noIntegrationUsage')}
         </p>
       ) : (
@@ -278,11 +278,11 @@ const TopIntegrations = ({ rows }: { rows: TeamUsageIntegrationRow[] }) => {
             <li
               key={`${r.provider}::${r.action}::${i}`}
               className="flex items-center justify-between text-[11px]">
-              <span className="text-stone-700 truncate mr-2">
+              <span className="text-stone-700 dark:text-neutral-300 truncate mr-2">
                 {r.provider}
                 {r.action ? ` · ${r.action}` : ''}
               </span>
-              <span className="text-stone-500 flex-shrink-0">
+              <span className="text-stone-500 dark:text-neutral-400 flex-shrink-0">
                 {fmtUsd(r.spentUsd)} · {r.calls.toLocaleString()}
               </span>
             </li>
