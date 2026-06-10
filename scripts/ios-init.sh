@@ -43,7 +43,7 @@ npx --package=@tauri-apps/cli@^2 tauri ios init \
   -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$TEAM_ID\"}}}"
 
 # Overwrite the placeholder AppIcon set Tauri generates with the real
-# OpenHuman brand icons committed to icons/ios/. The generated Xcode project
+# CloserEdge AI brand icons committed to icons/ios/. The generated Xcode project
 # uses `Assets.xcassets/AppIcon.appiconset/`, identical to the iOS source
 # layout under our `icons/ios/`.
 ICONSRC="$MOBILE_DIR/icons/ios/AppIcon.appiconset"
@@ -58,12 +58,12 @@ fi
 # barcode scanner (camera) is mandatory for QR pairing; mic + speech are
 # needed by the PTT plugin. Without these, iOS will hard-crash the app on
 # first use of each API.
-INFO_PLIST=$(find "$MOBILE_DIR/gen/apple" -name "Info.plist" -path "*openhuman-mobile_iOS*" 2>/dev/null | head -1)
+INFO_PLIST=$(find "$MOBILE_DIR/gen/apple" -name "Info.plist" -path "*_iOS*" 2>/dev/null | head -1)
 if [[ -n "$INFO_PLIST" ]]; then
   echo "[ios-init] injecting privacy keys → $INFO_PLIST"
-  /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string 'OpenHuman uses the camera to scan the pairing QR code from your desktop.'" "$INFO_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string 'OpenHuman uses the microphone for push-to-talk voice messages.'" "$INFO_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Add :NSSpeechRecognitionUsageDescription string 'OpenHuman uses on-device speech recognition to transcribe your voice messages.'" "$INFO_PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string 'CloserEdge AI uses the camera to scan the pairing QR code from your desktop.'" "$INFO_PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string 'CloserEdge AI uses the microphone for push-to-talk voice messages.'" "$INFO_PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :NSSpeechRecognitionUsageDescription string 'CloserEdge AI uses on-device speech recognition to transcribe your voice messages.'" "$INFO_PLIST" 2>/dev/null || true
 fi
 
 echo ""
