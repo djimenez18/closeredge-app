@@ -34,6 +34,7 @@ import {
   stopListening,
 } from 'tauri-plugin-ptt-api';
 
+import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
 import { RiveMascot } from '../../features/human/Mascot';
 import { useHumanMascot } from '../../features/human/useHumanMascot';
 import { useT } from '../../lib/i18n/I18nContext';
@@ -92,7 +93,7 @@ const MascotChatTranscript: FC<TranscriptProps> = ({ messages }) => {
             className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-snug
               ${
                 msg.role === 'user'
-                  ? 'bg-[#4A83DD] text-white rounded-br-sm'
+                  ? 'bg-edge-600 text-white rounded-br-sm'
                   : 'bg-white/10 text-white/90 rounded-bl-sm'
               }
               ${msg.streaming ? 'animate-pulse' : ''}`}>
@@ -142,7 +143,7 @@ const PTTButton: FC<PTTButtonProps> = ({ active, partialText, ariaLabel, onDown,
                    transition-all select-none touch-none
                    ${
                      active
-                       ? 'bg-[#4A83DD] border-[#4A83DD] scale-110'
+                       ? 'bg-edge-500 border-edge-400 scale-110 shadow-lg shadow-edge-500/40'
                        : 'bg-white/10 border-white/20 opacity-80'
                    }`}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -408,16 +409,24 @@ export const MascotScreen: FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#0f1117] text-white overflow-hidden relative">
+    <div
+      className="flex flex-col h-full bg-edge-950 text-white overflow-hidden relative"
+      style={{
+        background:
+          'radial-gradient(ellipse at 50% 18%, rgba(123,110,246,0.16), transparent 55%), #171130',
+      }}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-safe-top py-3 border-b border-white/10 shrink-0">
-        <div className="flex flex-col">
-          <span className="text-xs text-white/40 uppercase tracking-wide">
-            {t('iosMascot.connectedTo')}
-          </span>
-          <span className="text-sm font-medium text-white/90 truncate max-w-[200px]">
-            {pairedLabel}
-          </span>
+        <div className="flex items-center gap-2.5">
+          <CloserEdgeMark size={22} className="shrink-0" />
+          <div className="flex flex-col">
+            <span className="text-xs text-white/40 uppercase tracking-wide">
+              {t('iosMascot.connectedTo')}
+            </span>
+            <span className="text-sm font-medium text-white/90 truncate max-w-[180px]">
+              {pairedLabel}
+            </span>
+          </div>
         </div>
         <button
           type="button"
@@ -462,7 +471,7 @@ export const MascotScreen: FC = () => {
             placeholder={isSending ? t('iosMascot.thinking') : t('iosMascot.typeMessage')}
             className="flex-1 bg-white/10 text-white placeholder-white/30 rounded-xl
                        px-4 py-3 text-sm outline-none border border-white/10
-                       focus:border-[#4A83DD]/60 transition-colors
+                       focus:border-edge-400/60 transition-colors
                        disabled:opacity-50"
           />
 
@@ -471,7 +480,7 @@ export const MascotScreen: FC = () => {
             type="submit"
             disabled={!inputText.trim() || isSending}
             aria-label={t('iosMascot.sendMessage')}
-            className="w-10 h-10 rounded-xl bg-[#4A83DD] flex items-center justify-center
+            className="w-10 h-10 rounded-xl bg-edge-500 flex items-center justify-center
                        disabled:opacity-30 active:opacity-70 transition-opacity shrink-0">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <path

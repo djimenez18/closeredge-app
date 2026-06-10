@@ -30,9 +30,22 @@ export function clearTestPlatform(): void {
 
 // -- detection ---------------------------------------------------------------
 
+/**
+ * Dev-only override so the mobile shell can be exercised in a desktop
+ * browser without the Tauri runtime: append `?platform=ios` (or `android`)
+ * to the dev-server URL. Never active in production builds.
+ */
+function devUrlOverride(): Platform | null {
+  if (!import.meta.env.DEV) return null;
+  if (typeof window === 'undefined') return null;
+  const v = new URLSearchParams(window.location.search).get('platform');
+  return v === 'ios' || v === 'android' ? v : null;
+}
+
 function detectIOS(): boolean {
   if (_testOverride === 'ios') return true;
   if (_testOverride === 'android' || _testOverride === 'desktop') return false;
+  if (devUrlOverride() === 'ios') return true;
 
   if (typeof navigator === 'undefined') return false;
 
@@ -45,6 +58,7 @@ function detectIOS(): boolean {
 function detectAndroid(): boolean {
   if (_testOverride === 'android') return true;
   if (_testOverride === 'ios' || _testOverride === 'desktop') return false;
+  if (devUrlOverride() === 'android') return true;
 
   if (typeof navigator === 'undefined') return false;
 

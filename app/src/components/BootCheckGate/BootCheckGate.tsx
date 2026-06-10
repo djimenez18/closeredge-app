@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { type BootCheckResult, runBootCheck } from '../../lib/bootCheck';
 import { useT } from '../../lib/i18n/I18nContext';
+import { getIsMobile } from '../../lib/platform';
 import { bootCheckTransport, recoverPortConflict } from '../../services/bootCheckService';
 import {
   clearCoreRpcTokenCache,
@@ -616,6 +617,12 @@ export default function BootCheckGate({ children }: BootCheckGateProps) {
   const dispatch = useAppDispatch();
   const coreMode = useAppSelector(state => state.coreMode.mode);
 
+  // Mobile targets (iOS/Android) pair with a remote desktop core over the
+  // QR/tunnel flow (AppRoutesIOS -> RequirePairing). The local-sidecar /
+  // cloud-RPC boot check is a desktop+web concern and must not gate the
+  // phone app. Evaluated once; platform never changes at runtime.
+  const onMobile = getIsMobile();
+
   const [phase, setPhase] = useState<Phase>(() =>
     coreMode.kind === 'unset' ? 'picker' : 'checking'
   );
@@ -668,10 +675,11 @@ export default function BootCheckGate({ children }: BootCheckGateProps) {
   // do not synchronously cascade — suppress the linter warning here.
 
   useEffect(() => {
+    if (onMobile) return;
     if (coreMode.kind !== 'unset' && phase === 'checking') {
       void runCheck(coreMode);
     }
-  }, [coreMode, phase, runCheck]);
+  }, [onMobile, coreMode, phase, runCheck]);
 
   // ------------------------------------------------------------------
   // Picker confirm — dispatches setCoreMode and kicks off check.
@@ -794,6 +802,11 @@ export default function BootCheckGate({ children }: BootCheckGateProps) {
   // ------------------------------------------------------------------
   // Render
   // ------------------------------------------------------------------
+
+  // Mobile — pass through; pairing is the mobile gate.
+  if (onMobile) {
+    return <>{children}</>;
+  }
 
   // Unset — show picker (even if Redux persisted something; phase reflects truth).
   if (phase === 'picker' || coreMode.kind === 'unset') {

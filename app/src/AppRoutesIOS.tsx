@@ -5,21 +5,27 @@
  *
  * Two phases:
  *   1. Unpaired — /pair only. QR scan binds the phone to a desktop core,
- *      writes a profile to profileStore, then redirects to /human.
- *   2. Paired — /human, /chat, /settings/* are reachable. A mobile tab bar
+ *      writes a profile to profileStore, then redirects to /home.
+ *   2. Paired — /home, /chat, /settings/* are reachable. A mobile tab bar
  *      sits at the bottom of the viewport. Any unknown path falls back to
- *      /human. The existing desktop screens (HumanPage, Accounts, Settings)
- *      are reused as-is; they call core RPC through the TransportManager
- *      bound to the saved profile.
+ *      /home.
+ *
+ * Surfaces:
+ *   - /home — HomeScreen, the CloserEdge command center (mobile-native).
+ *   - /chat — MascotScreen: animated mascot + streaming chat + hold-to-talk
+ *     voice (PTT) + spoken replies. Calls core RPC through the
+ *     TransportManager bound to the saved profile.
+ *   - /settings — the desktop Settings page, reused as-is.
+ *   - /human — legacy alias for the old default route; redirects to /chat.
  */
 import debug from 'debug';
 import { type FC } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import MobileTabBar from './components/ios/MobileTabBar';
-import HumanPage from './features/human/HumanPage';
-import Accounts from './pages/Accounts';
+import { MascotScreen } from './pages/ios/MascotScreen';
 import { PairScreen } from './pages/ios/PairScreen';
+import HomeScreen from './pages/mobile/HomeScreen';
 import Settings from './pages/Settings';
 import { listProfiles } from './services/transport/profileStore';
 
@@ -30,13 +36,13 @@ const isPaired = (): boolean => listProfiles().length > 0;
 const IOSDefaultRedirect: FC = () => {
   const paired = isPaired();
   log('[mobile] default redirect paired=%s', paired);
-  return <Navigate to={paired ? '/human' : '/pair'} replace />;
+  return <Navigate to={paired ? '/home' : '/pair'} replace />;
 };
 
 /** Wraps a paired-state route with the mobile tab bar. */
 const MobileShell: FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="relative h-screen flex flex-col overflow-hidden">
-    <div className="flex-1 overflow-hidden">{children}</div>
+    <div className="flex-1 overflow-hidden relative">{children}</div>
     <MobileTabBar />
   </div>
 );
@@ -56,23 +62,29 @@ const AppRoutesIOS: FC = () => {
       {/* Unpaired entry — QR scan handshake. */}
       <Route path="/pair" element={<PairScreen />} />
 
-      {/* Surfaced pages on iOS: Human, Chat, Settings. */}
+      {/* Home — the CloserEdge command center. */}
       <Route
-        path="/human"
+        path="/home"
         element={
           <RequirePairing>
-            <HumanPage />
+            <HomeScreen />
           </RequirePairing>
         }
       />
+
+      {/* Chat — mascot + voice + streaming chat. */}
       <Route
         path="/chat"
         element={
           <RequirePairing>
-            <Accounts />
+            <MascotScreen />
           </RequirePairing>
         }
       />
+
+      {/* Legacy alias: the pre-redesign default route. */}
+      <Route path="/human" element={<Navigate to="/chat" replace />} />
+
       <Route
         path="/settings/*"
         element={

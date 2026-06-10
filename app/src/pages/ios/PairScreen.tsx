@@ -19,6 +19,7 @@ import debug from 'debug';
 import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
 import { useT } from '../../lib/i18n/I18nContext';
 import { base64urlEncode, generateKeypair } from '../../lib/tunnel/crypto';
 import { type ConnectionProfile, saveProfile } from '../../services/transport/profileStore';
@@ -173,25 +174,25 @@ export const PairScreen: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f1117] text-white px-6 py-12">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen text-white px-6 py-12"
+      style={{
+        background:
+          'radial-gradient(ellipse at 50% -10%, rgba(123,110,246,0.28), transparent 60%), #171130',
+      }}>
       <div className="flex flex-col items-center gap-8 max-w-sm w-full">
         {/* Logo / icon area */}
-        <div className="w-20 h-20 rounded-2xl bg-[#4A83DD] flex items-center justify-center shadow-lg">
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true">
-            <rect x="4" y="4" width="14" height="14" rx="2" fill="white" fillOpacity="0.9" />
-            <rect x="22" y="4" width="14" height="14" rx="2" fill="white" fillOpacity="0.9" />
-            <rect x="4" y="22" width="14" height="14" rx="2" fill="white" fillOpacity="0.9" />
-            <rect x="26" y="26" width="6" height="6" rx="1" fill="white" fillOpacity="0.9" />
-            <rect x="22" y="22" width="6" height="6" rx="1" fill="white" fillOpacity="0.6" />
-            <rect x="32" y="22" width="6" height="6" rx="1" fill="white" fillOpacity="0.6" />
-          </svg>
+        <div
+          className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg
+                     bg-gradient-to-br from-edge-800 to-edge-600 shadow-edge-700/40">
+          <CloserEdgeMark size={44} />
         </div>
+
+        {/* Wordmark */}
+        <p className="font-display font-bold text-xl tracking-tight -mt-3">
+          Closer<span className="text-edge-400">Edge</span>
+          <span className="font-medium opacity-80"> AI</span>
+        </p>
 
         {/* Heading */}
         <div className="text-center">
@@ -203,8 +204,8 @@ export const PairScreen: FC = () => {
         {state.kind === 'idle' && (
           <button
             onClick={() => void startScan()}
-            className="w-full py-4 rounded-xl bg-[#4A83DD] text-white font-medium text-base
-                       active:opacity-80 transition-opacity shadow-md">
+            className="w-full py-4 rounded-xl bg-edge-500 text-white font-medium text-base
+                       active:opacity-80 transition-opacity shadow-md shadow-edge-700/30">
             {t('iosPair.scanQrCode')}
           </button>
         )}
@@ -242,7 +243,7 @@ export const PairScreen: FC = () => {
             <p className="text-red-400 text-sm">{state.message}</p>
             <button
               onClick={() => void startScan()}
-              className="w-full py-3 rounded-xl bg-[#4A83DD]/80 text-white text-sm
+              className="w-full py-3 rounded-xl bg-edge-500/80 text-white text-sm
                          active:opacity-70 transition-opacity">
               {t('iosPair.retryScan')}
             </button>
