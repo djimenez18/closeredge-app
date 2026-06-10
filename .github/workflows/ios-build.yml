@@ -113,7 +113,8 @@ jobs:
         working-directory: app/src-tauri-mobile
         run: |
           set -euo pipefail
-          APP=$(find gen/apple/build -type d -name "*.app" -path "*iphonesimulator*" | head -1)
+          # Tauri drops the simulator bundle at gen/apple/build/arm64-sim/
+          APP=$(find gen/apple/build -type d -name "*.app" -path "*-sim*" | head -1)
           if [ -z "$APP" ]; then
             echo "::error::No .app produced under gen/apple/build"
             find gen/apple/build -maxdepth 5 -type d 2>/dev/null | head -30
