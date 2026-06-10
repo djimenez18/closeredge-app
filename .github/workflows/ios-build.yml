@@ -102,11 +102,14 @@ jobs:
       # The developmentTeam override must be repeated here: ios-init.sh
       # only passed it to `tauri ios init`, and `tauri ios build` re-reads
       # the on-disk tauri.conf.json where the field is deliberately empty.
+      # Release profile: the debug-profile app white-screened on Appetize;
+      # release embeds the vite bundle in the binary — the artifact shape
+      # we would actually ship.
       - name: Build simulator .app (tauri ios build)
         working-directory: app/src-tauri-mobile
         run: >
           bash ../../scripts/ci-cancel-aware.sh
-          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim
+          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --target aarch64-sim
           -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
 
       - name: Zip simulator app
@@ -144,10 +147,13 @@ jobs:
           set -euo pipefail
           URL="https://api.appetize.io/v1/apps"
           if [ -n "${APPETIZE_PUBLIC_KEY:-}" ]; then URL="$URL/$APPETIZE_PUBLIC_KEY"; fi
-          curl --fail -s "$URL" \
+          HTTP=$(curl -sS -o /tmp/appetize-resp.json -w "%{http_code}" "$URL" \
             -F "file=@CloserEdgeAI-simulator.zip" \
             -F "platform=ios" \
-            -u "$APPETIZE_API_TOKEN:" | python3 -m json.tool
+            -u "$APPETIZE_API_TOKEN:")
+          echo "Appetize HTTP $HTTP"
+          cat /tmp/appetize-resp.json; echo
+          [ "$HTTP" = "200" ]
 
   device:
     name: Signed IPA + TestFlight
