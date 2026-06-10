@@ -69,8 +69,12 @@ PBXPROJ=$(find "$MOBILE_DIR/gen/apple" -name project.pbxproj | head -1)
 MOBILE_CONFIG="$MOBILE_DIR/tauri.conf.json"
 if [[ -n "$PBXPROJ" && -f "$PBXPROJ" ]]; then
   echo "[ios-init] patching Build Rust Code phase → $PBXPROJ"
-  # Bash on macos has BSD sed; use perl for portable in-place edit.
-  perl -i -pe "s|tauri ios xcode-script -v --platform|tauri ios xcode-script -c \"$MOBILE_CONFIG\" -v --platform|g" "$PBXPROJ"
+  # The shellScript value in pbxproj is a quoted string in NeXT old-style
+  # plist format. Embedded `"` would terminate it early. Our config path
+  # has no spaces or shell-special chars (just A-Z, a-z, 0-9, /, -, _, .)
+  # so we leave it unquoted inside the script — both bash and the plist
+  # parser are happy.
+  perl -i -pe "s|tauri ios xcode-script -v --platform|tauri ios xcode-script -c $MOBILE_CONFIG -v --platform|g" "$PBXPROJ"
 fi
 
 # Inject privacy usage descriptions into the generated Info.plist. The
