@@ -96,11 +96,20 @@ jobs:
       # The developmentTeam override must be repeated here: ios-init.sh only
       # passes it to `tauri ios init`, and `tauri ios build` re-reads
       # tauri.conf.json (where it is deliberately empty).
+      #
+      # ARCHS + ONLY_ACTIVE_ARCH override the build-setting xcodebuild would
+      # otherwise pick from its first matching destination (the "Any iOS
+      # Simulator Device" placeholder, which resolves to no concrete arch
+      # and leaves cargo-mobile2's Build-Rust phase script with
+      # ARCHS=undefined_arch — silent failure).
       - name: Build simulator .app
         working-directory: app/src-tauri-mobile
+        env:
+          ARCHS: arm64
+          ONLY_ACTIVE_ARCH: "YES"
         run: >
           bash ../../scripts/ci-cancel-aware.sh
-          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim
+          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim --verbosity 0
           -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
 
       - name: Zip simulator app
