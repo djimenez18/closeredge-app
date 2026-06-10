@@ -39,7 +39,7 @@ if [[ -z "$TEAM_ID" ]]; then
   exit 1
 fi
 
-npx --package=@tauri-apps/cli@^2 tauri ios init \
+npx --package=@tauri-apps/cli@2.10.1 tauri ios init \
   -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$TEAM_ID\"}}}"
 
 # Overwrite the placeholder AppIcon set Tauri generates with the real

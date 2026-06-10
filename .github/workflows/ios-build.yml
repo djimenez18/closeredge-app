@@ -100,7 +100,7 @@ jobs:
         working-directory: app/src-tauri-mobile
         run: >
           bash ../../scripts/ci-cancel-aware.sh
-          npx --package=@tauri-apps/cli@^2 tauri ios build --ci --debug --target aarch64-sim
+          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim
           -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
 
       - name: Zip simulator app
@@ -200,7 +200,7 @@ jobs:
       - name: Build signed IPA
         working-directory: app/src-tauri-mobile
         run: |
-          bash ../../scripts/ci-cancel-aware.sh             npx --package=@tauri-apps/cli@^2 tauri ios build --ci --export-method app-store-connect             -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$APPLE_DEVELOPMENT_TEAM\"}}}"
+          bash ../../scripts/ci-cancel-aware.sh             npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --export-method app-store-connect             -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$APPLE_DEVELOPMENT_TEAM\"}}}"
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
