@@ -58,14 +58,21 @@ npx --package=@tauri-apps/cli@2.10.1 tauri android init
 # project layout uses `app/src/main/res/mipmap-*/` mirroring our sources.
 RES_DIR=$(find "$MOBILE_DIR/gen/android" -type d -path "*/src/main/res" 2>/dev/null | head -1)
 if [[ -n "$RES_DIR" ]]; then
-  echo "[android-init] copying brand icons → $RES_DIR/mipmap-*"
-  for d in "$MOBILE_DIR"/icons/android/mipmap-*; do
+  echo "[android-init] copying brand icons → $RES_DIR/"
+  # `tauri icon` generates a mixed layout: PNG mipmaps (mdpi..xxxhdpi),
+  # an adaptive-icon XML in mipmap-anydpi-v26/, and values/ colors.
+  # Mirror every icons/android/ dir verbatim instead of assuming PNGs.
+  for d in "$MOBILE_DIR"/icons/android/*/; do
     name=$(basename "$d")
     mkdir -p "$RES_DIR/$name"
-    cp "$d"/ic_launcher.png "$RES_DIR/$name/ic_launcher.png"
-    # Tauri/Android also looks for the round launcher icon by default;
-    # reuse the same asset (the source set ships a single square icon).
-    cp "$d"/ic_launcher.png "$RES_DIR/$name/ic_launcher_round.png"
+    cp "$d"* "$RES_DIR/$name/"
+  done
+  # Tauri/Android also references the round launcher icon; reuse the
+  # square asset wherever only ic_launcher.png exists.
+  for d in "$RES_DIR"/mipmap-*; do
+    if [[ -f "$d/ic_launcher.png" && ! -f "$d/ic_launcher_round.png" ]]; then
+      cp "$d/ic_launcher.png" "$d/ic_launcher_round.png"
+    fi
   done
 fi
 
