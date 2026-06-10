@@ -131,10 +131,31 @@ hangs (actions/runner-images#13264). Revisit the pin when that closes.
 Recommended order:
 1. Desktop branch merges to `closeredge-app` main first (older, active session
    owns the main checkout).
-2. This branch rebases on the result (expected clean — disjoint files) and
-   merges second. Worktree: `closeredge-app-mobile`.
+2. This branch rebases on the result and merges second. Worktree:
+   `closeredge-app-mobile`.
 3. `closeredgeai` merges independently; nothing here regenerates
    `dist/railway`.
+
+**Trial-merge result vs. the desktop rebrand commit (`c91d443d`, verified
+with `git merge-tree`):** four shared files; three auto-merge
+(`App.tsx`, `BootCheckGate.tsx`, `tailwind.config.js`) and exactly one
+textual conflict — one line in `en.ts` where both branches rebranded
+`iosPair.step.openDesktop` ("on your desktop" vs "on desktop"). Pick either.
+
+**Post-merge follow-ups (semantic, not textual):**
+- **AuthProvider + SubscriptionGate gate mobile with no mobile branch** —
+  same class as the BootCheckGate bug fixed on this branch. `useAuth`
+  always consults Supabase (placeholder client when env unset), so a mobile
+  build without Supabase env boots to an unwinnable login wall instead of
+  `/pair`. Until mobile auth/entitlements are designed, add the same
+  `getIsMobile()` pass-through both gates' siblings use, or decide mobile
+  auth deliberately.
+- Mobile inherits the new brand type system (`display` → Cormorant
+  Garamond, `sans` → DM Sans) and warm-dark neutrals automatically —
+  re-run the visual check (`?platform=ios`) after rebase.
+- Desktop added shared brand assets (`app/public/brand/closeredge-mark.svg`
+  etc.). `CloserEdgeBrand.tsx` keeps its inline SVG (no asset fetch in the
+  phone webview); consolidate later if desired.
 
 Shared-asset note: the brand mark SVG lives in marketing
 (`closeredgeai/logos/`) and is vendored here as
