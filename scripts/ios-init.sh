@@ -66,19 +66,23 @@ fi
 # failure (exit 65). Splice `-c <abs-path-to-mobile-config>` into the
 # CLI invocation so it loads the right project unambiguously.
 PBXPROJ=$(find "$MOBILE_DIR/gen/apple" -name project.pbxproj | head -1)
-MOBILE_CONFIG="$MOBILE_DIR/tauri.conf.json"
 if [[ -n "$PBXPROJ" && -f "$PBXPROJ" ]]; then
   echo "[ios-init] patching Build Rust Code phase → $PBXPROJ"
   # The shellScript value in pbxproj is a quoted string in NeXT old-style
-  # plist format. Embedded `"` would terminate it early. Our config path
-  # has no spaces or shell-special chars (just A-Z, a-z, 0-9, /, -, _, .)
-  # so we leave it unquoted inside the script — both bash and the plist
-  # parser are happy.
+  # plist format. Embedded `"` would terminate it early. Our mobile-dir
+  # path has no spaces or shell-special chars (just A-Z, a-z, 0-9, /, -,
+  # _, .) so we leave it unquoted — both bash and the plist parser are
+  # happy.
   #
-  # `-c <config>` is a GLOBAL tauri CLI option, so it must come before the
-  # subcommand (`ios`). Splicing it after `xcode-script` would be parsed
-  # by xcode-script itself and rejected as an unknown flag.
-  perl -i -pe "s|tauri ios xcode-script|tauri -c $MOBILE_CONFIG ios xcode-script|g" "$PBXPROJ"
+  # `tauri ios xcode-script` doesn't accept `-c`/`--config`; nor does the
+  # global tauri CLI in 2.10. The documented way to point Tauri at a
+  # specific project root is the `TAURI_APP_PATH` env var, which
+  # `resolve_tauri_dir()` reads BEFORE the cwd-based lookup. Prepend it to
+  # the `npm run` invocation so it propagates to the tauri subprocess.
+  # Without this, the child walks up from npm's cwd (`app/`) and finds
+  # `app/src-tauri/` (desktop) before `app/src-tauri-mobile/` — wrong
+  # identifier → IPC addr file lookup misses → silent fail.
+  perl -i -pe "s|npm run -- tauri ios xcode-script|TAURI_APP_PATH=$MOBILE_DIR npm run -- tauri ios xcode-script|g" "$PBXPROJ"
 fi
 
 # Inject privacy usage descriptions into the generated Info.plist. The
