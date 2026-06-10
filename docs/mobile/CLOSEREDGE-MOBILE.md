@@ -79,8 +79,18 @@ macOS runners, which are **free and unlimited for this public repo**.
 
 | Lane | Needs | Produces |
 |---|---|---|
-| `simulator` | nothing (no Apple account) | unsigned simulator `.app` zip artifact; optional auto-upload to Appetize.io |
-| `device` | Apple Developer ($99/yr) + secrets below | signed IPA → TestFlight |
+| iOS `simulator` | nothing (no Apple account) | unsigned simulator `.app` zip artifact; auto-upload to Appetize.io |
+| iOS `device` | Apple Developer ($99/yr) + secrets below | signed IPA → TestFlight |
+| Android `apk` (`android-build.yml`) | nothing | debug-signed universal APK (arm64+x86_64) artifact; auto-upload to Appetize.io |
+
+**Live browser previews** (update automatically on every mobile push):
+- iOS: <https://appetize.io/app/psqslz4vyzt3oewxzgq52cousm>
+- Android: <https://appetize.io/app/inbahrpsux255ut6dv5zxonza4>
+
+Appetize account: Diego's GitHub OAuth. Secrets wired:
+`APPETIZE_API_TOKEN`, `APPETIZE_PUBLIC_KEY` (iOS), `APPETIZE_ANDROID_PUBLIC_KEY`.
+(Gotcha: set gh secrets with `echo -n |` — `printf |` from git-bash on
+Windows contaminated the values and produced Appetize 401/400s.)
 
 **One-time setup, in order:**
 
