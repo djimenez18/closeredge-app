@@ -29,6 +29,7 @@ on:
       - "app/src-tauri-mobile/**"
       - "app/src/**"
       - "packages/tauri-plugin-ptt/**"
+      - "scripts/ios-init.sh"
       - ".github/workflows/ios-build.yml"
 
 permissions:
