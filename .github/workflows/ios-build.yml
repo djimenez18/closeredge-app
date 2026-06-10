@@ -109,7 +109,7 @@ jobs:
           ONLY_ACTIVE_ARCH: "YES"
         run: >
           bash ../../scripts/ci-cancel-aware.sh
-          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim --verbosity 0
+          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim
           -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
 
       - name: Zip simulator app
