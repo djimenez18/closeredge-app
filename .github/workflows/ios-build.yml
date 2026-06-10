@@ -91,32 +91,56 @@ jobs:
       - name: Scaffold Xcode project (tauri ios init)
         run: TEAM_ID="SIMULATORX" bash scripts/ios-init.sh
 
-      # Runs the frontend build (beforeBuildCommand) + Rust for the
-      # simulator arch + xcodebuild, with no archive/export and no signing.
-      # The developmentTeam override must be repeated here: ios-init.sh only
-      # passes it to `tauri ios init`, and `tauri ios build` re-reads
-      # tauri.conf.json (where it is deliberately empty).
-      #
-      # ARCHS + ONLY_ACTIVE_ARCH override the build-setting xcodebuild would
-      # otherwise pick from its first matching destination (the "Any iOS
-      # Simulator Device" placeholder, which resolves to no concrete arch
-      # and leaves cargo-mobile2's Build-Rust phase script with
-      # ARCHS=undefined_arch — silent failure).
-      - name: Build simulator .app
-        working-directory: app/src-tauri-mobile
-        env:
-          ARCHS: arm64
-          ONLY_ACTIVE_ARCH: "YES"
-        run: >
-          bash ../../scripts/ci-cancel-aware.sh
-          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --debug --target aarch64-sim
-          -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
+      # Build the frontend bundle that the Xcode project will embed.
+      # tauri.conf.json points `frontendDist` at `../dist`; vite writes there.
+      - name: Build frontend (vite)
+        working-directory: app
+        run: bash ../scripts/ci-cancel-aware.sh pnpm run build:app
+
+      # Drive xcodebuild directly instead of `tauri ios build`. Tauri 2.10's
+      # CLI calls xcodebuild without `-destination` or `-arch`, so xcodebuild
+      # picks "Any iOS Simulator Device" (placeholder) from the 100+ runtime
+      # destinations — ARCHS resolves to nothing, the "Build Rust Code" phase
+      # script gets undefined_arch, and the build fails silently (xcode
+      # swallows phase-script stderr). We invoke xcodebuild with the same
+      # workspace/scheme Tauri uses, but pin `-destination "generic/platform=
+      # iOS Simulator"` + `ARCHS=arm64 ONLY_ACTIVE_ARCH=YES` as positional
+      # build-setting overrides (env vars don't beat xcodebuild defaults).
+      # The cargo-mobile2 phase script inside the project still runs and
+      # builds the Rust dylib for aarch64-apple-ios-sim.
+      - name: Build simulator .app (xcodebuild direct)
+        working-directory: app/src-tauri-mobile/gen/apple
+        run: |
+          set -euo pipefail
+          WORKSPACE=$(find . -maxdepth 3 -type d -name "project.xcworkspace" | head -1)
+          if [ -z "$WORKSPACE" ]; then
+            echo "::error::no project.xcworkspace under gen/apple"; exit 1
+          fi
+          SCHEME=$(xcodebuild -workspace "$WORKSPACE" -list -json \
+            | python3 -c 'import json,sys; d=json.load(sys.stdin); print([s for s in d["workspace"]["schemes"] if s.endswith("_iOS")][0])')
+          echo "Building scheme '$SCHEME' from $WORKSPACE"
+          bash ../../../../scripts/ci-cancel-aware.sh \
+            xcodebuild \
+              -workspace "$WORKSPACE" \
+              -scheme "$SCHEME" \
+              -configuration debug \
+              -sdk iphonesimulator \
+              -destination "generic/platform=iOS Simulator" \
+              -derivedDataPath build-sim \
+              ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
+              CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+              build
 
       - name: Zip simulator app
         working-directory: app/src-tauri-mobile
         run: |
           set -euo pipefail
-          APP=$(find gen/apple/build -type d -name "*.app" -path "*iphonesimulator*" | head -1)
+          APP=$(find gen/apple/build-sim -type d -name "*.app" -path "*iphonesimulator*" | head -1)
+          if [ -z "$APP" ]; then
+            echo "::error::No .app produced under gen/apple/build-sim"
+            find gen/apple/build-sim -maxdepth 4 -type d 2>/dev/null | head -30
+            exit 1
+          fi
           echo "Found simulator app: $APP"
           ditto -c -k --sequesterRsrc --keepParent "$APP" CloserEdgeAI-simulator.zip
           ls -la CloserEdgeAI-simulator.zip
