@@ -2557,7 +2557,8 @@ const messages: TranslationMap = {
     "Nouvelle tentative échouée. Télécharge la dernière version de l'app et réessaie.",
   'daemon.serviceBlockingGate.retrying': 'Nouvelle tentative…',
   'daemon.serviceBlockingGate.title': 'Le core CloserEdge AI est indisponible',
-  'home.banners.communitySubtitle': "Obtenez de l'aide, partagez vos retours et échangez avec d'autres utilisateurs.",
+  'home.banners.communitySubtitle':
+    "Obtenez de l'aide, partagez vos retours et échangez avec d'autres utilisateurs.",
   'home.banners.communityTitle': 'Rejoignez notre communauté',
   'home.banners.discordSubtitle': 'Sous-titre Discord',
   'home.banners.discordTitle': 'Rejoins notre Discord',

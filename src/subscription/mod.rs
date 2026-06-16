@@ -396,7 +396,10 @@ impl SubscriptionCheckResult {
         Self {
             access_level: record.access_level,
             tier: Some(record.tier),
-            reason: format!("subscription {} is {}", record.subscription_id, record.status),
+            reason: format!(
+                "subscription {} is {}",
+                record.subscription_id, record.status
+            ),
             subscription: Some(record),
         }
     }
@@ -427,14 +430,8 @@ mod tests {
 
     #[test]
     fn resolve_access_past_due_grace() {
-        assert_eq!(
-            resolve_access_level("past_due", Some(3)),
-            AccessLevel::Full
-        );
-        assert_eq!(
-            resolve_access_level("past_due", Some(7)),
-            AccessLevel::Full
-        );
+        assert_eq!(resolve_access_level("past_due", Some(3)), AccessLevel::Full);
+        assert_eq!(resolve_access_level("past_due", Some(7)), AccessLevel::Full);
     }
 
     #[test]

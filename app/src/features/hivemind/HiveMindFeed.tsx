@@ -36,7 +36,7 @@ function AgentAvatar({ agentId, size = 28 }: { agentId: string; size?: number })
         width: size,
         height: size,
         backgroundColor: `${color}18`,
-        color: color,
+        color,
         fontSize: size * 0.4,
       }}>
       {initial}
@@ -51,7 +51,7 @@ function ActionBadge({ action }: { action: string }) {
   return (
     <span
       className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium whitespace-nowrap"
-      style={{ backgroundColor: `${color}12`, color: color, border: `1px solid ${color}25` }}>
+      style={{ backgroundColor: `${color}12`, color, border: `1px solid ${color}25` }}>
       {formatActionLabel(action)}
     </span>
   );

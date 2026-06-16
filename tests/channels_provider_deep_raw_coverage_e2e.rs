@@ -290,9 +290,10 @@ async fn web_channel_validation_cancel_and_classifier_snapshots_are_publicly_exe
     assert_eq!(action_budget.source, "openhuman_budget");
     assert_eq!(action_budget.provider, None);
 
-    let exhausted = closeredge_core::openhuman::channels::web::test_support::classify_error_for_test(
-        "All providers/models failed. Attempts: openai API error (503 Service Unavailable)",
-    );
+    let exhausted =
+        closeredge_core::openhuman::channels::web::test_support::classify_error_for_test(
+            "All providers/models failed. Attempts: openai API error (503 Service Unavailable)",
+        );
     assert_eq!(exhausted.fallback_available, Some(false));
 
     assert_eq!(

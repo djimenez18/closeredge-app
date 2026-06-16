@@ -553,17 +553,22 @@
 
 /* Card hover lift — subtle translateY + shadow increase on hover. */
 .ce-hover-lift {
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ce-hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.10), 0 16px 32px -8px rgba(0, 0, 0, 0.10);
+  box-shadow:
+    0 8px 24px -4px rgba(0, 0, 0, 0.1),
+    0 16px 32px -8px rgba(0, 0, 0, 0.1);
 }
 
 :root.dark .ce-hover-lift:hover {
-  box-shadow: 0 8px 24px -4px rgba(124, 58, 237, 0.08), 0 16px 32px -8px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 8px 24px -4px rgba(124, 58, 237, 0.08),
+    0 16px 32px -8px rgba(0, 0, 0, 0.3);
 }
 
 /* Press scale — brief shrink on active/click for tactile feedback. */
@@ -597,18 +602,28 @@
 
 /* Stagger delay utility — apply via style={{ animationDelay: `${i * 60}ms` }} */
 @keyframes ambientDrift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes skeletonShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* Focus ring utility for brand accent */
 .ce-focus-ring:focus-visible {
-  outline: 2px solid #7C3AED;
+  outline: 2px solid #7c3aed;
   outline-offset: 2px;
 }

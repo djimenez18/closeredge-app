@@ -15,7 +15,9 @@ use closeredge_core::openhuman::inference::provider::{
 use closeredge_core::openhuman::memory::{
     Memory, MemoryCategory, MemoryEntry, NamespaceSummary, RecallOpts,
 };
-use closeredge_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult, ToolScope};
+use closeredge_core::openhuman::tools::{
+    PermissionLevel, Tool, ToolContent, ToolResult, ToolScope,
+};
 use serde_json::json;
 use std::collections::{HashSet, VecDeque};
 use std::path::PathBuf;

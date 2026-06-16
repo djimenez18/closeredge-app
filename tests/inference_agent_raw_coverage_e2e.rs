@@ -2047,8 +2047,8 @@ async fn inference_provider_factory_and_classifiers_cover_user_state_edges() {
 
 #[tokio::test]
 async fn inference_openhuman_backend_provider_covers_authless_and_streaming_edges() {
-    use futures_util::StreamExt;
     use closeredge_core::openhuman::inference::provider::traits::StreamOptions;
+    use futures_util::StreamExt;
 
     let state_dir = tempdir().expect("openhuman provider state");
     let provider = OpenHumanBackendProvider::new(
@@ -2091,10 +2091,10 @@ async fn inference_openhuman_backend_provider_covers_authless_and_streaming_edge
 
 #[tokio::test]
 async fn inference_provider_trait_defaults_cover_prompt_guided_paths() {
-    use futures_util::StreamExt;
     use closeredge_core::openhuman::inference::provider::traits::{
         build_tool_instructions_text, StreamChunk, StreamOptions, ToolsPayload,
     };
+    use futures_util::StreamExt;
 
     let provider = EchoProvider;
     assert!(!provider.supports_native_tools());

@@ -1,11 +1,12 @@
 import { supabase } from '@/lib/supabase';
+
 import type {
+  ConsolidationRow,
   Memory,
-  MemoryResult,
   MemoryFilter,
+  MemoryResult,
   MemoryRow,
   MemorySource,
-  ConsolidationRow,
   MemoryStats,
 } from './memoryTypes';
 
@@ -54,7 +55,7 @@ function rowToMemory(row: MemoryRow): Memory {
 async function searchSemanticLayer(
   query: string,
   agentId?: string,
-  limit = 5,
+  limit = 5
 ): Promise<MemoryResult[]> {
   // Try full-text search first (uses the GIN index on memory_fts)
   let ftsQuery = supabase
@@ -105,10 +106,7 @@ async function searchSemanticLayer(
  * Memories with importance >= 0.5, ordered by last access time.
  * These are the "always-relevant" memories that stay fresh.
  */
-async function recentHighImportanceLayer(
-  agentId?: string,
-  limit = 5,
-): Promise<MemoryResult[]> {
+async function recentHighImportanceLayer(agentId?: string, limit = 5): Promise<MemoryResult[]> {
   let query = supabase
     .from('memories')
     .select('*')
@@ -139,7 +137,7 @@ async function recentHighImportanceLayer(
 async function consolidationLayer(
   query: string,
   agentId?: string,
-  limit = 3,
+  limit = 3
 ): Promise<MemoryResult[]> {
   let q = supabase
     .from('consolidations')
@@ -198,10 +196,7 @@ async function consolidationLayer(
  * Recent activity from OTHER agents via the hive_mind table.
  * Excluded for war-room isolation scenarios.
  */
-async function crossAgentLayer(
-  currentAgentId: string,
-  limit = 5,
-): Promise<MemoryResult[]> {
+async function crossAgentLayer(currentAgentId: string, limit = 5): Promise<MemoryResult[]> {
   const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
   const { data, error } = await supabase
@@ -217,15 +212,17 @@ async function crossAgentLayer(
     return [];
   }
 
-  return ((data ?? []) as Array<{
-    id: number;
-    customer_id: string;
-    agent_id: string;
-    chat_id: string;
-    action: string;
-    summary: string;
-    created_at: string;
-  }>).map((entry, i) => ({
+  return (
+    (data ?? []) as Array<{
+      id: number;
+      customer_id: string;
+      agent_id: string;
+      chat_id: string;
+      action: string;
+      summary: string;
+      created_at: string;
+    }>
+  ).map((entry, i) => ({
     memory: {
       id: entry.id,
       customer_id: entry.customer_id,
@@ -256,7 +253,7 @@ async function crossAgentLayer(
 async function conversationRecallLayer(
   query: string,
   agentId?: string,
-  limit = 5,
+  limit = 5
 ): Promise<MemoryResult[]> {
   // Only activate if the query contains recall-like keywords
   const recallPattern =
@@ -281,7 +278,7 @@ async function conversationRecallLayer(
 
   const now = Date.now();
   return ((data ?? []) as MemoryRow[])
-    .map((row) => {
+    .map(row => {
       const mem = rowToMemory(row);
       const ageMs = now - new Date(mem.created_at).getTime();
       const ageDays = ageMs / (1000 * 60 * 60 * 24);
@@ -327,7 +324,7 @@ export async function recallMemories(
   query: string,
   agentId: string,
   limit = 15,
-  opts: RecallOptions = {},
+  opts: RecallOptions = {}
 ): Promise<MemoryResult[]> {
   const {
     includeConsolidations = true,
@@ -381,7 +378,7 @@ export async function storeMemory(
   chatId: string | null,
   entities: string[] = [],
   topics: string[] = [],
-  importance = 0.5,
+  importance = 0.5
 ): Promise<number | null> {
   const { data, error } = await supabase
     .from('memories')
@@ -410,10 +407,7 @@ export async function storeMemory(
  * Soft-delete a memory by marking salience to 0 (or hard delete).
  */
 export async function forgetMemory(memoryId: number): Promise<boolean> {
-  const { error } = await supabase
-    .from('memories')
-    .delete()
-    .eq('id', memoryId);
+  const { error } = await supabase.from('memories').delete().eq('id', memoryId);
 
   if (error) {
     console.error('[memory] forget error:', error.message);
@@ -430,7 +424,7 @@ export async function searchMemories(
   query: string,
   filters: MemoryFilter = {},
   limit = 50,
-  offset = 0,
+  offset = 0
 ): Promise<Memory[]> {
   let q = supabase
     .from('memories')
@@ -482,10 +476,10 @@ export async function touchMemory(memoryId: number): Promise<void> {
  */
 export async function batchUpdateRelevance(
   surfacedIds: number[],
-  usefulIds: Set<number>,
+  usefulIds: Set<number>
 ): Promise<void> {
-  const boostIds = surfacedIds.filter((id) => usefulIds.has(id));
-  const decayIds = surfacedIds.filter((id) => !usefulIds.has(id));
+  const boostIds = surfacedIds.filter(id => usefulIds.has(id));
+  const decayIds = surfacedIds.filter(id => !usefulIds.has(id));
 
   // Boost useful memories
   if (boostIds.length > 0) {
@@ -514,11 +508,7 @@ export async function getMemoryStats(): Promise<MemoryStats> {
     return { totalMemories: 0, byAgent: [], topEntities: [], avgImportance: 0 };
   }
 
-  const rows = allMemories as Array<{
-    agent_id: string;
-    importance: number;
-    entities: unknown;
-  }>;
+  const rows = allMemories as Array<{ agent_id: string; importance: number; entities: unknown }>;
 
   // Count by agent
   const agentCounts = new Map<string, number>();
@@ -557,15 +547,17 @@ export async function getMemoryStats(): Promise<MemoryStats> {
  */
 export async function fetchConsolidations(
   agentId?: string,
-  limit = 50,
-): Promise<Array<{
-  id: number;
-  agent_id: string;
-  source_ids: number[];
-  summary: string;
-  insight: string | null;
-  created_at: string;
-}>> {
+  limit = 50
+): Promise<
+  Array<{
+    id: number;
+    agent_id: string;
+    source_ids: number[];
+    summary: string;
+    insight: string | null;
+    created_at: string;
+  }>
+> {
   let q = supabase
     .from('consolidations')
     .select('*')
@@ -580,7 +572,7 @@ export async function fetchConsolidations(
     return [];
   }
 
-  return ((data ?? []) as ConsolidationRow[]).map((row) => ({
+  return ((data ?? []) as ConsolidationRow[]).map(row => ({
     id: row.id,
     agent_id: row.agent_id,
     source_ids: safeJsonArray(row.source_ids).map(Number),

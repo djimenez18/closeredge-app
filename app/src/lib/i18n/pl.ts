@@ -2537,7 +2537,8 @@ const messages: TranslationMap = {
     'Ponowna próba się nie powiodła. Pobierz najnowszą wersję aplikacji i spróbuj ponownie.',
   'daemon.serviceBlockingGate.retrying': 'Ponawianie...',
   'daemon.serviceBlockingGate.title': 'Rdzeń CloserEdge AI jest niedostępny',
-  'home.banners.communitySubtitle': 'Uzyskaj wsparcie, podziel się opinią i nawiąż kontakt z innymi użytkownikami.',
+  'home.banners.communitySubtitle':
+    'Uzyskaj wsparcie, podziel się opinią i nawiąż kontakt z innymi użytkownikami.',
   'home.banners.communityTitle': 'Dołącz do naszej społeczności',
   'home.banners.discordSubtitle': 'Pomoc, opinie i wczesny dostęp do funkcji.',
   'home.banners.discordTitle': 'Dołącz do naszego Discorda',

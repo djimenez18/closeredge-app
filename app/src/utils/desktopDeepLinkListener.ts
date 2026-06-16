@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { getCurrent, onOpenUrl } from '@tauri-apps/plugin-deep-link';
 
+import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import { getCoreStateSnapshot, patchCoreStateSnapshot } from '../lib/coreState/store';
 import { consumeLoginToken } from '../services/api/authApi';
 import { clearCoreRpcTokenCache, clearCoreRpcUrlCache } from '../services/coreRpcClient';
@@ -10,7 +11,6 @@ import {
   completeDeepLinkAuthProcessing,
   failDeepLinkAuthProcessing,
 } from '../store/deepLinkAuthState';
-import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import { getStoredCoreMode } from './configPersistence';
 import {
   evaluateOAuthAppVersionGate,

@@ -236,7 +236,8 @@ async fn round23_memory_sources_status_registry_and_readers_cover_remaining_edge
     assert_eq!(content.content_type, ContentType::Plaintext);
     assert!(content.body.contains("provider sync pipeline"));
 
-    let twitter_reader = closeredge_core::openhuman::memory_sources::readers::twitter::TwitterReader;
+    let twitter_reader =
+        closeredge_core::openhuman::memory_sources::readers::twitter::TwitterReader;
     let missing_query = twitter_reader
         .list_items(
             &source_entry("tw-missing", SourceKind::TwitterQuery),

@@ -85,16 +85,9 @@ export function logToolCall(
   meetingId: string,
   tool: string,
   allowed: boolean,
-  reason: string,
+  reason: string
 ): void {
-  _auditLog.push({
-    timestamp: Date.now(),
-    agentId,
-    meetingId,
-    tool,
-    allowed,
-    reason,
-  });
+  _auditLog.push({ timestamp: Date.now(), agentId, meetingId, tool, allowed, reason });
   // Ring buffer -- evict oldest when full.
   if (_auditLog.length > AUDIT_LOG_MAX) {
     _auditLog.splice(0, _auditLog.length - AUDIT_LOG_MAX);
@@ -119,35 +112,21 @@ export function clearAuditLog(): void {
  * @param agentId - The agent's identifier (e.g. 'eden', 'crest')
  * @param agentToolOverrides - Optional per-agent tool allowlist from config
  */
-export function buildToolPolicy(
-  agentId: string,
-  agentToolOverrides?: string[],
-): WarRoomToolPolicy {
-  const overrides =
-    agentToolOverrides && agentToolOverrides.length > 0
-      ? agentToolOverrides
-      : null;
+export function buildToolPolicy(agentId: string, agentToolOverrides?: string[]): WarRoomToolPolicy {
+  const overrides = agentToolOverrides && agentToolOverrides.length > 0 ? agentToolOverrides : null;
 
   const extra = overrides ?? DEFAULT_AGENT_ALLOWLISTS[agentId] ?? [];
-  const allowed = Array.from(
-    new Set([...SAFE_READONLY_TOOLS, ...extra]),
-  );
+  const allowed = Array.from(new Set([...SAFE_READONLY_TOOLS, ...extra]));
 
   // Deny every side-effect tool the agent didn't explicitly opt into.
-  const disallowed = SIDE_EFFECT_TOOLS.filter(
-    (t) => !allowed.includes(t),
-  );
+  const disallowed = SIDE_EFFECT_TOOLS.filter(t => !allowed.includes(t));
 
   // MCP servers default to none. Opt in via 'mcp:<server>' entries.
   const allowedMcpServers = (overrides ?? [])
-    .filter((t) => t.startsWith('mcp:'))
-    .map((t) => t.slice('mcp:'.length));
+    .filter(t => t.startsWith('mcp:'))
+    .map(t => t.slice('mcp:'.length));
 
-  return {
-    allowedTools: allowed,
-    disallowedTools: disallowed,
-    allowedMcpServers,
-  };
+  return { allowedTools: allowed, disallowedTools: disallowed, allowedMcpServers };
 }
 
 /**
@@ -158,7 +137,7 @@ export function isToolAllowed(
   policy: WarRoomToolPolicy,
   tool: string,
   agentId: string,
-  meetingId: string,
+  meetingId: string
 ): boolean {
   // Explicitly denied = always blocked.
   if (policy.disallowedTools.includes(tool)) {

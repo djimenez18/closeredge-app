@@ -752,8 +752,9 @@ async fn tool_registry_diagnostics_reports_config_and_audit_store_failures() {
         workspace_dir: workspace_file,
         ..Config::default()
     };
-    let diagnostics =
-        closeredge_core::openhuman::tool_registry::ops::diagnostics_for_config(&broken_audit_config);
+    let diagnostics = closeredge_core::openhuman::tool_registry::ops::diagnostics_for_config(
+        &broken_audit_config,
+    );
     assert!(diagnostics.value.mcp_write_audit.enabled);
     assert_eq!(diagnostics.value.mcp_write_audit.recent_rows, None);
     assert!(diagnostics

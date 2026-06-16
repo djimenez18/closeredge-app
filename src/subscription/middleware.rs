@@ -104,8 +104,18 @@ pub fn categorize_method(method: &str) -> MethodCategory {
     }
 
     const READ_MARKERS: &[&str] = &[
-        "_get", "_list", "_status", "_info", "_exists", "_search", "_snapshot", "_history",
-        "_presets", "_diagnostics", "_device_profile", "_read",
+        "_get",
+        "_list",
+        "_status",
+        "_info",
+        "_exists",
+        "_search",
+        "_snapshot",
+        "_history",
+        "_presets",
+        "_diagnostics",
+        "_device_profile",
+        "_read",
     ];
     if READ_MARKERS.iter().any(|m| method.contains(m)) {
         return MethodCategory::Read;
@@ -139,7 +149,11 @@ fn rpc_error(id: Value, code: i64, message: &str, data: Value) -> Response {
         .into_response()
 }
 
-fn blocked_response(id: Value, record: Option<&SubscriptionRecord>, block: &AgentBlock) -> Response {
+fn blocked_response(
+    id: Value,
+    record: Option<&SubscriptionRecord>,
+    block: &AgentBlock,
+) -> Response {
     match block {
         AgentBlock::Subscription {
             access_level,
@@ -256,10 +270,9 @@ pub async fn subscription_gate_middleware(req: Request, next: Next) -> Response 
         let block = AgentBlock::Subscription {
             access_level: AccessLevel::Denied,
             status: "none".to_string(),
-            human_message:
-                "No active subscription was found for this deployment. Visit \
+            human_message: "No active subscription was found for this deployment. Visit \
                  https://closeredge.ai/pricing to subscribe."
-                    .to_string(),
+                .to_string(),
         };
         return blocked_response(id, None, &block);
     };

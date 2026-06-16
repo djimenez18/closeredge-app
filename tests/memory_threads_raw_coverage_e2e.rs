@@ -1669,8 +1669,9 @@ fn memory_tree_runtime_store_buffers_and_retrieval_wire_helpers() {
         closeredge_core::openhuman::memory_tree::tree::TreeFactory::from_tree(&source_tree).kind(),
         TreeKind::Source
     );
-    let topic_factory =
-        closeredge_core::openhuman::memory_tree::tree::TreeFactory::topic("email:alice@example.com");
+    let topic_factory = closeredge_core::openhuman::memory_tree::tree::TreeFactory::topic(
+        "email:alice@example.com",
+    );
     assert!(matches!(
         topic_factory.summary_tree_kind(),
         closeredge_core::openhuman::memory_store::content::SummaryTreeKind::Topic
@@ -4019,14 +4020,15 @@ async fn memory_ops_public_handlers_cover_document_file_kv_graph_and_envelopes()
     assert!(write.written);
     assert_eq!(write.bytes_written, "Memory file coverage".len());
 
-    let read = closeredge_core::openhuman::memory::ops::ai_read_memory_file(ReadMemoryFileRequest {
-        relative_path: "notes/raw.md".into(),
-    })
-    .await
-    .expect("read memory file")
-    .value
-    .data
-    .expect("read data");
+    let read =
+        closeredge_core::openhuman::memory::ops::ai_read_memory_file(ReadMemoryFileRequest {
+            relative_path: "notes/raw.md".into(),
+        })
+        .await
+        .expect("read memory file")
+        .value
+        .data
+        .expect("read data");
     assert_eq!(read.content, "Memory file coverage");
 
     std::fs::write(memory_dir.join("root.md"), "root").expect("root note");
@@ -4531,24 +4533,26 @@ async fn tree_summarizer_ops_cover_validation_query_and_local_provider_guards() 
     assert!(empty_content.contains("content must not be empty"));
 
     let ts = Utc.with_ymd_and_hms(2026, 5, 29, 17, 0, 0).unwrap();
-    let ingest = closeredge_core::openhuman::memory_tree::tree_runtime::ops::tree_summarizer_ingest(
-        &config,
-        " ops_ns ",
-        "buffered raw content for summarizer ops",
-        Some(ts),
-        Some(&json!({ "source": "coverage" })),
-    )
-    .await
-    .expect("ingest buffer");
+    let ingest =
+        closeredge_core::openhuman::memory_tree::tree_runtime::ops::tree_summarizer_ingest(
+            &config,
+            " ops_ns ",
+            "buffered raw content for summarizer ops",
+            Some(ts),
+            Some(&json!({ "source": "coverage" })),
+        )
+        .await
+        .expect("ingest buffer");
     assert_eq!(ingest.value["buffered"], true);
     assert_eq!(ingest.value["namespace"], "ops_ns");
     assert_eq!(ingest.value["has_metadata"], true);
 
-    let status = closeredge_core::openhuman::memory_tree::tree_runtime::ops::tree_summarizer_status(
-        &config, "ops_ns",
-    )
-    .await
-    .expect("status");
+    let status =
+        closeredge_core::openhuman::memory_tree::tree_runtime::ops::tree_summarizer_status(
+            &config, "ops_ns",
+        )
+        .await
+        .expect("status");
     assert_eq!(status.value["namespace"], "ops_ns");
     assert_eq!(status.value["total_nodes"], 0);
 
@@ -4562,13 +4566,14 @@ async fn tree_summarizer_ops_cover_validation_query_and_local_provider_guards() 
     assert_eq!(query.value["node"]["node_id"], "root");
     assert!(query.logs[0].contains("queried node 'root'"));
 
-    let missing = closeredge_core::openhuman::memory_tree::tree_runtime::ops::tree_summarizer_query(
-        &config,
-        "ops_ns",
-        Some("2026/05/29/17"),
-    )
-    .await
-    .unwrap_err();
+    let missing =
+        closeredge_core::openhuman::memory_tree::tree_runtime::ops::tree_summarizer_query(
+            &config,
+            "ops_ns",
+            Some("2026/05/29/17"),
+        )
+        .await
+        .unwrap_err();
     assert!(missing.contains("node '2026/05/29/17' not found"));
 
     let provider_guard =

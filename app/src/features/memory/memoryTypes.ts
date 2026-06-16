@@ -3,12 +3,7 @@
 // for Supabase/CloserEdge multi-agent environment.
 
 /** Source of the memory entry. */
-export type MemorySource =
-  | 'conversation'
-  | 'observation'
-  | 'obsidian'
-  | 'integration'
-  | 'manual';
+export type MemorySource = 'conversation' | 'observation' | 'obsidian' | 'integration' | 'manual';
 
 /** A single memory record as stored in Supabase. */
 export interface Memory {
@@ -103,11 +98,7 @@ export interface ConsolidationLLMResult {
   summary: string;
   insight: string;
   connections: { from_id: number; to_id: number; relationship: string }[];
-  contradictions?: {
-    stale_id: number;
-    supersedes_id: number;
-    reason: string;
-  }[];
+  contradictions?: { stale_id: number; supersedes_id: number; reason: string }[];
 }
 
 /** Stats summary for the Memory Explorer UI. */

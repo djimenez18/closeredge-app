@@ -4,7 +4,6 @@
  * Lists all customers joined with their subscriptions.
  * Features: search, filter by agent type / tier / status, sortable columns.
  */
-
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -102,7 +101,7 @@ export default function ClientsList() {
           const sub = subMap.get(c.id);
           const mrr =
             sub && (sub.status === 'active' || sub.status === 'trialing')
-              ? PRICING[sub.agent_type]?.[sub.tier] ?? 0
+              ? (PRICING[sub.agent_type]?.[sub.tier] ?? 0)
               : 0;
           return {
             id: c.id,

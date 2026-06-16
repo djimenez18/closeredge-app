@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+
 import { AdversaryResults } from './AdversaryResults';
 import {
-  analyzeDocument,
-  runStressTest,
   type AdversaryReport,
+  analyzeDocument,
   type DocumentType,
+  runStressTest,
 } from './adversaryService';
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -50,8 +51,7 @@ function ModeCard({
             : disabled
               ? 'bg-zinc-900/30 border-zinc-800/50 opacity-60 cursor-not-allowed'
               : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/80'
-        }`}
-    >
+        }`}>
       <div
         className={`w-10 h-10 rounded-lg flex items-center justify-center ${
           active
@@ -59,19 +59,14 @@ function ModeCard({
             : disabled
               ? 'bg-zinc-800/50 text-zinc-600'
               : 'bg-zinc-800 text-zinc-400'
-        }`}
-      >
+        }`}>
         {icon}
       </div>
       <div>
-        <h3
-          className={`text-sm font-semibold ${active ? 'text-red-300' : 'text-zinc-200'}`}
-        >
+        <h3 className={`text-sm font-semibold ${active ? 'text-red-300' : 'text-zinc-200'}`}>
           {title}
         </h3>
-        <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
-          {description}
-        </p>
+        <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{description}</p>
       </div>
       {disabled && disabledReason && (
         <span className="absolute top-3 right-3 text-[10px] font-medium text-zinc-600 bg-zinc-800 px-2 py-0.5 rounded-full">
@@ -84,13 +79,7 @@ function ModeCard({
 
 // ── File drop zone ──────────────────────────────────────────────────
 
-function FileDropZone({
-  file,
-  onFile,
-}: {
-  file: File | null;
-  onFile: (f: File) => void;
-}) {
+function FileDropZone({ file, onFile }: { file: File | null; onFile: (f: File) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -101,7 +90,7 @@ function FileDropZone({
       const dropped = e.dataTransfer.files[0];
       if (dropped) onFile(dropped);
     },
-    [onFile],
+    [onFile]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -122,7 +111,7 @@ function FileDropZone({
       const selected = e.target.files?.[0];
       if (selected) onFile(selected);
     },
-    [onFile],
+    [onFile]
   );
 
   return (
@@ -138,8 +127,7 @@ function FileDropZone({
             : file
               ? 'border-zinc-700 bg-zinc-900/50'
               : 'border-zinc-700 bg-zinc-900/30 hover:border-zinc-600 hover:bg-zinc-900/50'
-        }`}
-    >
+        }`}>
       <input
         ref={inputRef}
         type="file"
@@ -156,8 +144,7 @@ function FileDropZone({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1.5}
-            >
+              strokeWidth={1.5}>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -180,8 +167,7 @@ function FileDropZone({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1.5}
-            >
+              strokeWidth={1.5}>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -193,9 +179,7 @@ function FileDropZone({
             <p className="text-sm font-medium text-zinc-300">
               Drop a document here or click to upload
             </p>
-            <p className="text-xs text-zinc-600 mt-1">
-              TXT, PDF, DOC, DOCX, MD, RTF
-            </p>
+            <p className="text-xs text-zinc-600 mt-1">TXT, PDF, DOC, DOCX, MD, RTF</p>
           </div>
         </>
       )}
@@ -237,10 +221,7 @@ export function AdversaryPage() {
     setLoading(true);
     setError(null);
     try {
-      const result = await runStressTest({
-        briefText,
-        position,
-      });
+      const result = await runStressTest({ briefText, position });
       setReport(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Stress test failed');
@@ -267,8 +248,7 @@ export function AdversaryPage() {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1.5}
-            >
+              strokeWidth={1.5}>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -278,8 +258,7 @@ export function AdversaryPage() {
           </div>
           <div>
             <h1 className="text-base font-semibold text-zinc-100">
-              Adversary Agent{' '}
-              <span className="text-red-400">&mdash; AI Opposing Counsel</span>
+              Adversary Agent <span className="text-red-400">&mdash; AI Opposing Counsel</span>
             </h1>
             <p className="text-xs text-zinc-500">
               Elite &middot; Lexis &middot; Stress-test your legal arguments
@@ -289,11 +268,7 @@ export function AdversaryPage() {
 
         {/* Elite badge */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/10 border border-red-600/20">
-          <svg
-            className="w-3.5 h-3.5 text-red-400"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-3.5 h-3.5 text-red-400" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
           <span className="text-xs font-semibold text-red-400">Elite</span>
@@ -310,9 +285,7 @@ export function AdversaryPage() {
             <>
               {/* Mode selection */}
               <div>
-                <h2 className="text-sm font-semibold text-zinc-300 mb-3">
-                  Select Mode
-                </h2>
+                <h2 className="text-sm font-semibold text-zinc-300 mb-3">Select Mode</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <ModeCard
                     title="Document Review"
@@ -323,8 +296,7 @@ export function AdversaryPage() {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
+                        strokeWidth={1.5}>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -344,8 +316,7 @@ export function AdversaryPage() {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
+                        strokeWidth={1.5}>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -367,8 +338,7 @@ export function AdversaryPage() {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
+                        strokeWidth={1.5}>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -393,7 +363,7 @@ export function AdversaryPage() {
                       Document Type
                     </label>
                     <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-                      {DOCUMENT_TYPES.map((dt) => (
+                      {DOCUMENT_TYPES.map(dt => (
                         <button
                           key={dt.value}
                           onClick={() => setDocumentType(dt.value)}
@@ -402,8 +372,7 @@ export function AdversaryPage() {
                               documentType === dt.value
                                 ? 'bg-red-600/20 text-red-400 border border-red-600/40'
                                 : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700'
-                            }`}
-                        >
+                            }`}>
                           {dt.label}
                         </button>
                       ))}
@@ -416,15 +385,10 @@ export function AdversaryPage() {
                     disabled={!file || loading}
                     className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl
                       bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 disabled:text-zinc-600
-                      text-sm font-bold text-white transition-colors"
-                  >
+                      text-sm font-bold text-white transition-colors">
                     {loading ? (
                       <>
-                        <svg
-                          className="w-4 h-4 animate-spin"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
+                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                           <circle
                             className="opacity-25"
                             cx="12"
@@ -448,8 +412,7 @@ export function AdversaryPage() {
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          strokeWidth={2}
-                        >
+                          strokeWidth={2}>
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -473,8 +436,7 @@ export function AdversaryPage() {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        strokeWidth={1}
-                      >
+                        strokeWidth={1}>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -483,13 +445,10 @@ export function AdversaryPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-zinc-300">
-                        Moot Court Mode
-                      </h3>
+                      <h3 className="text-lg font-semibold text-zinc-300">Moot Court Mode</h3>
                       <p className="text-sm text-zinc-500 mt-2 max-w-md mx-auto leading-relaxed">
-                        Face the Adversary in a live voice-powered
-                        cross-examination. Present your argument verbally and
-                        receive real-time pushback, leading questions, and
+                        Face the Adversary in a live voice-powered cross-examination. Present your
+                        argument verbally and receive real-time pushback, leading questions, and
                         challenges to your reasoning.
                       </p>
                     </div>
@@ -513,8 +472,7 @@ export function AdversaryPage() {
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-red-500 mt-0.5">4.</span>
-                          Full transcript and findings generated after the
-                          session
+                          Full transcript and findings generated after the session
                         </li>
                       </ul>
                     </div>
@@ -525,8 +483,7 @@ export function AdversaryPage() {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        strokeWidth={2}
-                      >
+                        strokeWidth={2}>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -549,7 +506,7 @@ export function AdversaryPage() {
                     <input
                       type="text"
                       value={position}
-                      onChange={(e) => setPosition(e.target.value)}
+                      onChange={e => setPosition(e.target.value)}
                       placeholder="e.g. Defendant argues the contract is void for lack of consideration..."
                       className="w-full px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-zinc-200
                         placeholder:text-zinc-600 focus:outline-none focus:border-red-600/40 focus:ring-1 focus:ring-red-600/20
@@ -564,7 +521,7 @@ export function AdversaryPage() {
                     </label>
                     <textarea
                       value={briefText}
-                      onChange={(e) => setBriefText(e.target.value)}
+                      onChange={e => setBriefText(e.target.value)}
                       placeholder="Paste your brief or legal argument here..."
                       rows={12}
                       className="w-full px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-zinc-200
@@ -584,15 +541,10 @@ export function AdversaryPage() {
                     disabled={!briefText.trim() || loading}
                     className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl
                       bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 disabled:text-zinc-600
-                      text-sm font-bold text-white transition-colors"
-                  >
+                      text-sm font-bold text-white transition-colors">
                     {loading ? (
                       <>
-                        <svg
-                          className="w-4 h-4 animate-spin"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
+                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                           <circle
                             className="opacity-25"
                             cx="12"
@@ -616,8 +568,7 @@ export function AdversaryPage() {
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          strokeWidth={2}
-                        >
+                          strokeWidth={2}>
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -639,8 +590,7 @@ export function AdversaryPage() {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={2}
-                  >
+                    strokeWidth={2}>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -648,9 +598,7 @@ export function AdversaryPage() {
                     />
                   </svg>
                   <div>
-                    <p className="text-sm font-medium text-red-400">
-                      Analysis Failed
-                    </p>
+                    <p className="text-sm font-medium text-red-400">Analysis Failed</p>
                     <p className="text-xs text-red-400/70 mt-0.5">{error}</p>
                   </div>
                 </div>

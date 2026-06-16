@@ -171,7 +171,11 @@ fn disk_cache_path() -> std::path::PathBuf {
     super::usage::subscription_dir().join("license_cache.json")
 }
 
-fn persist_disk_cache_at(path: &std::path::Path, license_key_hash: &str, record: &SubscriptionRecord) {
+fn persist_disk_cache_at(
+    path: &std::path::Path,
+    license_key_hash: &str,
+    record: &SubscriptionRecord,
+) {
     let entry = DiskCacheEntry {
         license_key_hash: license_key_hash.to_string(),
         fetched_at: chrono::Utc::now().to_rfc3339(),
@@ -282,9 +286,7 @@ pub async fn resolve() -> Resolution {
         }
         Err(e) => {
             if let Some(stale) = cache_get_stale(&env.license_key_hash) {
-                log::warn!(
-                    "[subscription] Supabase unreachable ({e}); using stale cached record"
-                );
+                log::warn!("[subscription] Supabase unreachable ({e}); using stale cached record");
                 Resolution {
                     record: Some(stale),
                     source: "stale_cache",
@@ -293,9 +295,7 @@ pub async fn resolve() -> Resolution {
                 // Cold start during an outage: no in-memory cache exists
                 // yet, but a prior process validated successfully within
                 // the 72h window.
-                log::warn!(
-                    "[subscription] Supabase unreachable ({e}); using disk-cached record"
-                );
+                log::warn!("[subscription] Supabase unreachable ({e}); using disk-cached record");
                 cache_set(&env.license_key_hash, disk.clone());
                 Resolution {
                     record: Some(disk),

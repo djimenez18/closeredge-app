@@ -15,7 +15,6 @@ use axum::http::{header, HeaderMap, Response, StatusCode};
 use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use futures_util::{SinkExt, StreamExt};
 use closeredge_core::core::types::AppState;
 use closeredge_core::openhuman::config::schema::cloud_providers::{
     AuthStyle as CloudAuthStyle, CloudProviderCreds,
@@ -29,6 +28,7 @@ use closeredge_core::openhuman::inference::local::{
     local_ai_assets_status, local_ai_downloads_progress, LocalAiService,
 };
 use closeredge_core::openhuman::inference::voice::streaming::handle_dictation_ws;
+use futures_util::{SinkExt, StreamExt};
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 use tokio_tungstenite::tungstenite::Message as WsMessage;

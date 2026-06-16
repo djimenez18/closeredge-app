@@ -2597,10 +2597,12 @@ async fn credentials_public_ops_cover_service_and_missing_session_error_paths() 
             .contains("unsupported channel")
     );
     assert!(
-        closeredge_core::openhuman::credentials::auth_create_channel_link_token(&config, "telegram")
-            .await
-            .expect_err("missing session should fail")
-            .contains("session JWT required")
+        closeredge_core::openhuman::credentials::auth_create_channel_link_token(
+            &config, "telegram"
+        )
+        .await
+        .expect_err("missing session should fail")
+        .contains("session JWT required")
     );
     assert!(closeredge_core::openhuman::credentials::oauth_connect(
         &config,

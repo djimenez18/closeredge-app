@@ -8,7 +8,6 @@
  *   - Memory usage / conversation count (from config JSONB)
  *   - Quick actions: restart, pause, view logs
  */
-
 import { useEffect, useState } from 'react';
 
 import { supabase } from '../../lib/supabase';
@@ -57,7 +56,9 @@ export default function AgentHealth() {
         // Fetch deployments
         const { data: deps, error: depErr } = await supabase
           .from('agent_deployments')
-          .select('id, subscription_id, agent_type, deployment_mode, deployment_status, railway_service_id, last_health_check, paused_at, config')
+          .select(
+            'id, subscription_id, agent_type, deployment_mode, deployment_status, railway_service_id, last_health_check, paused_at, config'
+          )
           .order('agent_type', { ascending: true });
 
         if (depErr) throw depErr;
@@ -119,15 +120,20 @@ export default function AgentHealth() {
       if (newStatus === 'paused') updates.paused_at = new Date().toISOString();
       if (newStatus === 'running') updates.paused_at = null;
 
-      const { error: err } = await supabase
-        .from('agent_deployments')
-        .update(updates)
-        .eq('id', id);
+      const { error: err } = await supabase.from('agent_deployments').update(updates).eq('id', id);
 
       if (err) throw err;
 
       setDeployments(prev =>
-        prev.map(d => (d.id === id ? { ...d, deployment_status: newStatus, paused_at: newStatus === 'paused' ? new Date().toISOString() : null } : d))
+        prev.map(d =>
+          d.id === id
+            ? {
+                ...d,
+                deployment_status: newStatus,
+                paused_at: newStatus === 'paused' ? new Date().toISOString() : null,
+              }
+            : d
+        )
       );
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Action failed');
@@ -168,9 +174,7 @@ export default function AgentHealth() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-neutral-900">Agent Health</h1>
-        <p className="text-sm text-neutral-500 mt-1">
-          {deployments.length} deployed agents
-        </p>
+        <p className="text-sm text-neutral-500 mt-1">{deployments.length} deployed agents</p>
       </div>
 
       {/* Status summary */}
@@ -234,7 +238,8 @@ function StatusPill({
   };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ${styles[color]}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ${styles[color]}`}>
       <span
         className={`w-1.5 h-1.5 rounded-full ${
           color === 'green'
@@ -273,12 +278,16 @@ function AgentCard({
   const isStopped = d.deployment_status === 'stopped';
 
   // Parse config for optional stats
-  const conversationCount = typeof d.config.conversation_count === 'number' ? d.config.conversation_count : null;
-  const memoryUsageMb = typeof d.config.memory_usage_mb === 'number' ? d.config.memory_usage_mb : null;
+  const conversationCount =
+    typeof d.config.conversation_count === 'number' ? d.config.conversation_count : null;
+  const memoryUsageMb =
+    typeof d.config.memory_usage_mb === 'number' ? d.config.memory_usage_mb : null;
 
   // Health check staleness
   const lastCheck = d.last_health_check ? new Date(d.last_health_check) : null;
-  const minutesSinceCheck = lastCheck ? Math.floor((Date.now() - lastCheck.getTime()) / 60000) : null;
+  const minutesSinceCheck = lastCheck
+    ? Math.floor((Date.now() - lastCheck.getTime()) / 60000)
+    : null;
   const checkStale = minutesSinceCheck !== null && minutesSinceCheck > 10;
 
   return (
@@ -302,9 +311,7 @@ function AgentCard({
             <p className="text-sm font-semibold text-neutral-800">
               {AGENT_LABELS[d.agent_type] ?? d.agent_type}
             </p>
-            <p className="text-[10px] text-neutral-400 truncate max-w-[140px]">
-              {d.customer_name}
-            </p>
+            <p className="text-[10px] text-neutral-400 truncate max-w-[140px]">{d.customer_name}</p>
           </div>
         </div>
         <span

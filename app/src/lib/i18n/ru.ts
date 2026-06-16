@@ -2519,7 +2519,8 @@ const messages: TranslationMap = {
     'Повтор не удался. Скачай последнюю версию и попробуй снова.',
   'daemon.serviceBlockingGate.retrying': 'Повтор...',
   'daemon.serviceBlockingGate.title': 'Ядро CloserEdge AI недоступно',
-  'home.banners.communitySubtitle': 'Получайте поддержку, делитесь отзывами и общайтесь с другими пользователями.',
+  'home.banners.communitySubtitle':
+    'Получайте поддержку, делитесь отзывами и общайтесь с другими пользователями.',
   'home.banners.communityTitle': 'Присоединяйтесь к нашему сообществу',
   'home.banners.discordSubtitle': 'Подзаголовок Discord',
   'home.banners.discordTitle': 'Вступи в наш Discord',

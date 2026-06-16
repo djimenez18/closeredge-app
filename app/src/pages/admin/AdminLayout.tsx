@@ -6,7 +6,6 @@
  * - Purple accent (#7C3AED) for the active nav item
  * - Responsive: sidebar collapses to a hamburger on mobile
  */
-
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
@@ -158,9 +157,7 @@ export default function AdminLayout() {
                       : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
                   }
                 `}>
-                <span className={active ? 'text-purple-600' : 'text-neutral-400'}>
-                  {item.icon}
-                </span>
+                <span className={active ? 'text-purple-600' : 'text-neutral-400'}>{item.icon}</span>
                 {item.label}
               </Link>
             );

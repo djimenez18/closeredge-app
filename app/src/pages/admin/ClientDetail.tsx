@@ -6,7 +6,6 @@
  * Shows business info, subscription details, add-ons, agent deployment status,
  * dunning history, and admin actions (pause/resume/change tier/cancel).
  */
-
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -221,7 +220,8 @@ export default function ClientDetail() {
 
       // Also update deployment status
       if (deployment) {
-        const depStatus = newStatus === 'active' ? 'running' : newStatus === 'paused' ? 'paused' : 'stopped';
+        const depStatus =
+          newStatus === 'active' ? 'running' : newStatus === 'paused' ? 'paused' : 'stopped';
         await supabase
           .from('agent_deployments')
           .update({
@@ -271,7 +271,9 @@ export default function ClientDetail() {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center">
         <p className="text-sm text-red-700 font-medium">{error ?? 'Client not found'}</p>
-        <Link to="/admin/clients" className="mt-3 text-xs text-red-600 underline hover:no-underline">
+        <Link
+          to="/admin/clients"
+          className="mt-3 text-xs text-red-600 underline hover:no-underline">
           Back to Clients
         </Link>
       </div>
@@ -280,7 +282,7 @@ export default function ClientDetail() {
 
   const mrr =
     subscription && (subscription.status === 'active' || subscription.status === 'trialing')
-      ? PRICING[subscription.agent_type]?.[subscription.tier] ?? 0
+      ? (PRICING[subscription.agent_type]?.[subscription.tier] ?? 0)
       : 0;
 
   return (
@@ -310,7 +312,10 @@ export default function ClientDetail() {
           <InfoField label="Contact Name" value={customer.contact_name} />
           <InfoField label="Email" value={customer.contact_email} />
           <InfoField label="Phone" value={customer.contact_phone ?? '--'} />
-          <InfoField label="Customer Since" value={new Date(customer.created_at).toLocaleDateString()} />
+          <InfoField
+            label="Customer Since"
+            value={new Date(customer.created_at).toLocaleDateString()}
+          />
           <InfoField label="MRR" value={mrr > 0 ? `$${mrr}/mo` : '--'} />
           {customer.stripe_customer_id && (
             <InfoField
@@ -334,8 +339,14 @@ export default function ClientDetail() {
         <div className="bg-white rounded-xl border border-neutral-200 p-6">
           <h2 className="text-sm font-semibold text-neutral-800 mb-4">Subscription</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <InfoField label="Agent" value={AGENT_LABELS[subscription.agent_type] ?? subscription.agent_type} />
-            <InfoField label="Tier" value={<span className="capitalize">{subscription.tier}</span>} />
+            <InfoField
+              label="Agent"
+              value={AGENT_LABELS[subscription.agent_type] ?? subscription.agent_type}
+            />
+            <InfoField
+              label="Tier"
+              value={<span className="capitalize">{subscription.tier}</span>}
+            />
             <InfoField label="Status" value={<StatusBadge status={subscription.status} />} />
             <InfoField
               label="Current Period"
@@ -446,8 +457,14 @@ export default function ClientDetail() {
         <div className="bg-white rounded-xl border border-neutral-200 p-6">
           <h2 className="text-sm font-semibold text-neutral-800 mb-4">Agent Deployment</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <InfoField label="Status" value={<DeploymentBadge status={deployment.deployment_status} />} />
-            <InfoField label="Mode" value={<span className="capitalize">{deployment.deployment_mode}</span>} />
+            <InfoField
+              label="Status"
+              value={<DeploymentBadge status={deployment.deployment_status} />}
+            />
+            <InfoField
+              label="Mode"
+              value={<span className="capitalize">{deployment.deployment_mode}</span>}
+            />
             <InfoField
               label="Last Health Check"
               value={
@@ -494,9 +511,9 @@ export default function ClientDetail() {
                 <div key={ev.id} className="relative">
                   {/* Dot */}
                   <div
-                    className={`absolute -left-[26px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white ${
-                      eventDotColor(ev.event_type)
-                    }`}
+                    className={`absolute -left-[26px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white ${eventDotColor(
+                      ev.event_type
+                    )}`}
                   />
                   <div>
                     <p className="text-sm text-neutral-700 font-medium">

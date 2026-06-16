@@ -118,8 +118,7 @@ export const BACKEND_URL =
   (import.meta.env.VITE_BACKEND_URL as string | undefined)?.trim() || DEFAULT_BACKEND_URL;
 
 /** Supabase project URL for client-side auth and data access. */
-export const SUPABASE_URL =
-  (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim() || '';
+export const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim() || '';
 
 /** Supabase anonymous (public) key for client-side auth. */
 export const SUPABASE_ANON_KEY =

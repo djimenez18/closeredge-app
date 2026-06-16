@@ -10,7 +10,9 @@ use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ProviderDelta, UsageInfo,
 };
 use closeredge_core::openhuman::security::POLICY_BLOCKED_MARKER;
-use closeredge_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult, ToolScope};
+use closeredge_core::openhuman::tools::{
+    PermissionLevel, Tool, ToolContent, ToolResult, ToolScope,
+};
 use serde_json::json;
 use std::collections::VecDeque;
 use std::sync::{Arc, Mutex};

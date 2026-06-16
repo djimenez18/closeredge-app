@@ -5,13 +5,13 @@
  * generation. Communicates with the LLM through the app's existing
  * agent infrastructure (core RPC → backend → model).
  */
-
 import { supabase } from '@/lib/supabase';
+
 import {
   ADVERSARY_SYSTEM_PROMPT,
-  JUDGE_PERSPECTIVE_PROMPT,
   CROSS_EXAMINATION_PROMPT,
   DOCUMENT_ATTACK_VECTORS,
+  JUDGE_PERSPECTIVE_PROMPT,
 } from './adversaryPrompts';
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -73,12 +73,11 @@ export interface StressTestInput {
  */
 export async function analyzeDocument(
   file: File,
-  documentType: DocumentType,
+  documentType: DocumentType
 ): Promise<AdversaryReport> {
   const text = await file.text();
 
-  const attackVector =
-    DOCUMENT_ATTACK_VECTORS[documentType] ?? DOCUMENT_ATTACK_VECTORS.brief;
+  const attackVector = DOCUMENT_ATTACK_VECTORS[documentType] ?? DOCUMENT_ATTACK_VECTORS.brief;
 
   const userPrompt = `## Document Type\n${documentType.replace(/_/g, ' ')}\n\n## Attack Focus\n${attackVector}\n\n## Document\n\n${text}`;
 
@@ -105,9 +104,7 @@ export async function analyzeDocument(
  * and the cross-examination prompt to attack the brief from three
  * angles simultaneously.
  */
-export async function runStressTest(
-  input: StressTestInput,
-): Promise<AdversaryReport> {
+export async function runStressTest(input: StressTestInput): Promise<AdversaryReport> {
   const combinedSystemPrompt = [
     ADVERSARY_SYSTEM_PROMPT,
     '',
@@ -140,9 +137,7 @@ export async function runStressTest(
  * Generate a counter-argument or strengthening recommendation for a
  * single finding.
  */
-export async function getCounterArgument(
-  finding: Finding,
-): Promise<string> {
+export async function getCounterArgument(finding: Finding): Promise<string> {
   const userPrompt = [
     `The opposing counsel identified the following vulnerability in our argument:`,
     '',
@@ -235,7 +230,7 @@ export function exportReport(report: AdversaryReport): string {
 function normalizeReport(
   raw: unknown,
   documentType: DocumentType,
-  mode: 'document_review' | 'brief_stress_test',
+  mode: 'document_review' | 'brief_stress_test'
 ): AdversaryReport {
   const data = raw as Record<string, unknown>;
 
@@ -252,12 +247,7 @@ function normalizeReport(
       }))
     : [];
 
-  const severityCounts: Record<Severity, number> = {
-    critical: 0,
-    high: 0,
-    medium: 0,
-    low: 0,
-  };
+  const severityCounts: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
   for (const f of findings) {
     severityCounts[f.severity]++;
   }
@@ -307,10 +297,6 @@ function getSectionText(data: Record<string, unknown>, key: string): string {
 
 function computeVulnerabilityScore(counts: Record<Severity, number>): number {
   // Weighted score: critical=25, high=15, medium=8, low=3
-  const raw =
-    counts.critical * 25 +
-    counts.high * 15 +
-    counts.medium * 8 +
-    counts.low * 3;
+  const raw = counts.critical * 25 + counts.high * 15 + counts.medium * 8 + counts.low * 3;
   return Math.min(100, raw);
 }

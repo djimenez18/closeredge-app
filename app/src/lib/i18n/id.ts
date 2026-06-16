@@ -2509,7 +2509,8 @@ const messages: TranslationMap = {
     'Coba ulang gagal. Unduh build aplikasi terbaru dan coba lagi.',
   'daemon.serviceBlockingGate.retrying': 'Mencoba ulang...',
   'daemon.serviceBlockingGate.title': 'Core CloserEdge AI tidak tersedia',
-  'home.banners.communitySubtitle': 'Dapatkan dukungan, bagikan masukan, dan terhubung dengan pengguna lain.',
+  'home.banners.communitySubtitle':
+    'Dapatkan dukungan, bagikan masukan, dan terhubung dengan pengguna lain.',
   'home.banners.communityTitle': 'Bergabunglah dengan Komunitas Kami',
   'home.banners.discordSubtitle': 'Subtitle Discord',
   'home.banners.discordTitle': 'Bergabung ke Discord Kami',

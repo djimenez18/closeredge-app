@@ -12,19 +12,18 @@
  *
  * Uses the SimpleChart SVG components -- no external charting library.
  */
-
 import { useEffect, useMemo, useState } from 'react';
 
 import { supabase } from '../../lib/supabase';
 import {
   BarChart,
+  type DataPoint,
   DonutChart,
   FunnelChart,
+  type FunnelStep,
   HorizontalBarChart,
   LineChart,
   StackedBarChart,
-  type DataPoint,
-  type FunnelStep,
   type StackedBarGroup,
 } from './charts/SimpleChart';
 
@@ -152,7 +151,10 @@ export default function Analytics() {
 
   // ---- Derived data ----
 
-  const activeSubs = useMemo(() => subs.filter(s => s.status === 'active' || s.status === 'trialing'), [subs]);
+  const activeSubs = useMemo(
+    () => subs.filter(s => s.status === 'active' || s.status === 'trialing'),
+    [subs]
+  );
 
   // MRR over time (monthly buckets)
   const mrrOverTime: DataPoint[] = useMemo(() => {
@@ -220,11 +222,7 @@ export default function Analytics() {
       const segments = ['foundation', 'pro', 'elite'].map(tier => {
         const count = activeSubs.filter(s => s.agent_type === agent && s.tier === tier).length;
         const price = PRICING[agent]?.[tier] ?? 0;
-        return {
-          label: tier,
-          value: count * price,
-          color: TIER_COLORS[tier],
-        };
+        return { label: tier, value: count * price, color: TIER_COLORS[tier] };
       });
       return { label: AGENT_LABELS[agent], segments };
     });
@@ -298,18 +296,18 @@ export default function Analytics() {
         <KpiCard label="Current MRR" value={`$${currentMrr.toLocaleString()}`} />
         <KpiCard label="Active Clients" value={activeSubs.length.toString()} />
         <KpiCard label="Total Subscriptions" value={subs.length.toString()} />
-        <KpiCard label="Churn Rate (this month)" value={`${churnRate}%`} highlight={parseFloat(churnRate) > 5} />
+        <KpiCard
+          label="Churn Rate (this month)"
+          value={`${churnRate}%`}
+          highlight={parseFloat(churnRate) > 5}
+        />
       </div>
 
       {/* Charts grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* MRR over time */}
         <ChartCard title="MRR Over Time" span="lg:col-span-2">
-          {mrrOverTime.length > 0 ? (
-            <LineChart data={mrrOverTime} height={220} />
-          ) : (
-            <EmptyChart />
-          )}
+          {mrrOverTime.length > 0 ? <LineChart data={mrrOverTime} height={220} /> : <EmptyChart />}
         </ChartCard>
 
         {/* Clients by agent type */}
@@ -354,11 +352,7 @@ export default function Analytics() {
 
         {/* Top add-ons */}
         <ChartCard title="Top Add-ons by Adoption">
-          {addonAdoption.length > 0 ? (
-            <HorizontalBarChart data={addonAdoption} />
-          ) : (
-            <EmptyChart />
-          )}
+          {addonAdoption.length > 0 ? <HorizontalBarChart data={addonAdoption} /> : <EmptyChart />}
         </ChartCard>
 
         {/* Dunning funnel */}

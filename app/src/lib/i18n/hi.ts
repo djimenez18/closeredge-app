@@ -2506,7 +2506,8 @@ const messages: TranslationMap = {
     'फिर से कोशिश विफल। लेटेस्ट ऐप बिल्ड डाउनलोड करके दोबारा कोशिश करें।',
   'daemon.serviceBlockingGate.retrying': 'फिर से कोशिश हो रही है...',
   'daemon.serviceBlockingGate.title': 'CloserEdge AI कोर उपलब्ध नहीं है',
-  'home.banners.communitySubtitle': 'सहायता पाएं, फ़ीडबैक साझा करें और अन्य उपयोगकर्ताओं से जुड़ें।',
+  'home.banners.communitySubtitle':
+    'सहायता पाएं, फ़ीडबैक साझा करें और अन्य उपयोगकर्ताओं से जुड़ें।',
   'home.banners.communityTitle': 'हमारे समुदाय से जुड़ें',
   'home.banners.discordSubtitle': 'Discord उपशीर्षक',
   'home.banners.discordTitle': 'हमारा Discord जॉइन करें',

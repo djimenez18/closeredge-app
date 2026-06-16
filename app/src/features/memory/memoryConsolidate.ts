@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+
 import { parseJsonFromLLM } from './memoryIngest';
 import type { ConsolidationLLMResult, MemoryRow } from './memoryTypes';
 
@@ -67,7 +68,7 @@ function safeJsonArray(val: unknown): string[] {
 export async function consolidateMemories(
   agentId: string,
   llmCall: (prompt: string) => Promise<string>,
-  maxMemories = 20,
+  maxMemories = 20
 ): Promise<{ consolidationId: number | null; sourceCount: number }> {
   // Guard against overlapping runs
   if (consolidatingAgents.has(agentId)) {
@@ -82,13 +83,13 @@ export async function consolidateMemories(
 
     if (memories.length < 2) {
       console.debug(
-        `[memory-consolidate] only ${memories.length} memory/ies for ${agentId}, skipping`,
+        `[memory-consolidate] only ${memories.length} memory/ies for ${agentId}, skipping`
       );
       return { consolidationId: null, sourceCount: memories.length };
     }
 
     // Format memories for the LLM
-    const memoriesJson = memories.map((m) => ({
+    const memoriesJson = memories.map(m => ({
       id: m.id,
       summary: m.summary,
       entities: safeJsonArray(m.entities),
@@ -99,7 +100,7 @@ export async function consolidateMemories(
 
     const prompt = CONSOLIDATION_PROMPT.replace(
       '{MEMORIES}',
-      JSON.stringify(memoriesJson, null, 2),
+      JSON.stringify(memoriesJson, null, 2)
     );
 
     const raw = await llmCall(prompt);
@@ -110,41 +111,37 @@ export async function consolidateMemories(
       return { consolidationId: null, sourceCount: memories.length };
     }
 
-    const sourceIds = memories.map((m) => m.id);
+    const sourceIds = memories.map(m => m.id);
 
     // Validate connections — only keep those referencing memories in this batch
     const validConnections = (result.connections ?? []).filter(
-      (conn) =>
+      conn =>
         conn.from_id &&
         conn.to_id &&
         sourceIds.includes(conn.from_id) &&
-        sourceIds.includes(conn.to_id),
+        sourceIds.includes(conn.to_id)
     );
 
     // Handle contradictions — correct direction using timestamps
     if (result.contradictions && result.contradictions.length > 0) {
       for (const contra of result.contradictions) {
-        if (
-          !sourceIds.includes(contra.stale_id) ||
-          !sourceIds.includes(contra.supersedes_id)
-        ) {
+        if (!sourceIds.includes(contra.stale_id) || !sourceIds.includes(contra.supersedes_id)) {
           continue;
         }
 
-        const staleMem = memories.find((m) => m.id === contra.stale_id);
-        const newMem = memories.find((m) => m.id === contra.supersedes_id);
+        const staleMem = memories.find(m => m.id === contra.stale_id);
+        const newMem = memories.find(m => m.id === contra.supersedes_id);
 
         // Correct direction if LLM got timestamps wrong
         let staleId = contra.stale_id;
         if (
           staleMem &&
           newMem &&
-          new Date(staleMem.created_at).getTime() >
-            new Date(newMem.created_at).getTime()
+          new Date(staleMem.created_at).getTime() > new Date(newMem.created_at).getTime()
         ) {
           staleId = contra.supersedes_id;
           console.warn(
-            `[memory-consolidate] corrected contradiction direction: ${contra.stale_id} -> ${staleId}`,
+            `[memory-consolidate] corrected contradiction direction: ${contra.stale_id} -> ${staleId}`
           );
         }
 
@@ -154,9 +151,7 @@ export async function consolidateMemories(
           .update({ salience: 0.1, importance: 0.1 })
           .eq('id', staleId);
 
-        console.info(
-          `[memory-consolidate] superseded memory #${staleId}: ${contra.reason}`,
-        );
+        console.info(`[memory-consolidate] superseded memory #${staleId}: ${contra.reason}`);
       }
     }
 
@@ -180,7 +175,7 @@ export async function consolidateMemories(
     const consolidationId = consolidation?.id ?? null;
 
     console.info(
-      `[memory-consolidate] created consolidation #${consolidationId} from ${sourceIds.length} memories (${validConnections.length} connections). Insight: ${result.insight.slice(0, 80)}`,
+      `[memory-consolidate] created consolidation #${consolidationId} from ${sourceIds.length} memories (${validConnections.length} connections). Insight: ${result.insight.slice(0, 80)}`
     );
 
     return { consolidationId, sourceCount: memories.length };
@@ -199,10 +194,7 @@ export async function consolidateMemories(
  * A memory is "unconsolidated" if its ID doesn't appear in any
  * consolidation's source_ids array.
  */
-async function getUnconsolidatedMemories(
-  agentId: string,
-  limit: number,
-): Promise<MemoryRow[]> {
+async function getUnconsolidatedMemories(agentId: string, limit: number): Promise<MemoryRow[]> {
   // First, get all source_ids from existing consolidations for this agent
   const { data: consolidations } = await supabase
     .from('consolidations')
@@ -234,9 +226,7 @@ async function getUnconsolidatedMemories(
   }
 
   // Filter out already-consolidated memories
-  return (memories as MemoryRow[])
-    .filter((m) => !consolidatedIds.has(m.id))
-    .slice(0, limit);
+  return (memories as MemoryRow[]).filter(m => !consolidatedIds.has(m.id)).slice(0, limit);
 }
 
 /**
@@ -246,10 +236,10 @@ async function getUnconsolidatedMemories(
 export function scheduleConsolidation(
   agentId: string,
   llmCall: (prompt: string) => Promise<string>,
-  intervalMs = 30 * 60 * 1000,
+  intervalMs = 30 * 60 * 1000
 ): () => void {
   const handle = setInterval(() => {
-    void consolidateMemories(agentId, llmCall).catch((err) => {
+    void consolidateMemories(agentId, llmCall).catch(err => {
       console.error('[memory-consolidate] scheduled run failed:', err);
     });
   }, intervalMs);

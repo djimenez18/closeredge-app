@@ -400,7 +400,8 @@ mod tests {
         let status = RegistrationStatus::Stale {
             registered_command:
                 "\"C:\\Users\\joe\\AppData\\Local\\CloserEdgeAI\\CloserEdgeAI.exe\" \"%1\"".into(),
-            expected_exe: "C:\\Users\\joe\\AppData\\Local\\CloserEdgeAI_new\\CloserEdgeAI.exe".into(),
+            expected_exe: "C:\\Users\\joe\\AppData\\Local\\CloserEdgeAI_new\\CloserEdgeAI.exe"
+                .into(),
         };
         let rendered = status.redacted();
         assert!(

@@ -45,34 +45,102 @@ export interface InterventionDecision {
 
 const AGENT_KEYWORDS: Record<string, string[]> = {
   eden: [
-    'residential', 'home buyer', 'home seller', 'listing', 'open house',
-    'showing', 'mortgage', 'pre-approval', 'mls', 'buyer', 'seller',
-    'house', 'condo', 'townhome', 'neighborhood', 'school district',
+    'residential',
+    'home buyer',
+    'home seller',
+    'listing',
+    'open house',
+    'showing',
+    'mortgage',
+    'pre-approval',
+    'mls',
+    'buyer',
+    'seller',
+    'house',
+    'condo',
+    'townhome',
+    'neighborhood',
+    'school district',
   ],
   crest: [
-    'commercial', 'office space', 'retail', 'warehouse', 'industrial',
-    'cap rate', 'noi', 'triple net', 'lease', 'tenant', 'vacancy',
-    'investment property', 'commercial real estate', 'cre',
+    'commercial',
+    'office space',
+    'retail',
+    'warehouse',
+    'industrial',
+    'cap rate',
+    'noi',
+    'triple net',
+    'lease',
+    'tenant',
+    'vacancy',
+    'investment property',
+    'commercial real estate',
+    'cre',
   ],
   forge: [
-    'contractor', 'renovation', 'repair', 'hvac', 'plumbing',
-    'electrical', 'roofing', 'estimate', 'bid', 'job', 'service call',
-    'maintenance', 'home services', 'inspection',
+    'contractor',
+    'renovation',
+    'repair',
+    'hvac',
+    'plumbing',
+    'electrical',
+    'roofing',
+    'estimate',
+    'bid',
+    'job',
+    'service call',
+    'maintenance',
+    'home services',
+    'inspection',
   ],
   haven: [
-    'medical', 'dental', 'patient', 'appointment', 'clinic', 'doctor',
-    'practice', 'insurance', 'hipaa', 'health', 'treatment', 'referral',
-    'scheduling', 'intake form',
+    'medical',
+    'dental',
+    'patient',
+    'appointment',
+    'clinic',
+    'doctor',
+    'practice',
+    'insurance',
+    'hipaa',
+    'health',
+    'treatment',
+    'referral',
+    'scheduling',
+    'intake form',
   ],
   lexis: [
-    'legal', 'law', 'attorney', 'lawyer', 'case', 'client intake',
-    'consultation', 'contract', 'liability', 'compliance', 'court',
-    'filing', 'retainer', 'deposition',
+    'legal',
+    'law',
+    'attorney',
+    'lawyer',
+    'case',
+    'client intake',
+    'consultation',
+    'contract',
+    'liability',
+    'compliance',
+    'court',
+    'filing',
+    'retainer',
+    'deposition',
   ],
   nora: [
-    'property management', 'landlord', 'tenant', 'rent', 'lease',
-    'maintenance request', 'eviction', 'property manager', 'unit',
-    'building', 'hoa', 'amenities', 'move-in', 'move-out',
+    'property management',
+    'landlord',
+    'tenant',
+    'rent',
+    'lease',
+    'maintenance request',
+    'eviction',
+    'property manager',
+    'unit',
+    'building',
+    'hoa',
+    'amenities',
+    'move-in',
+    'move-out',
   ],
 };
 
@@ -98,12 +166,9 @@ export function isAcknowledgment(text: string): boolean {
  * Extract all @mentioned agent IDs from a message, in order of appearance.
  * Deduplicated. Only returns IDs that exist in the roster.
  */
-export function extractMentions(
-  text: string,
-  roster: RosterAgent[],
-): string[] {
+export function extractMentions(text: string, roster: RosterAgent[]): string[] {
   const re = /(?:^|[\s,(\[{:;])@([a-z][a-z0-9_-]{0,29})\b/gi;
-  const rosterIds = new Set(roster.map((r) => r.id));
+  const rosterIds = new Set(roster.map(r => r.id));
   const seen = new Set<string>();
   const out: string[] = [];
   let m: RegExpExecArray | null;
@@ -123,14 +188,11 @@ export function extractMentions(
  * Score each agent's relevance to the user message using keyword matching.
  * Returns agents sorted by score descending.
  */
-function scoreAgents(
-  text: string,
-  roster: RosterAgent[],
-): Array<{ id: string; score: number }> {
+function scoreAgents(text: string, roster: RosterAgent[]): Array<{ id: string; score: number }> {
   const lower = text.toLowerCase();
   return roster
-    .filter((a) => a.enabled)
-    .map((a) => {
+    .filter(a => a.enabled)
+    .map(a => {
       const keywords = AGENT_KEYWORDS[a.id] ?? [];
       const score = keywords.reduce((acc, kw) => {
         return acc + (lower.includes(kw) ? 1 : 0);
@@ -143,10 +205,7 @@ function scoreAgents(
 // ── Router fallback ──────────────────────────────────────────────────
 
 export function routerFallback(ctx: RouterContext): RouterDecision {
-  const fallbackId =
-    ctx.pinnedAgent ??
-    ctx.roster.find((a) => a.enabled)?.id ??
-    'eden';
+  const fallbackId = ctx.pinnedAgent ?? ctx.roster.find(a => a.enabled)?.id ?? 'eden';
   return {
     primary: fallbackId,
     interveners: [],
@@ -172,28 +231,23 @@ export function routerFallback(ctx: RouterContext): RouterDecision {
  */
 export async function routeMessage(ctx: RouterContext): Promise<RouterDecision> {
   const { userText, roster, pinnedAgent } = ctx;
-  const enabledRoster = roster.filter((a) => a.enabled);
+  const enabledRoster = roster.filter(a => a.enabled);
 
   if (enabledRoster.length === 0) {
-    return {
-      primary: null,
-      interveners: [],
-      reason: 'no agents enabled',
-      routerDegraded: true,
-    };
+    return { primary: null, interveners: [], reason: 'no agents enabled', routerDegraded: true };
   }
 
   // 1. Check for @mentions
   const mentions = extractMentions(userText, enabledRoster);
   if (mentions.length > 0) {
     const primary = mentions[0];
-    const interveners = mentions.slice(1, 3).filter((id) => id !== primary);
+    const interveners = mentions.slice(1, 3).filter(id => id !== primary);
     return {
       primary,
       interveners,
       reason:
         interveners.length > 0
-          ? `explicit @${primary} + ${interveners.map((id) => `@${id}`).join(', ')}`
+          ? `explicit @${primary} + ${interveners.map(id => `@${id}`).join(', ')}`
           : `explicit @${primary}`,
       routerDegraded: false,
     };
@@ -220,7 +274,7 @@ export async function routeMessage(ctx: RouterContext): Promise<RouterDecision> 
   }
 
   // 3. Pinned agent takes all un-addressed messages
-  if (pinnedAgent && enabledRoster.some((a) => a.id === pinnedAgent)) {
+  if (pinnedAgent && enabledRoster.some(a => a.id === pinnedAgent)) {
     return {
       primary: pinnedAgent,
       interveners: [],
@@ -239,9 +293,9 @@ export async function routeMessage(ctx: RouterContext): Promise<RouterDecision> 
 
     // Interveners = agents with score > 0 that aren't the primary (max 2)
     const interveners = scores
-      .filter((s) => s.id !== primary && s.score > 0)
+      .filter(s => s.id !== primary && s.score > 0)
       .slice(0, 2)
-      .map((s) => s.id);
+      .map(s => s.id);
 
     return {
       primary,

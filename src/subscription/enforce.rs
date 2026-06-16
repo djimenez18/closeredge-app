@@ -203,9 +203,7 @@ pub async fn status_report() -> serde_json::Value {
     };
 
     let limits = record.as_ref().map(|r| tier_limits(r.tier));
-    let exceeded = limits
-        .as_ref()
-        .and_then(|l| check_limits(l, &snapshot));
+    let exceeded = limits.as_ref().and_then(|l| check_limits(l, &snapshot));
 
     serde_json::json!({
         "gating_enabled": gating,

@@ -13,7 +13,6 @@ use axum::http::{header, HeaderMap, Response, StatusCode};
 use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use futures_util::StreamExt;
 use closeredge_core::core::all::RegisteredController;
 use closeredge_core::openhuman::config::schema::cloud_providers::{
     AuthStyle as CloudAuthStyle, CloudProviderCreds,
@@ -30,6 +29,7 @@ use closeredge_core::openhuman::inference::provider::traits::{StreamError, Strea
 use closeredge_core::openhuman::inference::provider::{
     list_configured_models, ChatMessage, Provider,
 };
+use futures_util::StreamExt;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 

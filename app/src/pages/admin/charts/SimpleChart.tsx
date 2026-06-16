@@ -2,7 +2,6 @@
  * SimpleChart -- lightweight SVG chart components for the admin dashboard.
  * No external dependencies; pure React + inline SVG.
  */
-
 import { useMemo } from 'react';
 
 // ---------------------------------------------------------------------------
@@ -168,10 +167,7 @@ export function StackedBarChart({
   gap = 16,
   className = '',
 }: StackedBarChartProps) {
-  const maxVal = Math.max(
-    ...data.map(g => g.segments.reduce((sum, s) => sum + s.value, 0)),
-    1
-  );
+  const maxVal = Math.max(...data.map(g => g.segments.reduce((sum, s) => sum + s.value, 0)), 1);
   const totalWidth = data.length * (barWidth + gap) - gap;
   const padding = { top: 10, bottom: 40, left: 10, right: 10 };
   const svgW = totalWidth + padding.left + padding.right;
@@ -303,7 +299,15 @@ export function LineChart({
       {/* Dots */}
       {showDots &&
         points.map(p => (
-          <circle key={p.label} cx={p.x} cy={p.y} r={4} fill="white" stroke={color} strokeWidth={2} />
+          <circle
+            key={p.label}
+            cx={p.x}
+            cy={p.y}
+            r={4}
+            fill="white"
+            stroke={color}
+            strokeWidth={2}
+          />
         ))}
 
       {/* X-axis labels */}

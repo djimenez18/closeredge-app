@@ -12,6 +12,7 @@ import { ConfirmationModal } from '../components/intelligence/ConfirmationModal'
 import PillTabBar from '../components/PillTabBar';
 import UpsellBanner from '../components/upsell/UpsellBanner';
 import { dismissBanner, shouldShowBanner } from '../components/upsell/upsellDismissState';
+import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import MicComposer from '../features/human/MicComposer';
 import { useStickToBottom } from '../hooks/useStickToBottom';
 import { useUsageState } from '../hooks/useUsageState';
@@ -62,7 +63,6 @@ import type { AgentProfile } from '../types/agentProfile';
 import type { ConfirmationModal as ConfirmationModalType } from '../types/intelligence';
 import type { ThreadMessage } from '../types/thread';
 import type { TaskBoardCard, TaskBoardCardStatus } from '../types/turnState';
-import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import { splitAgentMessageIntoBubbles } from '../utils/agentMessageBubbles';
 import {
   isTauri,

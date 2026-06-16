@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { MARKETING_URLS, SUBSCRIPTION_ROUTE } from '../constants/links';
 import { useChannelDefinitions } from '../hooks/useChannelDefinitions';
 import { useT } from '../lib/i18n/I18nContext';
 import {
@@ -30,7 +31,6 @@ import {
   type AccountStatus,
   PROVIDERS,
 } from '../types/accounts';
-import { MARKETING_URLS, SUBSCRIPTION_ROUTE } from '../constants/links';
 import { openUrl } from '../utils/openUrl';
 import { ProviderIcon } from './accounts/providerIcons';
 import ChannelSetupModal from './channels/ChannelSetupModal';

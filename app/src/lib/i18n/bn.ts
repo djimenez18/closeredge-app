@@ -2503,7 +2503,8 @@ const messages: TranslationMap = {
     'আবার চেষ্টা ব্যর্থ। সর্বশেষ অ্যাপ বিল্ড ডাউনলোড করে আবার চেষ্টা করুন।',
   'daemon.serviceBlockingGate.retrying': 'আবার চেষ্টা হচ্ছে...',
   'daemon.serviceBlockingGate.title': 'CloserEdge AI কোর পাওয়া যাচ্ছে না',
-  'home.banners.communitySubtitle': 'সহায়তা পান, মতামত শেয়ার করুন এবং অন্যান্য ব্যবহারকারীদের সাথে যুক্ত হন।',
+  'home.banners.communitySubtitle':
+    'সহায়তা পান, মতামত শেয়ার করুন এবং অন্যান্য ব্যবহারকারীদের সাথে যুক্ত হন।',
   'home.banners.communityTitle': 'আমাদের কমিউনিটিতে যোগ দিন',
   'home.banners.discordSubtitle': 'Discord সাবটাইটেল',
   'home.banners.discordTitle': 'আমাদের Discord-এ যোগ দিন',

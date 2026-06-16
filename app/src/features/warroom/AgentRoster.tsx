@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+
 import type { RosterAgent } from './warRoomRouter';
 
 // ── Agent metadata ───────────────────────────────────────────────────
@@ -7,14 +8,16 @@ export const CLOSEREDGE_AGENTS: RosterAgent[] = [
   {
     id: 'eden',
     name: 'Eden',
-    description: 'Residential real estate specialist. Buyer/seller representation, market analysis, and property valuation.',
+    description:
+      'Residential real estate specialist. Buyer/seller representation, market analysis, and property valuation.',
     industry: 'Residential Real Estate',
     enabled: true,
   },
   {
     id: 'crest',
     name: 'Crest',
-    description: 'Commercial real estate analyst. Cap rates, NOI, tenant mix, and investment property evaluation.',
+    description:
+      'Commercial real estate analyst. Cap rates, NOI, tenant mix, and investment property evaluation.',
     industry: 'Commercial Real Estate',
     enabled: true,
   },
@@ -28,7 +31,8 @@ export const CLOSEREDGE_AGENTS: RosterAgent[] = [
   {
     id: 'haven',
     name: 'Haven',
-    description: 'Medical and dental practice operations. Patient intake, scheduling, and compliance.',
+    description:
+      'Medical and dental practice operations. Patient intake, scheduling, and compliance.',
     industry: 'Healthcare',
     enabled: true,
   },
@@ -42,28 +46,29 @@ export const CLOSEREDGE_AGENTS: RosterAgent[] = [
   {
     id: 'nora',
     name: 'Nora',
-    description: 'Property management and landlord operations. Tenant relations, leasing, and maintenance.',
+    description:
+      'Property management and landlord operations. Tenant relations, leasing, and maintenance.',
     industry: 'Property Management',
     enabled: true,
   },
 ];
 
 export const AGENT_COLORS: Record<string, string> = {
-  eden:  '#7C3AED',
+  eden: '#7C3AED',
   crest: '#3B82F6',
   forge: '#EF4444',
   haven: '#10B981',
   lexis: '#F59E0B',
-  nora:  '#A78BFA',
+  nora: '#A78BFA',
 };
 
 export const AGENT_INITIALS: Record<string, string> = {
-  eden:  'ED',
+  eden: 'ED',
   crest: 'CR',
   forge: 'FG',
   haven: 'HV',
   lexis: 'LX',
-  nora:  'NR',
+  nora: 'NR',
 };
 
 // ── Status type ──────────────────────────────────────────────────────
@@ -101,30 +106,24 @@ export function AgentRoster({
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
   const dragRef = useRef<HTMLDivElement | null>(null);
 
-  const enabledCount = agents.filter((a) => a.enabled).length;
+  const enabledCount = agents.filter(a => a.enabled).length;
 
   // ── Drag-to-reorder ──────────────────────────────────────────────
 
-  const handleDragStart = useCallback(
-    (e: React.DragEvent, idx: number) => {
-      setDragIdx(idx);
-      e.dataTransfer.effectAllowed = 'move';
-      // Make the drag image semi-transparent
-      if (e.currentTarget instanceof HTMLElement) {
-        e.dataTransfer.setDragImage(e.currentTarget, 20, 20);
-      }
-    },
-    [],
-  );
+  const handleDragStart = useCallback((e: React.DragEvent, idx: number) => {
+    setDragIdx(idx);
+    e.dataTransfer.effectAllowed = 'move';
+    // Make the drag image semi-transparent
+    if (e.currentTarget instanceof HTMLElement) {
+      e.dataTransfer.setDragImage(e.currentTarget, 20, 20);
+    }
+  }, []);
 
-  const handleDragOver = useCallback(
-    (e: React.DragEvent, idx: number) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      setDragOverIdx(idx);
-    },
-    [],
-  );
+  const handleDragOver = useCallback((e: React.DragEvent, idx: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverIdx(idx);
+  }, []);
 
   const handleDrop = useCallback(
     (e: React.DragEvent, dropIdx: number) => {
@@ -141,7 +140,7 @@ export function AgentRoster({
       setDragIdx(null);
       setDragOverIdx(null);
     },
-    [agents, dragIdx, onReorder],
+    [agents, dragIdx, onReorder]
   );
 
   const handleDragEnd = useCallback(() => {
@@ -192,14 +191,12 @@ export function AgentRoster({
         <div className="flex gap-2">
           <button
             onClick={onSelectAll}
-            className="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors"
-          >
+            className="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors">
             Select All
           </button>
           <button
             onClick={onDeselectAll}
-            className="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors"
-          >
+            className="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors">
             Deselect All
           </button>
         </div>
@@ -220,9 +217,9 @@ export function AgentRoster({
               key={agent.id}
               ref={isDragging ? dragRef : undefined}
               draggable
-              onDragStart={(e) => handleDragStart(e, idx)}
-              onDragOver={(e) => handleDragOver(e, idx)}
-              onDrop={(e) => handleDrop(e, idx)}
+              onDragStart={e => handleDragStart(e, idx)}
+              onDragOver={e => handleDragOver(e, idx)}
+              onDrop={e => handleDrop(e, idx)}
               onDragEnd={handleDragEnd}
               className={`
                 mx-2 mb-1 px-3 py-2.5 rounded-lg cursor-grab active:cursor-grabbing
@@ -230,14 +227,12 @@ export function AgentRoster({
                 ${isDragging ? 'opacity-40 scale-95' : 'opacity-100'}
                 ${isDragOver ? 'ring-1 ring-indigo-500/50' : ''}
                 ${agent.enabled ? 'bg-zinc-800/60 hover:bg-zinc-800' : 'bg-zinc-900/40'}
-              `}
-            >
+              `}>
               <div className="flex items-center gap-3">
                 {/* Avatar */}
                 <div
                   className="relative flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                  style={{ backgroundColor: agent.enabled ? color : '#3F3F46' }}
-                >
+                  style={{ backgroundColor: agent.enabled ? color : '#3F3F46' }}>
                   {initials}
                   {/* Status dot */}
                   <span
@@ -251,8 +246,7 @@ export function AgentRoster({
                     <span
                       className={`text-sm font-medium truncate ${
                         agent.enabled ? 'text-zinc-100' : 'text-zinc-500'
-                      }`}
-                    >
+                      }`}>
                       {agent.name}
                     </span>
                     {isPinned && (
@@ -266,9 +260,7 @@ export function AgentRoster({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-zinc-500 truncate">
-                    {agent.industry}
-                  </p>
+                  <p className="text-xs text-zinc-500 truncate">{agent.industry}</p>
                 </div>
 
                 {/* Controls */}
@@ -282,8 +274,7 @@ export function AgentRoster({
                         isPinned
                           ? 'text-indigo-400 hover:text-indigo-300'
                           : 'text-zinc-600 hover:text-zinc-400'
-                      }`}
-                    >
+                      }`}>
                       <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h3a1 1 0 001-1v-3h2v3a1 1 0 001 1h3a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                       </svg>
@@ -297,8 +288,7 @@ export function AgentRoster({
                       relative w-8 h-[18px] rounded-full transition-colors
                       ${agent.enabled ? 'bg-emerald-600' : 'bg-zinc-700'}
                     `}
-                    title={agent.enabled ? 'Disable agent' : 'Enable agent'}
-                  >
+                    title={agent.enabled ? 'Disable agent' : 'Enable agent'}>
                     <span
                       className={`
                         absolute top-0.5 w-3.5 h-3.5 rounded-full bg-white shadow-sm
@@ -311,9 +301,7 @@ export function AgentRoster({
               </div>
 
               {/* Status line */}
-              <div className="mt-1 ml-12 text-[11px] text-zinc-600">
-                {statusLabel(status)}
-              </div>
+              <div className="mt-1 ml-12 text-[11px] text-zinc-600">{statusLabel(status)}</div>
             </div>
           );
         })}
@@ -321,9 +309,7 @@ export function AgentRoster({
 
       {/* Drag hint */}
       <div className="px-4 py-2 border-t border-zinc-800">
-        <p className="text-[11px] text-zinc-600 text-center">
-          Drag to reorder priority
-        </p>
+        <p className="text-[11px] text-zinc-600 text-center">Drag to reorder priority</p>
       </div>
     </div>
   );
