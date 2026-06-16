@@ -22,7 +22,11 @@ dist/
 # CI / docs
 .github/
 docs/
-*.md
+README.md
+CONTRIBUTING.md
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+SECURITY.md
 !Cargo.lock
 
 # Environment / secrets

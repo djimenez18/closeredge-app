@@ -385,7 +385,8 @@ const BottomTabBar = () => {
                           ? 'bg-[#7C3AED]/[0.08] dark:bg-[#7C3AED]/10 text-[#7C3AED] dark:text-[#A855F7] font-semibold'
                           : 'text-stone-600 dark:text-neutral-300 hover:bg-stone-50 dark:hover:bg-neutral-800/60 hover:text-stone-900 dark:hover:text-neutral-100'
                       }`}>
-                      <span className={`flex-shrink-0 ${active ? 'text-[#7C3AED] dark:text-[#A855F7]' : 'text-stone-400 dark:text-neutral-500'}`}>
+                      <span
+                        className={`flex-shrink-0 ${active ? 'text-[#7C3AED] dark:text-[#A855F7]' : 'text-stone-400 dark:text-neutral-500'}`}>
                         {tab.icon}
                       </span>
                       {tab.label}

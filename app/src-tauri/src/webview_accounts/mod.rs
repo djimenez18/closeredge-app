@@ -295,7 +295,7 @@ fn popup_should_stay_in_app(provider: &str, url: &Url) -> bool {
 /// (e.g. `slack://magic-login/<token>` signs the native Slack app into
 /// the workspace, breaking embedded-webview isolation: the workspace's
 /// session ends up inside the native client even though the user only
-/// signed in via OpenHuman's embedded webview).
+/// signed in via CloserEdge AI's embedded webview).
 ///
 /// The HTTPS fallback in each provider's web flow handles sign-in
 /// without the deep link, so suppression is safe — the page just
@@ -354,7 +354,7 @@ fn popup_should_navigate_parent(provider: &str, url: &Url) -> Option<Url> {
     // a meeting code link calls `window.open(meet.google.com/<roomid>)`
     // to launch the room. Default popup handling would route the
     // URL to the user's system browser, leaking the Meet session
-    // out of OpenHuman entirely. Deny the popup and navigate the
+    // out of CloserEdge AI entirely. Deny the popup and navigate the
     // embedded parent into the room URL instead — matches the
     // user's expectation that the meeting stays in-app.
     if provider == "google-meet" {
@@ -664,7 +664,7 @@ pub fn provider_display_name(provider: &str) -> &'static str {
         "google-meet" => "Google Meet",
         "zoom" => "Zoom",
         "browserscan" => "BrowserScan",
-        _ => "OpenHuman",
+        _ => "CloserEdge AI",
     }
 }
 
@@ -1051,11 +1051,11 @@ impl From<&NotificationBypassPrefs> for NotificationBypassPrefsPayload {
 }
 
 /// Title prefix applied to every OS toast fired from an embedded webview.
-/// Matches `openhuman_core::webview_notifications::OPENHUMAN_TITLE_PREFIX`
+/// Matches `closeredge_core::webview_notifications::OPENHUMAN_TITLE_PREFIX`
 /// — kept inline here so the shell crate doesn't take a build-time dep on
 /// the core library. Disambiguates from natively-installed apps (Slack,
 /// Discord, Telegram desktop) firing the same message twice.
-const OPENHUMAN_TITLE_PREFIX: &str = "OpenHuman: ";
+const OPENHUMAN_TITLE_PREFIX: &str = "CloserEdge AI: ";
 
 fn slack_scanner_enabled() -> bool {
     std::env::var("OPENHUMAN_DISABLE_SLACK_SCANNER")

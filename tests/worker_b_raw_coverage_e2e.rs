@@ -19,14 +19,14 @@ use reqwest::StatusCode;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 
-use openhuman_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
-use openhuman_core::core::jsonrpc::build_core_http_router;
-use openhuman_core::openhuman::approval::gate::{
+use closeredge_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
+use closeredge_core::core::jsonrpc::build_core_http_router;
+use closeredge_core::openhuman::approval::gate::{
     ApprovalChatContext, ApprovalGate, APPROVAL_CHAT_CONTEXT,
 };
-use openhuman_core::openhuman::approval::types::{ExecutionOutcome, GateOutcome};
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::approval::types::{ExecutionOutcome, GateOutcome};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
 
@@ -257,7 +257,7 @@ async fn setup() -> TestHarness {
     ];
 
     let _ =
-        openhuman_core::openhuman::agent::harness::AgentDefinitionRegistry::init_global_builtins();
+        closeredge_core::openhuman::agent::harness::AgentDefinitionRegistry::init_global_builtins();
 
     let (addr, rpc_join) = serve_rpc().await;
     TestHarness {

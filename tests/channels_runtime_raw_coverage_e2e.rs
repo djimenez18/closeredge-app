@@ -8,15 +8,15 @@ use axum::{
     routing::post,
     Router,
 };
-use openhuman_core::core::event_bus::{DomainEvent, EventHandler};
-use openhuman_core::openhuman::channels::providers::web::{
+use closeredge_core::core::event_bus::{DomainEvent, EventHandler};
+use closeredge_core::openhuman::channels::providers::web::{
     cancel_chat, start_chat, subscribe_web_channel_events,
 };
-use openhuman_core::openhuman::channels::providers::yuanbao::{YuanbaoChannel, YuanbaoConfig};
-use openhuman_core::openhuman::channels::{
+use closeredge_core::openhuman::channels::providers::yuanbao::{YuanbaoChannel, YuanbaoConfig};
+use closeredge_core::openhuman::channels::{
     bus::ChannelInboundSubscriber, lark::LarkChannel, Channel, SendMessage, TelegramChannel,
 };
-use openhuman_core::openhuman::config::{schema::LarkConfig, StreamMode};
+use closeredge_core::openhuman::config::{schema::LarkConfig, StreamMode};
 use serde_json::{json, Value};
 use tempfile::TempDir;
 

@@ -1,27 +1,27 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use openhuman_core::openhuman::agent::dispatcher::NativeToolDispatcher;
-use openhuman_core::openhuman::agent::harness::definition::AgentTier;
-use openhuman_core::openhuman::agent::harness::session::Agent;
-use openhuman_core::openhuman::agent::harness::{
+use closeredge_core::openhuman::agent::dispatcher::NativeToolDispatcher;
+use closeredge_core::openhuman::agent::harness::definition::AgentTier;
+use closeredge_core::openhuman::agent::harness::session::Agent;
+use closeredge_core::openhuman::agent::harness::{
     run_subagent, with_parent_context, AgentDefinition, DefinitionSource, ModelSpec,
     ParentExecutionContext, PromptSource, SandboxMode, SubagentRunOptions, ToolScope,
 };
-use openhuman_core::openhuman::config::AgentConfig;
-use openhuman_core::openhuman::context::prompt::{
+use closeredge_core::openhuman::config::AgentConfig;
+use closeredge_core::openhuman::context::prompt::{
     render_ambient_environment, render_subagent_system_prompt, render_tools, render_user_files,
     ConnectedIntegration, CuratedMemoryPromptSnapshot, LearnedContextData, NamespaceSummary,
     PersonalityRosterEntry, PromptContext, PromptTool, SubagentRenderOptions, SystemPromptBuilder,
     ToolCallFormat, UserIdentity,
 };
-use openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ToolCall, UsageInfo,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     Memory, MemoryCategory, MemoryEntry, NamespaceSummary as MemoryNamespaceSummary, RecallOpts,
 };
-use openhuman_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult};
+use closeredge_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult};
 use parking_lot::Mutex;
 use serde_json::json;
 use std::collections::{HashSet, VecDeque};
@@ -404,7 +404,7 @@ async fn turn_rejects_empty_final_response_and_keeps_history_nonfinal() -> Resul
     assert!(agent
         .history()
         .iter()
-        .any(|message| matches!(message, openhuman_core::openhuman::inference::provider::ConversationMessage::Chat(chat) if chat.role == "user")));
+        .any(|message| matches!(message, closeredge_core::openhuman::inference::provider::ConversationMessage::Chat(chat) if chat.role == "user")));
     Ok(())
 }
 

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { NeuralConstellation } from './NeuralConstellation';
 import {
   AGENT_META,
   type AgentStats,
@@ -9,6 +8,7 @@ import {
   type HiveMindEntry,
   searchHiveMind,
 } from './hivemindService';
+import { NeuralConstellation } from './NeuralConstellation';
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
@@ -21,7 +21,10 @@ function formatRelativeTime(iso: string): string {
 }
 
 function formatAction(action: string): string {
-  return action.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  return action
+    .split('_')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
 }
 
 // ── Agent Roster Strip ──────────────────────────────────────────────
@@ -61,10 +64,7 @@ function AgentRosterStrip({
             }`}>
             <div
               className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold shrink-0"
-              style={{
-                backgroundColor: `${meta.color}18`,
-                color: meta.color,
-              }}>
+              style={{ backgroundColor: `${meta.color}18`, color: meta.color }}>
               {meta.name.charAt(0)}
             </div>
             <div className="text-left">
@@ -85,10 +85,7 @@ function AgentRosterStrip({
             {(s?.total_entries ?? 0) > 0 && (
               <span
                 className="ml-1 text-[9px] font-mono px-1.5 py-0.5 rounded-full tabular-nums"
-                style={{
-                  backgroundColor: `${meta.color}15`,
-                  color: meta.color,
-                }}>
+                style={{ backgroundColor: `${meta.color}15`, color: meta.color }}>
                 {s?.total_entries}
               </span>
             )}
@@ -297,10 +294,7 @@ export function HiveMindPage() {
 
   // ── Stats ───────────────────────────────────────────────────────
 
-  const totalEntries = useMemo(
-    () => stats.reduce((sum, s) => sum + s.total_entries, 0),
-    [stats]
-  );
+  const totalEntries = useMemo(() => stats.reduce((sum, s) => sum + s.total_entries, 0), [stats]);
 
   const activeAgents = useMemo(() => {
     const now = Date.now();
@@ -313,7 +307,9 @@ export function HiveMindPage() {
   return (
     <div className="flex flex-col h-full bg-white dark:bg-[#0f0f12] text-gray-900 dark:text-[#e8e8e8]">
       {/* ── Header with subtle constellation bg ────────────────── */}
-      <div className="relative shrink-0 overflow-hidden animate-fade-in" style={{ height: 120, animationDuration: '0.6s' }}>
+      <div
+        className="relative shrink-0 overflow-hidden animate-fade-in"
+        style={{ height: 120, animationDuration: '0.6s' }}>
         {/* Subtle constellation at low opacity */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f12] to-[#1a1a22] opacity-80 dark:opacity-100">
           <NeuralConstellation />
@@ -384,13 +380,35 @@ export function HiveMindPage() {
               title={privacyBlur ? 'Show feed' : 'Hide feed (privacy)'}
               className="p-2 rounded-lg text-gray-400 dark:text-[#888] hover:text-gray-600 dark:hover:text-[#e8e8e8] hover:bg-white/10 transition-colors">
               {privacyBlur ? (
-                <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                <svg
+                  className="w-4.5 h-4.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                  />
                 </svg>
               ) : (
-                <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg
+                  className="w-4.5 h-4.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
               )}
             </button>
@@ -399,7 +417,9 @@ export function HiveMindPage() {
       </div>
 
       {/* ── Agent roster strip ─────────────────────────────────── */}
-      <div className="shrink-0 px-6 py-3 border-b border-gray-200 dark:border-[#25252f] animate-stagger-fade-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
+      <div
+        className="shrink-0 px-6 py-3 border-b border-gray-200 dark:border-[#25252f] animate-stagger-fade-up"
+        style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
         <AgentRosterStrip stats={stats} activeFilter={agentFilter} onFilter={setAgentFilter} />
       </div>
 
@@ -412,7 +432,11 @@ export function HiveMindPage() {
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
           <input
             type="text"
@@ -425,7 +449,12 @@ export function HiveMindPage() {
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-gray-400 dark:text-[#888] hover:text-gray-600 dark:hover:text-[#e8e8e8] transition-colors">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -478,7 +507,12 @@ export function HiveMindPage() {
                   <button
                     onClick={() => setSelectedEntry(null)}
                     className="p-1.5 rounded-lg text-gray-400 dark:text-[#888] hover:bg-gray-200 dark:hover:bg-[#25252f] transition-colors">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>

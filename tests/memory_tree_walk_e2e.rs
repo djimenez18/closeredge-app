@@ -25,13 +25,13 @@ use tempfile::TempDir;
 use wiremock::matchers::{method, path};
 use wiremock::{Mock, MockServer, Request, Respond, ResponseTemplate};
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::inference::provider::compatible::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::inference::provider::compatible::{
     AuthStyle, OpenAiCompatibleProvider,
 };
-use openhuman_core::openhuman::memory_tree::tools::walk::{run_walk, WalkOptions, WalkStopReason};
-use openhuman_core::openhuman::memory_tree::tree_runtime::store::write_node;
-use openhuman_core::openhuman::memory_tree::tree_runtime::types::{
+use closeredge_core::openhuman::memory_tree::tools::walk::{run_walk, WalkOptions, WalkStopReason};
+use closeredge_core::openhuman::memory_tree::tree_runtime::store::write_node;
+use closeredge_core::openhuman::memory_tree::tree_runtime::types::{
     derive_parent_id, estimate_tokens, level_from_node_id, TreeNode,
 };
 

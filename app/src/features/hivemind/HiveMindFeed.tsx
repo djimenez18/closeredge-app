@@ -51,11 +51,7 @@ function ActionBadge({ action }: { action: string }) {
   return (
     <span
       className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium whitespace-nowrap"
-      style={{
-        backgroundColor: `${color}12`,
-        color: color,
-        border: `1px solid ${color}25`,
-      }}>
+      style={{ backgroundColor: `${color}12`, color: color, border: `1px solid ${color}25` }}>
       {formatActionLabel(action)}
     </span>
   );
@@ -101,7 +97,15 @@ function ArtifactsPanel({ artifacts }: { artifacts: Record<string, unknown> }) {
 
 // ── Feed entry ───────────────────────────────────────────────────
 
-function FeedEntry({ entry, isHighlighted, onClick }: { entry: HiveMindEntry; isHighlighted: boolean; onClick?: () => void }) {
+function FeedEntry({
+  entry,
+  isHighlighted,
+  onClick,
+}: {
+  entry: HiveMindEntry;
+  isHighlighted: boolean;
+  onClick?: () => void;
+}) {
   const meta = AGENT_META[entry.agent_id];
   const agentName = meta?.name ?? entry.agent_id;
   const agentColor = meta?.color ?? '#9ca3af';

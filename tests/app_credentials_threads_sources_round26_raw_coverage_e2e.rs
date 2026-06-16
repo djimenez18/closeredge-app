@@ -12,18 +12,18 @@ use filetime::FileTime;
 use serde_json::Value;
 use tempfile::{Builder, TempDir};
 
-use openhuman_core::openhuman::app_state::{snapshot, update_local_state, StoredAppStatePatch};
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::profiles::{AuthProfile, AuthProfilesStore, TokenSet};
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::app_state::{snapshot, update_local_state, StoredAppStatePatch};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::profiles::{AuthProfile, AuthProfilesStore, TokenSet};
+use closeredge_core::openhuman::memory::{
     AppendConversationMessageRequest, ConversationMessageRecord, CreateConversationThreadRequest,
     GenerateConversationThreadTitleRequest, UpsertConversationThreadRequest,
 };
-use openhuman_core::openhuman::memory_sources::reconcile::ensure_composio_sources;
-use openhuman_core::openhuman::threads::ops::{
+use closeredge_core::openhuman::memory_sources::reconcile::ensure_composio_sources;
+use closeredge_core::openhuman::threads::ops::{
     message_append, thread_create_new, thread_generate_title, thread_upsert,
 };
-use openhuman_core::openhuman::threads::welcome_migration::migrate_welcome_agent_artifacts;
+use closeredge_core::openhuman::threads::welcome_migration::migrate_welcome_agent_artifacts;
 
 static ENV_LOCK: OnceLock<Mutex<()>> = OnceLock::new();
 

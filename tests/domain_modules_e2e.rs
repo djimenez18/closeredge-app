@@ -15,8 +15,8 @@ use reqwest::StatusCode;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 
-use openhuman_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
-use openhuman_core::core::jsonrpc::build_core_http_router;
+use closeredge_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
+use closeredge_core::core::jsonrpc::build_core_http_router;
 
 const TEST_RPC_TOKEN: &str = "domain-modules-e2e-token";
 
@@ -111,7 +111,7 @@ embedding_dimensions = 0
 embedding_strict = false
 "#;
     std::fs::write(openhuman_dir.join("config.toml"), cfg).expect("write config.toml");
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(cfg).expect("test config must match schema");
 }
 

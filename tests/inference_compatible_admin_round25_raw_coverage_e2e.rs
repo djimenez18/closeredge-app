@@ -14,20 +14,20 @@ use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use futures_util::StreamExt;
-use openhuman_core::core::all::RegisteredController;
-use openhuman_core::openhuman::config::schema::cloud_providers::{
+use closeredge_core::core::all::RegisteredController;
+use closeredge_core::openhuman::config::schema::cloud_providers::{
     AuthStyle as CloudAuthStyle, CloudProviderCreds,
 };
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{AuthService, DEFAULT_AUTH_PROFILE_NAME};
-use openhuman_core::openhuman::inference::local::all_local_ai_registered_controllers;
-use openhuman_core::openhuman::inference::ops::inference_test_provider_model;
-use openhuman_core::openhuman::inference::provider::compatible::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{AuthService, DEFAULT_AUTH_PROFILE_NAME};
+use closeredge_core::openhuman::inference::local::all_local_ai_registered_controllers;
+use closeredge_core::openhuman::inference::ops::inference_test_provider_model;
+use closeredge_core::openhuman::inference::provider::compatible::{
     AuthStyle as CompatibleAuthStyle, OpenAiCompatibleProvider,
 };
-use openhuman_core::openhuman::inference::provider::factory::auth_key_for_slug;
-use openhuman_core::openhuman::inference::provider::traits::{StreamError, StreamOptions};
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::inference::provider::factory::auth_key_for_slug;
+use closeredge_core::openhuman::inference::provider::traits::{StreamError, StreamOptions};
+use closeredge_core::openhuman::inference::provider::{
     list_configured_models, ChatMessage, Provider,
 };
 use serde_json::{json, Value};

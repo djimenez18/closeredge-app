@@ -20,12 +20,12 @@ use tower::ServiceExt;
 use wiremock::matchers::{header as wm_header, method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};
 
-use openhuman_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
-use openhuman_core::core::jsonrpc::build_core_http_router;
-use openhuman_core::openhuman::inference::provider::compatible::{
+use closeredge_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
+use closeredge_core::core::jsonrpc::build_core_http_router;
+use closeredge_core::openhuman::inference::provider::compatible::{
     AuthStyle, OpenAiCompatibleProvider,
 };
-use openhuman_core::openhuman::inference::provider::traits::{ChatMessage, Provider};
+use closeredge_core::openhuman::inference::provider::traits::{ChatMessage, Provider};
 
 // ── Environment serialisation lock ───────────────────────────────────────────
 //
@@ -318,7 +318,7 @@ async fn openai_compat_streaming_returns_ordered_deltas() {
     );
 
     // stream_chat_with_system is the implemented streaming method on this provider.
-    let options = openhuman_core::openhuman::inference::provider::traits::StreamOptions::new(true);
+    let options = closeredge_core::openhuman::inference::provider::traits::StreamOptions::new(true);
     use futures_util::StreamExt;
     let mut stream = provider.stream_chat_with_system(
         Some("You are helpful."),
@@ -546,8 +546,8 @@ async fn openai_compat_bearer_auth_sends_authorization_header() {
 
 #[test]
 fn temperature_helper_suppresses_o1_by_default_config() {
-    use openhuman_core::openhuman::config::Config;
-    use openhuman_core::openhuman::inference::provider::temperature::temperature_for_model;
+    use closeredge_core::openhuman::config::Config;
+    use closeredge_core::openhuman::inference::provider::temperature::temperature_for_model;
 
     let config = Config::default();
 

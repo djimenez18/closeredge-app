@@ -142,10 +142,12 @@ const Home = () => {
     <div className="min-h-full flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full">
         {shouldShowBudgetCompletedMessage && (
-          <div className="animate-stagger-fade-up" style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
+          <div
+            className="animate-stagger-fade-up"
+            style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
             <UsageLimitBanner
               tone="danger"
-              icon={"⚠️"}
+              icon={'⚠️'}
               title={t('home.usageExhaustedTitle')}
               message={t('home.usageExhaustedBody')}
               ctaLabel={t('home.usageExhaustedCta')}
@@ -154,7 +156,9 @@ const Home = () => {
         )}
 
         {showPromoBanner && (
-          <div className="animate-stagger-fade-up" style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
+          <div
+            className="animate-stagger-fade-up"
+            style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
             <PromotionalCreditsBanner promoCredits={promoCredits} />
           </div>
         )}

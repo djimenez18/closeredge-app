@@ -1,0 +1,16 @@
+{
+  "name": "Lexis",
+  "slug": "lexis",
+  "industry": "legal",
+  "tagline": "Your AI Legal Assistant",
+  "description": "Lexis manages client intake, document preparation, deadline tracking, case research, and billing for law offices.",
+  "core_agents": ["intake", "deadline-tracker", "document-drafter", "case-researcher", "billing"],
+  "pro_agents": ["voice-paralegal", "clio-sync", "conflict-checker"],
+  "elite_agents": ["adversary-agent", "brief-writer"],
+  "integrations": {
+    "foundation": ["gmail", "google_calendar", "telegram"],
+    "pro": ["elevenlabs_voice", "clio", "mycase"],
+    "elite": ["westlaw", "court_filing_systems"]
+  },
+  "brain_domains": ["legal_ethics", "court_procedures", "statute_of_limitations", "privilege_rules"]
+}

@@ -35,7 +35,9 @@ const InferenceBudget = ({ teamUsage, isLoadingCredits }: InferenceBudgetProps) 
           {t('settings.billing.inferenceBudget.title')}
         </h3>
         {isLoadingCredits && (
-          <span className="text-[10px] text-stone-500 dark:text-neutral-400">{t('common.loading')}</span>
+          <span className="text-[10px] text-stone-500 dark:text-neutral-400">
+            {t('common.loading')}
+          </span>
         )}
         {teamUsage && !isLoadingCredits && (
           <span className="text-xs text-stone-400 dark:text-neutral-500">
@@ -163,8 +165,12 @@ const UsageBreakdown = ({
       </div>
       <div className="grid grid-cols-2 gap-2 text-[11px]">
         <div>
-          <div className="text-stone-500 dark:text-neutral-400">{t('settings.billing.inferenceBudget.inference')}</div>
-          <div className="text-stone-900 dark:text-neutral-100 font-medium">{fmtUsd(inferenceUsd)}</div>
+          <div className="text-stone-500 dark:text-neutral-400">
+            {t('settings.billing.inferenceBudget.inference')}
+          </div>
+          <div className="text-stone-900 dark:text-neutral-100 font-medium">
+            {fmtUsd(inferenceUsd)}
+          </div>
           <div className="text-stone-400 dark:text-neutral-500">
             {t('settings.billing.inferenceBudget.calls').replace(
               '{count}',
@@ -173,8 +179,12 @@ const UsageBreakdown = ({
           </div>
         </div>
         <div>
-          <div className="text-stone-500 dark:text-neutral-400">{t('settings.billing.inferenceBudget.integrations')}</div>
-          <div className="text-stone-900 dark:text-neutral-100 font-medium">{fmtUsd(integrationsUsd)}</div>
+          <div className="text-stone-500 dark:text-neutral-400">
+            {t('settings.billing.inferenceBudget.integrations')}
+          </div>
+          <div className="text-stone-900 dark:text-neutral-100 font-medium">
+            {fmtUsd(integrationsUsd)}
+          </div>
           <div className="text-stone-400 dark:text-neutral-500">
             {t('settings.billing.inferenceBudget.calls').replace(
               '{count}',
@@ -248,7 +258,9 @@ const TopModels = ({ rows }: { rows: TeamUsageModelRow[] }) => {
             <li
               key={`${r.provider}::${r.model}::${i}`}
               className="flex items-center justify-between text-[11px]">
-              <span className="text-stone-700 dark:text-neutral-300 truncate mr-2">{r.model || r.provider}</span>
+              <span className="text-stone-700 dark:text-neutral-300 truncate mr-2">
+                {r.model || r.provider}
+              </span>
               <span className="text-stone-500 dark:text-neutral-400 flex-shrink-0">
                 {fmtUsd(r.spentUsd)} · {r.calls.toLocaleString()}
               </span>

@@ -20,12 +20,12 @@
 //! it.
 
 use chrono::{TimeZone, Utc};
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::memory::ingest_pipeline::{ingest_chat, ingest_email};
-use openhuman_core::openhuman::memory::jobs::drain_until_idle;
-use openhuman_core::openhuman::memory_sync::canonicalize::chat::{ChatBatch, ChatMessage};
-use openhuman_core::openhuman::memory_sync::canonicalize::email::{EmailMessage, EmailThread};
-use openhuman_core::openhuman::tools::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::memory::ingest_pipeline::{ingest_chat, ingest_email};
+use closeredge_core::openhuman::memory::jobs::drain_until_idle;
+use closeredge_core::openhuman::memory_sync::canonicalize::chat::{ChatBatch, ChatMessage};
+use closeredge_core::openhuman::memory_sync::canonicalize::email::{EmailMessage, EmailThread};
+use closeredge_core::openhuman::tools::{
     MemoryTreeFetchLeavesTool, MemoryTreeSearchEntitiesTool, Tool,
 };
 use serde_json::{json, Value};
@@ -355,9 +355,9 @@ async fn fetch_leaves_hydrates_source_ref_for_cited_chunks() {
     let _ws_guard = set_workspace_env(&tmp);
 
     // List the ingested chunks directly to get leaf chunk ids with their refs.
-    let chunks = openhuman_core::openhuman::memory_store::chunks::store::list_chunks(
+    let chunks = closeredge_core::openhuman::memory_store::chunks::store::list_chunks(
         &cfg,
-        &openhuman_core::openhuman::memory_store::chunks::store::ListChunksQuery::default(),
+        &closeredge_core::openhuman::memory_store::chunks::store::ListChunksQuery::default(),
     )
     .expect("list_chunks must not error");
 

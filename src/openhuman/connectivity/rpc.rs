@@ -553,7 +553,7 @@ mod tests {
                         };
                         let mut req_buf = [0u8; 1024];
                         let _ = stream.read(&mut req_buf).await;
-                        let body = r#"{"name":"openhuman","ok":true}"#;
+                        let body = r#"{"name":"closeredge","ok":true}"#;
                         let response = format!(
                             "HTTP/1.1 200 OK\r\ncontent-type: application/json\r\ncontent-length: {}\r\nconnection: close\r\n\r\n{}",
                             body.len(),

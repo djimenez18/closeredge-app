@@ -1,17 +1,17 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use openhuman_core::openhuman::agent::dispatcher::{NativeToolDispatcher, XmlToolDispatcher};
-use openhuman_core::openhuman::agent::hooks::{PostTurnHook, TurnContext};
-use openhuman_core::openhuman::agent::Agent;
-use openhuman_core::openhuman::config::{AgentConfig, ContextConfig};
-use openhuman_core::openhuman::context::session_memory::SessionMemoryConfig;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::agent::dispatcher::{NativeToolDispatcher, XmlToolDispatcher};
+use closeredge_core::openhuman::agent::hooks::{PostTurnHook, TurnContext};
+use closeredge_core::openhuman::agent::Agent;
+use closeredge_core::openhuman::config::{AgentConfig, ContextConfig};
+use closeredge_core::openhuman::context::session_memory::SessionMemoryConfig;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ToolCall, UsageInfo,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     Memory, MemoryCategory, MemoryEntry, NamespaceSummary, RecallOpts,
 };
-use openhuman_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult};
+use closeredge_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult};
 use parking_lot::Mutex;
 use serde_json::json;
 use std::collections::VecDeque;
@@ -80,8 +80,8 @@ impl ScriptedProvider {
 impl Provider for ScriptedProvider {
     fn capabilities(
         &self,
-    ) -> openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities {
-        openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities {
+    ) -> closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities {
+        closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities {
             native_tool_calling: self.native_tools,
             vision: false,
         }

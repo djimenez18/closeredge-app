@@ -26,25 +26,25 @@ export const AGENT_META: Record<
   string,
   { name: string; color: string; icon: string; lobe: string }
 > = {
-  eden:  { name: 'Eden',  color: '#7C3AED', icon: 'home',       lobe: 'frontal'  },
-  crest: { name: 'Crest', color: '#60a5fa', icon: 'building-2', lobe: 'frontal'  },
-  lexis: { name: 'Lexis', color: '#fbbf24', icon: 'scale',      lobe: 'temporal' },
+  eden: { name: 'Eden', color: '#7C3AED', icon: 'home', lobe: 'frontal' },
+  crest: { name: 'Crest', color: '#60a5fa', icon: 'building-2', lobe: 'frontal' },
+  lexis: { name: 'Lexis', color: '#fbbf24', icon: 'scale', lobe: 'temporal' },
   haven: { name: 'Haven', color: '#10b981', icon: 'heart-pulse', lobe: 'parietal' },
-  forge: { name: 'Forge', color: '#ef4444', icon: 'hammer',     lobe: 'parietal' },
-  nora:  { name: 'Nora',  color: '#A855F7', icon: 'map-pin',    lobe: 'occipital' },
+  forge: { name: 'Forge', color: '#ef4444', icon: 'hammer', lobe: 'parietal' },
+  nora: { name: 'Nora', color: '#A855F7', icon: 'map-pin', lobe: 'occipital' },
 };
 
 export const ACTION_COLORS: Record<string, string> = {
-  email_sent:             '#60a5fa', // blue
-  research_completed:     '#10b981', // green
-  lead_qualified:         '#7C3AED', // purple
-  appointment_scheduled:  '#fbbf24', // amber
-  document_drafted:       '#10b981', // green
-  follow_up_sent:         '#A855F7', // light purple
-  call_completed:         '#f87171', // pink
-  contract_generated:     '#A855F7', // lavender
-  property_analyzed:      '#60a5fa', // blue
-  intake_completed:       '#10b981', // green
+  email_sent: '#60a5fa', // blue
+  research_completed: '#10b981', // green
+  lead_qualified: '#7C3AED', // purple
+  appointment_scheduled: '#fbbf24', // amber
+  document_drafted: '#10b981', // green
+  follow_up_sent: '#A855F7', // light purple
+  call_completed: '#f87171', // pink
+  contract_generated: '#A855F7', // lavender
+  property_analyzed: '#60a5fa', // blue
+  intake_completed: '#10b981', // green
 };
 
 // ── Queries ────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ export const ACTION_COLORS: Record<string, string> = {
 export async function fetchHiveMindEntries(
   agentId?: string,
   limit = 50,
-  offset = 0,
+  offset = 0
 ): Promise<HiveMindEntry[]> {
   let query = supabase
     .from('hive_mind')
@@ -77,17 +77,11 @@ export async function logHiveMindEntry(
   chatId: string,
   action: string,
   summary: string,
-  artifacts?: Record<string, unknown>,
+  artifacts?: Record<string, unknown>
 ): Promise<HiveMindEntry | null> {
   const { data, error } = await supabase
     .from('hive_mind')
-    .insert({
-      agent_id: agentId,
-      chat_id: chatId,
-      action,
-      summary,
-      artifacts: artifacts ?? null,
-    })
+    .insert({ agent_id: agentId, chat_id: chatId, action, summary, artifacts: artifacts ?? null })
     .select()
     .single();
 
@@ -126,10 +120,7 @@ export async function getAgentStats(): Promise<AgentStats[]> {
     if (!group.lastActive || entry.created_at > group.lastActive) {
       group.lastActive = entry.created_at;
     }
-    group.actionCounts.set(
-      entry.action,
-      (group.actionCounts.get(entry.action) ?? 0) + 1,
-    );
+    group.actionCounts.set(entry.action, (group.actionCounts.get(entry.action) ?? 0) + 1);
   }
 
   const stats: AgentStats[] = [];

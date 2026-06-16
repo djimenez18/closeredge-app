@@ -2,7 +2,7 @@
 //! fallback (PR #1555).
 //!
 //! Covers three scenarios exercised via the public API of
-//! `openhuman_core::openhuman::memory`:
+//! `closeredge_core::openhuman::memory`:
 //!
 //! 1. Local embeddings enabled + Ollama unreachable  → falls back to cloud
 //!    provider with the correct cloud model dimensions.
@@ -14,7 +14,7 @@
 //! `pub(crate)`-private; the tests drive the observable behaviour through
 //! `effective_embedding_settings` (sync, for scenario 3) and
 //! `effective_embedding_settings_probed` (async, for scenarios 1–2), both of
-//! which are `pub` and re-exported at `openhuman_core::openhuman::memory`.
+//! which are `pub` and re-exported at `closeredge_core::openhuman::memory`.
 //!
 //! Run with: `cargo test --test ollama_embeddings_fallback_e2e`
 
@@ -23,12 +23,12 @@ use std::sync::{Mutex, OnceLock};
 
 use axum::{routing::get, Json, Router};
 
-use openhuman_core::openhuman::config::MemoryConfig;
-use openhuman_core::openhuman::embeddings::{
+use closeredge_core::openhuman::config::MemoryConfig;
+use closeredge_core::openhuman::embeddings::{
     DEFAULT_CLOUD_EMBEDDING_DIMENSIONS, DEFAULT_CLOUD_EMBEDDING_MODEL, DEFAULT_OLLAMA_DIMENSIONS,
     DEFAULT_OLLAMA_MODEL,
 };
-use openhuman_core::openhuman::memory_store::factories::{
+use closeredge_core::openhuman::memory_store::factories::{
     effective_embedding_settings, effective_embedding_settings_probed,
 };
 

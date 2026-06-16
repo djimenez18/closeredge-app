@@ -16,33 +16,33 @@ use axum::response::IntoResponse;
 use axum::routing::post;
 use axum::{Json, Router};
 use chrono::{Duration as ChronoDuration, Utc};
-use openhuman_core::openhuman::agent::dispatcher::NativeToolDispatcher;
-use openhuman_core::openhuman::agent::harness::session::Agent;
-use openhuman_core::openhuman::agent::harness::{
+use closeredge_core::openhuman::agent::dispatcher::NativeToolDispatcher;
+use closeredge_core::openhuman::agent::harness::session::Agent;
+use closeredge_core::openhuman::agent::harness::{
     run_subagent, with_parent_context, AgentDefinition, ParentExecutionContext, PromptSource,
     SandboxMode, SubagentRunOptions, ToolScope,
 };
-use openhuman_core::openhuman::app_state::{
+use closeredge_core::openhuman::app_state::{
     snapshot, update_local_state, StoredAppStatePatch, StoredOnboardingTasks,
 };
-use openhuman_core::openhuman::config::rpc as config_rpc;
-use openhuman_core::openhuman::config::{
+use closeredge_core::openhuman::config::rpc as config_rpc;
+use closeredge_core::openhuman::config::{
     BrowserConfig, Config, HttpRequestConfig, McpAuthConfig, McpServerConfig,
 };
-use openhuman_core::openhuman::context::prompt::ToolCallFormat;
-use openhuman_core::openhuman::credentials::profiles::{
+use closeredge_core::openhuman::context::prompt::ToolCallFormat;
+use closeredge_core::openhuman::credentials::profiles::{
     AuthProfile, AuthProfileKind, AuthProfilesStore, TokenSet,
 };
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ToolCall, UsageInfo,
 };
-use openhuman_core::openhuman::memory::{Memory, MemoryCategory, MemoryEntry, NamespaceSummary};
-use openhuman_core::openhuman::security::{AuditLogger, SecurityPolicy};
-use openhuman_core::openhuman::tools::{
+use closeredge_core::openhuman::memory::{Memory, MemoryCategory, MemoryEntry, NamespaceSummary};
+use closeredge_core::openhuman::security::{AuditLogger, SecurityPolicy};
+use closeredge_core::openhuman::tools::{
     all_tools, BrowserTool, ComputerUseConfig, SpawnSubagentTool, Tool, ToolResult,
 };
 use parking_lot::Mutex as ParkingMutex;
@@ -171,7 +171,7 @@ impl Memory for StubMemory {
         &self,
         _query: &str,
         _limit: usize,
-        _opts: openhuman_core::openhuman::memory::RecallOpts<'_>,
+        _opts: closeredge_core::openhuman::memory::RecallOpts<'_>,
     ) -> Result<Vec<MemoryEntry>> {
         Ok(Vec::new())
     }
@@ -357,7 +357,7 @@ fn parent_context(workspace: PathBuf, provider: Arc<ScriptedProvider>) -> Parent
         temperature: 0.0,
         workspace_dir: workspace,
         memory: Arc::new(StubMemory),
-        agent_config: openhuman_core::openhuman::config::AgentConfig {
+        agent_config: closeredge_core::openhuman::config::AgentConfig {
             max_tool_iterations: 3,
             ..Default::default()
         },
@@ -589,7 +589,7 @@ fn round16_all_tools_registry_branches_and_browser_allowlist() {
         &harness.workspace,
         &HashMap::from([(
             "researcher".to_string(),
-            openhuman_core::openhuman::config::DelegateAgentConfig {
+            closeredge_core::openhuman::config::DelegateAgentConfig {
                 model: "round16-delegate-model".to_string(),
                 system_prompt: Some("Delegate test prompt".to_string()),
                 temperature: Some(0.0),
@@ -712,7 +712,7 @@ async fn round16_agent_builder_turn_uses_public_harness_paths() {
         .tools(vec![Box::new(EchoTool)])
         .memory(Arc::new(StubMemory))
         .tool_dispatcher(Box::new(NativeToolDispatcher))
-        .config(openhuman_core::openhuman::config::AgentConfig {
+        .config(closeredge_core::openhuman::config::AgentConfig {
             max_tool_iterations: 3,
             ..Default::default()
         })
@@ -732,7 +732,7 @@ async fn round16_agent_builder_turn_uses_public_harness_paths() {
     assert_eq!(answer, "builder final");
     assert!(agent.history().iter().any(|message| matches!(
         message,
-        openhuman_core::openhuman::inference::provider::ConversationMessage::ToolResults(results)
+        closeredge_core::openhuman::inference::provider::ConversationMessage::ToolResults(results)
             if results.iter().any(|result| result.content.contains("echo:builder"))
     )));
 }

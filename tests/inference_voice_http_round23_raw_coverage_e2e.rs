@@ -16,19 +16,19 @@ use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use futures_util::{SinkExt, StreamExt};
-use openhuman_core::core::types::AppState;
-use openhuman_core::openhuman::config::schema::cloud_providers::{
+use closeredge_core::core::types::AppState;
+use closeredge_core::openhuman::config::schema::cloud_providers::{
     AuthStyle as CloudAuthStyle, CloudProviderCreds,
 };
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::inference::http;
-use openhuman_core::openhuman::inference::local::{
+use closeredge_core::openhuman::inference::http;
+use closeredge_core::openhuman::inference::local::{
     local_ai_assets_status, local_ai_downloads_progress, LocalAiService,
 };
-use openhuman_core::openhuman::inference::voice::streaming::handle_dictation_ws;
+use closeredge_core::openhuman::inference::voice::streaming::handle_dictation_ws;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 use tokio_tungstenite::tungstenite::Message as WsMessage;

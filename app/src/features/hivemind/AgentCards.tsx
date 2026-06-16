@@ -173,10 +173,7 @@ function AgentCard({ agentId, stats, isSelected, onSelect }: AgentCardProps) {
         {topAction && (
           <span
             className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
-            style={{
-              backgroundColor: `${meta.color}15`,
-              color: meta.color,
-            }}>
+            style={{ backgroundColor: `${meta.color}15`, color: meta.color }}>
             {topAction.action.split('_').join(' ')}
           </span>
         )}

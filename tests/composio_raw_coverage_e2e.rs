@@ -14,31 +14,31 @@ use axum::{Json, Router};
 use serde_json::{json, Value};
 use tempfile::tempdir;
 
-use openhuman_core::core::all::RegisteredController;
-use openhuman_core::openhuman::composio::client::{
+use closeredge_core::core::all::RegisteredController;
+use closeredge_core::openhuman::composio::client::{
     create_composio_client, direct_execute, ComposioClientKind,
 };
-use openhuman_core::openhuman::composio::error_mapping::{
+use closeredge_core::openhuman::composio::error_mapping::{
     classify_composio_error, format_provider_error, remap_transport_error, ComposioErrorClass,
 };
-use openhuman_core::openhuman::composio::execute_dispatch::{
+use closeredge_core::openhuman::composio::execute_dispatch::{
     execute_composio_action, execute_composio_action_kind,
 };
-use openhuman_core::openhuman::composio::execute_prepare::prepare_execute_arguments;
-use openhuman_core::openhuman::composio::oauth_handoff::{
+use closeredge_core::openhuman::composio::execute_prepare::prepare_execute_arguments;
+use closeredge_core::openhuman::composio::oauth_handoff::{
     clear_non_active_connections, is_authorize_rate_limited, is_clearable_oauth_status,
     is_inflight_oauth_status, is_meta_oauth_toolkit, meta_oauth_rate_limit_message,
     wrap_authorize_rate_limit_error,
 };
-use openhuman_core::openhuman::composio::providers::{
+use closeredge_core::openhuman::composio::providers::{
     classify_unknown, find_curated, toolkit_from_slug, CuratedTool, ToolScope, UserScopePref,
 };
-use openhuman_core::openhuman::composio::tools::{
+use closeredge_core::openhuman::composio::tools::{
     ComposioAction, ComposioAuthorizeTool, ComposioConnectedAccount, ComposioExecuteTool,
     ComposioListConnectionsTool, ComposioListToolkitsTool, ComposioListToolsTool,
 };
-use openhuman_core::openhuman::composio::trigger_history::ComposioTriggerHistoryStore;
-use openhuman_core::openhuman::composio::types::{
+use closeredge_core::openhuman::composio::trigger_history::ComposioTriggerHistoryStore;
+use closeredge_core::openhuman::composio::types::{
     ComposioActiveTrigger, ComposioActiveTriggersResponse, ComposioAgentReadyToolkitsResponse,
     ComposioAuthorizeResponse, ComposioAvailableTrigger, ComposioAvailableTriggerRepo,
     ComposioAvailableTriggersResponse, ComposioCapabilitiesResponse, ComposioCapability,
@@ -48,21 +48,21 @@ use openhuman_core::openhuman::composio::types::{
     ComposioToolSchema, ComposioToolkitsResponse, ComposioToolsResponse, ComposioTriggerEvent,
     ComposioTriggerHistoryEntry, ComposioTriggerHistoryResult, ComposioTriggerMetadata,
 };
-use openhuman_core::openhuman::composio::{
+use closeredge_core::openhuman::composio::{
     all_composio_agent_tools, all_composio_controller_schemas, all_composio_registered_controllers,
     cached_active_integrations, connected_set_hash, connection_identity,
     fetch_connected_integrations, fetch_connected_integrations_status,
     init_composio_trigger_history, invalidate_connected_integrations_cache, ComposioActionTool,
     ComposioClient, FetchConnectedIntegrationsStatus,
 };
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::context::prompt::ConnectedIntegration;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::context::prompt::ConnectedIntegration;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::integrations::IntegrationClient;
-use openhuman_core::openhuman::security::{AutonomyLevel, SecurityPolicy};
-use openhuman_core::openhuman::tools::{
+use closeredge_core::openhuman::integrations::IntegrationClient;
+use closeredge_core::openhuman::security::{AutonomyLevel, SecurityPolicy};
+use closeredge_core::openhuman::tools::{
     ComposioTool, PermissionLevel, Tool, ToolCallOptions, ToolCategory,
 };
 
@@ -368,7 +368,7 @@ async fn composio_ops_mode_and_trigger_history_are_local_and_deterministic() {
     };
     config.composio.mode = "direct".into();
 
-    let mode = openhuman_core::openhuman::composio::ops::composio_get_mode(&config)
+    let mode = closeredge_core::openhuman::composio::ops::composio_get_mode(&config)
         .await
         .expect("get mode should not call backend")
         .into_cli_compatible_json()
@@ -378,7 +378,7 @@ async fn composio_ops_mode_and_trigger_history_are_local_and_deterministic() {
 
     init_composio_trigger_history(dir.path().to_path_buf())
         .expect("global trigger history initializes for temp workspace");
-    let store = openhuman_core::openhuman::composio::global_composio_trigger_history()
+    let store = closeredge_core::openhuman::composio::global_composio_trigger_history()
         .expect("global history store");
     store
         .record_trigger(
@@ -391,7 +391,7 @@ async fn composio_ops_mode_and_trigger_history_are_local_and_deterministic() {
         .expect("record global trigger");
 
     let history =
-        openhuman_core::openhuman::composio::ops::composio_list_trigger_history(&config, Some(0))
+        closeredge_core::openhuman::composio::ops::composio_list_trigger_history(&config, Some(0))
             .await
             .expect("history listing is local")
             .into_cli_compatible_json()
@@ -839,7 +839,7 @@ async fn composio_controller_registry_and_scope_handlers_cover_validation_edges(
             .starts_with("openhuman.composio_")
     }));
 
-    let unknown = openhuman_core::openhuman::composio::schemas::schemas("not_real");
+    let unknown = closeredge_core::openhuman::composio::schemas::schemas("not_real");
     assert_eq!(unknown.function, "unknown");
     assert_eq!(unknown.inputs[0].name, "function");
 
@@ -902,7 +902,7 @@ fn composio_controller_schema_catalog_covers_all_declared_functions() {
     ];
 
     for (function, input_count, first_output) in expected {
-        let schema = openhuman_core::openhuman::composio::schemas::schemas(function);
+        let schema = closeredge_core::openhuman::composio::schemas::schemas(function);
         assert_eq!(schema.namespace, "composio");
         assert_eq!(schema.function, function);
         assert_eq!(schema.inputs.len(), input_count, "{function}");
@@ -1344,12 +1344,12 @@ fn composio_types_roundtrip_connection_tool_trigger_and_history_shapes() {
     let repos = ComposioGithubReposResponse {
         connection_id: "conn-github".into(),
         repositories: vec![ComposioGithubRepo {
-            owner: "tinyhumansai".into(),
+            owner: "closeredgeai".into(),
             repo: "openhuman".into(),
-            full_name: "tinyhumansai/openhuman".into(),
+            full_name: "closeredgeai/closeredge".into(),
             private: Some(false),
             default_branch: Some("main".into()),
-            html_url: Some("https://github.com/tinyhumansai/openhuman".into()),
+            html_url: Some("https://github.com/closeredgeai/closeredge".into()),
         }],
     };
     assert_eq!(
@@ -1372,7 +1372,7 @@ fn composio_types_roundtrip_connection_tool_trigger_and_history_shapes() {
             default_config: Some(json!({ "event": "pull_request" })),
             required_config_keys: Some(vec!["owner".into(), "repo".into()]),
             repo: Some(ComposioAvailableTriggerRepo {
-                owner: "tinyhumansai".into(),
+                owner: "closeredgeai".into(),
                 repo: "openhuman".into(),
             }),
         }],
@@ -1706,7 +1706,7 @@ async fn composio_backend_client_methods_build_requests_and_parse_local_envelope
         .list_github_repos(Some(" github conn "))
         .await
         .expect("repos");
-    assert_eq!(repos.repositories[0].full_name, "tinyhumansai/openhuman");
+    assert_eq!(repos.repositories[0].full_name, "closeredgeai/closeredge");
     let repos_without_connection = client
         .list_github_repos(None)
         .await
@@ -1717,7 +1717,7 @@ async fn composio_backend_client_methods_build_requests_and_parse_local_envelope
         .create_trigger(
             " GITHUB_PULL_REQUEST_EVENT ",
             Some(" conn-github "),
-            Some(json!({ "owner": "tinyhumansai", "repo": "openhuman" })),
+            Some(json!({ "owner": "closeredgeai", "repo": "openhuman" })),
         )
         .await
         .expect("create trigger");
@@ -2155,12 +2155,12 @@ async fn composio_round8_backend_handler(request: Request) -> Response {
         (Method::GET, "/agent-integrations/composio/github/repos") => ok(json!({
             "connectionId": "conn-github",
             "repositories": [{
-                "owner": "tinyhumansai",
+                "owner": "closeredgeai",
                 "repo": "openhuman",
-                "fullName": "tinyhumansai/openhuman",
+                "fullName": "closeredgeai/closeredge",
                 "private": false,
                 "defaultBranch": "main",
-                "htmlUrl": "https://github.com/tinyhumansai/openhuman"
+                "htmlUrl": "https://github.com/closeredgeai/closeredge"
             }]
         })),
         (Method::POST, "/agent-integrations/composio/triggers") => {
@@ -2193,7 +2193,7 @@ async fn composio_round8_backend_handler(request: Request) -> Response {
                         "scope": "github_repo",
                         "defaultConfig": { "event": "pull_request" },
                         "requiredConfigKeys": ["owner", "repo"],
-                        "repo": { "owner": "tinyhumansai", "repo": "openhuman" }
+                        "repo": { "owner": "closeredgeai", "repo": "openhuman" }
                     }]
                 }))
             } else {

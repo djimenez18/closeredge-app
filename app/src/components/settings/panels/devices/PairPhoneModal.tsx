@@ -277,7 +277,9 @@ function LoadingBody() {
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
         />
       </svg>
-      <p className="text-sm text-stone-500 dark:text-neutral-400">{t('devices.pairModal.loading')}</p>
+      <p className="text-sm text-stone-500 dark:text-neutral-400">
+        {t('devices.pairModal.loading')}
+      </p>
     </div>
   );
 }
@@ -299,7 +301,9 @@ function QrBody({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <p className="text-sm text-stone-600 dark:text-neutral-400 text-center">{t('devices.pairModal.instructions')}</p>
+      <p className="text-sm text-stone-600 dark:text-neutral-400 text-center">
+        {t('devices.pairModal.instructions')}
+      </p>
 
       {/* QR code */}
       <div className="p-3 bg-white rounded-xl border border-stone-200 shadow-sm">
@@ -370,8 +374,12 @@ function ExpiredBody({ onRegenerate }: { onRegenerate: () => void }) {
           />
         </svg>
       </div>
-      <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">{t('devices.pairModal.expiredTitle')}</p>
-      <p className="text-xs text-stone-500 dark:text-neutral-400 text-center">{t('devices.pairModal.expiredBody')}</p>
+      <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">
+        {t('devices.pairModal.expiredTitle')}
+      </p>
+      <p className="text-xs text-stone-500 dark:text-neutral-400 text-center">
+        {t('devices.pairModal.expiredBody')}
+      </p>
       <button
         onClick={onRegenerate}
         className="px-4 py-2 text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors rounded-lg">
@@ -403,7 +411,9 @@ function SuccessBody({ label, channelId }: { label: string; channelId: string })
           {channelId.slice(0, 8)}…{channelId.slice(-6)}
         </p>
       </div>
-      <p className="text-xs text-stone-400 dark:text-neutral-500">{t('devices.pairModal.autoClose')}</p>
+      <p className="text-xs text-stone-400 dark:text-neutral-500">
+        {t('devices.pairModal.autoClose')}
+      </p>
     </div>
   );
 }
@@ -426,8 +436,12 @@ function ErrorBody({ message, onRetry }: { message: string; onRetry: () => void 
           />
         </svg>
       </div>
-      <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">{t('devices.pairModal.errorTitle')}</p>
-      <p className="text-xs text-stone-500 dark:text-neutral-400 text-center break-all">{message}</p>
+      <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">
+        {t('devices.pairModal.errorTitle')}
+      </p>
+      <p className="text-xs text-stone-500 dark:text-neutral-400 text-center break-all">
+        {message}
+      </p>
       <button
         onClick={onRetry}
         className="px-4 py-2 text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors rounded-lg">

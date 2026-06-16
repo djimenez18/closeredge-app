@@ -17,17 +17,17 @@ use serde_json::json;
 use tempfile::{tempdir, TempDir};
 use tokio::time::timeout;
 
-use openhuman_core::core::socketio::WebChannelEvent;
-use openhuman_core::openhuman::channels::providers::web::{
+use closeredge_core::core::socketio::WebChannelEvent;
+use closeredge_core::openhuman::channels::providers::web::{
     all_web_channel_controller_schemas, all_web_channel_registered_controllers, cancel_chat,
     channel_web_cancel, publish_web_channel_event, schemas as web_channel_schema, start_chat,
     subscribe_web_channel_events,
 };
-use openhuman_core::openhuman::config::{
+use closeredge_core::openhuman::config::{
     AutonomyConfig, Config, PolymarketClobCredentials, PolymarketConfig,
 };
-use openhuman_core::openhuman::security::{AutonomyLevel, SecurityPolicy};
-use openhuman_core::openhuman::tools::{
+use closeredge_core::openhuman::security::{AutonomyLevel, SecurityPolicy};
+use closeredge_core::openhuman::tools::{
     ComposioTool, GitOperationsTool, MouseTool, PolymarketTool, ScheduleTool, Tool, ToolCallOptions,
 };
 
@@ -171,7 +171,7 @@ fn temp_config() -> (TempDir, Config) {
     (tmp, config)
 }
 
-fn text(result: &openhuman_core::openhuman::tools::ToolResult) -> String {
+fn text(result: &closeredge_core::openhuman::tools::ToolResult) -> String {
     result.output()
 }
 

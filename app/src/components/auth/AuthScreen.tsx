@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
+import { supabase } from '../../lib/supabase';
 import ForgotPassword from './ForgotPassword';
 
 // ---------------------------------------------------------------------------
@@ -83,11 +83,7 @@ const AuthScreen: React.FC = () => {
     setSignUpLoading(true);
 
     try {
-      await signUp(signUpEmail, signUpPassword, {
-        businessName,
-        contactName,
-        businessType,
-      });
+      await signUp(signUpEmail, signUpPassword, { businessName, contactName, businessType });
 
       // Check whether email confirmation is required.
       const {
@@ -129,8 +125,7 @@ const AuthScreen: React.FC = () => {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="2"
-              stroke="currentColor"
-            >
+              stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
           </div>
@@ -138,8 +133,8 @@ const AuthScreen: React.FC = () => {
             Verification email sent!
           </h3>
           <p className="text-sm text-gray-600 dark:text-neutral-400">
-            We sent a verification link to <span className="font-medium">{signUpEmail}</span>. Please
-            check your inbox and click the link to activate your account.
+            We sent a verification link to <span className="font-medium">{signUpEmail}</span>.
+            Please check your inbox and click the link to activate your account.
           </p>
           <button
             type="button"
@@ -147,8 +142,7 @@ const AuthScreen: React.FC = () => {
               setSignUpSuccess(false);
               setView('signin');
             }}
-            className="text-sm font-medium text-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-          >
+            className="text-sm font-medium text-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
             Back to Sign In
           </button>
         </div>
@@ -170,8 +164,7 @@ const AuthScreen: React.FC = () => {
             view === 'signin'
               ? 'bg-white dark:bg-neutral-900 text-[#7C3AED] dark:text-[#A855F7] shadow-sm'
               : 'text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-200'
-          }`}
-        >
+          }`}>
           Sign In
         </button>
         <button
@@ -181,8 +174,7 @@ const AuthScreen: React.FC = () => {
             view === 'signup'
               ? 'bg-white dark:bg-neutral-900 text-[#7C3AED] dark:text-[#A855F7] shadow-sm'
               : 'text-gray-500 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-200'
-          }`}
-        >
+          }`}>
           Sign Up
         </button>
       </div>
@@ -220,8 +212,7 @@ const AuthScreen: React.FC = () => {
             <button
               type="button"
               onClick={() => setView('forgot')}
-              className="text-xs font-medium text-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-            >
+              className="text-xs font-medium text-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
               Forgot password?
             </button>
           </div>
@@ -300,8 +291,7 @@ const AuthScreen: React.FC = () => {
               required
               value={businessType}
               onChange={e => setBusinessType(e.target.value)}
-              className={`${inputClass} ${!businessType ? 'text-gray-400 dark:text-neutral-500' : ''}`}
-            >
+              className={`${inputClass} ${!businessType ? 'text-gray-400 dark:text-neutral-500' : ''}`}>
               <option value="" disabled>
                 Select your industry
               </option>
@@ -330,7 +320,9 @@ function Shell({ children }: { children: React.ReactNode }) {
     <div className="ce-ambient-bg min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md animate-fade-up" style={{ animationDuration: '0.6s' }}>
         {/* Branding */}
-        <div className="text-center mb-8 animate-stagger-fade-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
+        <div
+          className="text-center mb-8 animate-stagger-fade-up"
+          style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
           <div className="flex justify-center mb-3">
             <img
               src="/brand/closeredge-mark.svg"
@@ -406,13 +398,23 @@ function SubmitButton({
       className="ce-press-scale mt-2 w-full rounded-lg bg-[#7C3AED] px-4 py-3 text-sm font-semibold text-white
                  hover:bg-[#6D28D9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]/50 focus-visible:ring-offset-2
                  dark:focus-visible:ring-offset-[#1a1a22]
-                 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
-    >
+                 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200">
       {loading ? (
         <span className="flex items-center justify-center gap-2">
           <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
           </svg>
           {loadingLabel}
         </span>

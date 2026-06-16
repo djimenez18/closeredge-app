@@ -1,9 +1,9 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Mutex, OnceLock};
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::memory_sources::readers::SourceReader;
-use openhuman_core::openhuman::memory_sources::{ContentType, MemorySourceEntry, SourceKind};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::memory_sources::readers::SourceReader;
+use closeredge_core::openhuman::memory_sources::{ContentType, MemorySourceEntry, SourceKind};
 use tempfile::{Builder, TempDir};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
@@ -114,7 +114,7 @@ async fn round21_rss_reader_covers_http_body_guards_and_invalid_utf8() {
     let _lock = env_lock();
     let tmp = tempdir();
     let config = config(&tmp);
-    let reader = openhuman_core::openhuman::memory_sources::readers::rss::RssReader;
+    let reader = closeredge_core::openhuman::memory_sources::readers::rss::RssReader;
 
     let (status_url, status_server) =
         one_response_server("503 Service Unavailable", "", b"down".to_vec()).await;
@@ -183,9 +183,9 @@ async fn round21_github_reader_covers_commit_issue_comments_and_error_paths() {
     let old_path = std::env::var("PATH").unwrap_or_default();
     let _path = EnvGuard::set_path("PATH", Path::new(&format!("{}:{old_path}", bin.display())));
 
-    let reader = openhuman_core::openhuman::memory_sources::readers::github::GithubReader;
+    let reader = closeredge_core::openhuman::memory_sources::readers::github::GithubReader;
     let entry = MemorySourceEntry {
-        url: Some("https://github.com/tinyhumansai/openhuman".to_string()),
+        url: Some("https://github.com/closeredgeai/closeredge".to_string()),
         ..source_entry("github-round21", SourceKind::GithubRepo)
     };
 
@@ -238,32 +238,32 @@ if [[ "${1:-}" != "api" ]]; then
   exit 2
 fi
 case "${2:-}" in
-  repos/tinyhumansai/openhuman/commits?per_page=30)
+  repos/closeredgeai/closeredge/commits?per_page=30)
     cat <<'JSON'
 [{"sha":"abc123","commit":{"message":"Round21 commit subject\n\nBody line","author":{"name":"Ada","email":"ada@example.test","date":"2026-05-30T00:00:00Z"},"committer":{"name":"Ada","email":"ada@example.test","date":"2026-05-30T00:00:00Z"}}}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues?per_page=30\&state=all)
+  repos/closeredgeai/closeredge/issues?per_page=30\&state=all)
     cat <<'JSON'
 [{"number":42,"title":"Round21 issue","body":"Issue body","state":"open","user":{"login":"octo"},"labels":[],"created_at":"2026-05-30T00:00:00Z","updated_at":"2026-05-30T00:01:00Z","pull_request":null}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/pulls?per_page=30\&state=all)
+  repos/closeredgeai/closeredge/pulls?per_page=30\&state=all)
     cat <<'JSON'
 [{"number":43,"title":"Round21 PR","body":"PR body","state":"open","user":{"login":"octo"},"labels":[],"created_at":"2026-05-30T00:00:00Z","updated_at":"2026-05-30T00:02:00Z","merged_at":null,"comments":1}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/commits/abc123)
+  repos/closeredgeai/closeredge/commits/abc123)
     cat <<'JSON'
 {"sha":"abc123","commit":{"message":"Round21 commit subject\n\nBody line","author":{"name":"Ada","email":"ada@example.test","date":"2026-05-30T00:00:00Z"},"committer":{"name":"Grace","email":"grace@example.test","date":"2026-05-30T00:03:00Z"}}}
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues/42)
+  repos/closeredgeai/closeredge/issues/42)
     cat <<'JSON'
 {"number":42,"title":"Round21 issue","body":"Issue body","state":"open","user":{"login":"octo"},"labels":[],"created_at":"2026-05-30T00:00:00Z","updated_at":"2026-05-30T00:01:00Z","pull_request":null}
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues/42/comments?per_page=50)
+  repos/closeredgeai/closeredge/issues/42/comments?per_page=50)
     cat <<'JSON'
 [{"user":{"login":"reviewer"},"body":"Looks good from the fixture","created_at":"2026-05-30T00:04:00Z"}]
 JSON

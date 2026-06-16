@@ -199,7 +199,11 @@ export function NeuralConstellation({ className = '' }: { className?: string }) 
         // Core
         ctx.beginPath();
         ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = node.color + Math.round(alpha * 255).toString(16).padStart(2, '0');
+        ctx.fillStyle =
+          node.color +
+          Math.round(alpha * 255)
+            .toString(16)
+            .padStart(2, '0');
         ctx.fill();
       }
 
@@ -207,7 +211,14 @@ export function NeuralConstellation({ className = '' }: { className?: string }) 
       const centerX = w / 2;
       const centerY = h / 2;
       const glowRadius = Math.min(w, h) * 0.3;
-      const centerGlow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, glowRadius);
+      const centerGlow = ctx.createRadialGradient(
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        glowRadius
+      );
       centerGlow.addColorStop(0, 'rgba(124, 58, 237, 0.04)');
       centerGlow.addColorStop(0.5, 'rgba(124, 58, 237, 0.02)');
       centerGlow.addColorStop(1, 'rgba(124, 58, 237, 0)');

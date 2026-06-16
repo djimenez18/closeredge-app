@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import type { Subscription, SubscriptionTier } from '../../hooks/useSubscription';
 import { PORTAL_UNCONFIGURED_HINT } from '../../constants/links';
+import type { Subscription, SubscriptionTier } from '../../hooks/useSubscription';
 import { openUrl } from '../../utils/openUrl';
 
 // ---------------------------------------------------------------------------
@@ -34,14 +34,38 @@ const AGENT_LABELS: Record<string, string> = {
 };
 
 const STATUS_BADGES: Record<string, { label: string; className: string }> = {
-  active: { label: 'Active', className: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300' },
-  trialing: { label: 'Trial', className: 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300' },
-  past_due: { label: 'Past Due', className: 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300' },
-  canceled: { label: 'Canceled', className: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300' },
-  unpaid: { label: 'Unpaid', className: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300' },
-  incomplete: { label: 'Incomplete', className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300' },
-  incomplete_expired: { label: 'Expired', className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300' },
-  paused: { label: 'Paused', className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300' },
+  active: {
+    label: 'Active',
+    className: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300',
+  },
+  trialing: {
+    label: 'Trial',
+    className: 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300',
+  },
+  past_due: {
+    label: 'Past Due',
+    className: 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300',
+  },
+  canceled: {
+    label: 'Canceled',
+    className: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300',
+  },
+  unpaid: {
+    label: 'Unpaid',
+    className: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300',
+  },
+  incomplete: {
+    label: 'Incomplete',
+    className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300',
+  },
+  incomplete_expired: {
+    label: 'Expired',
+    className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300',
+  },
+  paused: {
+    label: 'Paused',
+    className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300',
+  },
 };
 
 function formatDate(iso: string): string {
@@ -80,16 +104,13 @@ export default function SubscriptionStatus({
     className: 'bg-stone-100 text-stone-600 dark:bg-neutral-700 dark:text-neutral-300',
   };
 
-  const showUpgrade =
-    subscription.tier === 'foundation' || subscription.tier === 'pro';
+  const showUpgrade = subscription.tier === 'foundation' || subscription.tier === 'pro';
 
   const activeAddOns = subscription.addOns.filter(a => a.active);
 
   return (
     <div className="ce-hover-lift rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
-      <h3 className="text-base font-semibold text-stone-900 dark:text-neutral-100">
-        Subscription
-      </h3>
+      <h3 className="text-base font-semibold text-stone-900 dark:text-neutral-100">Subscription</h3>
 
       <div className="mt-4 space-y-3">
         {/* Plan */}
@@ -102,7 +123,8 @@ export default function SubscriptionStatus({
 
         {/* Status */}
         <Row label="Status">
-          <span className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${badge.className}`}>
+          <span
+            className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${badge.className}`}>
             {badge.label}
           </span>
           {subscription.cancelAtPeriodEnd && (
