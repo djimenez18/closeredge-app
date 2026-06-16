@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { supabase } from '../lib/supabase';
 
@@ -111,14 +111,16 @@ export function useAuth(): UseAuthReturn {
       // If the session is available immediately (email confirmation disabled),
       // insert the customer row in `public.customers`.
       if (data.session && data.user) {
-        const { error: insertError } = await supabase.from('customers').insert({
-          id: data.user.id,
-          email: email.toLowerCase(),
-          business_name: metadata.businessName.trim(),
-          contact_name: metadata.contactName.trim(),
-          business_type: metadata.businessType,
-          created_at: new Date().toISOString(),
-        });
+        const { error: insertError } = await supabase
+          .from('customers')
+          .insert({
+            id: data.user.id,
+            email: email.toLowerCase(),
+            business_name: metadata.businessName.trim(),
+            contact_name: metadata.contactName.trim(),
+            business_type: metadata.businessType,
+            created_at: new Date().toISOString(),
+          });
 
         if (insertError) {
           // Log but don't throw -- the auth account was already created.
@@ -157,13 +159,5 @@ export function useAuth(): UseAuthReturn {
     if (error) throw error;
   }, []);
 
-  return {
-    user,
-    session,
-    isLoading,
-    signIn,
-    signUp,
-    signOut,
-    resetPassword,
-  };
+  return { user, session, isLoading, signIn, signUp, signOut, resetPassword };
 }

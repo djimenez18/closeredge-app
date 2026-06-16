@@ -9,12 +9,12 @@
  */
 import { useState } from 'react';
 
+import { useT } from '../../../../lib/i18n/I18nContext';
 import { supabaseConfigured } from '../../../../lib/supabase';
 import {
   isCloudPairingEnabled,
   setCloudPairingEnabled,
 } from '../../../../services/devicePairingPublisher';
-import { useT } from '../../../../lib/i18n/I18nContext';
 
 const CloudPairingCard = () => {
   const { t } = useT();

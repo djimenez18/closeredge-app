@@ -18,10 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
 import { useT } from '../../lib/i18n/I18nContext';
 import { supabase } from '../../lib/supabase';
-import {
-  listRegisteredDesktops,
-  type RegisteredDesktop,
-} from '../../services/deviceRegistry';
+import { listRegisteredDesktops, type RegisteredDesktop } from '../../services/deviceRegistry';
 import { connectFromPairPayload } from '../../services/transport/connectFromPairPayload';
 
 const log = debug('mobile:login');
@@ -88,7 +85,10 @@ export const LoginScreen: FC = () => {
     }
     const message =
       result.kind === 'expired'
-        ? t('mobileLogin.error.expired', 'That desktop has not refreshed recently — make sure CloserEdge AI is running, then pull to refresh.')
+        ? t(
+            'mobileLogin.error.expired',
+            'That desktop has not refreshed recently — make sure CloserEdge AI is running, then pull to refresh.'
+          )
         : result.kind === 'unhealthy'
           ? t('mobileLogin.error.unreachable', "Couldn't reach that desktop. Is it online?")
           : result.message;
@@ -217,7 +217,10 @@ export const LoginScreen: FC = () => {
                   <p className="text-xs text-white/50">
                     {d.online
                       ? t('mobileLogin.desktopOnline', 'Ready to connect')
-                      : t('mobileLogin.desktopOffline', 'Offline — open CloserEdge on this computer')}
+                      : t(
+                          'mobileLogin.desktopOffline',
+                          'Offline — open CloserEdge on this computer'
+                        )}
                   </p>
                 </div>
                 <span

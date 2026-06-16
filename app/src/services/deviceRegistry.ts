@@ -85,20 +85,22 @@ export async function publishDesktopPairing(input: PublishDesktopInput): Promise
   if (userErr || !userData.user) {
     throw new Error(userErr?.message ?? 'not signed in');
   }
-  const { error } = await supabase.from('device_registry').upsert(
-    {
-      user_id: userData.user.id,
-      desktop_install_id: input.desktopInstallId,
-      device_label: input.deviceLabel,
-      channel_id: input.channelId,
-      core_pubkey: input.corePubkey,
-      pairing_token: input.pairingToken,
-      rpc_url: input.rpcUrl,
-      token_expires_at: input.tokenExpiresAt,
-      last_seen_at: new Date().toISOString(),
-    },
-    { onConflict: 'user_id,desktop_install_id' }
-  );
+  const { error } = await supabase
+    .from('device_registry')
+    .upsert(
+      {
+        user_id: userData.user.id,
+        desktop_install_id: input.desktopInstallId,
+        device_label: input.deviceLabel,
+        channel_id: input.channelId,
+        core_pubkey: input.corePubkey,
+        pairing_token: input.pairingToken,
+        rpc_url: input.rpcUrl,
+        token_expires_at: input.tokenExpiresAt,
+        last_seen_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id,desktop_install_id' }
+    );
   if (error) {
     log('publish error: %s', error.message);
     throw new Error(error.message);
