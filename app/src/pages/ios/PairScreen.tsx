@@ -20,56 +20,11 @@ import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useT } from '../../lib/i18n/I18nContext';
-import {
-  connectFromPairPayload,
-  type PairPayload,
-} from '../../services/transport/connectFromPairPayload';
+import { connectFromPairPayload } from '../../services/transport/connectFromPairPayload';
+import { parsePairUrl } from '../../services/transport/pairUrl';
 
 const log = debug('ios:pair-screen');
 const logErr = debug('ios:pair-screen:error');
-
-// -- QR payload parsing -------------------------------------------------------
-
-function parsePairUrl(raw: string): PairPayload | null {
-  log('[ios] parsing pair URL len=%d', raw.length);
-  try {
-    // Accept both the openhuman:// deep-link and a plain https:// fallback.
-    // Normalise openhuman:// → https:// so URL() can parse it.
-    const normalised = raw.startsWith('openhuman://')
-      ? raw.replace('openhuman://', 'https://openhuman.app/')
-      : raw;
-    const url = new URL(normalised);
-    const p = url.searchParams;
-
-    const channelId = p.get('cid');
-    const pairingToken = p.get('pt');
-    const corePubkey = p.get('cpk');
-    const rpcRaw = p.get('rpc');
-    const expRaw = p.get('exp');
-
-    if (!channelId || !pairingToken || !corePubkey || !expRaw) {
-      logErr(
-        '[ios] missing required QR fields cid=%s pt_len=%d cpk_len=%d exp=%s',
-        channelId,
-        pairingToken?.length ?? 0,
-        corePubkey?.length ?? 0,
-        expRaw
-      );
-      return null;
-    }
-
-    const expiresAt = parseInt(expRaw, 10);
-    if (isNaN(expiresAt)) {
-      logErr('[ios] invalid exp field: %s', expRaw);
-      return null;
-    }
-
-    return { channelId, pairingToken, corePubkey, rpcUrl: rpcRaw ?? undefined, expiresAt };
-  } catch (err) {
-    logErr('[ios] URL parse error: %o', err);
-    return null;
-  }
-}
 
 // -- component ---------------------------------------------------------------
 

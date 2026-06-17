@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useT } from '../../../../lib/i18n/I18nContext';
 import { callCoreRpc } from '../../../../services/coreRpcClient';
+import { buildPairUrl } from '../../../../services/transport/pairUrl';
 
 const log = createDebug('app:devices-ui:pair-modal');
 
@@ -51,22 +52,6 @@ interface PairPhoneModalProps {
   onClose: () => void;
   /** Called when a device successfully completes pairing. */
   onPaired: (channelId: string) => void;
-}
-
-// ---------------------------------------------------------------------------
-// QR URL builder
-// ---------------------------------------------------------------------------
-
-function buildPairUrl(session: CreatePairingResponse): string {
-  const params = new URLSearchParams();
-  params.set('cid', session.channel_id);
-  params.set('pt', session.pairing_token);
-  params.set('cpk', session.core_pubkey);
-  if (session.rpc_url) params.set('rpc', session.rpc_url);
-  // expires_at is ISO 8601 — convert to unix timestamp for compact QR.
-  const expUnix = Math.floor(new Date(session.expires_at).getTime() / 1_000);
-  params.set('exp', String(expUnix));
-  return `openhuman://pair?${params.toString()}`;
 }
 
 // ---------------------------------------------------------------------------
