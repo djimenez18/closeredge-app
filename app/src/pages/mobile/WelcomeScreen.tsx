@@ -10,7 +10,6 @@
 import { type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
 import { useT } from '../../lib/i18n/I18nContext';
 import { supabaseConfigured } from '../../lib/supabase';
 
@@ -26,18 +25,13 @@ export const WelcomeScreen: FC = () => {
           'radial-gradient(ellipse at 50% -10%, rgba(123,110,246,0.28), transparent 60%), #171130',
       }}>
       <div className="flex flex-col items-center gap-8 max-w-sm w-full">
-        <div
-          className="w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg
-                     bg-gradient-to-br from-edge-800 to-edge-600 shadow-edge-700/40">
-          <CloserEdgeMark size={52} />
-        </div>
-
         <div className="text-center">
-          <h1 className="font-display font-bold text-3xl tracking-tight">
-            Closer<span className="text-edge-400">Edge</span>
-            <span className="font-medium opacity-80"> AI</span>
-          </h1>
-          <p className="text-sm text-white/60 leading-relaxed mt-3">
+          <img
+            src="/closeredge-logo-white.png"
+            alt="CloserEdge AI"
+            className="w-64 max-w-[80%] h-auto mx-auto drop-shadow-[0_10px_30px_rgba(123,110,246,0.3)]"
+          />
+          <p className="text-sm text-white/60 leading-relaxed mt-4">
             {t('mobileWelcome.tagline', 'Your AI employee, in your pocket.')}
           </p>
         </div>

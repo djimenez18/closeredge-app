@@ -114,7 +114,7 @@ export const LoginScreen: FC = () => {
       <div className="flex flex-col items-center gap-6 max-w-sm w-full mx-auto my-auto">
         <div className="flex items-center gap-3">
           <CloserEdgeMark size={32} />
-          <h1 className="font-display font-bold text-xl tracking-tight">
+          <h1 className="font-display font-bold text-xl tracking-tight text-white">
             {phase.kind === 'credentials'
               ? t('mobileLogin.title', 'Log in')
               : t('mobileLogin.pickDesktop', 'Choose a desktop')}
