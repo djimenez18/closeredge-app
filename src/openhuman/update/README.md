@@ -1,6 +1,8 @@
 # update
 
-Self-update domain for the `openhuman-core` binary. Checks GitHub Releases (`tinyhumansai/openhuman`, "latest" endpoint) for a newer build of the platform-appropriate core binary, downloads + atomically stages it next to the running executable, and (depending on the configured restart strategy) publishes a self-restart so the Tauri shell/supervisor can swap it in. Also exposes a cheap no-network version probe and a periodic background checker. Network failures are classified so transient transport/HTTP problems don't spam Sentry.
+Self-update domain for the `openhuman-core` binary. Checks GitHub Releases (CloserEdge-owned feed, default `closeredgeai/closeredge-app`, "latest" endpoint) for a newer build of the platform-appropriate core binary, downloads + atomically stages it next to the running executable, and (depending on the configured restart strategy) publishes a self-restart so the Tauri shell/supervisor can swap it in. Also exposes a cheap no-network version probe and a periodic background checker. Network failures are classified so transient transport/HTTP problems don't spam Sentry.
+
+> **Disabled by default.** CloserEdge is a white-label fork with no shipping release pipeline yet, so `config.update.enabled` defaults to **`false`** — the scheduler short-circuits with `auto-update checks disabled by config` and never hits the network. The feed repo **must not** be the upstream `tinyhumansai/openhuman` repo (that surfaced a phantom upstream version with no installable CloserEdge asset). Enable + point it once a feed exists — see [`gitbooks/developing/release-policy.md` → Auto-update feed (CloserEdge)](../../../gitbooks/developing/release-policy.md). The release feed slug is overridable at runtime via `OPENHUMAN_AUTO_UPDATE_GITHUB_OWNER` / `OPENHUMAN_AUTO_UPDATE_GITHUB_REPO` (defaults in `core.rs`: `closeredgeai` / `closeredge-app`).
 
 ## Responsibilities
 - Query the GitHub Releases "latest" API and compare semver-ish tags against the compiled `CARGO_PKG_VERSION` (`is_newer`).
@@ -15,7 +17,7 @@ Self-update domain for the `openhuman-core` binary. Checks GitHub Releases (`tin
 | File | Role |
 | --- | --- |
 | `src/openhuman/update/mod.rs` | Export-focused. `pub use core::*`, `pub use ops as rpc`, `pub use types::*`, and the `all_update_controller_schemas` / `all_update_registered_controllers` re-exports. |
-| `src/openhuman/update/core.rs` | Core logic: `current_version`, `platform_triple`, `check_available` (GitHub fetch + parse), `download_and_stage[_with_version]` (atomic staging), asset selection, semver compare, transport-failure classifier. |
+| `src/openhuman/update/core.rs` | Core logic: `current_version`, `platform_triple`, `github_repo_slug` (CloserEdge feed slug + env override), `check_available` (GitHub fetch + parse), `download_and_stage[_with_version]` (atomic staging), asset selection, semver compare, transport-failure classifier. |
 | `src/openhuman/update/ops.rs` | RPC handlers (`update_version`/`update_check`/`update_apply`/`update_run`), mutation-policy enforcement, URL/asset-name validation, and `UpdateRunResult` builders per restart strategy. Aliased as `update::rpc`. |
 | `src/openhuman/update/scheduler.rs` | `run(UpdateConfig)` periodic checker loop + `tick()`; publishes startup/health events. Floor `MIN_INTERVAL_MINUTES = 10`. |
 | `src/openhuman/update/schemas.rs` | Controller registry: `all_controller_schemas`, `all_registered_controllers`, `schemas(fn)`, and `handle_*` thunks delegating to `ops`. |

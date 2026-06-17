@@ -184,6 +184,21 @@ export const LATEST_APP_DOWNLOAD_URL =
   'https://github.com/closeredgeai/closeredge-app/releases/latest';
 
 /**
+ * Whether the Tauri shell auto-updater (`<AppUpdatePrompt />`) probes the
+ * release feed on launch and on a periodic cadence.
+ *
+ * **Default off.** CloserEdge has no shipping release pipeline yet, so the
+ * `plugins.updater` endpoint in `tauri.conf.json` resolves to a repo with no
+ * releases — probing it just logs "update endpoint did not respond" on every
+ * launch. Gating the auto-check keeps startup clean until a real feed exists.
+ *
+ * Flip on with `VITE_APP_UPDATES_ENABLED=true` once a CloserEdge release feed
+ * (and a matching signed `latest.json`) is published. Mirrors the Rust core's
+ * `config.update.enabled` flag (default off for the same reason).
+ */
+export const APP_UPDATES_ENABLED = import.meta.env.VITE_APP_UPDATES_ENABLED === 'true';
+
+/**
  * Set `VITE_SENTRY_SMOKE_TEST=true` in one build (or in `.env.local`) to
  * fire a one-shot diagnostic event at `initSentry()` time and verify the
  * Sentry pipeline end-to-end. Has no effect in normal builds.

@@ -66,7 +66,11 @@ const UPDATER_TRANSIENT_MESSAGE_PHRASES: &[&str] = &[
     "failed to check for updates: error sending request",
     "github api error: 403",
     "github api error: 5",
-    "error sending request for url (https://github.com/tinyhumansai/openhuman/releases/",
+    // CloserEdge-owned release feed (white-label fork). Matching `closeredge`
+    // without the `-app` suffix also covers the `closeredgeai/closeredge-app`
+    // updater endpoint and any future `closeredge*` repo via the `contains`
+    // check in `is_updater_transient_message`.
+    "error sending request for url (https://github.com/closeredgeai/closeredge",
     "update endpoint did not respond with a successful status code",
 ];
 

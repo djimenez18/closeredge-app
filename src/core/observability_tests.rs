@@ -2839,6 +2839,30 @@ fn updater_endpoint_non_success_anchor_does_not_silence_unrelated_errors() {
 }
 
 #[test]
+fn updater_closeredge_feed_transport_failure_is_dropped() {
+    // White-label rebrand: the updater feed is CloserEdge-owned, so a
+    // transport failure naming the `closeredgeai/closeredge*` releases URL is
+    // the same unactionable updater noise the upstream URL used to be. Anchor
+    // the CloserEdge substring so the demotion survives the repoint.
+    for msg in [
+        "failed to check for updates: error sending request for url \
+         (https://github.com/closeredgeai/closeredge-app/releases/latest/download/latest.json)",
+        "error sending request for url \
+         (https://github.com/closeredgeai/closeredge/releases/latest/download/latest.json): \
+         dns error",
+    ] {
+        assert!(
+            is_updater_transient_message(msg),
+            "CloserEdge updater transport failure must be demoted: {msg}"
+        );
+        assert!(
+            is_updater_transient_event(&event_with_tags_and_message(&[], msg)),
+            "CloserEdge updater transport failure must be filtered in before_send: {msg}"
+        );
+    }
+}
+
+#[test]
 fn message_failure_classifier_matches_canonical_status_phrases() {
     for msg in [
         "rpc.invoke_method failed: GET /teams failed (502 Bad Gateway)",

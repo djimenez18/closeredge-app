@@ -23,7 +23,16 @@ impl Default for UpdateRestartStrategy {
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(default)]
 pub struct UpdateConfig {
-    /// Enable periodic update checks. Defaults to `true`.
+    /// Enable periodic update checks against the CloserEdge release feed.
+    ///
+    /// **Defaults to `false`** — CloserEdge has no shipping release pipeline
+    /// yet, so the background checker stays off to avoid hitting an empty feed
+    /// (a 404 that would otherwise spam logs/Sentry) or, worse, a phantom
+    /// upstream version. Flip to `true` (or set
+    /// `OPENHUMAN_AUTO_UPDATE_ENABLED=1`) once a CloserEdge feed exists, and
+    /// point it with `OPENHUMAN_AUTO_UPDATE_GITHUB_OWNER` /
+    /// `OPENHUMAN_AUTO_UPDATE_GITHUB_REPO` if it differs from the default
+    /// `closeredgeai/closeredge-app`.
     #[serde(default = "default_update_enabled")]
     pub enabled: bool,
 
@@ -43,7 +52,8 @@ pub struct UpdateConfig {
 }
 
 fn default_update_enabled() -> bool {
-    true
+    // Off until a CloserEdge release pipeline exists — see `UpdateConfig::enabled`.
+    false
 }
 
 fn default_update_interval_minutes() -> u32 {
@@ -62,5 +72,27 @@ impl Default for UpdateConfig {
             restart_strategy: UpdateRestartStrategy::default(),
             rpc_mutations_enabled: default_rpc_mutations_enabled(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn auto_update_disabled_by_default() {
+        // Regression guard: CloserEdge ships with the background update checker
+        // OFF (no release pipeline yet). If this flips back to `true` the app
+        // starts polling an empty feed again. Re-enable deliberately, not by
+        // accident.
+        assert!(!UpdateConfig::default().enabled);
+    }
+
+    #[test]
+    fn defaults_keep_safe_interval_and_mutation_policy() {
+        let cfg = UpdateConfig::default();
+        assert_eq!(cfg.interval_minutes, 60);
+        assert!(cfg.rpc_mutations_enabled);
+        assert_eq!(cfg.restart_strategy, UpdateRestartStrategy::SelfReplace);
     }
 }
