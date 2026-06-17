@@ -19,7 +19,6 @@ import debug from 'debug';
 import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
 import { useT } from '../../lib/i18n/I18nContext';
 import {
   connectFromPairPayload,
@@ -141,18 +140,12 @@ export const PairScreen: FC = () => {
           'radial-gradient(ellipse at 50% -10%, rgba(123,110,246,0.28), transparent 60%), #171130',
       }}>
       <div className="flex flex-col items-center gap-8 max-w-sm w-full">
-        {/* Logo / icon area */}
-        <div
-          className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg
-                     bg-gradient-to-br from-edge-800 to-edge-600 shadow-edge-700/40">
-          <CloserEdgeMark size={44} />
-        </div>
-
-        {/* Wordmark */}
-        <p className="font-display font-bold text-xl tracking-tight -mt-3">
-          Closer<span className="text-edge-400">Edge</span>
-          <span className="font-medium opacity-80"> AI</span>
-        </p>
+        {/* Brand logo */}
+        <img
+          src="/closeredge-logo-white.png"
+          alt="CloserEdge AI"
+          className="w-56 max-w-[78%] h-auto drop-shadow-[0_10px_30px_rgba(123,110,246,0.3)]"
+        />
 
         {/* Heading */}
         <div className="text-center">
