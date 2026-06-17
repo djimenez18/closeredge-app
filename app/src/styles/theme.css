@@ -1,17 +1,9 @@
 /* ============================================
-   Premium Theme Styles for Crypto Platform
-   ============================================ */
-
-/* Import premium fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
-
-/* Custom font declarations for premium typography */
-@font-face {
-  font-family: 'Cabinet Grotesk';
-  src: url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-  font-display: swap;
-}
+   Premium theme styles for CloserEdge AI
+   ============================================
+   Brand webfonts (DM Sans / Cormorant Garamond / DM Mono) load once in
+   src/index.html; this file only defines theme tokens, components, and the
+   light/dark palettes. */
 
 /* ============================================
    Root Variables & Theme Configuration

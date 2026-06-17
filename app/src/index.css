@@ -1,6 +1,7 @@
-/* Import Google Fonts for trust and professionalism */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+/* Brand webfonts (DM Sans / Cormorant Garamond / DM Mono) are loaded once in
+   src/index.html so they resolve in a single parallel request before paint —
+   not re-imported here. The OS sans/serif/mono stacks in tailwind.config.js
+   cover the fallback if the CDN is unreachable. */
 
 /* Tailwind CSS imports */
 @tailwind base;

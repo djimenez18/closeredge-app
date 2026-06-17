@@ -7,10 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // Premium font stack optimized for crypto professionals
-      // CloserEdge type system (mirrors the Mission Control client dashboard):
-      // body DM Sans, display Cormorant Garamond, mono DM Mono. Loaded via
-      // Google Fonts in index.html.
+      // CloserEdge premium type system (mirrors the Mission Control client
+      // dashboard): body DM Sans, display Cormorant Garamond, mono DM Mono.
+      // Loaded via Google Fonts in src/index.html (the Vite-served entry).
       fontFamily: {
         'sans': ['DM Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
         'display': ['Cormorant Garamond', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
