@@ -562,9 +562,9 @@ body::before {
   --color-text-tertiary: #737373;
   --color-text-muted: #a3a3a3;
 
-  --color-hover: #eff6ff;
-  --color-active: #dbeafe;
-  --color-focus: #2f6ef4;
+  --color-hover: #f5f3ff;
+  --color-active: #ede9fe;
+  --color-focus: #7c3aed;
 
   --color-success: #34c759;
   --color-warning: #e8a728;

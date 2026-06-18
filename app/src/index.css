@@ -77,7 +77,11 @@
   h5,
   h6 {
     @apply font-sans font-semibold;
-    @apply text-stone-900;
+    /* Theme-aware by default (was a hardcoded `text-stone-900`, i.e. near-black
+       on every heading — invisible in dark mode unless each component re-added
+       a `dark:` override). The semantic token resolves correctly in both
+       themes; per-element utilities still win where a component needs them. */
+    color: var(--color-text-primary);
     line-height: 1.2;
   }
 
@@ -482,7 +486,7 @@
 
 /* Command palette + help overlay — scoped tokens. */
 :root {
-  --cmd-accent: #2f6ef4;
+  --cmd-accent: #7c3aed;
   --cmd-surface: #ffffff;
   --cmd-surface-elevated: #f5f5f5;
   --cmd-foreground: #171717;
@@ -494,7 +498,7 @@
 }
 
 :root.dark {
-  --cmd-accent: #60a5fa;
+  --cmd-accent: #a855f7;
   --cmd-surface: #171717;
   --cmd-surface-elevated: #262626;
   --cmd-foreground: #fafafa;

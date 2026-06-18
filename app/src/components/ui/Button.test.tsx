@@ -9,9 +9,10 @@ describe('Button', () => {
     const btn = screen.getByRole('button', { name: 'Send' });
     expect(btn).toBeInTheDocument();
     expect(btn).toHaveAttribute('type', 'button');
-    expect(btn.className).toMatch(/bg-primary-500/);
+    // Primary is the brand purple (#7C3AED) — the single accent across the app.
+    expect(btn.className).toMatch(/bg-brand-500/);
     expect(btn.className).toMatch(/h-9/);
-    expect(btn.className).toMatch(/focus-visible:ring-primary-500\/25/);
+    expect(btn.className).toMatch(/focus-visible:ring-brand-500\/60/);
   });
 
   it('applies secondary variant classes', () => {

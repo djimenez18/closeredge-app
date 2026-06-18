@@ -61,19 +61,24 @@ module.exports = {
           300: '#D4D4D4',   // Hover states
         },
 
-        // Primary - Complementary blue from Figma
+        // Primary — aliased to the CloserEdge brand purple so every existing
+        // `*-primary-*` usage (buttons, links, focus rings, active states)
+        // resolves to THE brand accent. Previously a separate Figma blue
+        // (#2F6EF4), which split the brand across two accent colors; the brand
+        // is purple (#7C3AED), so primary and brand now share one ramp.
+        // Genuine "info" blue lives in `--color-info` / market.stablecoin.
         primary: {
-          50: '#EFF6FF',
-          100: '#DBEAFE',
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#2F6EF4',   // Complementary Blue (Figma)
-          600: '#2563EB',   // Gradient end
-          700: '#1D4ED8',   // Active state
-          800: '#1E40AF',
-          900: '#1E3A8A',
-          950: '#172554',
+          50: '#F5F3FF',
+          100: '#EDE9FE',
+          200: '#DDD6FE',
+          300: '#C4B5FD',
+          400: '#A855F7',   // Light accent (text-on-dark)
+          500: '#7C3AED',   // Brand purple
+          600: '#6D28D9',   // Hover
+          700: '#5B21B6',   // Active
+          800: '#4C1D95',
+          900: '#3B1577',
+          950: '#1A1025',
         },
 
         // Sage - Success (from Figma: #34C759)

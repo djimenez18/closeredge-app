@@ -276,9 +276,9 @@ const BottomTabBar = () => {
         key={tab.id}
         data-walkthrough={walkthroughAttr[tab.id]}
         onClick={() => navigate(tab.path)}
-        className={`ce-press-scale group relative flex items-center px-2 py-2 rounded-sm text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer ${
+        className={`ce-press-scale group relative flex items-center px-2 py-2 rounded-xl text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer ${
           active
-            ? 'bg-white dark:bg-neutral-800 text-[#7C3AED] dark:text-[#A855F7] font-semibold shadow-sm'
+            ? 'bg-white dark:bg-neutral-800 text-brand-500 dark:text-brand-400 font-semibold shadow-sm'
             : 'bg-transparent text-stone-500 dark:text-neutral-400 hover:bg-stone-300/50 dark:hover:bg-neutral-800/60 hover:text-stone-700 dark:hover:text-neutral-200'
         }`}
         aria-label={
@@ -332,7 +332,7 @@ const BottomTabBar = () => {
         onBlur={e => {
           if (!e.currentTarget.contains(e.relatedTarget as Node)) setRevealed(false);
         }}>
-        <nav className="pointer-events-auto inline-flex items-center gap-1 rounded-sm border border-stone-300 dark:border-neutral-700 bg-stone-200 dark:bg-neutral-900 shadow-soft px-1 py-1">
+        <nav className="pointer-events-auto inline-flex items-center gap-0.5 rounded-2xl border border-stone-200/70 dark:border-white/10 bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl shadow-lg shadow-black/[0.06] dark:shadow-black/40 px-1.5 py-1.5">
           {/* ── Primary tabs ─────────────────────────────────────── */}
           {primaryTabs.map(renderTab)}
 
@@ -340,9 +340,9 @@ const BottomTabBar = () => {
           <div ref={moreRef} className="relative">
             <button
               onClick={() => setMoreOpen(prev => !prev)}
-              className={`ce-press-scale group relative flex items-center px-2 py-2 rounded-sm text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer ${
+              className={`ce-press-scale group relative flex items-center px-2 py-2 rounded-xl text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer ${
                 moreOpen || overflowHasActive
-                  ? 'bg-white dark:bg-neutral-800 text-[#7C3AED] dark:text-[#A855F7] font-semibold shadow-sm'
+                  ? 'bg-white dark:bg-neutral-800 text-brand-500 dark:text-brand-400 font-semibold shadow-sm'
                   : 'bg-transparent text-stone-500 dark:text-neutral-400 hover:bg-stone-300/50 dark:hover:bg-neutral-800/60 hover:text-stone-700 dark:hover:text-neutral-200'
               }`}
               aria-label="More"
@@ -382,11 +382,11 @@ const BottomTabBar = () => {
                       }}
                       className={`ce-press-scale flex w-full items-center gap-2.5 px-3 py-2 text-sm transition-all duration-200 cursor-pointer ${
                         active
-                          ? 'bg-[#7C3AED]/[0.08] dark:bg-[#7C3AED]/10 text-[#7C3AED] dark:text-[#A855F7] font-semibold'
+                          ? 'bg-brand-500/[0.08] dark:bg-brand-500/10 text-brand-500 dark:text-brand-400 font-semibold'
                           : 'text-stone-600 dark:text-neutral-300 hover:bg-stone-50 dark:hover:bg-neutral-800/60 hover:text-stone-900 dark:hover:text-neutral-100'
                       }`}>
                       <span
-                        className={`flex-shrink-0 ${active ? 'text-[#7C3AED] dark:text-[#A855F7]' : 'text-stone-400 dark:text-neutral-500'}`}>
+                        className={`flex-shrink-0 ${active ? 'text-brand-500 dark:text-brand-400' : 'text-stone-400 dark:text-neutral-500'}`}>
                         {tab.icon}
                       </span>
                       {tab.label}
@@ -404,7 +404,7 @@ const BottomTabBar = () => {
             onClick={toggleTheme}
             aria-label={isDark ? t('home.themeToggle.toLight') : t('home.themeToggle.toDark')}
             title={isDark ? t('home.themeToggle.toLight') : t('home.themeToggle.toDark')}
-            className="group relative flex items-center px-2 py-2 rounded-sm text-sm cursor-pointer bg-transparent text-stone-500 dark:text-neutral-400 hover:bg-stone-300/50 dark:hover:bg-neutral-800/60 hover:text-stone-700 dark:hover:text-neutral-200 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+            className="group relative flex items-center px-2 py-2 rounded-xl text-sm cursor-pointer bg-transparent text-stone-500 dark:text-neutral-400 hover:bg-stone-300/50 dark:hover:bg-neutral-800/60 hover:text-stone-700 dark:hover:text-neutral-200 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
             {/* Sun / moon morph — both icons stay mounted and cross-rotate. */}
             <span className="relative inline-flex w-4 h-4 flex-shrink-0">
               {/* Sun — visible in dark mode (click = back to light) */}

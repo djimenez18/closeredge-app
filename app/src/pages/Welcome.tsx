@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import OAuthProviderButton from '../components/oauth/OAuthProviderButton';
 import { oauthProviderConfigs } from '../components/oauth/providerConfigs';
-import RotatingTetrahedronCanvas from '../components/RotatingTetrahedronCanvas';
 import Button from '../components/ui/Button';
 import { useT } from '../lib/i18n/I18nContext';
 import { useCoreState } from '../providers/CoreStateProvider';
@@ -127,8 +126,13 @@ const Welcome = () => {
             </button>
           </div>
           <div className="flex justify-center mb-6">
-            <div className="h-20 w-20">
-              <RotatingTetrahedronCanvas />
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-500/10 ring-1 ring-brand-500/20">
+              <img
+                src="/brand/closeredge-mark.svg"
+                alt="CloserEdge AI"
+                className="h-9 w-auto"
+                draggable={false}
+              />
             </div>
           </div>
 

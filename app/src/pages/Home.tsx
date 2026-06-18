@@ -179,7 +179,7 @@ const Home = () => {
                   className="h-5 w-auto"
                   aria-hidden="true"
                 />
-                <span className="text-sm font-semibold tracking-tight text-[#7C3AED]">
+                <span className="text-sm font-semibold tracking-tight text-brand-500 dark:text-brand-400">
                   CloserEdge AI
                 </span>
               </div>
@@ -272,7 +272,7 @@ const Home = () => {
             data-walkthrough="home-cta"
             onClick={handleStartCooking}
             disabled={blocking === 'core-unreachable' || blocking === 'internet-offline'}
-            className="ce-press-scale w-full py-3 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#7C3AED]/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900">
+            className="ce-press-scale w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900">
             {t('home.askAssistant')}
           </button>
         </div>
