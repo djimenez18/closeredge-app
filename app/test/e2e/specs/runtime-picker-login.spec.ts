@@ -160,8 +160,8 @@ describe('Runtime picker → login → onboarding → home → logout', () => {
     await waitForWebView(15_000);
     await waitForAppReady(15_000);
 
-    // Welcome.tsx: "Welcome to OpenHuman" + at least one provider button.
-    expect(await waitForText('Welcome to OpenHuman', 15_000)).toBeTruthy();
+    // Welcome.tsx: "Welcome to CloserEdge AI" + at least one provider button.
+    expect(await waitForText('Welcome to CloserEdge AI', 15_000)).toBeTruthy();
     expect(await textExists('Select a Runtime')).toBe(true);
   });
 
@@ -320,7 +320,7 @@ describe('Runtime picker → login → onboarding → home → logout', () => {
       let onHome = false;
       while (Date.now() < deadline) {
         const hash = (await browser.execute(() => window.location.hash)) as string;
-        const stillOnWelcome = await textExists('Welcome to OpenHuman');
+        const stillOnWelcome = await textExists('Welcome to CloserEdge AI');
         if (!stillOnWelcome && (hash.startsWith('#/home') || hash.startsWith('#/chat'))) {
           onHome = true;
           break;
@@ -346,7 +346,7 @@ describe('Runtime picker → login → onboarding → home → logout', () => {
 
     // logoutViaSettings already asserts the logged-out marker; double-check
     // the Welcome OAuth row reappeared so we know the route reset cleanly.
-    expect(await waitForText('Welcome to OpenHuman', 15_000)).toBeTruthy();
+    expect(await waitForText('Welcome to CloserEdge AI', 15_000)).toBeTruthy();
     expect(await textExists('Select a Runtime')).toBe(true);
   });
 });

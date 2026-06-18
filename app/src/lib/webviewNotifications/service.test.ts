@@ -30,7 +30,7 @@ function makeFiredPayload(
   return {
     account_id: 'acct1',
     provider: 'slack' as const,
-    title: 'OpenHuman: Slack - Ping',
+    title: 'CloserEdge AI: Slack - Ping',
     body: 'hi',
     tag: null,
     ...overrides,

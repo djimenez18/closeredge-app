@@ -145,7 +145,7 @@ describe('Logout -> re-login onboarding overlay', function () {
       () => document.querySelector('[data-testid="onboarding-welcome-step"]') !== null
     );
     expect(onFirstStep).toBe(true);
-    expect(await textExists("Hi. I'm OpenHuman.")).toBe(true);
+    expect(await textExists("Hi. I'm CloserEdge AI.")).toBe(true);
     expect(await textExists('Get Started')).toBe(true);
   });
 });

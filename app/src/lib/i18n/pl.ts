@@ -165,7 +165,7 @@ const messages: TranslationMap = {
   'clearData.failedLogout': 'Nie udało się wylogować. Spróbuj ponownie.',
   'clearData.failedPersist':
     'Nie udało się wyczyścić utrwalonego stanu aplikacji. Spróbuj ponownie.',
-  'welcome.title': 'Witaj w OpenHuman',
+  'welcome.title': 'Witaj w CloserEdge AI',
   'welcome.subtitle': 'Twoja osobista superinteligencja AI. Prywatna, prosta i niezwykle potężna.',
   'welcome.connectPrompt': 'Skonfiguruj URL RPC (zaawansowane)',
   'welcome.selectRuntime': 'Wybierz środowisko',
@@ -174,7 +174,7 @@ const messages: TranslationMap = {
   'welcome.clearAppDataWarning':
     'Spowoduje to usunięcie lokalnie przechowywanych sekretów i kont na tym urządzeniu. Twoje konto w chmurze pozostanie nienaruszone — możesz zalogować się ponownie od razu.',
   'welcome.resetErrorFallback':
-    'Nie udało się wyczyścić danych aplikacji. Zamknij i ponownie otwórz OpenHuman, a następnie spróbuj ponownie.',
+    'Nie udało się wyczyścić danych aplikacji. Zamknij i ponownie otwórz CloserEdge AI, a następnie spróbuj ponownie.',
   'welcome.signingIn': 'Logowanie...',
   'welcome.termsIntro': 'Kontynuując akceptujesz',
   'welcome.termsOfUse': 'Regulamin',
@@ -194,7 +194,7 @@ const messages: TranslationMap = {
   'home.statusBackendOnly':
     'Ponowne łączenie z backendem… Twój agent będzie dostępny ponownie za chwilę.',
   'home.statusCoreUnreachable':
-    'Rdzeń OpenHuman nie odpowiada. Proces w tle mógł ulec awarii lub nie uruchomić się.',
+    'Rdzeń CloserEdge AI nie odpowiada. Proces w tle mógł ulec awarii lub nie uruchomić się.',
   'home.statusInternetOffline':
     'Twoje urządzenie jest teraz offline. Sprawdź sieć lub uruchom ponownie aplikację, aby się połączyć.',
   'home.restartCore': 'Uruchom ponownie rdzeń',
@@ -450,13 +450,13 @@ const messages: TranslationMap = {
   'rewards.referrals': 'Polecenia',
   'rewards.coupons': 'Wykorzystaj',
   'rewards.localUnavailable':
-    'Logowanie lokalne nie zbiera nagród, voucherów ani środków z poleceń. Wyloguj się i zaloguj kontem OpenHuman, jeśli zależy Ci na nagrodach.',
+    'Logowanie lokalne nie zbiera nagród, voucherów ani środków z poleceń. Wyloguj się i zaloguj kontem CloserEdge AI, jeśli zależy Ci na nagrodach.',
   'rewards.localUnavailableCta': 'Otwórz ustawienia konta',
   'rewards.credits': 'Kredyty',
   'rewards.referralCode': 'Twój kod polecający',
   'rewards.copyCode': 'Skopiuj kod',
   'rewards.share': 'Udostępnij',
-  'onboarding.welcome': 'Cześć. Jestem OpenHuman.',
+  'onboarding.welcome': 'Cześć. Jestem CloserEdge AI.',
   'onboarding.welcomeDesc':
     'Twój superinteligentny asystent AI uruchomiony na Twoim komputerze. Prywatny, prosty i niezwykle potężny.',
   'onboarding.context': 'Zbieranie kontekstu',
@@ -468,15 +468,15 @@ const messages: TranslationMap = {
   'onboarding.referral': 'Polecenie',
   'onboarding.referralDesc': 'Wpisz kod polecający, jeśli go masz.',
   'onboarding.finish': 'Zakończ konfigurację',
-  'onboarding.finishDesc': 'Gotowe! Zacznij korzystać z OpenHuman.',
+  'onboarding.finishDesc': 'Gotowe! Zacznij korzystać z CloserEdge AI.',
   'onboarding.skip': 'Pomiń',
   'onboarding.getStarted': 'Rozpocznij',
-  'onboarding.runtimeChoice.title': 'Jak chcesz uruchomić OpenHuman?',
+  'onboarding.runtimeChoice.title': 'Jak chcesz uruchomić CloserEdge AI?',
   'onboarding.runtimeChoice.subtitle':
-    'Wybierz, jak dużą część OpenHuman ma obsłużyć za Ciebie. Możesz to zmienić później w Ustawieniach.',
+    'Wybierz, jak dużą część CloserEdge AI ma obsłużyć za Ciebie. Możesz to zmienić później w Ustawieniach.',
   'onboarding.runtimeChoice.cloud.title': 'Prosto',
   'onboarding.runtimeChoice.cloud.tagline':
-    'Korzystaj z logowania OpenHuman, routingu modeli, wyszukiwarki i zarządzanych integracji.',
+    'Korzystaj z logowania CloserEdge AI, routingu modeli, wyszukiwarki i zarządzanych integracji.',
   'onboarding.runtimeChoice.cloud.f1': 'OAuth i routing modeli pośredniczone przez backend',
   'onboarding.runtimeChoice.cloud.f2': 'Kompresja tokenów, aby wydłużyć Twój limit',
   'onboarding.runtimeChoice.cloud.f3': 'Jedna subskrypcja, każdy model w komplecie',
@@ -485,7 +485,7 @@ const messages: TranslationMap = {
   'onboarding.runtimeChoice.cloud.f5': 'Lokalne drzewo pamięci, zarządzane usługi sieciowe',
   'onboarding.runtimeChoice.custom.title': 'Niestandardowo',
   'onboarding.runtimeChoice.custom.tagline':
-    'Przynieś własne klucze. Wybierz, które usługi OpenHuman ma wywoływać.',
+    'Przynieś własne klucze. Wybierz, które usługi CloserEdge AI ma wywoływać.',
   'onboarding.runtimeChoice.custom.f1': 'Będziesz potrzebować kluczy API do prawie wszystkiego',
   'onboarding.runtimeChoice.custom.f2': 'Korzysta z usług, za które już płacisz',
   'onboarding.runtimeChoice.custom.f3': 'Trzyma obsługiwane obciążenia na Twoim komputerze',
@@ -532,7 +532,7 @@ const messages: TranslationMap = {
   'onboarding.custom.stepperMemory': 'Pamięć',
   'onboarding.custom.stepCounter': 'Krok {n} z {total}',
   'onboarding.custom.defaultTitle': 'Domyślnie',
-  'onboarding.custom.defaultSubtitle': 'Niech OpenHuman zarządza tym za Ciebie.',
+  'onboarding.custom.defaultSubtitle': 'Niech CloserEdge AI zarządza tym za Ciebie.',
   'onboarding.custom.configureTitle': 'Skonfiguruj',
   'onboarding.custom.configureSubtitle': 'Wybiorę sam, co użyć.',
   'onboarding.custom.progressAriaLabel': 'Postęp konfiguracji',
@@ -546,40 +546,40 @@ const messages: TranslationMap = {
   'onboarding.custom.inference.subtitle':
     'Który model językowy ma odpowiadać na pytania i uruchamiać agentów?',
   'onboarding.custom.inference.defaultDesc':
-    'OpenHuman domyślnie kieruje obciążenia przez zarządzany backend. Bez kluczy, bez konfiguracji.',
+    'CloserEdge AI domyślnie kieruje obciążenia przez zarządzany backend. Bez kluczy, bez konfiguracji.',
   'onboarding.custom.inference.configureDesc':
     'Przynieś własny klucz OpenAI lub Anthropic. Użyjemy go do każdego obciążenia tekstowego.',
   'onboarding.custom.voice.title': 'Głos',
   'onboarding.custom.voice.subtitle': 'Mowa na tekst i tekst na mowę dla trybu głosowego.',
   'onboarding.custom.voice.defaultDesc':
-    'OpenHuman dostarcza zarządzanych dostawców STT/TTS, którzy mogą wysyłać audio/tekst do usług hostowanych.',
+    'CloserEdge AI dostarcza zarządzanych dostawców STT/TTS, którzy mogą wysyłać audio/tekst do usług hostowanych.',
   'onboarding.custom.voice.configureDesc':
     'Użyj własnego ElevenLabs / OpenAI Whisper itp. Skonfiguruj w Ustawieniach › Głos.',
   'onboarding.custom.oauth.title': 'Połączenia (OAuth)',
   'onboarding.custom.oauth.subtitle':
     'Gmail, Slack, Notion i inne podłączone usługi, które wymagają OAuth.',
   'onboarding.custom.oauth.defaultDesc':
-    'OpenHuman pośredniczy w OAuth i wywołaniach narzędzi przez zarządzaną przestrzeń Composio.',
+    'CloserEdge AI pośredniczy w OAuth i wywołaniach narzędzi przez zarządzaną przestrzeń Composio.',
   'onboarding.custom.oauth.configureDesc':
     'Przynieś własne konto / klucz API Composio. Skonfiguruj w Ustawieniach › Połączenia.',
   'onboarding.custom.search.title': 'Wyszukiwanie w sieci',
-  'onboarding.custom.search.subtitle': 'Jak OpenHuman wyszukuje w sieci w Twoim imieniu.',
+  'onboarding.custom.search.subtitle': 'Jak CloserEdge AI wyszukuje w sieci w Twoim imieniu.',
   'onboarding.custom.search.defaultDesc':
-    'OpenHuman domyślnie używa zarządzanego proxy wyszukiwarki. Klucz API niepotrzebny.',
+    'CloserEdge AI domyślnie używa zarządzanego proxy wyszukiwarki. Klucz API niepotrzebny.',
   'onboarding.custom.search.configureDesc':
     'Przynieś własny klucz dostawcy (Tavily, Brave itp.). Skonfiguruj w Ustawieniach › Narzędzia.',
   'onboarding.custom.embeddings.title': 'Embeddings',
   'onboarding.custom.embeddings.subtitle':
-    'Jak OpenHuman generuje wektory embeddings na potrzeby wyszukiwania semantycznego.',
+    'Jak CloserEdge AI generuje wektory embeddings na potrzeby wyszukiwania semantycznego.',
   'onboarding.custom.embeddings.defaultDesc':
-    'OpenHuman używa zarządzanej usługi embeddings. Klucz API niepotrzebny.',
+    'CloserEdge AI używa zarządzanej usługi embeddings. Klucz API niepotrzebny.',
   'onboarding.custom.embeddings.configureDesc':
     'Przynieś własnego dostawcę embeddings (OpenAI, Voyage, Ollama itp.).',
   'onboarding.custom.memory.title': 'Pamięć',
   'onboarding.custom.memory.subtitle':
-    'Jak OpenHuman zapamiętuje Twój kontekst, preferencje i wcześniejsze rozmowy.',
+    'Jak CloserEdge AI zapamiętuje Twój kontekst, preferencje i wcześniejsze rozmowy.',
   'onboarding.custom.memory.defaultDesc':
-    'OpenHuman zarządza pamięcią automatycznie. Nic do skonfigurowania.',
+    'CloserEdge AI zarządza pamięcią automatycznie. Nic do skonfigurowania.',
   'onboarding.custom.memory.configureDesc':
     'Przeglądaj, eksportuj lub czyść pamięć samodzielnie. Skonfiguruj w Ustawieniach › Pamięć.',
   'accounts.addAccount': 'Dodaj konto',
@@ -715,7 +715,7 @@ const messages: TranslationMap = {
   'misc.downloading': 'Pobieranie...',
   'misc.installing': 'Instalowanie...',
   'misc.beta':
-    'OpenHuman jest we wczesnej fazie beta. Chętnie poznamy Twoje uwagi — każdy zgłoszony błąd pomaga nam szybciej wydać poprawki.',
+    'CloserEdge AI jest we wczesnej fazie beta. Chętnie poznamy Twoje uwagi — każdy zgłoszony błąd pomaga nam szybciej wydać poprawki.',
   'misc.betaFeedback': 'Wyślij uwagi',
   'mnemonic.title': 'Fraza odzyskiwania',
   'mnemonic.warning': 'Zapisz te słowa w kolejności i przechowuj je w bezpiecznym miejscu.',
@@ -739,11 +739,11 @@ const messages: TranslationMap = {
   'privacy.anonymizedAnalytics': 'Anonimowa analityka',
   'privacy.shareAnonymizedData': 'Udostępniaj anonimowe dane o użytkowaniu',
   'privacy.shareAnonymizedDataDesc':
-    'Pomóż ulepszać OpenHuman, udostępniając anonimowe raporty awarii i analitykę użytkowania. Wszystkie dane są w pełni anonimowe — nigdy nie zbieramy danych osobowych, wiadomości, kluczy portfela ani informacji o sesji.',
+    'Pomóż ulepszać CloserEdge AI, udostępniając anonimowe raporty awarii i analitykę użytkowania. Wszystkie dane są w pełni anonimowe — nigdy nie zbieramy danych osobowych, wiadomości, kluczy portfela ani informacji o sesji.',
   'privacy.meetingFollowUps': 'Działania po spotkaniach',
   'privacy.autoHandoffMeet': 'Automatycznie przekazuj transkrypcje Google Meet do orchestratora',
   'privacy.autoHandoffMeetDesc':
-    'Gdy spotkanie Google Meet się kończy, orchestrator OpenHuman może odczytać transkrypcję i wykonać akcje, np. przygotować wiadomości, zaplanować działania lub opublikować podsumowanie w podłączonym workspace Slack. Domyślnie wyłączone.',
+    'Gdy spotkanie Google Meet się kończy, orchestrator CloserEdge AI może odczytać transkrypcję i wykonać akcje, np. przygotować wiadomości, zaplanować działania lub opublikować podsumowanie w podłączonym workspace Slack. Domyślnie wyłączone.',
   'privacy.analyticsDisclaimer':
     'Wszystkie raporty analityczne i błędów są w pełni anonimowe. Po włączeniu zbieramy informacje o awariach i typie urządzenia (Sentry) oraz anonimową analitykę (Google Analytics — odsłony, używane funkcje). Nigdy nie uzyskujemy dostępu do Twoich wiadomości, danych sesji, kluczy portfela, kluczy API ani danych osobowych. Możesz zmienić to ustawienie w dowolnym momencie.',
   'settings.about.version': 'Wersja',
@@ -827,17 +827,17 @@ const messages: TranslationMap = {
     'Wyślij wiadomość do agenta — zużycie tokenów z następnego wywołania dostawcy pojawi się na wykresie w ciągu około 10 sekund.',
   'settings.search.title': 'Wyszukiwarka',
   'settings.search.menuDesc':
-    'Użyj domyślnie wyszukiwarki zarządzanej przez OpenHuman lub podłącz własnego dostawcę z kluczem API.',
+    'Użyj domyślnie wyszukiwarki zarządzanej przez CloserEdge AI lub podłącz własnego dostawcę z kluczem API.',
   'settings.search.description':
-    'Wybierz wyszukiwarkę używaną przez agenta. Zarządzana korzysta z backendu OpenHuman (bez konfiguracji). Parallel i Brave działają bezpośrednio z Twojego urządzenia, używając Twojego klucza API.',
+    'Wybierz wyszukiwarkę używaną przez agenta. Zarządzana korzysta z backendu CloserEdge AI (bez konfiguracji). Parallel i Brave działają bezpośrednio z Twojego urządzenia, używając Twojego klucza API.',
   'settings.search.engineAria': 'Wyszukiwarka',
   'settings.search.engineDisabledLabel': 'Disabled',
   'settings.search.engineDisabledDesc':
     'Usuń narzędzia wyszukiwania z kontekstu agenta i listy dostępnych narzędzi.',
-  'settings.search.engineManagedLabel': 'OpenHuman zarządzane',
-  'settings.search.engineManagedDesc': 'Domyślnie. Przez backend OpenHuman — bez klucza API.',
+  'settings.search.engineManagedLabel': 'CloserEdge AI zarządzane',
+  'settings.search.engineManagedDesc': 'Domyślnie. Przez backend CloserEdge AI — bez klucza API.',
   'settings.search.localManagedUnavailable':
-    'Wyszukiwarka zarządzana przez OpenHuman jest niedostępna dla użytkowników lokalnych. Dodaj własny klucz API Parallel lub Brave, aby włączyć wyszukiwanie w sieci.',
+    'Wyszukiwarka zarządzana przez CloserEdge AI jest niedostępna dla użytkowników lokalnych. Dodaj własny klucz API Parallel lub Brave, aby włączyć wyszukiwanie w sieci.',
   'settings.search.engineParallelLabel': 'Parallel',
   'settings.search.engineParallelDesc':
     'Bezpośrednie API Parallel: szukaj, wyciąg, czat, badania, wzbogacenie, narzędzia datasetowe.',
@@ -939,13 +939,14 @@ const messages: TranslationMap = {
     'Przechowywane zaszyfrowane w lokalnej tabeli sekretów MCP. Nigdy nie są logowane ani wysyłane do modelu.',
   'devices.betaBadge': 'Beta',
   'devices.betaText':
-    'Ta funkcja jest obecnie w fazie beta. Sparuj iPhone z tą instalacją OpenHuman, aby używać go jako zdalnego klienta.',
+    'Ta funkcja jest obecnie w fazie beta. Sparuj iPhone z tą instalacją CloserEdge AI, aby używać go jako zdalnego klienta.',
   'devices.comingSoonDescription':
     'Parowanie urządzeń pojawi się wkrótce. Ta strona będzie służyć do parowania iPhone’ów i zarządzania połączonymi urządzeniami.',
   'devices.title': 'Urządzenia',
   'devices.pairIphone': 'Sparuj iPhone',
   'devices.noPaired': 'Brak sparowanych urządzeń',
-  'devices.emptyState': 'Zeskanuj kod QR w aplikacji iPhone, aby połączyć go z tą sesją OpenHuman.',
+  'devices.emptyState':
+    'Zeskanuj kod QR w aplikacji iPhone, aby połączyć go z tą sesją CloserEdge AI.',
   'devices.devicePairedTitle': 'Urządzenie sparowane',
   'devices.devicePairedMessage': 'iPhone został pomyślnie podłączony.',
   'devices.deviceRevokedTitle': 'Urządzenie unieważnione',
@@ -966,7 +967,7 @@ const messages: TranslationMap = {
   'devices.loadFailed': 'Nie udało się załadować urządzeń: {message}',
   'devices.pairModal.title': 'Sparuj iPhone',
   'devices.pairModal.loading': 'Generowanie kodu parowania…',
-  'devices.pairModal.instructions': 'Otwórz aplikację OpenHuman na iPhone i zeskanuj ten kod.',
+  'devices.pairModal.instructions': 'Otwórz aplikację CloserEdge AI na iPhone i zeskanuj ten kod.',
   'devices.pairModal.expiresIn': 'Kod wygasa za ~{count} minutę',
   'devices.pairModal.expiresInPlural': 'Kod wygasa za ~{count} minut',
   'devices.pairModal.showDetails': 'Pokaż szczegóły',
@@ -1051,6 +1052,9 @@ const messages: TranslationMap = {
   'mobileHome.suggestion.listing': 'Napisz opis oferty',
   'mobileHome.suggestion.followup': 'Napisz wiadomość do klienta',
   'mobileHome.suggestion.plan': 'Zaplanuj mój dzień',
+  'mobileDevices.subtitle': 'Komputery sparowane z tym telefonem.',
+  'mobileDevices.pairAnother': 'Sparuj inne urządzenie',
+  'mobileDevices.empty': 'Brak sparowanych komputerów.',
   'mobileWelcome.tagline': 'Twój pracownik AI, w Twojej kieszeni.',
   'mobileWelcome.logIn': 'Zaloguj się',
   'mobileWelcome.scanQr': 'Sparuj kodem QR',
@@ -1222,7 +1226,7 @@ const messages: TranslationMap = {
   'autonomy.title': 'Autonomia agenta',
   'autonomy.maxActionsLabel': 'Maks. akcji na godzinę',
   'autonomy.maxActionsHelp':
-    'Maksymalna liczba akcji narzędzi, którą agent może uruchomić w ciągu kolejnej godziny. Nowa wartość obowiązuje od następnego czatu. Zadania cron i nasłuchy kanałów zachowują dotychczasowy limit do restartu OpenHuman.',
+    'Maksymalna liczba akcji narzędzi, którą agent może uruchomić w ciągu kolejnej godziny. Nowa wartość obowiązuje od następnego czatu. Zadania cron i nasłuchy kanałów zachowują dotychczasowy limit do restartu CloserEdge AI.',
   'autonomy.statusSaving': 'Zapisywanie…',
   'autonomy.statusSaved': 'Zapisano.',
   'autonomy.statusFailed': 'Niepowodzenie',
@@ -1279,7 +1283,7 @@ const messages: TranslationMap = {
   'settings.billing.browserOpenFailed':
     'Nie udało się otworzyć przeglądarki automatycznie. Użyj przycisku powyżej.',
   'settings.tools.chooseCapabilities':
-    'Wybierz, z jakich możliwości OpenHuman może korzystać w Twoim imieniu.',
+    'Wybierz, z jakich możliwości CloserEdge AI może korzystać w Twoim imieniu.',
   'settings.tools.saveChanges': 'Zapisz zmiany',
   'settings.tools.preferencesSaved': 'Preferencje zapisane',
   'settings.tools.saveFailed': 'Nie udało się zapisać preferencji. Spróbuj ponownie.',
@@ -1538,8 +1542,8 @@ const messages: TranslationMap = {
   'voice.providers.piperPreset.alanMedium': 'GB · Alan (męski)',
   'voice.providers.piperPreset.jennyDiocoMedium': 'GB · Jenny Dioco (żeński)',
   'voice.providers.piperPreset.northernEnglishMaleMedium': 'GB · Północnoangielski (męski)',
-  'voice.providers.chip.cloud': 'OpenHuman (zarządzany)',
-  'voice.providers.chip.cloudAria': 'Zarządzany dostawca OpenHuman jest zawsze włączony',
+  'voice.providers.chip.cloud': 'CloserEdge AI (zarządzany)',
+  'voice.providers.chip.cloudAria': 'Zarządzany dostawca CloserEdge AI jest zawsze włączony',
   'voice.providers.chip.whisper': 'Whisper (lokalnie)',
   'voice.providers.chip.enableWhisper': 'Włącz lokalny Whisper STT',
   'voice.providers.chip.disableWhisper': 'Wyłącz lokalny Whisper STT',
@@ -2066,7 +2070,7 @@ const messages: TranslationMap = {
   'backend.cloud': 'Chmura',
   'backend.recommended': 'Zalecane',
   'backend.cloudDescription':
-    'Szybkie, mocne modele kierowane przez backend OpenHuman. Gotowe do użycia od razu.',
+    'Szybkie, mocne modele kierowane przez backend CloserEdge AI. Gotowe do użycia od razu.',
   'backend.privacyNote':
     'Prompty i wybrany kontekst mogą być wysyłane do skonfigurowanego backendu/dostawcy. Użyj trybu lokalnego dla obsługiwanych workloadów na urządzeniu.',
   'backend.local': 'Lokalny',
@@ -2123,9 +2127,9 @@ const messages: TranslationMap = {
   'bootCheck.chooseCoreMode': 'Wybierz środowisko',
   'bootCheck.connectToCore': 'Połącz się ze swoim środowiskiem',
   'bootCheck.desktopDescription':
-    'OpenHuman potrzebuje środowiska do działania. Wybierz, gdzie ma się znajdować.',
+    'CloserEdge AI potrzebuje środowiska do działania. Wybierz, gdzie ma się znajdować.',
   'bootCheck.webDescription':
-    'W przeglądarce OpenHuman łączy się ze środowiskiem, którym zarządzasz. Wpisz jego URL i token poniżej lub pobierz aplikację desktopową, aby uruchomić środowisko bezpośrednio na komputerze.',
+    'W przeglądarce CloserEdge AI łączy się ze środowiskiem, którym zarządzasz. Wpisz jego URL i token poniżej lub pobierz aplikację desktopową, aby uruchomić środowisko bezpośrednio na komputerze.',
   'bootCheck.preferDesktop': 'Wolisz wszystko trzymać na własnym urządzeniu?',
   'bootCheck.downloadDesktop': 'Pobierz aplikację desktopową',
   'bootCheck.localRecommended': 'Uruchom lokalnie (zalecane)',
@@ -2151,7 +2155,7 @@ const messages: TranslationMap = {
   'bootCheck.quit': 'Zakończ',
   'bootCheck.legacyDetected': 'Wykryto starsze środowisko w tle',
   'bootCheck.legacyDescription':
-    'Osobno zainstalowany daemon OpenHuman już działa na tym urządzeniu. Musimy go usunąć, zanim wbudowane środowisko przejmie kontrolę.',
+    'Osobno zainstalowany daemon CloserEdge AI już działa na tym urządzeniu. Musimy go usunąć, zanim wbudowane środowisko przejmie kontrolę.',
   'bootCheck.removing': 'Usuwanie…',
   'bootCheck.removeContinue': 'Usuń i kontynuuj',
   'bootCheck.localNeedsRestart': 'Lokalne środowisko wymaga restartu',
@@ -2173,7 +2177,7 @@ const messages: TranslationMap = {
   'bootCheck.actionFailed': 'Coś poszło nie tak. Spróbuj ponownie.',
   'bootCheck.portConflictTitle': 'Nie udało się uruchomić silnika aplikacji',
   'bootCheck.portConflictBody':
-    'Inny proces używa portu sieciowego potrzebnego OpenHumanowi. Spróbujemy to naprawić automatycznie.',
+    'Inny proces używa portu sieciowego potrzebnego CloserEdge AIowi. Spróbujemy to naprawić automatycznie.',
   'bootCheck.portConflictFixButton': 'Napraw automatycznie',
   'bootCheck.portConflictFixing': 'Naprawianie…',
   'bootCheck.portConflictFixFailed':
@@ -2229,7 +2233,7 @@ const messages: TranslationMap = {
   'composio.reconnect': 'Połącz ponownie',
   'composio.expiredAuthorization': 'Autoryzacja {name} wygasła',
   'composio.expiredDescription':
-    'Połącz ponownie, aby ponownie włączyć narzędzia {name}. OpenHuman utrzyma tę integrację jako niedostępną, dopóki nie odświeżysz dostępu OAuth.',
+    'Połącz ponownie, aby ponownie włączyć narzędzia {name}. CloserEdge AI utrzyma tę integrację jako niedostępną, dopóki nie odświeżysz dostępu OAuth.',
   'composio.envVarOverrides': 'jest ustawiona, nadpisuje to ustawienie.',
   'composio.previewBadge': 'Podgląd',
   'composio.previewTooltip':
@@ -2280,7 +2284,7 @@ const messages: TranslationMap = {
   'accounts.webviewHost.timeoutHint': 'Wskazówka dot. limitu czasu',
   'app.connectionBadge.composio': 'Composio',
   'app.connectionBadge.messaging': 'Wiadomości',
-  'app.connectionIndicator.connected': 'Połączono z OpenHuman AI 🚀',
+  'app.connectionIndicator.connected': 'Połączono z CloserEdge AI 🚀',
   'app.connectionIndicator.connecting': 'Łączenie',
   'app.connectionIndicator.coreOffline': 'Rdzeń offline',
   'app.connectionIndicator.disconnected': 'Rozłączono',
@@ -2319,7 +2323,7 @@ const messages: TranslationMap = {
   'app.openhumanLink.notifications.asking': 'Pytanie systemu operacyjnego…',
   'app.openhumanLink.notifications.blocked': 'Zablokowane',
   'app.openhumanLink.notifications.blockedStep1': 'Otwórz Ustawienia systemowe → Powiadomienia.',
-  'app.openhumanLink.notifications.blockedStep2': 'Znajdź OpenHuman na liście aplikacji.',
+  'app.openhumanLink.notifications.blockedStep2': 'Znajdź CloserEdge AI na liście aplikacji.',
   'app.openhumanLink.notifications.blockedStep3': 'Włącz „Zezwalaj na powiadomienia” i wróć tutaj.',
   'app.openhumanLink.notifications.intro':
     'Włącz powiadomienia, aby otrzymywać alerty od agenta i kanałów.',
@@ -2328,7 +2332,7 @@ const messages: TranslationMap = {
   'app.openhumanLink.notifications.send': 'Wyślij powiadomienie testowe',
   'app.openhumanLink.notifications.sendFailed': 'Nie udało się wysłać: {error}',
   'app.openhumanLink.notifications.sent':
-    'Wysłano powiadomienie testowe. Jeśli go nie otrzymałeś(aś), przejdź do Ustawienia systemowe → Powiadomienia → OpenHuman, włącz „Zezwalaj na powiadomienia” i ustaw styl banera na „Trwały”.',
+    'Wysłano powiadomienie testowe. Jeśli go nie otrzymałeś(aś), przejdź do Ustawienia systemowe → Powiadomienia → CloserEdge AI, włącz „Zezwalaj na powiadomienia” i ustaw styl banera na „Trwały”.',
   'app.openhumanLink.skipForNow': 'Pomiń na razie',
   'app.openhumanLink.telegramUnavailable': 'Telegram niedostępny',
   'app.openhumanLink.title.accounts': 'Podłącz swoje aplikacje',
@@ -2341,7 +2345,7 @@ const messages: TranslationMap = {
   'app.persistRehydration.heading': 'Przywracanie sesji',
   'app.persistRehydration.resetCta': 'Resetowanie…',
   'app.persistRehydration.resetting': 'Resetowanie…',
-  'app.routeLoading.initializing': 'Inicjalizacja OpenHuman...',
+  'app.routeLoading.initializing': 'Inicjalizacja CloserEdge AI...',
   'app.update.currentlyOn': '{version}',
   'app.update.errorFallback': 'Coś poszło nie tak podczas aktualizacji.',
   'app.update.header.default': 'Aktualizacja',
@@ -2397,7 +2401,7 @@ const messages: TranslationMap = {
   'chat.approval.fallback': 'Agent chce wykonać akcję wymagającą Twojej zgody.',
   'chat.approval.title': 'Wymagana zgoda',
   'chat.approval.tool': 'Narzędzie:',
-  'channels.authMode.managed_dm': 'Zaloguj się z OpenHuman',
+  'channels.authMode.managed_dm': 'Zaloguj się z CloserEdge AI',
   'channels.authMode.oauth': 'Logowanie OAuth',
   'channels.authMode.bot_token': 'Użyj własnego tokena bota',
   'channels.authMode.api_key': 'Użyj własnego klucza API',
@@ -2409,9 +2413,9 @@ const messages: TranslationMap = {
   'channels.discord.description': 'Wysyłaj i odbieraj wiadomości przez Discord.',
   'channels.discord.authMode.bot_token.description': 'Podaj własny token bota Discord.',
   'channels.discord.authMode.oauth.description':
-    'Zainstaluj bota OpenHuman na swoim serwerze Discord przez OAuth.',
+    'Zainstaluj bota CloserEdge AI na swoim serwerze Discord przez OAuth.',
   'channels.discord.authMode.managed_dm.description':
-    'Powiąż swoje osobiste konto Discord z botem OpenHuman.',
+    'Powiąż swoje osobiste konto Discord z botem CloserEdge AI.',
   'channels.discord.fields.bot_token.label': 'Token bota',
   'channels.discord.fields.bot_token.placeholder': 'Twój token bota Discord',
   'channels.discord.fields.guild_id.label': 'ID serwera (gildii)',
@@ -2419,7 +2423,7 @@ const messages: TranslationMap = {
   'channels.telegram.displayName': 'Telegram',
   'channels.telegram.description': 'Wysyłaj i odbieraj wiadomości przez Telegram.',
   'channels.telegram.authMode.managed_dm.description':
-    'Pisz bezpośrednio do bota OpenHuman na Telegramie.',
+    'Pisz bezpośrednio do bota CloserEdge AI na Telegramie.',
   'channels.telegram.authMode.bot_token.description':
     'Podaj własny token bota Telegram z @BotFather.',
   'channels.telegram.fields.bot_token.label': 'Token bota',
@@ -2473,16 +2477,16 @@ const messages: TranslationMap = {
   'iosPair.error.connectionFailed':
     'Połączenie nieudane. Upewnij się, że aplikacja na komputerze działa i spróbuj ponownie.',
   'iosPair.error.invalidQr':
-    'Nieprawidłowy kod QR. Upewnij się, że skanujesz kod parowania OpenHuman.',
+    'Nieprawidłowy kod QR. Upewnij się, że skanujesz kod parowania CloserEdge AI.',
   'iosPair.error.unreachableDesktop':
     'Nie udało się dotrzeć do komputera. Upewnij się, że oba urządzenia są online i spróbuj ponownie.',
   'iosPair.expired': 'Kod QR wygasł. Poproś komputer o wygenerowanie nowego.',
   'iosPair.instructions':
-    'Otwórz OpenHuman na komputerze, przejdź do Ustawienia > Urządzenia i kliknij „Sparuj telefon”, aby pokazać kod QR.',
+    'Otwórz CloserEdge AI na komputerze, przejdź do Ustawienia > Urządzenia i kliknij „Sparuj telefon”, aby pokazać kod QR.',
   'iosPair.retryScan': 'Skanuj ponownie',
   'iosPair.scanQrCode': 'Zeskanuj kod QR',
   'iosPair.scannerOpening': 'Otwieranie skanera...',
-  'iosPair.step.openDesktop': 'Otwórz OpenHuman na komputerze',
+  'iosPair.step.openDesktop': 'Otwórz CloserEdge AI na komputerze',
   'iosPair.step.openSettings': 'Przejdź do Ustawienia > Urządzenia',
   'iosPair.step.showQr': 'Kliknij „Sparuj telefon”, aby pokazać kod QR',
   'iosPair.title': 'Sparuj z komputerem',
@@ -2513,7 +2517,7 @@ const messages: TranslationMap = {
   'composio.connect.permissionsDefault': 'Odczyt + zapis włączone domyślnie',
   'composio.connect.permissionsNote': 'może wystawiać',
   'composio.connect.permissionsNoteSuffix':
-    'uprawnienia agenta OpenHuman są kontrolowane poniżej przełącznikami odczytu, zapisu i administracji.',
+    'uprawnienia agenta CloserEdge AI są kontrolowane poniżej przełącznikami odczytu, zapisu i administracji.',
   'composio.connect.reopenBrowser': 'Otwórz przeglądarkę ponownie',
   'composio.connect.requestingUrl': 'Żądanie URL połączenia…',
   'composio.connect.requiredFieldEmpty': 'To pole jest wymagane.',
@@ -2586,7 +2590,7 @@ const messages: TranslationMap = {
   'conversations.subagent.statusFailed': 'niepowodzenie',
   'conversations.subagent.statusAwaitingUser': 'oczekiwanie na użytkownika',
   'daemon.serviceBlockingGate.body':
-    'Rdzeń OpenHuman nie odpowiada. Spróbuj ponownie lub pobierz najnowszą wersję aplikacji.',
+    'Rdzeń CloserEdge AI nie odpowiada. Spróbuj ponownie lub pobierz najnowszą wersję aplikacji.',
   'daemon.serviceBlockingGate.downloadHint':
     'Jeśli problem się powtarza, pobierz najnowszą wersję.',
   'daemon.serviceBlockingGate.downloadLatest': 'Pobierz najnowszą wersję',
@@ -2594,7 +2598,7 @@ const messages: TranslationMap = {
   'daemon.serviceBlockingGate.retryFailed':
     'Ponowna próba się nie powiodła. Pobierz najnowszą wersję aplikacji i spróbuj ponownie.',
   'daemon.serviceBlockingGate.retrying': 'Ponawianie...',
-  'daemon.serviceBlockingGate.title': 'Rdzeń OpenHuman jest niedostępny',
+  'daemon.serviceBlockingGate.title': 'Rdzeń CloserEdge AI jest niedostępny',
   'home.banners.discordSubtitle': 'Pomoc, opinie i wczesny dostęp do funkcji.',
   'home.banners.discordTitle': 'Dołącz do naszego Discorda',
   'home.banners.earlyBirdDismiss': 'Odrzuć baner early bird',
@@ -2603,7 +2607,7 @@ const messages: TranslationMap = {
   'home.banners.earlyBirdTitle': 'Pierwszych 1000 użytkowników otrzymuje 60% zniżki.',
   'home.banners.earlyBirdUseCode': 'Użyj kodu early bird',
   'home.banners.getSubscription': 'wykup subskrypcję',
-  'home.banners.promoCreditsBody': 'Przetestuj OpenHuman, a gdy będziesz gotowy(a) na więcej,',
+  'home.banners.promoCreditsBody': 'Przetestuj CloserEdge AI, a gdy będziesz gotowy(a) na więcej,',
   'home.banners.promoCreditsTitle': 'Masz {amount} kredytów promocyjnych.',
   'home.banners.promoCreditsUsage': 'i uzyskaj 10x więcej użycia.',
   'intelligence.memoryChunk.detail.chunk': 'Fragment',
@@ -2631,7 +2635,7 @@ const messages: TranslationMap = {
   'intelligence.diagram.skillInstallCommand': 'npx skills add yizhiyanhua-ai/fireworks-tech-graph',
   'intelligence.diagram.promptExample':
     'Wygeneruj diagram architektury bieżącego roju w ciemnym stylu terminala',
-  'intelligence.diagram.imageAlt': 'Najnowszy wygenerowany diagram architektury OpenHuman',
+  'intelligence.diagram.imageAlt': 'Najnowszy wygenerowany diagram architektury CloserEdge AI',
   'intelligence.diagram.refreshesEvery': 'Odświeża co {seconds}s',
   'intelligence.memoryText.entityTypePrefix': 'Typ encji',
   'intelligence.screenDebug.active': 'Aktywne',
@@ -2716,7 +2720,7 @@ const messages: TranslationMap = {
   'openhuman.team_list_teams': 'Lista zespołów',
   'overlay.ariaAttention': 'Wiadomość uwagi',
   'overlay.ariaCompanion': 'Companion aktywny',
-  'overlay.ariaOrb': 'Nakładka OpenHuman',
+  'overlay.ariaOrb': 'Nakładka CloserEdge AI',
   'overlay.ariaVoiceActive': 'Wejście głosowe aktywne',
   'overlay.companion.error': 'Błąd',
   'overlay.companion.listening': 'Słucham…',
@@ -2766,7 +2770,7 @@ const messages: TranslationMap = {
   'pages.settings.features.screenAwarenessDesc':
     'Uprawnienia, monitorowanie i sesje przechwytywania ekranu',
   'pages.settings.features.tools': 'Narzędzia',
-  'pages.settings.features.toolsDesc': 'Wybierz, z jakich możliwości OpenHuman może korzystać',
+  'pages.settings.features.toolsDesc': 'Wybierz, z jakich możliwości CloserEdge AI może korzystać',
   'pages.settings.featuresSection.description': 'Świadomość ekranu, komunikacja i narzędzia.',
   'pages.settings.featuresSection.title': 'Funkcje',
   'privacy.dataKind.credentials': 'Poświadczenia',
@@ -2847,7 +2851,8 @@ const messages: TranslationMap = {
   'rewards.referralSection.statusCompleted': 'Zakończone',
   'rewards.referralSection.statusExpired': 'Wygasłe',
   'rewards.referralSection.statusJoined': 'Dołączył(a)',
-  'rewards.referralSection.subtitle': 'Zaproś znajomych do OpenHuman i zarabiajcie kredyty razem.',
+  'rewards.referralSection.subtitle':
+    'Zaproś znajomych do CloserEdge AI i zarabiajcie kredyty razem.',
   'rewards.referralSection.title': 'Zapraszaj znajomych, zarabiaj kredyty',
   'rewards.referralSection.totalEarned': 'Łącznie zarobione',
   'rewards.referralSection.yourCode': 'Twój kod',
@@ -2860,7 +2865,7 @@ const messages: TranslationMap = {
   'settings.ai.clearStoredKey': 'Wyczyść zapisany klucz',
   'settings.ai.connectProvider': 'Połącz dostawcę',
   'settings.ai.customRouting': 'Własne trasowanie',
-  'settings.ai.defaultResolvesTo': 'OpenHuman',
+  'settings.ai.defaultResolvesTo': 'CloserEdge AI',
   'settings.ai.discard': 'Odrzuć',
   'settings.ai.editProvider': 'Edytuj dostawcę',
   'settings.ai.llmProviders': 'Dostawcy LLM',
@@ -2960,7 +2965,7 @@ const messages: TranslationMap = {
   'settings.ai.noSpendRows': 'Brak załadowanych wierszy wydatków.',
   'settings.ai.topHours': 'Najczęstsze godziny',
   'settings.ai.noHourlySpend': 'Brak wydatków godzinowych.',
-  'settings.ai.openhumanDefault': 'OpenHuman (domyślny)',
+  'settings.ai.openhumanDefault': 'CloserEdge AI (domyślny)',
   'settings.ai.localModelResolved': 'Ollama · {model}',
   'settings.ai.customRoutingForWorkload': 'Niestandardowy routing dla {label}',
   'settings.ai.loadingModels': 'Ładowanie modeli...',
@@ -3016,12 +3021,12 @@ const messages: TranslationMap = {
   'settings.ai.composioSyncScans': 'Skanowania synchronizacji Composio',
   'settings.ai.totalBackgroundApiReadBudget': 'Łączny budżet odczytów API w tle',
   'settings.ai.memoryWorkerPolls': 'Odpytywania procesu pamięci',
-  'settings.ai.defaultProviderName': 'OpenHuman',
+  'settings.ai.defaultProviderName': 'CloserEdge AI',
   'settings.ai.routing.managed': 'Zarządzane',
   'settings.ai.routing.managedDesc':
-    'OpenHuman uruchomi całą inferencję w chmurze, wybierze najlepszy model dla zadania, zoptymalizuje koszty i zachowa najbezpieczniejsze domyślne ustawienia routingu.',
+    'CloserEdge AI uruchomi całą inferencję w chmurze, wybierze najlepszy model dla zadania, zoptymalizuje koszty i zachowa najbezpieczniejsze domyślne ustawienia routingu.',
   'settings.ai.routing.managedMsg':
-    'OpenHuman obsłuży całą inferencję dla każdego obciążenia i automatycznie wybierze najlepszą ścieżkę pod kątem kosztu, jakości i bezpieczeństwa.',
+    'CloserEdge AI obsłuży całą inferencję dla każdego obciążenia i automatycznie wybierze najlepszą ścieżkę pod kątem kosztu, jakości i bezpieczeństwa.',
   'settings.ai.routing.useYourOwn': 'Użyj własnych modeli',
   'settings.ai.routing.useYourOwnDesc':
     'Wybierz jednego dostawcę i model, a następnie kieruj każde obciążenie przez niego. To proste, ale może być nieefektywne, ponieważ lekka i ciężka inferencja współdzielą tę samą ścieżkę.',
@@ -3216,16 +3221,16 @@ const messages: TranslationMap = {
   'settings.composio.confirmSwitch': 'Rozumiem, przełącz na tryb bezpośredni',
   'settings.composio.confirmTitle': '⚠️ Przełączanie na tryb bezpośredni',
   'settings.composio.confirmWarning':
-    'Twoje istniejące integracje (Gmail, Slack, GitHub itp. połączone przez OpenHuman) nie będą widoczne — żyją w tenant Composio zarządzanym przez OpenHuman.',
+    'Twoje istniejące integracje (Gmail, Slack, GitHub itp. połączone przez CloserEdge AI) nie będą widoczne — żyją w tenant Composio zarządzanym przez CloserEdge AI.',
   'settings.composio.intro':
     'Composio integruje 250+ zewnętrznych aplikacji jako narzędzia, z których może korzystać Twój agent. Wybierz, jak kierować te wywołania.',
   'settings.composio.title': 'Composio',
   'settings.composio.modeDirect': 'Bezpośredni (przynieś własny klucz API)',
   'settings.composio.modeDirectDesc':
     'Wywołania trafiają bezpośrednio do backend.composio.dev. Suwerennie / przyjazne offline. Wywołania narzędzi działają synchronicznie; webhooks wyzwalaczy w czasie rzeczywistym nie są jeszcze trasowane w trybie bezpośrednim.',
-  'settings.composio.modeManaged': 'Zarządzany (OpenHuman robi to za Ciebie)',
+  'settings.composio.modeManaged': 'Zarządzany (CloserEdge AI robi to za Ciebie)',
   'settings.composio.modeManagedDesc':
-    'OpenHuman pośredniczy w wywołaniach narzędzi przez nasz backend (zalecane). Uwierzytelnianie jest pośredniczone; nie musisz wklejać klucza API Composio. Webhooks są w pełni trasowane.',
+    'CloserEdge AI pośredniczy w wywołaniach narzędzi przez nasz backend (zalecane). Uwierzytelnianie jest pośredniczone; nie musisz wklejać klucza API Composio. Webhooks są w pełni trasowane.',
   'settings.composio.routingMode': 'Tryb trasowania',
   'settings.composio.saveErrorNoKey':
     'Nie udało się zapisać. Tryb bezpośredni wymaga niepustego klucza API.',
@@ -3457,7 +3462,7 @@ const messages: TranslationMap = {
   'settings.localModel.status.ollamaDiagnostics': 'Diagnostyka Ollama',
   'settings.localModel.status.ollamaNotInstalled': 'Środowisko Ollama niedostępne',
   'settings.localModel.status.ollamaNotInstalledDesc':
-    'OpenHuman traktuje teraz Ollamę jako zewnętrzne środowisko inferencji. Uruchom własny serwer Ollama, pobierz potrzebne modele i skieruj na niego trasowanie workloadów.',
+    'CloserEdge AI traktuje teraz Ollamę jako zewnętrzne środowisko inferencji. Uruchom własny serwer Ollama, pobierz potrzebne modele i skieruj na niego trasowanie workloadów.',
   'settings.localModel.status.progress': 'Postęp',
   'settings.localModel.status.provider': 'Dostawca',
   'settings.localModel.status.retryBootstrap': 'Ponów inicjalizację',
@@ -3486,7 +3491,7 @@ const messages: TranslationMap = {
     'Konfiguruj tryby uwierzytelniania Telegram/Discord i domyślne trasowanie',
   'settings.developerMenu.tools.title': 'Narzędzia',
   'settings.developerMenu.tools.desc':
-    'Włącz lub wyłącz możliwości, z których OpenHuman może korzystać w Twoim imieniu',
+    'Włącz lub wyłącz możliwości, z których CloserEdge AI może korzystać w Twoim imieniu',
   'settings.developerMenu.agentChat.title': 'Czat z agentem',
   'settings.developerMenu.agentChat.desc':
     'Testuj rozmowę z agentem z nadpisaniami modelu i temperatury',
@@ -3659,7 +3664,7 @@ const messages: TranslationMap = {
     'Konfiguruj ustawienia klasyfikacji AI dla wyzwalaczy integracji Composio',
   'settings.developerMenu.mcpServer.title': 'Serwer MCP',
   'settings.developerMenu.mcpServer.desc':
-    'Skonfiguruj zewnętrznych klientów MCP do połączenia z OpenHumanem',
+    'Skonfiguruj zewnętrznych klientów MCP do połączenia z CloserEdge AIem',
   'settings.developerMenu.autonomy.title': 'Autonomia agenta',
   'settings.developerMenu.autonomy.desc': 'Limity szybkości akcji narzędzi i progi bezpieczeństwa',
   'settings.mcpServer.title': 'Serwer MCP',
@@ -3673,7 +3678,7 @@ const messages: TranslationMap = {
   'settings.mcpServer.copied': 'Skopiowano!',
   'settings.mcpServer.openConfigFile': 'Otwórz plik konfiguracyjny',
   'settings.mcpServer.binaryPathNotFound':
-    'Nie znaleziono pliku binarnego OpenHuman. Jeśli uruchamiasz ze źródeł, zbuduj: cargo build --bin openhuman-core',
+    'Nie znaleziono pliku binarnego CloserEdge AI. Jeśli uruchamiasz ze źródeł, zbuduj: cargo build --bin openhuman-core',
   'settings.mcpServer.openConfigError': 'Nie udało się otworzyć pliku konfiguracyjnego',
   'settings.mcpServer.clientClaudeDesktop': 'Claude Desktop',
   'settings.mcpServer.clientCursor': 'Cursor',
@@ -3765,7 +3770,7 @@ const messages: TranslationMap = {
   'settings.appearance.tabBarAlwaysShowLabelsDesc':
     'Wyłączone — etykiety pojawiają się tylko po najechaniu lub dla aktywnej zakładki.',
   'settings.mascot.active': 'Aktywny',
-  'settings.mascot.characterDesc': 'Wybierz charakter maskotki OpenHuman.',
+  'settings.mascot.characterDesc': 'Wybierz charakter maskotki CloserEdge AI.',
   'settings.mascot.characterHeading': 'Charakter',
   'settings.mascot.customGifError':
     'Wprowadź URL .gif HTTPS, URL .gif loopback HTTP, URL file:// .gif lub lokalną ścieżkę .gif.',
@@ -3775,7 +3780,7 @@ const messages: TranslationMap = {
   'settings.mascot.characterPreview': 'Podgląd',
   'settings.mascot.characterStates': 'stanów',
   'settings.mascot.characterVisemes': 'wizemów',
-  'settings.mascot.colorAria': 'Kolor OpenHuman',
+  'settings.mascot.colorAria': 'Kolor CloserEdge AI',
   'settings.mascot.colorDesc': 'Wybierz kolor maskotki używany w całej aplikacji.',
   'settings.mascot.colorHeading': 'Kolor',
   'settings.mascot.colorBlack': 'Czarny',
@@ -3785,15 +3790,15 @@ const messages: TranslationMap = {
   'settings.mascot.primaryColor': 'Kolor podstawowy',
   'settings.mascot.secondaryColor': 'Kolor dodatkowy',
   'settings.mascot.colorYellow': 'Żółty',
-  'settings.mascot.libraryUnavailable': 'Biblioteka OpenHuman niedostępna',
-  'settings.mascot.title': 'OpenHuman',
-  'settings.mascot.loadingLibrary': 'Wczytywanie biblioteki OpenHuman…',
+  'settings.mascot.libraryUnavailable': 'Biblioteka CloserEdge AI niedostępna',
+  'settings.mascot.title': 'CloserEdge AI',
+  'settings.mascot.loadingLibrary': 'Wczytywanie biblioteki CloserEdge AI…',
   'settings.mascot.loadDetailError': 'Nie udało się wczytać maskotki.',
   'settings.mascot.loadLibraryError': 'Nie udało się wczytać biblioteki maskotek.',
-  'settings.mascot.localDefault': 'Lokalny OpenHuman (domyślny)',
+  'settings.mascot.localDefault': 'Lokalny CloserEdge AI (domyślny)',
   'settings.mascot.menuTitle': 'Maskotka',
   'settings.mascot.menuDesc': 'Wybierz kolor maskotki używany w aplikacji',
-  'settings.mascot.noCharacters': 'Nie ma jeszcze dostępnych postaci OpenHuman',
+  'settings.mascot.noCharacters': 'Nie ma jeszcze dostępnych postaci CloserEdge AI',
   'settings.mascot.noColorVariants': 'Brak wariantów kolorystycznych',
   'settings.mascot.voice.current': 'bieżący',
   'settings.mascot.voice.customDesc':
@@ -3846,7 +3851,7 @@ const messages: TranslationMap = {
     'Rozsądna wartość domyślna — dobra ciągłość bez nadmiernych tokenów na każde uruchomienie.',
   'settings.memoryWindow.balanced.label': 'Zrównoważone',
   'settings.memoryWindow.description':
-    'Ile zapamiętanego kontekstu OpenHuman wstrzykuje do każdego nowego uruchomienia agenta. Większe okno daje większą świadomość poprzednich rozmów, ale używa więcej tokenów — i kosztuje więcej — przy każdym uruchomieniu.',
+    'Ile zapamiętanego kontekstu CloserEdge AI wstrzykuje do każdego nowego uruchomienia agenta. Większe okno daje większą świadomość poprzednich rozmów, ale używa więcej tokenów — i kosztuje więcej — przy każdym uruchomieniu.',
   'settings.memoryWindow.extended.badge': 'Więcej kontekstu',
   'settings.memoryWindow.extended.hint':
     'Więcej długoterminowej pamięci wstrzykiwanej do każdego uruchomienia. Wyższy koszt tokenów na turę.',
@@ -4010,20 +4015,20 @@ const messages: TranslationMap = {
   'skills.install.urlLabel': 'URL umiejętności',
   'skills.install.urlPlaceholder': 'https://raw.githubusercontent.com/owner/repo/main/SKILL.md',
   'skills.meetingBots.bannerDesc':
-    'Wklej link Google Meet, a OpenHuman dołączy jako gość, mówi, słucha i odpowiada.',
-  'skills.meetingBots.bannerTitle': 'Wyślij OpenHuman na spotkanie',
-  'skills.meetingBots.busyTitle': 'OpenHuman jest zajęty',
+    'Wklej link Google Meet, a CloserEdge AI dołączy jako gość, mówi, słucha i odpowiada.',
+  'skills.meetingBots.bannerTitle': 'Wyślij CloserEdge AI na spotkanie',
+  'skills.meetingBots.busyTitle': 'CloserEdge AI jest zajęty',
   'skills.meetingBots.comingSoon': 'Wkrótce',
-  'skills.meetingBots.couldNotStartTitle': 'Nie udało się uruchomić OpenHuman',
+  'skills.meetingBots.couldNotStartTitle': 'Nie udało się uruchomić CloserEdge AI',
   'skills.meetingBots.displayName': 'Wyświetlana nazwa',
-  'skills.meetingBots.failedToStart': 'Nie udało się uruchomić OpenHuman.',
+  'skills.meetingBots.failedToStart': 'Nie udało się uruchomić CloserEdge AI.',
   'skills.meetingBots.joiningMessage': 'Powinien pojawić się jako uczestnik w ciągu kilku sekund.',
-  'skills.meetingBots.joiningTitle': 'OpenHuman dołącza do spotkania',
+  'skills.meetingBots.joiningTitle': 'CloserEdge AI dołącza do spotkania',
   'skills.meetingBots.meetingLink': 'Link spotkania',
-  'skills.meetingBots.modalAriaLabel': 'Wyślij OpenHuman na spotkanie',
+  'skills.meetingBots.modalAriaLabel': 'Wyślij CloserEdge AI na spotkanie',
   'skills.meetingBots.modalDesc':
-    'OpenHuman dołącza jako anonimowy gość, transmituje wideo do rozmowy i odpowiada przez agenta.',
-  'skills.meetingBots.modalTitle': 'Wyślij OpenHuman na spotkanie',
+    'CloserEdge AI dołącza jako anonimowy gość, transmituje wideo do rozmowy i odpowiada przez agenta.',
+  'skills.meetingBots.modalTitle': 'Wyślij CloserEdge AI na spotkanie',
   'skills.meetingBots.newBadge': 'Nowość',
   'skills.meetingBots.platformComingSoon': 'Obsługa {label} jest już wkrótce.',
   'skills.meetingBots.platformHints.gmeet': 'meet.google.com/abc-defg-hij',
@@ -4178,7 +4183,7 @@ const messages: TranslationMap = {
   'chat.parentThread': 'wątek nadrzędny',
   'chat.removeReaction': 'Usuń {emoji}',
   'settings.composio.loading': 'Wczytywanie…',
-  'settings.mascot.noCharactersAvailable': 'Nie ma jeszcze dostępnych postaci OpenHuman',
+  'settings.mascot.noCharactersAvailable': 'Nie ma jeszcze dostępnych postaci CloserEdge AI',
   'skills.uninstall.confirmTitle': 'Odinstalować {name}?',
   'conversations.taskKanban.blocked': 'Zablokowane',
   'conversations.taskKanban.done': 'Zrobione',
@@ -4193,7 +4198,7 @@ const messages: TranslationMap = {
   'settings.localModel.download.manageExternal':
     'Zarządzaj tym modelem w swoim zewnętrznym środowisku.',
   'settings.localModel.status.manageOllamaExternal':
-    'Zarządzaj procesem Ollama i pobraniami modeli poza OpenHumanem, a następnie uruchom ponownie diagnostykę.',
+    'Zarządzaj procesem Ollama i pobraniami modeli poza CloserEdge AIem, a następnie uruchom ponownie diagnostykę.',
   'settings.localModel.status.ollamaDocs': 'Dokumentacja Ollama',
   'settings.localModel.status.thenRetry':
     'po instrukcje konfiguracji, a następnie spróbuj ponownie, gdy środowisko będzie osiągalne.',
@@ -4207,7 +4212,7 @@ const messages: TranslationMap = {
     'Konfiguruj tryby uwierzytelniania Telegram/Discord i domyślne trasowanie',
   'devOptions.menuTools': 'Narzędzia',
   'devOptions.menuToolsDesc':
-    'Włącz lub wyłącz możliwości, z których OpenHuman może korzystać w Twoim imieniu',
+    'Włącz lub wyłącz możliwości, z których CloserEdge AI może korzystać w Twoim imieniu',
   'devOptions.menuAgentChat': 'Czat z agentem',
   'devOptions.menuAgentChatDesc': 'Testuj rozmowę z agentem z nadpisaniem modelu i temperatury',
   'devOptions.menuCronJobs': 'Zadania cron',
@@ -4525,7 +4530,7 @@ const messages: TranslationMap = {
 
   'keyring.consent.title': 'Bezpieczne przechowywanie niedostępne',
   'keyring.consent.description':
-    'Pęk kluczy systemu operacyjnego jest niedostępny. OpenHuman potrzebuje Twojej zgody na przechowywanie sekretów w lokalnym zaszyfrowanym magazynie.',
+    'Pęk kluczy systemu operacyjnego jest niedostępny. CloserEdge AI potrzebuje Twojej zgody na przechowywanie sekretów w lokalnym zaszyfrowanym magazynie.',
   'keyring.consent.reasonPrefix': 'Powód:',
   'keyring.consent.showDetails': 'Co to oznacza?',
   'keyring.consent.hideDetails': 'Ukryj szczegóły',

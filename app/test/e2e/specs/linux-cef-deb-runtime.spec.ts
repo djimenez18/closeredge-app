@@ -205,7 +205,7 @@ describe('Linux CEF deb package runtime (UI → Tauri → sidecar)', () => {
       // The app started successfully in before() - if setup_tray() had panicked
       // on linux+cef, we wouldn't be here. Verify app is healthy.
 
-      const hasChrome = await textExists('OpenHuman');
+      const hasChrome = await textExists('CloserEdge AI');
       stepLog('App chrome check', { hasChrome });
 
       // App should have started without crashing

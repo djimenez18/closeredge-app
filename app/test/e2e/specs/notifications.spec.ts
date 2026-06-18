@@ -277,7 +277,7 @@ describe('Notifications', () => {
       }
       await invoker('plugin:notification|notify', {
         options: {
-          title: 'OpenHuman E2E notification',
+          title: 'CloserEdge AI E2E notification',
           body: 'Verifies the plugin command is wired and callable.',
         },
       });

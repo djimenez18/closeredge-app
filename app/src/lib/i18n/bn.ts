@@ -161,7 +161,7 @@ const messages: TranslationMap = {
   'clearData.failed': 'ডেটা মুছতে ও লগ আউট করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
   'clearData.failedLogout': 'লগ আউট করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
   'clearData.failedPersist': 'অ্যাপ স্টেট মুছতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
-  'welcome.title': 'OpenHuman-এ স্বাগতম',
+  'welcome.title': 'CloserEdge AI-এ স্বাগতম',
   'welcome.subtitle':
     'আপনার ব্যক্তিগত AI সুপার ইন্টেলিজেন্স। ব্যক্তিগত, সহজ এবং অত্যন্ত শক্তিশালী।',
   'welcome.connectPrompt': 'RPC URL কনফিগার করুন (অ্যাডভান্সড)',
@@ -171,7 +171,7 @@ const messages: TranslationMap = {
   'welcome.clearAppDataWarning':
     'এটি এই ডিভাইসে স্থানীয়ভাবে সংরক্ষিত সিক্রেট এবং অ্যাকাউন্ট মুছে দেয়। আপনার ক্লাউড অ্যাকাউন্ট প্রভাবিত হয় না — আপনি এরপরই আবার সাইন ইন করতে পারবেন।',
   'welcome.resetErrorFallback':
-    'অ্যাপ ডেটা মুছতে পারেনি। OpenHuman বন্ধ করে আবার খুলুন, তারপর আবার চেষ্টা করুন।',
+    'অ্যাপ ডেটা মুছতে পারেনি। CloserEdge AI বন্ধ করে আবার খুলুন, তারপর আবার চেষ্টা করুন।',
   'welcome.signingIn': 'আপনাকে সাইন ইন করা হচ্ছে...',
   'welcome.termsIntro': 'চালিয়ে যাওয়ার মাধ্যমে, আপনি',
   'welcome.termsOfUse': 'শর্তাবলীতে সম্মত হন',
@@ -190,7 +190,7 @@ const messages: TranslationMap = {
     'আপনার ডিভাইস সংযুক্ত। সংযোগ সক্রিয় রাখতে অ্যাপটি চালু রাখুন। নিচের বাটন দিয়ে এজেন্টকে মেসেজ করুন।',
   'home.statusBackendOnly': 'ব্যাকএন্ডে পুনরায় সংযোগ হচ্ছে… আপনার এজেন্ট শীঘ্রই আবার পাওয়া যাবে।',
   'home.statusCoreUnreachable':
-    'লোকাল কোর সাইডকার সাড়া দিচ্ছে না। OpenHuman ব্যাকগ্রাউন্ড প্রসেস ক্র্যাশ হয়েছে বা শুরু হয়নি।',
+    'লোকাল কোর সাইডকার সাড়া দিচ্ছে না। CloserEdge AI ব্যাকগ্রাউন্ড প্রসেস ক্র্যাশ হয়েছে বা শুরু হয়নি।',
   'home.statusInternetOffline':
     'আপনার ডিভাইস এখন অফলাইনে। নেটওয়ার্ক পরীক্ষা করুন বা অ্যাপ রিস্টার্ট করুন।',
   'home.restartCore': 'কোর রিস্টার্ট',
@@ -446,13 +446,13 @@ const messages: TranslationMap = {
   'rewards.referrals': 'রেফারেল',
   'rewards.coupons': 'রিডিম',
   'rewards.localUnavailable':
-    'লোকাল লগইনে কোনো রিওয়ার্ড, কুপন বা রেফারেল ক্রেডিট মেলে না। রিওয়ার্ড পেতে লগ আউট করে একটি OpenHuman অ্যাকাউন্ট দিয়ে সাইন ইন করুন।',
+    'লোকাল লগইনে কোনো রিওয়ার্ড, কুপন বা রেফারেল ক্রেডিট মেলে না। রিওয়ার্ড পেতে লগ আউট করে একটি CloserEdge AI অ্যাকাউন্ট দিয়ে সাইন ইন করুন।',
   'rewards.localUnavailableCta': 'অ্যাকাউন্ট সেটিংস খুলুন',
   'rewards.credits': 'ক্রেডিট',
   'rewards.referralCode': 'আপনার রেফারেল কোড',
   'rewards.copyCode': 'কোড কপি করুন',
   'rewards.share': 'শেয়ার',
-  'onboarding.welcome': 'হ্যালো। আমি OpenHuman।',
+  'onboarding.welcome': 'হ্যালো। আমি CloserEdge AI।',
   'onboarding.welcomeDesc':
     'আপনার সুপার-ইন্টেলিজেন্ট AI অ্যাসিস্ট্যান্ট যা আপনার কম্পিউটারে চলে। ব্যক্তিগত, সহজ এবং অত্যন্ত শক্তিশালী।',
   'onboarding.context': 'কন্টেক্সট সংগ্রহ',
@@ -464,14 +464,14 @@ const messages: TranslationMap = {
   'onboarding.referral': 'রেফারেল',
   'onboarding.referralDesc': 'যদি রেফারেল কোড থাকে তা প্রয়োগ করুন।',
   'onboarding.finish': 'সেটআপ সম্পন্ন',
-  'onboarding.finishDesc': 'সব প্রস্তুত! OpenHuman ব্যবহার শুরু করুন।',
+  'onboarding.finishDesc': 'সব প্রস্তুত! CloserEdge AI ব্যবহার শুরু করুন।',
   'onboarding.skip': 'এড়িয়ে যান',
   'onboarding.getStarted': 'শুরু করুন',
-  'onboarding.runtimeChoice.title': 'আপনি কীভাবে OpenHuman চালাতে চান?',
+  'onboarding.runtimeChoice.title': 'আপনি কীভাবে CloserEdge AI চালাতে চান?',
   'onboarding.runtimeChoice.subtitle':
     'আপনার জন্য উপযুক্ত সেটআপ বেছে নিন। পরে সেটিংসে পরিবর্তন করা যাবে।',
   'onboarding.runtimeChoice.cloud.title': 'সহজ',
-  'onboarding.runtimeChoice.cloud.tagline': 'OpenHuman সব কিছু পরিচালনা করবে।',
+  'onboarding.runtimeChoice.cloud.tagline': 'CloserEdge AI সব কিছু পরিচালনা করবে।',
   'onboarding.runtimeChoice.cloud.f1': 'বিল্ট-ইন নিরাপত্তা',
   'onboarding.runtimeChoice.cloud.f2': 'ব্যবহার আরও দীর্ঘ করতে টোকেন কম্প্রেশন',
   'onboarding.runtimeChoice.cloud.f3': 'একটি সাবস্ক্রিপশনে সব মডেল',
@@ -523,7 +523,7 @@ const messages: TranslationMap = {
   'onboarding.custom.stepperMemory': 'মেমোরি',
   'onboarding.custom.stepCounter': 'ধাপ {n} / {total}',
   'onboarding.custom.defaultTitle': 'ডিফল্ট',
-  'onboarding.custom.defaultSubtitle': 'OpenHuman আপনার হয়ে পরিচালনা করবে।',
+  'onboarding.custom.defaultSubtitle': 'CloserEdge AI আপনার হয়ে পরিচালনা করবে।',
   'onboarding.custom.configureTitle': 'কনফিগার',
   'onboarding.custom.configureSubtitle': 'আমি কী ব্যবহার করব তা বেছে নেব।',
   'onboarding.custom.progressAriaLabel': 'অনবোর্ডিং অগ্রগতি',
@@ -537,40 +537,40 @@ const messages: TranslationMap = {
   'onboarding.custom.inference.subtitle':
     'কোন ল্যাঙ্গুয়েজ মডেল আপনার প্রশ্নের উত্তর দেবে এবং এজেন্ট চালাবে?',
   'onboarding.custom.inference.defaultDesc':
-    'OpenHuman প্রতিটি ওয়ার্কলোড একটি সেন্সিবল ডিফল্ট মডেলে রুট করে। কোনো কী বা সেটআপ নেই।',
+    'CloserEdge AI প্রতিটি ওয়ার্কলোড একটি সেন্সিবল ডিফল্ট মডেলে রুট করে। কোনো কী বা সেটআপ নেই।',
   'onboarding.custom.inference.configureDesc':
     'নিজের OpenAI বা Anthropic কী আনুন। আমরা সব টেক্সট-ভিত্তিক কাজে এটি ব্যবহার করি।',
   'onboarding.custom.voice.title': 'ভয়েস',
   'onboarding.custom.voice.subtitle': 'ভয়েস মোডের জন্য স্পিচ-টু-টেক্সট এবং টেক্সট-টু-স্পিচ।',
   'onboarding.custom.voice.defaultDesc':
-    'OpenHuman ম্যানেজড STT/TTS সহ আসে যা সরাসরি কাজ করে। কিছু সেটআপ করতে হবে না।',
+    'CloserEdge AI ম্যানেজড STT/TTS সহ আসে যা সরাসরি কাজ করে। কিছু সেটআপ করতে হবে না।',
   'onboarding.custom.voice.configureDesc':
     'নিজের ElevenLabs / OpenAI Whisper / ইত্যাদি ব্যবহার করুন। Settings › Voice-এ কনফিগার করুন।',
   'onboarding.custom.oauth.title': 'সংযোগ (OAuth)',
   'onboarding.custom.oauth.subtitle':
     'Gmail, Slack, Notion এবং OAuth প্রয়োজন এমন অন্যান্য সংযুক্ত সার্ভিস।',
   'onboarding.custom.oauth.defaultDesc':
-    'OpenHuman একটি ম্যানেজড Composio ওয়ার্কস্পেস চালায়। পরে প্রতিটি সার্ভিস সংযুক্ত করতে এক ক্লিক।',
+    'CloserEdge AI একটি ম্যানেজড Composio ওয়ার্কস্পেস চালায়। পরে প্রতিটি সার্ভিস সংযুক্ত করতে এক ক্লিক।',
   'onboarding.custom.oauth.configureDesc':
     'নিজের Composio অ্যাকাউন্ট / API কী আনুন। Settings › Connections-এ কনফিগার করুন।',
   'onboarding.custom.search.title': 'ওয়েব সার্চ',
-  'onboarding.custom.search.subtitle': 'OpenHuman আপনার হয়ে কীভাবে ওয়েব সার্চ করে।',
+  'onboarding.custom.search.subtitle': 'CloserEdge AI আপনার হয়ে কীভাবে ওয়েব সার্চ করে।',
   'onboarding.custom.search.defaultDesc':
-    'OpenHuman ম্যানেজড সার্চ ব্যাকএন্ড ব্যবহার করে। কোনো কী লাগে না।',
+    'CloserEdge AI ম্যানেজড সার্চ ব্যাকএন্ড ব্যবহার করে। কোনো কী লাগে না।',
   'onboarding.custom.search.configureDesc':
     'নিজের সার্চ প্রোভাইডার কী আনুন (Tavily, Brave ইত্যাদি)। Settings › Tools-এ কনফিগার করুন।',
   'onboarding.custom.embeddings.title': 'Embeddings',
   'onboarding.custom.embeddings.subtitle':
-    'OpenHuman কীভাবে সিমান্টিক মেমোরি অনুসন্ধানের জন্য ভেক্টর এম্বেডিং তৈরি করে।',
+    'CloserEdge AI কীভাবে সিমান্টিক মেমোরি অনুসন্ধানের জন্য ভেক্টর এম্বেডিং তৈরি করে।',
   'onboarding.custom.embeddings.defaultDesc':
-    'OpenHuman একটি পরিচালিত এম্বেডিং সেবা ব্যবহার করে। কোনো API কী প্রয়োজন নেই।',
+    'CloserEdge AI একটি পরিচালিত এম্বেডিং সেবা ব্যবহার করে। কোনো API কী প্রয়োজন নেই।',
   'onboarding.custom.embeddings.configureDesc':
     'আপনার নিজস্ব এম্বেডিং প্রোভাইডার ব্যবহার করুন (OpenAI, Voyage, Ollama, ইত্যাদি)।',
   'onboarding.custom.memory.title': 'মেমোরি',
   'onboarding.custom.memory.subtitle':
-    'OpenHuman কীভাবে আপনার কন্টেক্সট, পছন্দ ও পূর্ববর্তী কথোপকথন মনে রাখে।',
+    'CloserEdge AI কীভাবে আপনার কন্টেক্সট, পছন্দ ও পূর্ববর্তী কথোপকথন মনে রাখে।',
   'onboarding.custom.memory.defaultDesc':
-    'OpenHuman স্বয়ংক্রিয়ভাবে মেমোরি স্টোরেজ ও রিট্রিভাল পরিচালনা করে। কিছু সেটআপ করতে হবে না।',
+    'CloserEdge AI স্বয়ংক্রিয়ভাবে মেমোরি স্টোরেজ ও রিট্রিভাল পরিচালনা করে। কিছু সেটআপ করতে হবে না।',
   'onboarding.custom.memory.configureDesc':
     'মেমোরি নিজে পরীক্ষা, এক্সপোর্ট বা মুছুন। Settings › Memory-এ কনফিগার করুন।',
   'accounts.addAccount': 'অ্যাকাউন্ট যোগ করুন',
@@ -702,7 +702,7 @@ const messages: TranslationMap = {
   'misc.downloading': 'ডাউনলোড হচ্ছে...',
   'misc.installing': 'ইনস্টল হচ্ছে...',
   'misc.beta':
-    'OpenHuman এখন আর্লি বেটায় আছে। যেকোনো মতামত বা বাগ রিপোর্ট করুন — প্রতিটি রিপোর্ট আমাদের দ্রুত এগিয়ে যেতে সাহায্য করে।',
+    'CloserEdge AI এখন আর্লি বেটায় আছে। যেকোনো মতামত বা বাগ রিপোর্ট করুন — প্রতিটি রিপোর্ট আমাদের দ্রুত এগিয়ে যেতে সাহায্য করে।',
   'misc.betaFeedback': 'ফিডব্যাক পাঠান',
   'mnemonic.title': 'রিকভারি ফ্রেজ',
   'mnemonic.warning': 'এই শব্দগুলো ক্রমানুসারে লিখে নিরাপদ স্থানে সংরক্ষণ করুন।',
@@ -726,11 +726,11 @@ const messages: TranslationMap = {
   'privacy.anonymizedAnalytics': 'অ্যানোনিমাইজড অ্যানালিটিক্স',
   'privacy.shareAnonymizedData': 'অ্যানোনিমাইজড ব্যবহার ডেটা শেয়ার করুন',
   'privacy.shareAnonymizedDataDesc':
-    'বেনামী ক্র্যাশ রিপোর্ট ও ব্যবহার অ্যানালিটিক্স শেয়ার করে OpenHuman উন্নত করতে সাহায্য করুন। সব ডেটা সম্পূর্ণ বেনামী — কোনো ব্যক্তিগত তথ্য, বার্তা, ওয়ালেট কী বা সেশন তথ্য কখনো সংগ্রহ করা হয় না।',
+    'বেনামী ক্র্যাশ রিপোর্ট ও ব্যবহার অ্যানালিটিক্স শেয়ার করে CloserEdge AI উন্নত করতে সাহায্য করুন। সব ডেটা সম্পূর্ণ বেনামী — কোনো ব্যক্তিগত তথ্য, বার্তা, ওয়ালেট কী বা সেশন তথ্য কখনো সংগ্রহ করা হয় না।',
   'privacy.meetingFollowUps': 'মিটিং ফলো-আপ',
   'privacy.autoHandoffMeet': 'Google Meet ট্রান্সক্রিপ্ট স্বয়ংক্রিয়ভাবে অর্কেস্ট্রেটরে পাঠান',
   'privacy.autoHandoffMeetDesc':
-    'Google Meet কল শেষ হলে, OpenHuman-এর অর্কেস্ট্রেটর ট্রান্সক্রিপ্ট পড়তে এবং বার্তা ড্রাফট করা, ফলো-আপ নির্ধারণ করা বা সংযুক্ত Slack ওয়ার্কস্পেসে সারসংক্ষেপ পোস্ট করার মতো কাজ করতে পারে। ডিফল্টে বন্ধ।',
+    'Google Meet কল শেষ হলে, CloserEdge AI-এর অর্কেস্ট্রেটর ট্রান্সক্রিপ্ট পড়তে এবং বার্তা ড্রাফট করা, ফলো-আপ নির্ধারণ করা বা সংযুক্ত Slack ওয়ার্কস্পেসে সারসংক্ষেপ পোস্ট করার মতো কাজ করতে পারে। ডিফল্টে বন্ধ।',
   'privacy.analyticsDisclaimer':
     'সব অ্যানালিটিক্স ও বাগ রিপোর্ট সম্পূর্ণ বেনামী। সক্রিয় থাকলে, আমরা শুধু ক্র্যাশ তথ্য, ডিভাইসের ধরন এবং ত্রুটির ফাইল লোকেশন সংগ্রহ করি। আমরা কখনো আপনার বার্তা, সেশন ডেটা, ওয়ালেট কী, API কী বা ব্যক্তিগত তথ্য অ্যাক্সেস করি না। যেকোনো সময় এই সেটিং পরিবর্তন করা যাবে।',
   'settings.about.version': 'ভার্সন',
@@ -811,15 +811,15 @@ const messages: TranslationMap = {
   'settings.search.menuDesc':
     'Xqx1q1x - নিজ হাতে অনুসন্ধান অথবা তার নিজের উপলব্ধকারীর সাথে যোগাযোগ স্থাপন করুন। Xqxqxkey কী- র সাথে একযোগে কাজ করার জন্য',
   'settings.search.description':
-    'এজেন্ট যে সার্চ ইঞ্জিন ব্যবহার করে তা বেছে নিন, অথবা সার্চ টুলগুলো সম্পূর্ণভাবে নিষ্ক্রিয় করুন। Managed OpenHuman-এর ব্যাকএন্ড ব্যবহার করে (কোনো সেটআপ নেই)। Parallel, Brave, এবং Querit আপনার API কী ব্যবহার করে সরাসরি আপনার মেশিন থেকে চলে।',
+    'এজেন্ট যে সার্চ ইঞ্জিন ব্যবহার করে তা বেছে নিন, অথবা সার্চ টুলগুলো সম্পূর্ণভাবে নিষ্ক্রিয় করুন। Managed CloserEdge AI-এর ব্যাকএন্ড ব্যবহার করে (কোনো সেটআপ নেই)। Parallel, Brave, এবং Querit আপনার API কী ব্যবহার করে সরাসরি আপনার মেশিন থেকে চলে।',
   'settings.search.engineAria': 'সার্চ ইঞ্জিন',
   'settings.search.engineDisabledLabel': 'Disabled',
   'settings.search.engineDisabledDesc':
     'এজেন্ট প্রেক্ষাপট এবং উপলব্ধ টুল তালিকা থেকে সার্চ টুলগুলি সরিয়ে দিন।',
-  'settings.search.engineManagedLabel': 'OpenHuman পরিচালিত',
+  'settings.search.engineManagedLabel': 'CloserEdge AI পরিচালিত',
   'settings.search.engineManagedDesc': 'ডিফল্ট xqx1x ব্যাক-এন্ড দ্বারা রুট',
   'settings.search.localManagedUnavailable':
-    'লোকাল ব্যবহারকারীদের জন্য OpenHuman Managed সার্চ উপলভ্য নয়। ওয়েব সার্চ চালু করতে আপনার নিজের Parallel বা Brave API key যোগ করুন।',
+    'লোকাল ব্যবহারকারীদের জন্য CloserEdge Managed সার্চ উপলভ্য নয়। ওয়েব সার্চ চালু করতে আপনার নিজের Parallel বা Brave API key যোগ করুন।',
   'settings.search.engineParallelLabel': 'Parallel',
   'settings.search.engineParallelDesc':
     'সরাসরি xqxxxxxxxxxxxxqx; অনুসন্ধান, চ্যাট, গবেষণা, সমৃদ্ধ টুল।',
@@ -921,13 +921,14 @@ const messages: TranslationMap = {
     'স্থানীয় xqxqx গোপন টেবিলের মধ্যে সংরক্ষণ করা হয়েছে। কোনো অস্বীকৃত অথবা কোনো মডেল পাঠানো হয়নি।',
   'devices.betaBadge': 'বিটা',
   'devices.betaText':
-    'এই ফিচারটি এখন বেটায় আছে। iOS ফোনকে রিমোট ক্লায়েন্ট হিসেবে ব্যবহার করতে এই OpenHuman-এর সাথে পেয়ার করুন।',
+    'এই ফিচারটি এখন বেটায় আছে। iOS ফোনকে রিমোট ক্লায়েন্ট হিসেবে ব্যবহার করতে এই CloserEdge AI-এর সাথে পেয়ার করুন।',
   'devices.comingSoonDescription':
     'ডিভাইস পেয়ারিং শীঘ্রই আসছে। এই পেজে iPhone পেয়ারিং এবং সংযুক্ত ডিভাইস ম্যানেজ করা যাবে।',
   'devices.title': 'ডিভাইস',
   'devices.pairIphone': 'পেয়ার iPhone',
   'devices.noPaired': 'কোনো পেয়ার করা ডিভাইস নেই',
-  'devices.emptyState': 'এই OpenHuman সেশনে সংযোগ করতে আপনার iPhone এ একটি QR code স্ক্যান করুন।',
+  'devices.emptyState':
+    'এই CloserEdge AI সেশনে সংযোগ করতে আপনার iPhone এ একটি QR code স্ক্যান করুন।',
   'devices.devicePairedTitle': 'ডিভাইস পেয়ার করা',
   'devices.devicePairedMessage': 'iPhone সফলভাবে সংযুক্ত হয়েছে৷',
   'devices.deviceRevokedTitle': 'ডিভাইস প্রত্যাহার করা হয়েছে',
@@ -948,7 +949,7 @@ const messages: TranslationMap = {
   'devices.pairModal.title': 'পেয়ার iPhone',
   'devices.pairModal.loading': 'পেয়ারিং কোড তৈরি করা হচ্ছে...',
   'devices.pairModal.instructions':
-    'আপনার iPhone-এ OpenHuman অ্যাপ খুলুন এবং এই কোডটি স্ক্যান করুন।',
+    'আপনার iPhone-এ CloserEdge AI অ্যাপ খুলুন এবং এই কোডটি স্ক্যান করুন।',
   'devices.pairModal.expiresIn': 'কোডের মেয়াদ ~{count} মিনিটে শেষ হবে',
   'devices.pairModal.expiresInPlural': 'কোডের মেয়াদ ~{count} মিনিটে শেষ হবে',
   'devices.pairModal.showDetails': 'বিবরণ দেখান',
@@ -1032,6 +1033,9 @@ const messages: TranslationMap = {
   'mobileHome.suggestion.listing': 'একটি লিস্টিং বিবরণ লিখুন',
   'mobileHome.suggestion.followup': 'একটি ক্লায়েন্ট ফলো-আপ লিখুন',
   'mobileHome.suggestion.plan': 'আমার দিন পরিকল্পনা করুন',
+  'mobileDevices.subtitle': 'এই ফোনের সাথে পেয়ার করা ডেস্কটপ।',
+  'mobileDevices.pairAnother': 'অন্য একটি ডিভাইস পেয়ার করুন',
+  'mobileDevices.empty': 'এখনও কোনো ডেস্কটপ পেয়ার করা হয়নি।',
   'mobileWelcome.tagline': 'আপনার AI কর্মী, আপনার পকেটে.',
   'mobileWelcome.logIn': 'লগ ইন',
   'mobileWelcome.scanQr': 'QR কোড দিয়ে পেয়ার করুন',
@@ -1201,7 +1205,7 @@ const messages: TranslationMap = {
   'autonomy.title': 'এজেন্ট স্বায়ত্তশাসন',
   'autonomy.maxActionsLabel': 'প্রতি ঘণ্টায় সর্বাধিক অ্যাকশন',
   'autonomy.maxActionsHelp':
-    'একজন এজেন্ট প্রতি ঘণ্টায় সর্বোচ্চ কতটি টুল অ্যাকশন চালাতে পারবে। নতুন মান আপনার পরবর্তী চ্যাটে প্রযোজ্য হবে। Cron জব এবং চ্যানেল লিসেনার OpenHuman পুনরায় চালু না করা পর্যন্ত বর্তমান সীমা বজায় রাখবে।',
+    'একজন এজেন্ট প্রতি ঘণ্টায় সর্বোচ্চ কতটি টুল অ্যাকশন চালাতে পারবে। নতুন মান আপনার পরবর্তী চ্যাটে প্রযোজ্য হবে। Cron জব এবং চ্যানেল লিসেনার CloserEdge AI পুনরায় চালু না করা পর্যন্ত বর্তমান সীমা বজায় রাখবে।',
   'autonomy.statusSaving': 'সংরক্ষণ করা হচ্ছে...',
   'autonomy.statusSaved': 'সংরক্ষিত।',
   'autonomy.statusFailed': 'ব্যর্থ হয়েছে',
@@ -1257,7 +1261,7 @@ const messages: TranslationMap = {
   'settings.billing.browserOpenFailed':
     'ব্রাউজার স্বয়ংক্রিয়ভাবে খোলা যায়নি। উপরের বাটন ব্যবহার করুন।',
   'settings.tools.chooseCapabilities':
-    'OpenHuman আপনার হয়ে কোন ক্যাপাবিলিটিগুলো ব্যবহার করতে পারবে তা বেছে নিন।',
+    'CloserEdge AI আপনার হয়ে কোন ক্যাপাবিলিটিগুলো ব্যবহার করতে পারবে তা বেছে নিন।',
   'settings.tools.saveChanges': 'পরিবর্তন সংরক্ষণ করুন',
   'settings.tools.preferencesSaved': 'পছন্দ সংরক্ষিত',
   'settings.tools.saveFailed': 'পছন্দ সংরক্ষণ ব্যর্থ। আবার চেষ্টা করুন।',
@@ -1516,8 +1520,8 @@ const messages: TranslationMap = {
   'voice.providers.piperPreset.alanMedium': 'GB · অ্যালান (পুরুষ)',
   'voice.providers.piperPreset.jennyDiocoMedium': 'GB · জেনি ডিওকো (মহিলা)',
   'voice.providers.piperPreset.northernEnglishMaleMedium': 'GB · উত্তর ইংরেজি (পুরুষ)',
-  'voice.providers.chip.cloud': 'OpenHuman (পরিচালিত)',
-  'voice.providers.chip.cloudAria': 'OpenHuman পরিচালিত প্রোভাইডার সর্বদা সক্রিয়',
+  'voice.providers.chip.cloud': 'CloserEdge AI (পরিচালিত)',
+  'voice.providers.chip.cloudAria': 'CloserEdge AI পরিচালিত প্রোভাইডার সর্বদা সক্রিয়',
   'voice.providers.chip.whisper': 'Whisper (স্থানীয়)',
   'voice.providers.chip.enableWhisper': 'স্থানীয় Whisper STT সক্রিয় করুন',
   'voice.providers.chip.disableWhisper': 'স্থানীয় Whisper STT নিষ্ক্রিয় করুন',
@@ -2099,9 +2103,9 @@ const messages: TranslationMap = {
   'bootCheck.chooseCoreMode': 'একটি রানটাইম বেছে নিন',
   'bootCheck.connectToCore': 'আপনার রানটাইমে সংযুক্ত হন',
   'bootCheck.desktopDescription':
-    'OpenHuman চিন্তা করতে একটি রানটাইম প্রয়োজন। এটি কোথায় থাকবে তা বেছে নিন।',
+    'CloserEdge AI চিন্তা করতে একটি রানটাইম প্রয়োজন। এটি কোথায় থাকবে তা বেছে নিন।',
   'bootCheck.webDescription':
-    'ওয়েবে, OpenHuman আপনার নিয়ন্ত্রণে একটি রানটাইমে সংযুক্ত হয়। নিচে এর URL ও অথ টোকেন দিন, অথবা সরাসরি আপনার মেশিনে চালাতে ডেস্কটপ অ্যাপ নিন।',
+    'ওয়েবে, CloserEdge AI আপনার নিয়ন্ত্রণে একটি রানটাইমে সংযুক্ত হয়। নিচে এর URL ও অথ টোকেন দিন, অথবা সরাসরি আপনার মেশিনে চালাতে ডেস্কটপ অ্যাপ নিন।',
   'bootCheck.preferDesktop': 'সব নিজের ডিভাইসে রাখতে চান?',
   'bootCheck.downloadDesktop': 'ডেস্কটপ অ্যাপ নিন',
   'bootCheck.localRecommended': 'লোকালি চালান (প্রস্তাবিত)',
@@ -2127,7 +2131,7 @@ const messages: TranslationMap = {
   'bootCheck.quit': 'প্রস্থান',
   'bootCheck.legacyDetected': 'লেগ্যাসি ব্যাকগ্রাউন্ড রানটাইম শনাক্ত হয়েছে',
   'bootCheck.legacyDescription':
-    'এই ডিভাইসে আলাদাভাবে ইনস্টল করা একটি OpenHuman ডেমন ইতিমধ্যে চলছে। বিল্ট-ইন রানটাইম নিয়ন্ত্রণ নেওয়ার আগে এটি সরাতে হবে।',
+    'এই ডিভাইসে আলাদাভাবে ইনস্টল করা একটি CloserEdge AI ডেমন ইতিমধ্যে চলছে। বিল্ট-ইন রানটাইম নিয়ন্ত্রণ নেওয়ার আগে এটি সরাতে হবে।',
   'bootCheck.removing': 'সরানো হচ্ছে…',
   'bootCheck.removeContinue': 'সরান ও চালিয়ে যান',
   'bootCheck.localNeedsRestart': 'লোকাল রানটাইম রিস্টার্ট প্রয়োজন',
@@ -2149,7 +2153,7 @@ const messages: TranslationMap = {
   'bootCheck.actionFailed': 'কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।',
   'bootCheck.portConflictTitle': 'অ্যাপ ইঞ্জিন চালু করা যায়নি',
   'bootCheck.portConflictBody':
-    'অন্য একটি প্রক্রিয়া OpenHuman-এর প্রয়োজনীয় নেটওয়ার্ক পোর্ট ব্যবহার করছে। আমরা স্বয়ংক্রিয়ভাবে এটি ঠিক করার চেষ্টা করব।',
+    'অন্য একটি প্রক্রিয়া CloserEdge AI-এর প্রয়োজনীয় নেটওয়ার্ক পোর্ট ব্যবহার করছে। আমরা স্বয়ংক্রিয়ভাবে এটি ঠিক করার চেষ্টা করব।',
   'bootCheck.portConflictFixButton': 'স্বয়ংক্রিয়ভাবে ঠিক করুন',
   'bootCheck.portConflictFixing': 'ঠিক করা হচ্ছে…',
   'bootCheck.portConflictFixFailed':
@@ -2204,7 +2208,7 @@ const messages: TranslationMap = {
   'composio.reconnect': 'পুনঃসংযোগ',
   'composio.expiredAuthorization': '{name} অনুমোদনের মেয়াদ শেষ',
   'composio.expiredDescription':
-    'পুনরায় সংযোগ করতে PH__0 টুল পুনরায় সংযুক্ত করুন। আপনি OAuth অ্যাক্সেস রিফ্রেশ না করা পর্যন্ত OpenHuman এই ইন্টিগ্রেশনটি অনুপলব্ধ রাখবে৷',
+    'পুনরায় সংযোগ করতে PH__0 টুল পুনরায় সংযুক্ত করুন। আপনি OAuth অ্যাক্সেস রিফ্রেশ না করা পর্যন্ত CloserEdge AI এই ইন্টিগ্রেশনটি অনুপলব্ধ রাখবে৷',
   'composio.envVarOverrides': 'সেট থাকলে, এই সেটিং ওভাররাইড করে।',
   'composio.previewBadge': 'পূর্বরূপ',
   'composio.previewTooltip':
@@ -2255,7 +2259,7 @@ const messages: TranslationMap = {
   'accounts.webviewHost.timeoutHint': 'টাইমআউট হিন্ট',
   'app.connectionBadge.composio': 'Composio',
   'app.connectionBadge.messaging': 'মেসেজিং',
-  'app.connectionIndicator.connected': 'OpenHuman AI-এ সংযুক্ত 🚀',
+  'app.connectionIndicator.connected': 'CloserEdge AI-এ সংযুক্ত 🚀',
   'app.connectionIndicator.connecting': 'সংযোগ হচ্ছে',
   'app.connectionIndicator.coreOffline': 'কোর অফলাইন',
   'app.connectionIndicator.disconnected': 'সংযোগ বিচ্ছিন্ন',
@@ -2299,7 +2303,7 @@ const messages: TranslationMap = {
   'app.openhumanLink.notifications.send': 'পরীক্ষা বিজ্ঞপ্তি পাঠান',
   'app.openhumanLink.notifications.sendFailed': 'পাঠানো যায়নি: {error}',
   'app.openhumanLink.notifications.sent':
-    'টেস্ট নোটিফিকেশন পাঠানো হয়েছে। যদি না পেয়ে থাকেন, System Settings → Notifications → OpenHuman-এ যান, Allow Notifications চালু করুন, এবং Banner Style-কে Persistent-এ সেট করুন।',
+    'টেস্ট নোটিফিকেশন পাঠানো হয়েছে। যদি না পেয়ে থাকেন, System Settings → Notifications → CloserEdge AI-এ যান, Allow Notifications চালু করুন, এবং Banner Style-কে Persistent-এ সেট করুন।',
   'app.openhumanLink.skipForNow': 'এখনের জন্য এড়িয়ে যান',
   'app.openhumanLink.telegramUnavailable': 'Telegram পাওয়া যাচ্ছে না',
   'app.openhumanLink.title.accounts': 'আপনার অ্যাপ সংযুক্ত করুন',
@@ -2311,7 +2315,7 @@ const messages: TranslationMap = {
   'app.persistRehydration.heading': 'শিরোনাম',
   'app.persistRehydration.resetCta': 'রিসেট হচ্ছে…',
   'app.persistRehydration.resetting': 'রিসেট হচ্ছে…',
-  'app.routeLoading.initializing': 'OpenHuman শুরু হচ্ছে...',
+  'app.routeLoading.initializing': 'CloserEdge AI শুরু হচ্ছে...',
   'app.update.currentlyOn': '{version}',
   'app.update.errorFallback': 'আপডেটের সময় কিছু একটা ভুল হয়েছে।',
   'app.update.header.default': 'আপডেট',
@@ -2365,7 +2369,7 @@ const messages: TranslationMap = {
   'chat.approval.fallback': 'এজেন্ট এমন কাজ করতে চায় যা আপনার অনুমোদন প্রয়োজন.',
   'chat.approval.title': 'অনুমোদন প্রয়োজন',
   'chat.approval.tool': 'টুল:',
-  'channels.authMode.managed_dm': 'OpenHuman দিয়ে লগইন করুন',
+  'channels.authMode.managed_dm': 'CloserEdge AI দিয়ে লগইন করুন',
   'channels.authMode.oauth': 'OAuth সাইন-ইন করুন',
   'channels.authMode.bot_token': 'আপনার নিজের বট টোকেন ব্যবহার করুন',
   'channels.authMode.api_key': 'আপনার নিজস্ব API কী ব্যবহার করুন',
@@ -2377,16 +2381,17 @@ const messages: TranslationMap = {
   'channels.discord.description': 'Discord এর মাধ্যমে বার্তা পাঠান এবং গ্রহণ করুন।',
   'channels.discord.authMode.bot_token.description': 'আপনার নিজস্ব Discord বট টোকেন প্রদান করুন।',
   'channels.discord.authMode.oauth.description':
-    'OAuth এর মাধ্যমে আপনার Discord সার্ভারে OpenHuman বট ইনস্টল করুন।',
+    'OAuth এর মাধ্যমে আপনার Discord সার্ভারে CloserEdge AI বট ইনস্টল করুন।',
   'channels.discord.authMode.managed_dm.description':
-    'আপনার ব্যক্তিগত Discord অ্যাকাউন্টটি OpenHuman বটের সাথে লিঙ্ক করুন।',
+    'আপনার ব্যক্তিগত Discord অ্যাকাউন্টটি CloserEdge AI বটের সাথে লিঙ্ক করুন।',
   'channels.discord.fields.bot_token.label': 'বট টোকেন',
   'channels.discord.fields.bot_token.placeholder': 'আপনার Discord বট টোকেন',
   'channels.discord.fields.guild_id.label': 'সার্ভার (গিল্ড) আইডি',
   'channels.discord.fields.guild_id.placeholder': 'ঐচ্ছিক: একটি নির্দিষ্ট সার্ভারে সীমাবদ্ধ',
   'channels.telegram.displayName': 'Telegram',
   'channels.telegram.description': 'Telegram এর মাধ্যমে বার্তা পাঠান এবং গ্রহণ করুন।',
-  'channels.telegram.authMode.managed_dm.description': 'সরাসরি OpenHuman Telegram বটকে মেসেজ করুন।',
+  'channels.telegram.authMode.managed_dm.description':
+    'সরাসরি CloserEdge AI Telegram বটকে মেসেজ করুন।',
   'channels.telegram.authMode.bot_token.description':
     '@BotFather থেকে আপনার নিজস্ব Telegram বট টোকেন প্রদান করুন।',
   'channels.telegram.fields.bot_token.label': 'বট টোকেন',
@@ -2440,16 +2445,16 @@ const messages: TranslationMap = {
   'iosPair.error.connectionFailed':
     'সংযোগ ব্যর্থ হয়েছে। নিশ্চিত করুন ডেস্কটপ অ্যাপটি চলছে এবং আবার চেষ্টা করুন।',
   'iosPair.error.invalidQr':
-    'অবৈধ QR কোড। নিশ্চিত করুন আপনি একটি OpenHuman পেয়ারিং কোড স্ক্যান করছেন।',
+    'অবৈধ QR কোড। নিশ্চিত করুন আপনি একটি CloserEdge AI পেয়ারিং কোড স্ক্যান করছেন।',
   'iosPair.error.unreachableDesktop':
     'ডেস্কটপে পৌঁছানো যায়নি। নিশ্চিত করুন উভয় ডিভাইস অনলাইনে আছে এবং আবার চেষ্টা করুন।',
   'iosPair.expired': 'QR code মেয়াদ শেষ হয়েছে। কোডটি পুনরায় তৈরি করতে ডেস্কটপকে বলুন।',
   'iosPair.instructions':
-    'আপনার ডেস্কটপে OpenHuman খুলুন, Settings > Devices-এ যান, এবং QR কোড দেখাতে "Pair phone" ট্যাপ করুন।',
+    'আপনার ডেস্কটপে CloserEdge AI খুলুন, Settings > Devices-এ যান, এবং QR কোড দেখাতে "Pair phone" ট্যাপ করুন।',
   'iosPair.retryScan': 'পুনরায় স্ক্যান করার চেষ্টা করুন',
   'iosPair.scanQrCode': 'স্ক্যান QR code',
   'iosPair.scannerOpening': 'স্ক্যানার খোলা হচ্ছে...',
-  'iosPair.step.openDesktop': 'ডেস্কটপে OpenHuman খুলুন',
+  'iosPair.step.openDesktop': 'ডেস্কটপে CloserEdge AI খুলুন',
   'iosPair.step.openSettings': 'সেটিংস > ডিভাইসগুলিতে যান',
   'iosPair.step.showQr': 'QR',
   'iosPair.title': 'আপনার ডেস্কটপের সাথে পেয়ার করুন',
@@ -2480,7 +2485,7 @@ const messages: TranslationMap = {
   'composio.connect.permissionsDefault': 'পড়া + লেখা ডিফল্টে সক্রিয়',
   'composio.connect.permissionsNote': 'প্রকাশ করতে পারে',
   'composio.connect.permissionsNoteSuffix':
-    'OpenHuman-এর নিজস্ব এজেন্ট অনুমতি নিচে read, write, এবং admin টগল হিসেবে নিয়ন্ত্রিত।',
+    'CloserEdge AI-এর নিজস্ব এজেন্ট অনুমতি নিচে read, write, এবং admin টগল হিসেবে নিয়ন্ত্রিত।',
   'composio.connect.reopenBrowser': 'ব্রাউজার আবার খুলুন',
   'composio.connect.requestingUrl': 'সংযোগ URL অনুরোধ হচ্ছে…',
   'composio.connect.requiredFieldEmpty': 'এই ফিল্ডটি আবশ্যক।',
@@ -2558,7 +2563,7 @@ const messages: TranslationMap = {
   'daemon.serviceBlockingGate.retryFailed':
     'আবার চেষ্টা ব্যর্থ। সর্বশেষ অ্যাপ বিল্ড ডাউনলোড করে আবার চেষ্টা করুন।',
   'daemon.serviceBlockingGate.retrying': 'আবার চেষ্টা হচ্ছে...',
-  'daemon.serviceBlockingGate.title': 'OpenHuman কোর পাওয়া যাচ্ছে না',
+  'daemon.serviceBlockingGate.title': 'CloserEdge AI কোর পাওয়া যাচ্ছে না',
   'home.banners.discordSubtitle': 'Discord সাবটাইটেল',
   'home.banners.discordTitle': 'আমাদের Discord-এ যোগ দিন',
   'home.banners.earlyBirdDismiss': 'আর্লি বার্ড ব্যানার বাদ দিন',
@@ -2595,7 +2600,7 @@ const messages: TranslationMap = {
   'intelligence.diagram.skillInstallCommand': 'npx skills add yizhiyanhua-ai/fireworks-tech-graph',
   'intelligence.diagram.promptExample':
     'ডার্ক টার্মিনাল স্টাইলে বর্তমান swarm-এর একটি আর্কিটেকচার ডায়াগ্রাম তৈরি করুন',
-  'intelligence.diagram.imageAlt': 'সর্বশেষ তৈরি OpenHuman আর্কিটেকচার ডায়াগ্রাম',
+  'intelligence.diagram.imageAlt': 'সর্বশেষ তৈরি CloserEdge AI আর্কিটেকচার ডায়াগ্রাম',
   'intelligence.diagram.refreshesEvery': 'প্রতি {seconds}s-এ রিফ্রেশ হয়',
   'intelligence.memoryText.entityTypePrefix': 'এনটিটি ধরন',
   'intelligence.screenDebug.active': 'সক্রিয়',
@@ -2677,7 +2682,7 @@ const messages: TranslationMap = {
   'openhuman.team_list_teams': 'টিম তালিকা',
   'overlay.ariaAttention': 'মনোযোগের বার্তা',
   'overlay.ariaCompanion': 'কম্প্যানিয়ন সক্রিয়',
-  'overlay.ariaOrb': 'OpenHuman ওভারলে',
+  'overlay.ariaOrb': 'CloserEdge AI ওভারলে',
   'overlay.ariaVoiceActive': 'ভয়েস ইনপুট সক্রিয়',
   'overlay.companion.error': 'ত্রুটি',
   'overlay.companion.listening': 'শুনছে…',
@@ -2907,7 +2912,7 @@ const messages: TranslationMap = {
   'settings.ai.noSpendRows': 'কোনো খরচ সারি লোড করা হয়নি।',
   'settings.ai.topHours': 'সেরা ঘন্টা',
   'settings.ai.noHourlySpend': 'এখনও কোন ঘন্টা খরচ নেই.',
-  'settings.ai.openhumanDefault': 'OpenHuman (ডিফল্ট)',
+  'settings.ai.openhumanDefault': 'CloserEdge AI (ডিফল্ট)',
   'settings.ai.localModelResolved': 'Ollama · {model}',
   'settings.ai.customRoutingForWorkload': '{label} এর জন্য কাস্টম রাউটিং',
   'settings.ai.loadingModels': 'মডেল লোড হচ্ছে...',
@@ -2963,7 +2968,7 @@ const messages: TranslationMap = {
   'settings.ai.composioSyncScans': 'Composio সিঙ্ক স্ক্যান',
   'settings.ai.totalBackgroundApiReadBudget': 'মোট bg API পঠিত বাজেট',
   'settings.ai.memoryWorkerPolls': 'মেমরি কর্মী পোল',
-  'settings.ai.defaultProviderName': 'OpenHuman',
+  'settings.ai.defaultProviderName': 'CloserEdge AI',
   'settings.ai.routing.managed': 'পরিচালিত',
   'settings.ai.routing.managedDesc':
     'xq0xqx সমস্ত প্রকার মেঘে রান করা হবে, কর্মের জন্য সেরা মডেল নির্বাচন করুন, খরচের জন্য ব্যবহারযোগ্য ডিফল্ট মান নির্বাচন করুন।',
@@ -3157,16 +3162,16 @@ const messages: TranslationMap = {
   'settings.composio.confirmSwitch': 'আমি বুঝেছি, Direct-এ স্যুইচ করুন',
   'settings.composio.confirmTitle': '⚠️ Direct মোডে স্যুইচ হচ্ছে',
   'settings.composio.confirmWarning':
-    'OpenHuman-এর মাধ্যমে লিঙ্ক করা আপনার বিদ্যমান ইন্টিগ্রেশনগুলি (Gmail, Slack, GitHub ইত্যাদি) দৃশ্যমান হবে না — সেগুলি OpenHuman-পরিচালিত Composio টেন্যান্টে থাকে।',
+    'CloserEdge AI-এর মাধ্যমে লিঙ্ক করা আপনার বিদ্যমান ইন্টিগ্রেশনগুলি (Gmail, Slack, GitHub ইত্যাদি) দৃশ্যমান হবে না — সেগুলি CloserEdge AI-পরিচালিত Composio টেন্যান্টে থাকে।',
   'settings.composio.intro':
     'Composio ২৫০+ বহিরাগত অ্যাপকে টুল হিসেবে ইন্টিগ্রেট করে যা আপনার এজেন্ট কল করতে পারে। এই টুল কলগুলি কীভাবে রুট হবে তা নির্বাচন করুন।',
   'settings.composio.title': 'Composio',
   'settings.composio.modeDirect': 'ডাইরেক্ট (নিজের API কী আনুন)',
   'settings.composio.modeDirectDesc':
     'কলগুলি সরাসরি backend.composio.dev-এ যায়। সার্বভৌম / অফলাইন-বান্ধব। টুল এক্সিকিউশন সিঙ্ক্রোনাসভাবে কাজ করে; রিয়েল-টাইম ট্রিগার webhooks এখনও direct মোডে রুট করা হয় না (ফলো-আপ ইস্যু)।',
-  'settings.composio.modeManaged': 'ম্যানেজড (OpenHuman আপনার হয়ে পরিচালনা করে)',
+  'settings.composio.modeManaged': 'ম্যানেজড (CloserEdge AI আপনার হয়ে পরিচালনা করে)',
   'settings.composio.modeManagedDesc':
-    'OpenHuman আমাদের ব্যাকএন্ডের মাধ্যমে টুল কল প্রক্সি করে (প্রস্তাবিত)। অথ ব্রোকার করা হয়; আপনি কখনও Composio API key পেস্ট করেন না। Webhooks সম্পূর্ণরূপে রুট করা।',
+    'CloserEdge AI আমাদের ব্যাকএন্ডের মাধ্যমে টুল কল প্রক্সি করে (প্রস্তাবিত)। অথ ব্রোকার করা হয়; আপনি কখনও Composio API key পেস্ট করেন না। Webhooks সম্পূর্ণরূপে রুট করা।',
   'settings.composio.routingMode': 'রুটিং মোড',
   'settings.composio.saveErrorNoKey': 'সংরক্ষণ ব্যর্থ। Direct মোডের জন্য একটি API key প্রয়োজন।',
   'settings.composio.saving': 'সংরক্ষণ হচ্ছে…',
@@ -3396,7 +3401,7 @@ const messages: TranslationMap = {
   'settings.localModel.status.ollamaDiagnostics': 'Ollama ডায়াগনস্টিক্স',
   'settings.localModel.status.ollamaNotInstalled': 'Ollama রানটাইম অনুপলব্ধ',
   'settings.localModel.status.ollamaNotInstalledDesc':
-    'OpenHuman এখন Ollama-কে একটি বাহ্যিক ইনফারেন্স রানটাইম হিসেবে গণ্য করে। আপনার নিজের Ollama সার্ভার শুরু করুন, যে মডেলগুলি চান টানুন, এবং ওয়ার্কলোড রাউটিং সেদিকে নির্দেশ করুন।',
+    'CloserEdge AI এখন Ollama-কে একটি বাহ্যিক ইনফারেন্স রানটাইম হিসেবে গণ্য করে। আপনার নিজের Ollama সার্ভার শুরু করুন, যে মডেলগুলি চান টানুন, এবং ওয়ার্কলোড রাউটিং সেদিকে নির্দেশ করুন।',
   'settings.localModel.status.progress': 'অগ্রগতি',
   'settings.localModel.status.provider': 'প্রোভাইডার',
   'settings.localModel.status.retryBootstrap': 'বুটস্ট্র্যাপ আবার চেষ্টা করুন',
@@ -3425,7 +3430,7 @@ const messages: TranslationMap = {
     'Telegram/Discord অথেন্টিকেশন মোড এবং ডিফল্ট চ্যানেল রাউটিং কনফিগার করুন',
   'settings.developerMenu.tools.title': 'টুলস',
   'settings.developerMenu.tools.desc':
-    'OpenHuman আপনার পক্ষ থেকে যে সক্ষমতাগুলি ব্যবহার করতে পারে সেগুলি চালু বা বন্ধ করুন',
+    'CloserEdge AI আপনার পক্ষ থেকে যে সক্ষমতাগুলি ব্যবহার করতে পারে সেগুলি চালু বা বন্ধ করুন',
   'settings.developerMenu.agentChat.title': 'এজেন্ট চ্যাট',
   'settings.developerMenu.agentChat.desc':
     'মডেল এবং টেম্পারেচার ওভাররাইডসহ এজেন্ট কথোপকথন পরীক্ষা করুন',
@@ -3595,7 +3600,7 @@ const messages: TranslationMap = {
     'Composio ইন্টিগ্রেশন ট্রিগারের জন্য AI ট্রায়াজ সেটিংস কনফিগার করুন',
   'settings.developerMenu.mcpServer.title': 'MCP লাইব্রেরি অনুপলব্ধ',
   'settings.developerMenu.mcpServer.desc':
-    'বাহ্যিক MCP ক্লায়েন্টগুলিকে OpenHuman-এ সংযুক্ত করতে কনফিগার করুন',
+    'বাহ্যিক MCP ক্লায়েন্টগুলিকে CloserEdge AI-এ সংযুক্ত করতে কনফিগার করুন',
   'settings.developerMenu.autonomy.title': 'এজেন্ট স্বায়ত্তশাসন',
   'settings.developerMenu.autonomy.desc': 'টুল অ্যাকশনের রেট সীমা এবং নিরাপত্তা থ্রেশহোল্ড',
   'settings.mcpServer.title':
@@ -3609,7 +3614,7 @@ const messages: TranslationMap = {
   'settings.mcpServer.copied': 'কপি করা হয়েছে!',
   'settings.mcpServer.openConfigFile': 'কনফিগ ফাইল খুলুন',
   'settings.mcpServer.binaryPathNotFound':
-    'OpenHuman বাইনারি পাওয়া যায়নি। উৎস থেকে চললে, এর সাথে তৈরি করুন: cargo build --bin openhuman-core',
+    'CloserEdge AI বাইনারি পাওয়া যায়নি। উৎস থেকে চললে, এর সাথে তৈরি করুন: cargo build --bin openhuman-core',
   'settings.mcpServer.openConfigError': 'কনফিগার ফাইল খুলতে ব্যর্থ',
   'settings.mcpServer.clientClaudeDesktop': 'Claude Desktop',
   'settings.mcpServer.clientCursor': 'কার্সার',
@@ -3710,7 +3715,7 @@ const messages: TranslationMap = {
   'settings.mascot.characterPreview': 'পূর্বরূপ',
   'settings.mascot.characterStates': 'স্টেটস',
   'settings.mascot.characterVisemes': 'তুষারপাত',
-  'settings.mascot.colorAria': 'OpenHuman রঙ',
+  'settings.mascot.colorAria': 'CloserEdge AI রঙ',
   'settings.mascot.colorDesc': 'রঙের বিবরণ',
   'settings.mascot.colorHeading': 'রঙের শিরোনাম',
   'settings.mascot.colorBlack': 'কালো',
@@ -3720,15 +3725,15 @@ const messages: TranslationMap = {
   'settings.mascot.primaryColor': 'প্রধান রং',
   'settings.mascot.secondaryColor': 'দ্বিতীয় রং',
   'settings.mascot.colorYellow': 'হলুদ',
-  'settings.mascot.libraryUnavailable': 'OpenHuman লাইব্রেরি অনুপলব্ধ',
-  'settings.mascot.title': 'OpenHuman',
-  'settings.mascot.loadingLibrary': 'OpenHuman লাইব্রেরি লোড হচ্ছে…',
+  'settings.mascot.libraryUnavailable': 'CloserEdge AI লাইব্রেরি অনুপলব্ধ',
+  'settings.mascot.title': 'CloserEdge AI',
+  'settings.mascot.loadingLibrary': 'CloserEdge AI লাইব্রেরি লোড হচ্ছে…',
   'settings.mascot.loadDetailError': 'মাসকট লোড করা যায়নি৷',
   'settings.mascot.loadLibraryError': 'মাসকট লাইব্রেরি লোড করা যায়নি।',
-  'settings.mascot.localDefault': 'লোকাল OpenHuman (ডিফল্ট)',
+  'settings.mascot.localDefault': 'লোকাল CloserEdge AI (ডিফল্ট)',
   'settings.mascot.menuTitle': 'মাসকট',
   'settings.mascot.menuDesc': 'অ্যাপ জুড়ে ব্যবহৃত মাসকটের রঙ বেছে নিন',
-  'settings.mascot.noCharacters': 'কোনো OpenHuman ক্যারেক্টার এখনও উপলব্ধ নেই',
+  'settings.mascot.noCharacters': 'কোনো CloserEdge AI ক্যারেক্টার এখনও উপলব্ধ নেই',
   'settings.mascot.noColorVariants': 'কোনো রঙের ভেরিয়েন্ট নেই',
   'settings.mascot.voice.current': 'বর্তমান',
   'settings.mascot.voice.customDesc':
@@ -3781,7 +3786,7 @@ const messages: TranslationMap = {
     'যৌক্তিক ডিফল্ট — প্রতিটি রানে অতিরিক্ত টোকেন না পুড়িয়ে ভাল ধারাবাহিকতা।',
   'settings.memoryWindow.balanced.label': 'সুষম',
   'settings.memoryWindow.description':
-    'প্রতিটি নতুন এজেন্ট রানে OpenHuman কতটা মনে রাখা প্রসঙ্গ ইনজেক্ট করে। বড় উইন্ডো অতীত কথোপকথন সম্পর্কে বেশি সচেতন মনে হয় কিন্তু প্রতিটি রানে বেশি টোকেন ব্যবহার করে — এবং বেশি খরচ হয়।',
+    'প্রতিটি নতুন এজেন্ট রানে CloserEdge AI কতটা মনে রাখা প্রসঙ্গ ইনজেক্ট করে। বড় উইন্ডো অতীত কথোপকথন সম্পর্কে বেশি সচেতন মনে হয় কিন্তু প্রতিটি রানে বেশি টোকেন ব্যবহার করে — এবং বেশি খরচ হয়।',
   'settings.memoryWindow.extended.badge': 'আরও প্রসঙ্গ',
   'settings.memoryWindow.extended.hint':
     'প্রতিটি রানে আরও দীর্ঘমেয়াদী মেমরি ইনজেক্ট করা হয়। প্রতি টার্নে উচ্চ টোকেন খরচ।',
@@ -3947,17 +3952,17 @@ const messages: TranslationMap = {
   'skills.install.urlPlaceholder': 'https://raw.githubusercontent.com/owner/repo/main/SKILL.md',
   'skills.meetingBots.bannerDesc': 'ব্যানার বিবরণ',
   'skills.meetingBots.bannerTitle': 'ব্যানার শিরোনাম',
-  'skills.meetingBots.busyTitle': 'OpenHuman ব্যস্ত',
+  'skills.meetingBots.busyTitle': 'CloserEdge AI ব্যস্ত',
   'skills.meetingBots.comingSoon': 'শীঘ্রই আসছে',
-  'skills.meetingBots.couldNotStartTitle': 'OpenHuman শুরু করা যায়নি',
+  'skills.meetingBots.couldNotStartTitle': 'CloserEdge AI শুরু করা যায়নি',
   'skills.meetingBots.displayName': 'প্রদর্শন নাম',
-  'skills.meetingBots.failedToStart': 'OpenHuman শুরু করতে ব্যর্থ।',
+  'skills.meetingBots.failedToStart': 'CloserEdge AI শুরু করতে ব্যর্থ।',
   'skills.meetingBots.joiningMessage': 'কয়েক সেকেন্ডের মধ্যে অংশগ্রহণকারী হিসেবে দেখা যাবে।',
-  'skills.meetingBots.joiningTitle': 'OpenHuman মিটিংয়ে যোগ দিচ্ছে',
+  'skills.meetingBots.joiningTitle': 'CloserEdge AI মিটিংয়ে যোগ দিচ্ছে',
   'skills.meetingBots.meetingLink': 'মিটিং লিংক',
-  'skills.meetingBots.modalAriaLabel': 'OpenHuman-কে একটি মিটিংয়ে পাঠান',
+  'skills.meetingBots.modalAriaLabel': 'CloserEdge AI-কে একটি মিটিংয়ে পাঠান',
   'skills.meetingBots.modalDesc': 'মোডাল বিবরণ',
-  'skills.meetingBots.modalTitle': 'OpenHuman-কে একটি মিটিংয়ে পাঠান',
+  'skills.meetingBots.modalTitle': 'CloserEdge AI-কে একটি মিটিংয়ে পাঠান',
   'skills.meetingBots.newBadge': 'নতুন ব্যাজ',
   'skills.meetingBots.platformComingSoon': '{label} সমর্থন শীঘ্রই আসছে।',
   'skills.meetingBots.platformHints.gmeet': 'meet.google.com/abc-defg-hij',
@@ -4108,7 +4113,7 @@ const messages: TranslationMap = {
   'chat.parentThread': 'মূল থ্রেড',
   'chat.removeReaction': '{emoji}',
   'settings.composio.loading': 'লোড হচ্ছে…',
-  'settings.mascot.noCharactersAvailable': 'কোনো OpenHuman ক্যারেক্টার এখনও উপলব্ধ নেই',
+  'settings.mascot.noCharactersAvailable': 'কোনো CloserEdge AI ক্যারেক্টার এখনও উপলব্ধ নেই',
   'skills.uninstall.confirmTitle': '{name} আনইনস্টল করবেন?',
   'conversations.taskKanban.blocked': 'ব্লকড',
   'conversations.taskKanban.done': 'সম্পন্ন',
@@ -4122,7 +4127,7 @@ const messages: TranslationMap = {
   'settings.composio.notYetRouted': 'এখনও রুট করা হয়নি',
   'settings.localModel.download.manageExternal': 'আপনার বাহ্যিক রানটাইমে এই মডেলটি পরিচালনা করুন।',
   'settings.localModel.status.manageOllamaExternal':
-    'OpenHuman-এর বাইরে Ollama প্রক্রিয়া এবং মডেল পুল পরিচালনা করুন, তারপর ডায়াগনস্টিক পুনরায় চালান।',
+    'CloserEdge AI-এর বাইরে Ollama প্রক্রিয়া এবং মডেল পুল পরিচালনা করুন, তারপর ডায়াগনস্টিক পুনরায় চালান।',
   'settings.localModel.status.ollamaDocs': 'Ollama ডকস',
   'settings.localModel.status.thenRetry':
     'সেটআপ নির্দেশনার জন্য, তারপর আপনার রানটাইম পৌঁছানো গেলে পুনরায় চেষ্টা করুন।',
@@ -4451,7 +4456,7 @@ const messages: TranslationMap = {
   // Keyring consent & security
   'keyring.consent.title': 'নিরাপদ সঞ্চয়স্থান অনুপলব্ধ',
   'keyring.consent.description':
-    'আপনার অপারেটিং সিস্টেমের কিচেন অ্যাক্সেসযোগ্য নয়। OpenHuman-এর পরিবর্তে স্থানীয় এনক্রিপ্টেড সঞ্চয়স্থান ব্যবহার করে গোপনীয়তা সংরক্ষণ করতে আপনার অনুমতি প্রয়োজন।',
+    'আপনার অপারেটিং সিস্টেমের কিচেন অ্যাক্সেসযোগ্য নয়। CloserEdge AI-এর পরিবর্তে স্থানীয় এনক্রিপ্টেড সঞ্চয়স্থান ব্যবহার করে গোপনীয়তা সংরক্ষণ করতে আপনার অনুমতি প্রয়োজন।',
   'keyring.consent.reasonPrefix': 'কারণ:',
   'keyring.consent.showDetails': 'এটার মানে কী?',
   'keyring.consent.hideDetails': 'বিবরণ লুকান',

@@ -45,6 +45,6 @@ describe('Skills page — Notion composio integration', () => {
 
     expect(await screen.findByRole('heading', { name: 'Connect Notion' })).toBeInTheDocument();
     expect(screen.getByText(/Connect your Notion account\./i)).toBeInTheDocument();
-    expect(screen.getByText(/OpenHuman's own agent permissions/i)).toBeInTheDocument();
+    expect(screen.getByText(/CloserEdge AI’s own agent permissions/i)).toBeInTheDocument();
   });
 });

@@ -133,7 +133,7 @@ describe('listMeetCalls', () => {
       {
         request_id: 'req-1',
         meet_url: 'https://meet.google.com/abc-defg-hij',
-        bot_display_name: 'OpenHuman',
+        bot_display_name: 'CloserEdge AI',
         owner_display_name: 'Alice',
         started_at_ms: 1700000000000,
         ended_at_ms: 1700000060000,

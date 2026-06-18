@@ -225,7 +225,7 @@ describe('Settings - Advanced Config', () => {
     expect(
       (await textExists('Reasoning')) ||
         (await textExists('Cloud providers')) ||
-        (await textExists('OpenHuman'))
+        (await textExists('CloserEdge AI'))
     ).toBe(true);
   });
 });

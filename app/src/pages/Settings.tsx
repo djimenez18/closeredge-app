@@ -32,6 +32,7 @@ import McpServerPanel from '../components/settings/panels/McpServerPanel';
 import MemoryDataPanel from '../components/settings/panels/MemoryDataPanel';
 import MemoryDebugPanel from '../components/settings/panels/MemoryDebugPanel';
 import MigrationPanel from '../components/settings/panels/MigrationPanel';
+import MobileDevicesPanel from '../components/settings/panels/MobileDevicesPanel';
 import ModelHealthPanel from '../components/settings/panels/ModelHealthPanel';
 import NotificationsTabbedPanel from '../components/settings/panels/NotificationsTabbedPanel';
 import PersonaPanel from '../components/settings/panels/PersonaPanel';
@@ -56,6 +57,7 @@ import WebhooksDebugPanel from '../components/settings/panels/WebhooksDebugPanel
 import SettingsHome from '../components/settings/SettingsHome';
 import SettingsSectionPage from '../components/settings/SettingsSectionPage';
 import { useT } from '../lib/i18n/I18nContext';
+import { getIsMobile } from '../lib/platform';
 import { APP_VERSION } from '../utils/config';
 import Intelligence from './Intelligence';
 import Webhooks from './Webhooks';
@@ -647,8 +649,14 @@ const Settings = () => {
         <Route path="webhooks-triggers" element={<Webhooks />} />
         <Route path="composio-triggers" element={wrapSettingsPage(<ComposioTriagePanel />)} />
         <Route path="composio-routing" element={wrapSettingsPage(<ComposioPanel />)} />
-        {/* Mobile devices */}
-        <Route path="devices" element={wrapSettingsPage(<DevicesComingSoonPanel />)} />
+        {/* Devices: mobile manages its paired desktops; desktop keeps its
+            (currently unrouted) management UI behind the placeholder. */}
+        <Route
+          path="devices"
+          element={wrapSettingsPage(
+            getIsMobile() ? <MobileDevicesPanel /> : <DevicesComingSoonPanel />
+          )}
+        />
         {/* About / updates */}
         <Route path="about" element={wrapSettingsPage(<AboutPanel />)} />
         {/* Fallback */}

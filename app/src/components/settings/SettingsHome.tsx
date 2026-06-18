@@ -56,7 +56,7 @@ const SettingsHome = () => {
         {
           id: 'devices',
           title: 'Devices',
-          description: 'Pair iOS phones with this OpenHuman',
+          description: 'Pair iOS phones with this CloserEdge AI',
           icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

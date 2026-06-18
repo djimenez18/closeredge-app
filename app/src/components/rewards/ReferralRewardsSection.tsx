@@ -96,14 +96,14 @@ const ReferralRewardsSection = () => {
   const handleShare = async () => {
     if (!referralCodeToCopy) return;
     const shareText = [
-      'Join me on OpenHuman.',
+      'Join me on CloserEdge AI.',
       `Referral code: ${referralCodeToCopy}`,
-      `Download OpenHuman: ${LATEST_APP_DOWNLOAD_URL}`,
+      `Download CloserEdge AI: ${LATEST_APP_DOWNLOAD_URL}`,
     ].join('\n');
 
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'OpenHuman', text: shareText });
+        await navigator.share({ title: 'CloserEdge AI', text: shareText });
       } else {
         await navigator.clipboard.writeText(shareText);
         setCopyHint(t('common.copied'));
