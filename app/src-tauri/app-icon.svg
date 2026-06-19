@@ -1,29 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <!--
-    CloserEdge app-icon source. White background + the brand chevron mark
-    (mirrors app/public/brand/closeredge-mark.svg). Regenerate the platform
-    icon set with the vendored CLI:
+    CloserEdge app-icon source. A solid dark rounded tile (so it reads as a
+    real app icon at any taskbar color, like Claude/Google) with a large,
+    bright violet chevron. Regenerate the platform icon set with:
       cargo-tauri icon app/src-tauri/app-icon.svg -o app/src-tauri/icons
   -->
   <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#241a3a"/>
+      <stop offset="100%" stop-color="#0e0a16"/>
+    </linearGradient>
     <linearGradient id="ce-top" x1="0" y1="10" x2="70" y2="35" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#4A3DC9"/>
-      <stop offset="100%" stop-color="#9B8FFF"/>
+      <stop offset="0%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#C9B8FF"/>
     </linearGradient>
     <linearGradient id="ce-bot" x1="0" y1="60" x2="70" y2="35" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#3D32B0"/>
-      <stop offset="100%" stop-color="#7B6EF6"/>
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#9D7BF7"/>
     </linearGradient>
     <linearGradient id="ce-hi" x1="15" y1="20" x2="70" y2="35" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#9B8FFF" stop-opacity=".6"/>
-      <stop offset="100%" stop-color="#7B6EF6" stop-opacity=".9"/>
+      <stop offset="0%" stop-color="#C9B8FF" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".95"/>
     </linearGradient>
   </defs>
-  <!-- Transparent background; chevron scaled to ~85% of the canvas so the
-       arrow reads clearly at small sizes (taskbar / alt-tab). -->
-  <g transform="translate(78 122) scale(10.85)">
+  <rect width="1024" height="1024" rx="232" fill="url(#bg)"/>
+  <!-- chevron ~62% of the tile, optically centered -->
+  <g transform="translate(196 236) scale(7.9)">
     <path d="M0 4 L70 35 L22 33 Z" fill="url(#ce-top)"/>
     <path d="M0 66 L70 35 L22 37 Z" fill="url(#ce-bot)"/>
     <path d="M10 14 L70 35 L24 34 Z" fill="url(#ce-hi)" opacity=".5"/>
+    <path d="M58 33 L70 35 L58 37 Z" fill="#ffffff" opacity=".85"/>
   </g>
 </svg>
