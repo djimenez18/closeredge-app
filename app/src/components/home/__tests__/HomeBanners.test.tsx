@@ -1,14 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { BILLING_DASHBOARD_URL, DISCORD_INVITE_URL } from '../../../utils/links';
+import { BILLING_DASHBOARD_URL } from '../../../utils/links';
 import { openUrl } from '../../../utils/openUrl';
-import {
-  DiscordBanner,
-  EarlyBirdyBanner,
-  PromotionalCreditsBanner,
-  UsageLimitBanner,
-} from '../HomeBanners';
+import { EarlyBirdyBanner, PromotionalCreditsBanner, UsageLimitBanner } from '../HomeBanners';
 
 vi.mock('../../../utils/openUrl', () => ({ openUrl: vi.fn() }));
 
@@ -54,14 +49,6 @@ describe('HomeBanners', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Get a subscription' }));
 
     expect(openUrl).toHaveBeenCalledWith('https://tinyhumans.ai/dashboard');
-  });
-
-  it('opens the Discord invite through openUrl from the Discord banner', () => {
-    render(<DiscordBanner />);
-
-    fireEvent.click(screen.getByRole('button', { name: /join our discord/i }));
-
-    expect(openUrl).toHaveBeenCalledWith(DISCORD_INVITE_URL);
   });
 
   describe('EarlyBirdyBanner', () => {

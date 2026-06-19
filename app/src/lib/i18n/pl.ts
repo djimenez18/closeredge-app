@@ -2310,13 +2310,6 @@ const messages: TranslationMap = {
     'Korzystasz z bezpłatnego okresu próbnego. Doładuj, aby kontynuować.',
   'app.openhumanLink.defaultBody':
     'Jeszcze nie gotowe w popupie. Otwórz pełną stronę ustawień, gdy będziesz potrzebować.',
-  'app.openhumanLink.discord.intro':
-    'Dołącz do społeczności, dziel się opiniami i bądź na bieżąco.',
-  'app.openhumanLink.discord.openInvite': 'Otwórz zaproszenie',
-  'app.openhumanLink.discord.perk1': 'Pomoc bezpośrednio od twórców',
-  'app.openhumanLink.discord.perk2': 'Wczesny dostęp do nowych funkcji',
-  'app.openhumanLink.discord.perk3': 'Wymiana skryptów i przepisów',
-  'app.openhumanLink.discord.perk4': 'Możliwość wpływu na priorytety',
   'app.openhumanLink.done': 'Gotowe',
   'app.openhumanLink.loadingChannelSetup': 'Wczytywanie konfiguracji kanału',
   'app.openhumanLink.maybeLater': 'Może później',
@@ -2337,7 +2330,6 @@ const messages: TranslationMap = {
   'app.openhumanLink.telegramUnavailable': 'Telegram niedostępny',
   'app.openhumanLink.title.accounts': 'Podłącz swoje aplikacje',
   'app.openhumanLink.title.billing': 'Rozliczenia i kredyty',
-  'app.openhumanLink.title.discord': 'Dołącz do społeczności',
   'app.openhumanLink.title.messaging': 'Podłącz kanał komunikacji',
   'app.openhumanLink.title.notifications': 'Zezwól na powiadomienia',
   'app.persistRehydration.body':
@@ -2599,8 +2591,6 @@ const messages: TranslationMap = {
     'Ponowna próba się nie powiodła. Pobierz najnowszą wersję aplikacji i spróbuj ponownie.',
   'daemon.serviceBlockingGate.retrying': 'Ponawianie...',
   'daemon.serviceBlockingGate.title': 'Rdzeń CloserEdge AI jest niedostępny',
-  'home.banners.discordSubtitle': 'Pomoc, opinie i wczesny dostęp do funkcji.',
-  'home.banners.discordTitle': 'Dołącz do naszego Discorda',
   'home.banners.earlyBirdDismiss': 'Odrzuć baner early bird',
   'home.banners.earlyBirdFirstSub': 'pierwszą subskrypcję.',
   'home.banners.earlyBirdOn': 'Early bird na',
