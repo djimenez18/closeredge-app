@@ -20,14 +20,11 @@ mod deep_link_ipc_windows;
 mod deep_link_registration_check;
 mod dictation_hotkeys;
 mod discord_scanner;
-mod fake_camera;
 mod file_logging;
 mod gmessages_scanner;
 mod imessage_scanner;
 mod local_data_reset;
 mod loopback_oauth;
-#[cfg(target_os = "macos")]
-mod mascot_native_window;
 mod mcp_commands;
 mod meet_audio;
 mod meet_call;
@@ -869,52 +866,6 @@ fn activate_main_window(app: AppHandle<AppRuntime>) -> Result<(), String> {
     show_main_window(&app)
 }
 
-/// Show the floating mascot. macOS: native NSPanel + WKWebView (so the
-/// window is actually transparent — vendored tauri-cef can't render
-/// transparent windowed-mode browsers). Loads the Vite dev URL in
-/// development and the bundled `index.html` in production. Other OSes:
-/// not yet wired up.
-#[tauri::command]
-fn mascot_window_show(app: AppHandle<AppRuntime>) -> Result<(), String> {
-    log::info!("[mascot-window] show requested");
-    #[cfg(target_os = "macos")]
-    {
-        return mascot_native_window::show(&app);
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = app;
-        Err("floating mascot window is macOS-only for now".into())
-    }
-}
-
-/// Hide the floating mascot.
-#[tauri::command]
-fn mascot_window_hide(app: AppHandle<AppRuntime>) -> Result<(), String> {
-    log::info!("[mascot-window] hide requested");
-    #[cfg(target_os = "macos")]
-    {
-        let _ = app;
-        mascot_native_window::hide();
-        Ok(())
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = app;
-        Ok(())
-    }
-}
-
-#[cfg(target_os = "macos")]
-fn mascot_native_window_is_open() -> bool {
-    mascot_native_window::is_open()
-}
-
-#[cfg(not(target_os = "macos"))]
-fn mascot_native_window_is_open() -> bool {
-    false
-}
-
 /// Hide or show the OS top-level main-window frame on Windows by enumerating
 /// this process's top-level windows and matching the visible
 /// `Chrome_WidgetWin_1` host. `WebviewWindow::hwnd()` from the vendored CEF
@@ -1178,22 +1129,6 @@ fn setup_tray(app: &AppHandle<AppRuntime>) -> tauri::Result<()> {
         None::<&str>,
     )?;
     let quit_item = MenuItem::with_id(app, "tray_quit", "Quit", true, None::<&str>)?;
-    // The floating mascot has a native NSPanel + WKWebView host, so the
-    // tray entry only does anything on macOS. Don't surface a menu item
-    // on Windows that's guaranteed to error — gate it to the platform
-    // where `mascot_window_show` actually works.
-    #[cfg(target_os = "macos")]
-    let menu = {
-        let mascot_item = MenuItem::with_id(
-            app,
-            "tray_toggle_mascot",
-            "Toggle floating mascot",
-            true,
-            None::<&str>,
-        )?;
-        Menu::with_items(app, &[&show_item, &mascot_item, &quit_item])?
-    };
-    #[cfg(not(target_os = "macos"))]
     let menu = Menu::with_items(app, &[&show_item, &quit_item])?;
 
     let icon = app
@@ -1209,16 +1144,6 @@ fn setup_tray(app: &AppHandle<AppRuntime>) -> tauri::Result<()> {
                 log::info!("[tray] action=show_window source=menu");
                 if let Err(err) = show_main_window(app) {
                     log::warn!("[tray] failed to show main window from menu: {err}");
-                }
-            }
-            "tray_toggle_mascot" => {
-                log::info!("[tray] action=toggle_mascot source=menu");
-                if mascot_native_window_is_open() {
-                    if let Err(err) = mascot_window_hide(app.clone()) {
-                        log::error!("[tray] failed to hide mascot window: {err}");
-                    }
-                } else if let Err(err) = mascot_window_show(app.clone()) {
-                    log::error!("[tray] failed to show mascot window: {err}");
                 }
             }
             "tray_quit" => {
@@ -2242,46 +2167,11 @@ pub fn run() {
             ("--disable-renderer-backgrounding", None),
             ("--disable-backgrounding-occluded-windows", None),
         ];
-        // Mascot fake-camera: bake the SVG into a one-frame Y4M and
-        // point Chromium's fake-video-capture pipeline at it so any
-        // CEF webview that calls `getUserMedia({video:true})` sees the
-        // mascot as the agent's webcam. `--use-fake-ui-for-media-stream`
-        // auto-allows the permission prompt so Meet's join page doesn't
-        // get stuck behind it. The flags are process-level (affect every
-        // CEF webview), which is fine today: only the Meet call window
-        // intentionally requests a camera, and other webviews don't ask
-        // for one. The path string is leaked with `Box::leak` so its
-        // `&str` outlives the args vec we hand to `command_line_args`.
-        let fake_camera_arg: Option<&'static str> =
-            match fake_camera::ensure_mascot_y4m(&file_logging::resolve_data_dir()) {
-                Ok(path) => {
-                    let leaked: &'static str =
-                        Box::leak(path.to_string_lossy().into_owned().into_boxed_str());
-                    log::info!("[cef-startup] fake-camera y4m path={leaked}");
-                    Some(leaked)
-                }
-                Err(err) => {
-                    log::warn!(
-                        "[cef-startup] mascot fake-camera unavailable: {err} \
-                     (Meet will see no camera)"
-                    );
-                    None
-                }
-            };
-        if let Some(path) = fake_camera_arg {
-            // `--use-file-for-fake-video-capture` alone (CEF 146 / Chromium 128+)
-            // injects the Y4M as the video capture source without replacing the
-            // audio capture device. The old belt-and-suspenders flag
-            // `--use-fake-device-for-media-stream` is deliberately omitted here:
-            // it replaced ALL media capture devices — including audio — with fake
-            // ones, causing a sine-wave test tone (beeping) to be recorded instead
-            // of the real microphone whenever `getUserMedia({audio:true})` was
-            // called from the main app WebView (e.g. the mascot voice composer).
-            // `--use-fake-ui-for-media-stream` is kept so Meet's permission prompt
-            // is auto-granted without interrupting the join flow.
-            args.push(("--use-fake-ui-for-media-stream", None));
-            args.push(("--use-file-for-fake-video-capture", Some(path)));
-        }
+        // Auto-grant getUserMedia permission prompts in embedded webviews so an
+        // in-app Meet join doesn't stall behind a camera/mic permission dialog.
+        // (The former mascot fake-webcam pipeline — a one-frame Y4M fed via
+        // `--use-file-for-fake-video-capture` — was removed with the mascot.)
+        args.push(("--use-fake-ui-for-media-stream", None));
         // Always expose the CDP port, not just in debug. The webview-accounts
         // CDP session opener navigates each embedded provider webview from its
         // `about:blank#openhuman-acct-...` placeholder to the real provider URL
@@ -3106,8 +2996,6 @@ pub fn run() {
             native_notifications::notification_permission_request,
             activate_main_window,
             native_notifications::show_native_notification,
-            mascot_window_show,
-            mascot_window_hide,
             file_logging::reveal_logs_folder,
             file_logging::logs_folder_path,
             workspace_paths::open_workspace_path,

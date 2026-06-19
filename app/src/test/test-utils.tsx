@@ -15,7 +15,6 @@ import companionReducer from '../store/companionSlice';
 import connectivityReducer from '../store/connectivitySlice';
 import coreModeReducer from '../store/coreModeSlice';
 import localeReducer from '../store/localeSlice';
-import mascotReducer from '../store/mascotSlice';
 import personaReducer from '../store/personaSlice';
 import socketReducer from '../store/socketSlice';
 
@@ -23,11 +22,9 @@ import socketReducer from '../store/socketSlice';
  * Creates a fresh Redux store for testing.
  * Uses raw (non-persisted) reducers to avoid persist complexity in tests.
  *
- * `mascot` is wired in for the mascot voice picker (issue #1762): the
- * VoicePanel reads + dispatches against this slice, and useSelector
- * would throw on a missing reducer without a stub here. `persona` is wired
- * in for the same reason (issue #2345): PersonaPanel reads + dispatches
- * against it.
+ * `persona` is wired in (issue #2345) because PersonaPanel reads +
+ * dispatches against it, and useSelector would throw on a missing reducer
+ * without a stub here.
  */
 const testRootReducer = combineReducers({
   channelConnections: channelConnectionsReducer,
@@ -35,7 +32,6 @@ const testRootReducer = combineReducers({
   connectivity: connectivityReducer,
   coreMode: coreModeReducer,
   locale: localeReducer,
-  mascot: mascotReducer,
   persona: personaReducer,
   socket: socketReducer,
 });

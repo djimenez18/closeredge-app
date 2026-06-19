@@ -5,7 +5,6 @@ import AppRoutesIOS from './AppRoutesIOS';
 import DefaultRedirect from './components/DefaultRedirect';
 import ProtectedRoute from './components/ProtectedRoute';
 import RouteLoadingScreen from './components/RouteLoadingScreen';
-import HumanPage from './features/human/HumanPage';
 import { getIsMobile } from './lib/platform';
 import Accounts from './pages/Accounts';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -74,15 +73,6 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute requireAuth={true}>
             <Home />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/human"
-        element={
-          <ProtectedRoute requireAuth={true}>
-            <HumanPage />
           </ProtectedRoute>
         }
       />

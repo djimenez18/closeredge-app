@@ -37,7 +37,6 @@ export type SettingsRoute =
   | 'notifications'
   | 'notifications-hub'
   | 'notification-routing'
-  | 'mascot'
   | 'persona'
   | 'appearance'
   | 'approval-history'
@@ -128,7 +127,6 @@ export const useSettingsNavigation = (): SettingsNavigationHook => {
     if (path.includes('/settings/notifications-hub')) return 'notifications-hub';
     if (path.includes('/settings/notifications')) return 'notifications';
     if (path.includes('/settings/devices')) return 'devices';
-    if (path.includes('/settings/mascot')) return 'mascot';
     if (path.includes('/settings/persona')) return 'persona';
     if (path.includes('/settings/appearance')) return 'appearance';
     // `approval-history` is an explicit leaf route under Agent access; it has a
@@ -294,10 +292,6 @@ export const useSettingsNavigation = (): SettingsNavigationHook => {
         return [settingsCrumb, developerCrumb, notificationsHubCrumb];
 
       case 'devices':
-        return [settingsCrumb];
-
-      // Mascot appearance panel sits at the top level of Settings.
-      case 'mascot':
         return [settingsCrumb];
 
       // Appearance (theme) panel sits at the top level of Settings.

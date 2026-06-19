@@ -114,13 +114,11 @@ describe('SettingsHome', () => {
       expect(screen.queryByText('Log out')).not.toBeInTheDocument();
     });
 
-    it('localizes Appearance and Mascot menu items', () => {
+    it('localizes the Appearance menu item', () => {
       renderSettingsHome({ locale: 'zh-CN', withI18n: true });
 
       expect(screen.getByText('外观')).toBeInTheDocument();
       expect(screen.getByText('选择浅色、深色或跟随系统主题')).toBeInTheDocument();
-      expect(screen.getByText('吉祥物')).toBeInTheDocument();
-      expect(screen.getByText('选择应用内使用的吉祥物颜色')).toBeInTheDocument();
     });
 
     it('no longer renders Features / AI / Rewards / Restart Tour / About on the home screen', () => {

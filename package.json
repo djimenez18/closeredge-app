@@ -29,7 +29,6 @@
     "test:rust:e2e:coverage": "node scripts/check-domain-e2e-coverage.mjs",
     "test:e2e": "pnpm --filter closeredge-app test:e2e:all",
     "test:e2e:flows": "pnpm --filter closeredge-app test:e2e:all:flows",
-    "mascot:render": "pnpm --dir remotion render:runtime-assets",
     "merge-pr": "bash scripts/shortcuts/review/merge.sh",
     "mock:api": "node scripts/mock-api-server.mjs",
     "pr:checklist": "node scripts/check-pr-checklist.mjs",

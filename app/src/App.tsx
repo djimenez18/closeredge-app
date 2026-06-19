@@ -23,7 +23,6 @@ import SubscriptionGate from './components/subscription/SubscriptionGate';
 import GlobalUpsellBanner from './components/upsell/GlobalUpsellBanner';
 import AppWalkthrough from './components/walkthrough/AppWalkthrough';
 import { getStripePortalUrl } from './constants/links';
-import { MascotFrameProducer } from './features/meet/MascotFrameProducer';
 import { I18nProvider } from './lib/i18n/I18nContext';
 import {
   startNativeNotificationsService,
@@ -90,8 +89,6 @@ function App() {
   // local core HTTP socket, which does not exist on device (the core runs on
   // the remote desktop). Gate it out to prevent spurious connection errors —
   // chat events arrive through TunnelTransport's socket.io relay instead.
-  // NOTE: useHumanMascot's subscribeChatEvents() still returns a no-op unsub
-  // when the socket is absent — mascot state falls back to 'idle'.
   const socketWrapped = (children: React.ReactNode) =>
     onMobile ? <>{children}</> : <SocketProvider>{children}</SocketProvider>;
 
@@ -206,11 +203,6 @@ function AppShellDesktop() {
         {!onOnboardingRoute && <BottomTabBar />}
       </div>
       <OpenhumanLinkModal />
-      {/* Hidden Remotion-driven producer for the Meet camera. Mounts a
-          640×480 JPEG frame stream to the Rust frame bus while a meet
-          call is active; idle no-op otherwise. See
-          features/meet/MascotFrameProducer.tsx. */}
-      <MascotFrameProducer />
       {/* Post-onboarding Joyride walkthrough — mounted here (outside routes) so
           it persists across tab navigations. Joyride targets span Home + BottomTabBar
           tabs so it must stay mounted while the user moves between routes. */}

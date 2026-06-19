@@ -79,7 +79,6 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@remotion/player": "4.0.454",
     "@remotion/zod-types": "4.0.454",
-    "@rive-app/react-webgl2": "^4.28.6",
     "@scure/base": "^2.2.0",
     "@scure/bip32": "^2.0.1",
     "@scure/bip39": "^2.0.1",

@@ -82,21 +82,6 @@ const makePrimaryTabs = (t: (key: string) => string): TabDef[] => [
 /** Overflow tabs shown inside the "More" popover menu. */
 const makeOverflowTabs = (t: (key: string) => string): TabDef[] => [
   {
-    id: 'human',
-    label: t('nav.human'),
-    path: '/human',
-    icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.8}
-          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4 0-7 2.5-7 6h14c0-3.5-3-6-7-6z"
-        />
-      </svg>
-    ),
-  },
-  {
     id: 'skills',
     label: t('nav.connections'),
     path: '/skills',
