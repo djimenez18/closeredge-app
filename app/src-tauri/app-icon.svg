@@ -19,8 +19,9 @@
       <stop offset="100%" stop-color="#7B6EF6" stop-opacity=".9"/>
     </linearGradient>
   </defs>
-  <rect width="1024" height="1024" fill="#ffffff"/>
-  <g transform="translate(172 215) scale(8.5)">
+  <!-- Transparent background; chevron scaled to ~85% of the canvas so the
+       arrow reads clearly at small sizes (taskbar / alt-tab). -->
+  <g transform="translate(78 122) scale(10.85)">
     <path d="M0 4 L70 35 L22 33 Z" fill="url(#ce-top)"/>
     <path d="M0 66 L70 35 L22 37 Z" fill="url(#ce-bot)"/>
     <path d="M10 14 L70 35 L24 34 Z" fill="url(#ce-hi)" opacity=".5"/>
