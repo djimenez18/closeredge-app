@@ -2,6 +2,7 @@ import createDebug from 'debug';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import BrandWordmark from '../components/BrandWordmark';
 import OAuthProviderButton from '../components/oauth/OAuthProviderButton';
 import { oauthProviderConfigs } from '../components/oauth/providerConfigs';
 import Button from '../components/ui/Button';
@@ -126,14 +127,7 @@ const Welcome = () => {
             </button>
           </div>
           <div className="flex justify-center mb-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-500/10 ring-1 ring-brand-500/20">
-              <img
-                src="/brand/closeredge-mark.svg"
-                alt="CloserEdge AI"
-                className="h-9 w-auto"
-                draggable={false}
-              />
-            </div>
+            <BrandWordmark className="h-10 w-auto" />
           </div>
 
           <h1 className="text-2xl font-display font-bold text-stone-900 dark:text-neutral-100 text-center mb-2">

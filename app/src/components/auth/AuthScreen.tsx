@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
+import BrandWordmark from '../BrandWordmark';
 import ForgotPassword from './ForgotPassword';
 
 // ---------------------------------------------------------------------------
@@ -323,17 +324,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div
           className="text-center mb-8 animate-stagger-fade-up"
           style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
-          <div className="flex justify-center mb-3">
-            <img
-              src="/brand/closeredge-mark.svg"
-              alt=""
-              className="h-10 w-auto"
-              aria-hidden="true"
-            />
-          </div>
-          <h1 className="text-3xl font-display font-bold text-[#7C3AED] dark:text-[#A855F7] tracking-tight">
-            CloserEdge AI
-          </h1>
+          <BrandWordmark className="mx-auto mb-3 h-11 w-auto" />
           <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">
             AI Employees for Your Business
           </p>

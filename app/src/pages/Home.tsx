@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import BrandWordmark from '../components/BrandWordmark';
 import ConnectionIndicator from '../components/ConnectionIndicator';
 import {
   CommunityBanner,
@@ -171,18 +172,8 @@ const Home = () => {
           {/* Header row: brand + version centered, theme toggle right-aligned. */}
           <div className="flex items-center justify-between mb-4">
             <div className="w-9" aria-hidden="true" />
-            <div className="flex flex-col items-center gap-0.5">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/brand/closeredge-mark.svg"
-                  alt=""
-                  className="h-5 w-auto"
-                  aria-hidden="true"
-                />
-                <span className="text-sm font-semibold tracking-tight text-brand-500 dark:text-brand-400">
-                  CloserEdge AI
-                </span>
-              </div>
+            <div className="flex flex-col items-center gap-1">
+              <BrandWordmark className="h-6 w-auto" />
               <span className="text-[10px] text-stone-400 dark:text-neutral-500">
                 v{APP_VERSION}
               </span>
