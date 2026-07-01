@@ -67,7 +67,7 @@ const RailButton = ({
     // z still helps tooltips render cleanly above neighbours.
     className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all hover:z-50 ${
       active
-        ? 'bg-primary-50 ring-2 ring-primary-500'
+        ? 'bg-primary-50 dark:bg-primary-500/15 ring-2 ring-primary-500'
         : 'hover:bg-stone-100 dark:hover:bg-neutral-800/60 hover:scale-105'
     }`}
     aria-label={tooltip}>

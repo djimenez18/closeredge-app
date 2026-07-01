@@ -45,9 +45,9 @@ export default function SubscriptionPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
         <div className="text-center">
-          <div className="mx-auto w-12 h-12 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-3">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center mb-3">
             <svg
-              className="w-6 h-6 text-[#7C3AED]/60"
+              className="w-6 h-6 text-brand-500/70 dark:text-brand-400/70"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

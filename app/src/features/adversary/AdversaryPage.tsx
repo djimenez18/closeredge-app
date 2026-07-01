@@ -47,29 +47,29 @@ function ModeCard({
       className={`relative flex flex-col items-start gap-3 p-5 rounded-xl border text-left transition-all
         ${
           active
-            ? 'bg-red-600/10 border-red-600/40 ring-1 ring-red-600/20'
+            ? 'bg-coral-600/10 border-coral-600/40 ring-1 ring-coral-600/20'
             : disabled
-              ? 'bg-zinc-900/30 border-zinc-800/50 opacity-60 cursor-not-allowed'
-              : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/80'
+              ? 'bg-neutral-900/30 border-neutral-800/50 opacity-60 cursor-not-allowed'
+              : 'bg-neutral-900/50 border-neutral-800 hover:border-neutral-700 hover:bg-neutral-900/80'
         }`}>
       <div
         className={`w-10 h-10 rounded-lg flex items-center justify-center ${
           active
-            ? 'bg-red-600/20 text-red-400'
+            ? 'bg-coral-600/20 text-coral-400'
             : disabled
-              ? 'bg-zinc-800/50 text-zinc-600'
-              : 'bg-zinc-800 text-zinc-400'
+              ? 'bg-neutral-800/50 text-neutral-600'
+              : 'bg-neutral-800 text-neutral-400'
         }`}>
         {icon}
       </div>
       <div>
-        <h3 className={`text-sm font-semibold ${active ? 'text-red-300' : 'text-zinc-200'}`}>
+        <h3 className={`text-sm font-semibold ${active ? 'text-coral-300' : 'text-neutral-200'}`}>
           {title}
         </h3>
-        <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{description}</p>
+        <p className="text-xs text-neutral-500 mt-1 leading-relaxed">{description}</p>
       </div>
       {disabled && disabledReason && (
-        <span className="absolute top-3 right-3 text-[10px] font-medium text-zinc-600 bg-zinc-800 px-2 py-0.5 rounded-full">
+        <span className="absolute top-3 right-3 text-[10px] font-medium text-neutral-600 bg-neutral-800 px-2 py-0.5 rounded-full">
           {disabledReason}
         </span>
       )}
@@ -123,10 +123,10 @@ function FileDropZone({ file, onFile }: { file: File | null; onFile: (f: File) =
       className={`relative flex flex-col items-center justify-center gap-3 p-8 rounded-xl border-2 border-dashed cursor-pointer transition-colors
         ${
           dragging
-            ? 'border-red-500/60 bg-red-600/5'
+            ? 'border-coral-500/60 bg-coral-600/5'
             : file
-              ? 'border-zinc-700 bg-zinc-900/50'
-              : 'border-zinc-700 bg-zinc-900/30 hover:border-zinc-600 hover:bg-zinc-900/50'
+              ? 'border-neutral-700 bg-neutral-900/50'
+              : 'border-neutral-700 bg-neutral-900/30 hover:border-neutral-600 hover:bg-neutral-900/50'
         }`}>
       <input
         ref={inputRef}
@@ -138,9 +138,9 @@ function FileDropZone({ file, onFile }: { file: File | null; onFile: (f: File) =
 
       {file ? (
         <>
-          <div className="w-10 h-10 rounded-lg bg-red-600/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-coral-600/10 flex items-center justify-center">
             <svg
-              className="w-5 h-5 text-red-400"
+              className="w-5 h-5 text-coral-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -153,17 +153,17 @@ function FileDropZone({ file, onFile }: { file: File | null; onFile: (f: File) =
             </svg>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-zinc-200">{file.name}</p>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm font-medium text-neutral-200">{file.name}</p>
+            <p className="text-xs text-neutral-500">
               {(file.size / 1024).toFixed(1)} KB &middot; Click to replace
             </p>
           </div>
         </>
       ) : (
         <>
-          <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-neutral-800 flex items-center justify-center">
             <svg
-              className="w-5 h-5 text-zinc-500"
+              className="w-5 h-5 text-neutral-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -176,10 +176,10 @@ function FileDropZone({ file, onFile }: { file: File | null; onFile: (f: File) =
             </svg>
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-zinc-300">
+            <p className="text-sm font-medium text-neutral-300">
               Drop a document here or click to upload
             </p>
-            <p className="text-xs text-zinc-600 mt-1">TXT, PDF, DOC, DOCX, MD, RTF</p>
+            <p className="text-xs text-neutral-600 mt-1">TXT, PDF, DOC, DOCX, MD, RTF</p>
           </div>
         </>
       )}
@@ -237,14 +237,14 @@ export function AdversaryPage() {
   // ── Render ────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col h-screen bg-zinc-950 text-zinc-100">
+    <div className="flex flex-col h-screen bg-neutral-950 text-neutral-100">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           {/* Adversary icon — crimson shield with sword */}
-          <div className="w-8 h-8 rounded-lg bg-red-600/20 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-coral-600/20 flex items-center justify-center">
             <svg
-              className="w-4.5 h-4.5 text-red-400"
+              className="w-4.5 h-4.5 text-coral-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -257,21 +257,21 @@ export function AdversaryPage() {
             </svg>
           </div>
           <div>
-            <h1 className="text-base font-semibold text-zinc-100">
-              Adversary Agent <span className="text-red-400">&mdash; AI Opposing Counsel</span>
+            <h1 className="font-display text-base font-semibold text-neutral-100">
+              Adversary Agent <span className="text-coral-400">&mdash; AI Opposing Counsel</span>
             </h1>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-neutral-500">
               Elite &middot; Lexis &middot; Stress-test your legal arguments
             </p>
           </div>
         </div>
 
         {/* Elite badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/10 border border-red-600/20">
-          <svg className="w-3.5 h-3.5 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-coral-600/10 border border-coral-600/20">
+          <svg className="w-3.5 h-3.5 text-coral-400" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
-          <span className="text-xs font-semibold text-red-400">Elite</span>
+          <span className="text-xs font-semibold text-coral-400">Elite</span>
         </div>
       </header>
 
@@ -285,7 +285,7 @@ export function AdversaryPage() {
             <>
               {/* Mode selection */}
               <div>
-                <h2 className="text-sm font-semibold text-zinc-300 mb-3">Select Mode</h2>
+                <h2 className="text-sm font-semibold text-neutral-300 mb-3">Select Mode</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <ModeCard
                     title="Document Review"
@@ -359,7 +359,7 @@ export function AdversaryPage() {
 
                   {/* Document type selector */}
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-400 mb-2">
+                    <label className="block text-xs font-semibold text-neutral-400 mb-2">
                       Document Type
                     </label>
                     <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
@@ -370,8 +370,8 @@ export function AdversaryPage() {
                           className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors
                             ${
                               documentType === dt.value
-                                ? 'bg-red-600/20 text-red-400 border border-red-600/40'
-                                : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700'
+                                ? 'bg-coral-600/20 text-coral-400 border border-coral-600/40'
+                                : 'bg-neutral-900 text-neutral-400 border border-neutral-800 hover:border-neutral-700'
                             }`}>
                           {dt.label}
                         </button>
@@ -384,7 +384,7 @@ export function AdversaryPage() {
                     onClick={handleAttackDocument}
                     disabled={!file || loading}
                     className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-                      bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 disabled:text-zinc-600
+                      bg-coral-600 hover:bg-coral-500 disabled:bg-neutral-800 disabled:text-neutral-600
                       text-sm font-bold text-white transition-colors">
                     {loading ? (
                       <>
@@ -429,10 +429,10 @@ export function AdversaryPage() {
               {mode === 'moot_court' && (
                 <div className="space-y-5">
                   {/* Moot Court preview / placeholder */}
-                  <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-8 text-center space-y-4">
-                    <div className="w-16 h-16 mx-auto rounded-2xl bg-zinc-800/50 flex items-center justify-center">
+                  <div className="rounded-xl border border-neutral-800 bg-neutral-900/30 p-8 text-center space-y-4">
+                    <div className="w-16 h-16 mx-auto rounded-2xl bg-neutral-800/50 flex items-center justify-center">
                       <svg
-                        className="w-8 h-8 text-zinc-600"
+                        className="w-8 h-8 text-neutral-600"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -445,39 +445,39 @@ export function AdversaryPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-zinc-300">Moot Court Mode</h3>
-                      <p className="text-sm text-zinc-500 mt-2 max-w-md mx-auto leading-relaxed">
+                      <h3 className="text-lg font-semibold text-neutral-300">Moot Court Mode</h3>
+                      <p className="text-sm text-neutral-500 mt-2 max-w-md mx-auto leading-relaxed">
                         Face the Adversary in a live voice-powered cross-examination. Present your
                         argument verbally and receive real-time pushback, leading questions, and
                         challenges to your reasoning.
                       </p>
                     </div>
 
-                    <div className="bg-zinc-800/50 rounded-lg p-4 max-w-sm mx-auto space-y-3">
-                      <p className="text-xs font-semibold text-zinc-400">
+                    <div className="bg-neutral-800/50 rounded-lg p-4 max-w-sm mx-auto space-y-3">
+                      <p className="text-xs font-semibold text-neutral-400">
                         What the experience looks like:
                       </p>
-                      <ul className="text-xs text-zinc-500 space-y-1.5 text-left">
+                      <ul className="text-xs text-neutral-500 space-y-1.5 text-left">
                         <li className="flex items-start gap-2">
-                          <span className="text-red-500 mt-0.5">1.</span>
+                          <span className="text-coral-500 mt-0.5">1.</span>
                           You state your argument aloud
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-red-500 mt-0.5">2.</span>
+                          <span className="text-coral-500 mt-0.5">2.</span>
                           The Adversary responds with challenging questions
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-red-500 mt-0.5">3.</span>
+                          <span className="text-coral-500 mt-0.5">3.</span>
                           Back-and-forth debate until weaknesses are exposed
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-red-500 mt-0.5">4.</span>
+                          <span className="text-coral-500 mt-0.5">4.</span>
                           Full transcript and findings generated after the session
                         </li>
                       </ul>
                     </div>
 
-                    <div className="flex items-center justify-center gap-2 text-xs text-zinc-600">
+                    <div className="flex items-center justify-center gap-2 text-xs text-neutral-600">
                       <svg
                         className="w-3.5 h-3.5"
                         fill="none"
@@ -500,7 +500,7 @@ export function AdversaryPage() {
                 <div className="space-y-5">
                   {/* Position input */}
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-400 mb-2">
+                    <label className="block text-xs font-semibold text-neutral-400 mb-2">
                       Your Position
                     </label>
                     <input
@@ -508,15 +508,15 @@ export function AdversaryPage() {
                       value={position}
                       onChange={e => setPosition(e.target.value)}
                       placeholder="e.g. Defendant argues the contract is void for lack of consideration..."
-                      className="w-full px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-zinc-200
-                        placeholder:text-zinc-600 focus:outline-none focus:border-red-600/40 focus:ring-1 focus:ring-red-600/20
+                      className="w-full px-4 py-3 rounded-lg bg-neutral-900 border border-neutral-800 text-sm text-neutral-200
+                        placeholder:text-neutral-600 focus:outline-none focus:border-coral-600/40 focus:ring-1 focus:ring-coral-600/20
                         transition-colors"
                     />
                   </div>
 
                   {/* Brief text area */}
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-400 mb-2">
+                    <label className="block text-xs font-semibold text-neutral-400 mb-2">
                       Brief / Legal Argument
                     </label>
                     <textarea
@@ -524,11 +524,11 @@ export function AdversaryPage() {
                       onChange={e => setBriefText(e.target.value)}
                       placeholder="Paste your brief or legal argument here..."
                       rows={12}
-                      className="w-full px-4 py-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-zinc-200
-                        placeholder:text-zinc-600 focus:outline-none focus:border-red-600/40 focus:ring-1 focus:ring-red-600/20
+                      className="w-full px-4 py-3 rounded-lg bg-neutral-900 border border-neutral-800 text-sm text-neutral-200
+                        placeholder:text-neutral-600 focus:outline-none focus:border-coral-600/40 focus:ring-1 focus:ring-coral-600/20
                         transition-colors resize-y"
                     />
-                    <p className="text-xs text-zinc-600 mt-1">
+                    <p className="text-xs text-neutral-600 mt-1">
                       {briefText.length > 0
                         ? `${briefText.split(/\s+/).filter(Boolean).length} words`
                         : 'Paste the full brief for comprehensive analysis'}
@@ -540,7 +540,7 @@ export function AdversaryPage() {
                     onClick={handleStressTest}
                     disabled={!briefText.trim() || loading}
                     className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-                      bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 disabled:text-zinc-600
+                      bg-coral-600 hover:bg-coral-500 disabled:bg-neutral-800 disabled:text-neutral-600
                       text-sm font-bold text-white transition-colors">
                     {loading ? (
                       <>
@@ -584,9 +584,9 @@ export function AdversaryPage() {
 
               {/* Error display */}
               {error && (
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-red-600/10 border border-red-600/30">
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-coral-600/10 border border-coral-600/30">
                   <svg
-                    className="w-5 h-5 text-red-400 shrink-0 mt-0.5"
+                    className="w-5 h-5 text-coral-400 shrink-0 mt-0.5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -598,8 +598,8 @@ export function AdversaryPage() {
                     />
                   </svg>
                   <div>
-                    <p className="text-sm font-medium text-red-400">Analysis Failed</p>
-                    <p className="text-xs text-red-400/70 mt-0.5">{error}</p>
+                    <p className="text-sm font-medium text-coral-400">Analysis Failed</p>
+                    <p className="text-xs text-coral-400/70 mt-0.5">{error}</p>
                   </div>
                 </div>
               )}

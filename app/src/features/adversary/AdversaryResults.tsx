@@ -11,10 +11,10 @@ const SEVERITY_CONFIG: Record<
 > = {
   critical: {
     label: 'Critical',
-    bg: 'bg-red-600/15',
-    text: 'text-red-400',
-    ring: 'ring-red-600/30',
-    dot: 'bg-red-500',
+    bg: 'bg-coral-600/15',
+    text: 'text-coral-400',
+    ring: 'ring-coral-600/30',
+    dot: 'bg-coral-500',
   },
   high: {
     label: 'High',
@@ -32,10 +32,10 @@ const SEVERITY_CONFIG: Record<
   },
   low: {
     label: 'Low',
-    bg: 'bg-emerald-600/15',
-    text: 'text-emerald-400',
-    ring: 'ring-emerald-600/30',
-    dot: 'bg-emerald-500',
+    bg: 'bg-sage-600/15',
+    text: 'text-sage-400',
+    ring: 'ring-sage-600/30',
+    dot: 'bg-sage-500',
   },
 };
 
@@ -59,21 +59,21 @@ function VulnerabilityGauge({ score }: { score: number }) {
 
   const gaugeColor =
     clampedScore >= 75
-      ? 'text-red-500'
+      ? 'text-coral-500'
       : clampedScore >= 50
         ? 'text-orange-500'
         : clampedScore >= 25
           ? 'text-yellow-500'
-          : 'text-emerald-500';
+          : 'text-sage-500';
 
   const barColor =
     clampedScore >= 75
-      ? 'bg-red-600'
+      ? 'bg-coral-600'
       : clampedScore >= 50
         ? 'bg-orange-600'
         : clampedScore >= 25
           ? 'bg-yellow-600'
-          : 'bg-emerald-600';
+          : 'bg-sage-600';
 
   const label =
     clampedScore >= 75
@@ -85,12 +85,12 @@ function VulnerabilityGauge({ score }: { score: number }) {
           : 'Well Defended';
 
   return (
-    <div className="flex flex-col items-center gap-2 p-6 rounded-xl bg-zinc-900 border border-zinc-800">
-      <span className="text-xs font-medium text-zinc-500 uppercase tracking-wide">
+    <div className="flex flex-col items-center gap-2 p-6 rounded-xl bg-neutral-900 border border-neutral-800">
+      <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">
         Vulnerability Score
       </span>
       <span className={`text-5xl font-bold tabular-nums ${gaugeColor}`}>{clampedScore}</span>
-      <div className="w-full max-w-xs h-2 rounded-full bg-zinc-800 overflow-hidden">
+      <div className="w-full max-w-xs h-2 rounded-full bg-neutral-800 overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-700 ease-out ${barColor}`}
           style={{ width: `${clampedScore}%` }}
@@ -139,13 +139,13 @@ function ExpandableSection({
   if (!content) return null;
 
   return (
-    <div className="border border-zinc-800 rounded-lg overflow-hidden">
+    <div className="border border-neutral-800 rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-zinc-900/50 hover:bg-zinc-900 transition-colors text-left">
-        <span className="text-sm font-semibold text-zinc-200">{title}</span>
+        className="w-full flex items-center justify-between px-4 py-3 bg-neutral-900/50 hover:bg-neutral-900 transition-colors text-left">
+        <span className="text-sm font-semibold text-neutral-200">{title}</span>
         <svg
-          className={`w-4 h-4 text-zinc-500 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-neutral-500 transition-transform ${open ? 'rotate-180' : ''}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -154,7 +154,7 @@ function ExpandableSection({
         </svg>
       </button>
       {open && (
-        <div className="px-4 py-3 text-sm text-zinc-400 leading-relaxed whitespace-pre-wrap">
+        <div className="px-4 py-3 text-sm text-neutral-400 leading-relaxed whitespace-pre-wrap">
           {content}
         </div>
       )}
@@ -187,21 +187,21 @@ function FindingCard({ finding }: { finding: Finding }) {
   }, [finding, strengthening, expanded]);
 
   return (
-    <div className="border border-zinc-800 rounded-lg p-4 space-y-3 bg-zinc-900/30">
+    <div className="border border-neutral-800 rounded-lg p-4 space-y-3 bg-neutral-900/30">
       {/* Header row */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <SeverityBadge severity={finding.severity} />
-            <span className="text-xs text-zinc-600">{finding.section}</span>
+            <span className="text-xs text-neutral-600">{finding.section}</span>
           </div>
-          <h4 className="text-sm font-semibold text-zinc-200">{finding.title}</h4>
+          <h4 className="text-sm font-semibold text-neutral-200">{finding.title}</h4>
         </div>
         <button
           onClick={handleStrengthen}
           disabled={loading}
           className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium
-            bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors
+            bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition-colors
             disabled:opacity-50 disabled:cursor-wait">
           {loading ? (
             <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -238,20 +238,20 @@ function FindingCard({ finding }: { finding: Finding }) {
       </div>
 
       {/* Description */}
-      <p className="text-sm text-zinc-400 leading-relaxed">{finding.description}</p>
+      <p className="text-sm text-neutral-400 leading-relaxed">{finding.description}</p>
 
       {/* Source quote */}
       {finding.sourceQuote && (
-        <blockquote className="border-l-2 border-red-600/40 pl-3 text-xs text-zinc-500 italic">
+        <blockquote className="border-l-2 border-coral-600/40 pl-3 text-xs text-neutral-500 italic">
           "{finding.sourceQuote}"
         </blockquote>
       )}
 
       {/* Suggested counter-argument */}
       {finding.suggestedCounterArgument && (
-        <div className="bg-zinc-800/40 rounded-md p-3 space-y-1">
-          <span className="text-xs font-semibold text-zinc-400">Suggested Counter-Argument</span>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+        <div className="bg-neutral-800/40 rounded-md p-3 space-y-1">
+          <span className="text-xs font-semibold text-neutral-400">Suggested Counter-Argument</span>
+          <p className="text-xs text-neutral-400 leading-relaxed">
             {finding.suggestedCounterArgument}
           </p>
         </div>
@@ -259,9 +259,9 @@ function FindingCard({ finding }: { finding: Finding }) {
 
       {/* Evidence needed */}
       {finding.evidenceNeeded && (
-        <div className="flex items-start gap-2 text-xs text-zinc-500">
+        <div className="flex items-start gap-2 text-xs text-neutral-500">
           <svg
-            className="w-3.5 h-3.5 mt-0.5 shrink-0 text-zinc-600"
+            className="w-3.5 h-3.5 mt-0.5 shrink-0 text-neutral-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -273,18 +273,16 @@ function FindingCard({ finding }: { finding: Finding }) {
             />
           </svg>
           <span>
-            <strong className="text-zinc-400">Evidence needed:</strong> {finding.evidenceNeeded}
+            <strong className="text-neutral-400">Evidence needed:</strong> {finding.evidenceNeeded}
           </span>
         </div>
       )}
 
       {/* AI-generated strengthening recommendation */}
       {expanded && strengthening && (
-        <div className="bg-emerald-600/5 border border-emerald-600/20 rounded-md p-3 space-y-1">
-          <span className="text-xs font-semibold text-emerald-400">
-            Strengthening Recommendation
-          </span>
-          <p className="text-xs text-emerald-300/80 leading-relaxed whitespace-pre-wrap">
+        <div className="bg-sage-600/5 border border-sage-600/20 rounded-md p-3 space-y-1">
+          <span className="text-xs font-semibold text-sage-400">Strengthening Recommendation</span>
+          <p className="text-xs text-sage-300/80 leading-relaxed whitespace-pre-wrap">
             {strengthening}
           </p>
         </div>
@@ -358,7 +356,7 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
           {onClose && (
             <button
               onClick={onClose}
-              className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-500 transition-colors">
+              className="p-1.5 rounded-md hover:bg-neutral-800 text-neutral-500 transition-colors">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -374,8 +372,8 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
             </button>
           )}
           <div>
-            <h2 className="text-lg font-bold text-zinc-100">Adversary Report</h2>
-            <p className="text-xs text-zinc-500">
+            <h2 className="text-lg font-bold text-neutral-100 font-display">Adversary Report</h2>
+            <p className="text-xs text-neutral-500">
               {report.documentType.replace(/_/g, ' ')} &middot;{' '}
               {new Date(report.createdAt).toLocaleString()}
             </p>
@@ -383,11 +381,11 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {shareStatus && <span className="text-xs text-zinc-400">{shareStatus}</span>}
+          {shareStatus && <span className="text-xs text-neutral-400">{shareStatus}</span>}
           <button
             onClick={handleShare}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium
-              bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors">
+              bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition-colors">
             <svg
               className="w-3.5 h-3.5"
               fill="none"
@@ -405,7 +403,7 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
           <button
             onClick={handleExport}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium
-              bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-600/30 transition-colors">
+              bg-coral-600/20 hover:bg-coral-600/30 text-coral-400 border border-coral-600/30 transition-colors">
             <svg
               className="w-3.5 h-3.5"
               fill="none"
@@ -428,7 +426,7 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
         <VulnerabilityGauge score={report.vulnerabilityScore} />
         <div className="flex flex-col justify-center gap-4">
           <SeverityBreakdown counts={report.severityCounts} />
-          <div className="text-xs text-zinc-500 text-center">
+          <div className="text-xs text-neutral-500 text-center">
             {report.findings.length} finding
             {report.findings.length !== 1 ? 's' : ''} across{' '}
             {Object.values(report.severityCounts).filter(v => v > 0).length} severity level
@@ -439,8 +437,8 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
 
       {/* Executive summary */}
       {report.executiveSummary && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
-          <h3 className="text-sm font-semibold text-red-400 flex items-center gap-2">
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-4 space-y-2">
+          <h3 className="text-sm font-semibold text-coral-400 flex items-center gap-2">
             <svg
               className="w-4 h-4"
               fill="none"
@@ -455,13 +453,13 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
             </svg>
             Executive Summary
           </h3>
-          <p className="text-sm text-zinc-400 leading-relaxed">{report.executiveSummary}</p>
+          <p className="text-sm text-neutral-400 leading-relaxed">{report.executiveSummary}</p>
         </div>
       )}
 
       {/* Expandable analysis sections */}
       <div className="space-y-2">
-        <h3 className="text-sm font-semibold text-zinc-300 mb-2">Analysis Sections</h3>
+        <h3 className="text-sm font-semibold text-neutral-300 mb-2">Analysis Sections</h3>
         {sectionEntries.map(([title, content]) => (
           <ExpandableSection
             key={title}
@@ -474,7 +472,7 @@ export function AdversaryResults({ report, onClose }: AdversaryResultsProps) {
 
       {/* Detailed findings */}
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-zinc-300">
+        <h3 className="text-sm font-semibold text-neutral-300">
           Detailed Findings ({sortedFindings.length})
         </h3>
         {sortedFindings.map(finding => (

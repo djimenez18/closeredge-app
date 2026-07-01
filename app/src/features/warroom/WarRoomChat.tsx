@@ -83,21 +83,21 @@ function MentionAutocomplete({ query, agents, onSelect, position }: MentionAutoc
 
   return (
     <div
-      className="absolute z-50 w-56 bg-zinc-800 border border-zinc-700 rounded-lg shadow-xl overflow-hidden"
+      className="absolute z-50 w-56 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl overflow-hidden"
       style={{ bottom: position.top, left: position.left }}>
       {filtered.map(agent => (
         <button
           key={agent.id}
           onClick={() => onSelect(agent.id)}
-          className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-zinc-700 transition-colors text-left">
+          className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-neutral-700 transition-colors text-left">
           <div
             className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
             style={{ backgroundColor: AGENT_COLORS[agent.id] ?? '#6B7280' }}>
             {AGENT_INITIALS[agent.id] ?? agent.name.slice(0, 2).toUpperCase()}
           </div>
           <div className="min-w-0">
-            <p className="text-sm text-zinc-200 truncate">{agent.name}</p>
-            <p className="text-[11px] text-zinc-500">@{agent.id}</p>
+            <p className="text-sm text-neutral-200 truncate">{agent.name}</p>
+            <p className="text-[11px] text-neutral-500">@{agent.id}</p>
           </div>
         </button>
       ))}
@@ -255,7 +255,7 @@ export function WarRoomChat({
   // ── Render ───────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col h-full bg-zinc-950">
+    <div className="flex flex-col h-full bg-neutral-950">
       {/* Messages area */}
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
         {messageGroups.map((group, gi) => {
@@ -266,7 +266,7 @@ export function WarRoomChat({
                 {group.messages.map(msg => (
                   <div
                     key={msg.id}
-                    className="text-xs text-zinc-500 bg-zinc-900/50 px-3 py-1.5 rounded-full">
+                    className="text-xs text-neutral-500 bg-neutral-900/50 px-3 py-1.5 rounded-full">
                     {msg.text}
                   </div>
                 ))}
@@ -282,13 +282,13 @@ export function WarRoomChat({
                   <div key={msg.id} className="max-w-[75%]">
                     {mi === 0 && (
                       <div className="flex items-center justify-end gap-1.5 mb-1">
-                        <span className="text-[11px] text-zinc-500">
+                        <span className="text-[11px] text-neutral-500">
                           {formatTime(msg.timestamp)}
                         </span>
-                        <span className="text-xs font-medium text-zinc-300">You</span>
+                        <span className="text-xs font-medium text-neutral-300">You</span>
                       </div>
                     )}
-                    <div className="bg-indigo-600 text-white px-3.5 py-2 rounded-2xl rounded-br-md text-sm leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-brand-500 text-white px-3.5 py-2 rounded-2xl rounded-br-md text-sm leading-relaxed whitespace-pre-wrap">
                       {highlightMentions(msg.text, agentNames)}
                     </div>
                   </div>
@@ -324,7 +324,7 @@ export function WarRoomChat({
                     style={{ backgroundColor: `${color}20`, color }}>
                     {group.messages[0]?.agentId?.toUpperCase()}
                   </span>
-                  <span className="text-[11px] text-zinc-600">
+                  <span className="text-[11px] text-neutral-600">
                     {formatTime(group.messages[0]?.timestamp ?? '')}
                   </span>
                 </div>
@@ -333,13 +333,13 @@ export function WarRoomChat({
                   <div key={msg.id} className="mb-1">
                     <div
                       className={`
-                        bg-zinc-800/80 text-zinc-200 px-3.5 py-2 rounded-2xl rounded-bl-md
+                        bg-neutral-800/80 text-neutral-200 px-3.5 py-2 rounded-2xl rounded-bl-md
                         text-sm leading-relaxed whitespace-pre-wrap
-                        ${msg.isStreaming ? 'border border-zinc-700' : ''}
+                        ${msg.isStreaming ? 'border border-neutral-700' : ''}
                       `}>
                       {highlightMentions(msg.text, agentNames)}
                       {msg.isStreaming && (
-                        <span className="inline-block w-1.5 h-4 ml-0.5 bg-zinc-400 animate-pulse rounded-sm" />
+                        <span className="inline-block w-1.5 h-4 ml-0.5 bg-neutral-400 animate-pulse rounded-sm" />
                       )}
                     </div>
                   </div>
@@ -353,19 +353,19 @@ export function WarRoomChat({
       </div>
 
       {/* Input area */}
-      <div className="border-t border-zinc-800 px-4 py-3 bg-zinc-900/50">
+      <div className="border-t border-neutral-800 px-4 py-3 bg-neutral-900/50">
         {/* Processing indicator */}
         {isProcessing && (
           <div className="flex items-center gap-2 mb-2">
             <div className="flex gap-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:0ms]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:150ms]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-delay:300ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-bounce [animation-delay:0ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-bounce [animation-delay:150ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-bounce [animation-delay:300ms]" />
             </div>
-            <span className="text-xs text-zinc-500">Agents are responding...</span>
+            <span className="text-xs text-neutral-500">Agents are responding...</span>
             <button
               onClick={onCancelTurn}
-              className="text-xs text-red-400 hover:text-red-300 ml-auto">
+              className="text-xs text-coral-400 hover:text-coral-300 ml-auto">
               Cancel
             </button>
           </div>
@@ -396,9 +396,9 @@ export function WarRoomChat({
                 }
                 disabled={!meetingActive}
                 rows={1}
-                className="w-full bg-zinc-800 text-zinc-200 px-4 py-2.5 rounded-xl resize-none outline-none
-                  placeholder:text-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed
-                  focus:ring-1 focus:ring-indigo-500/50 text-sm leading-relaxed
+                className="w-full bg-neutral-800 text-neutral-200 px-4 py-2.5 rounded-xl resize-none outline-none
+                  placeholder:text-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed
+                  focus:ring-1 focus:ring-brand-500/50 text-sm leading-relaxed
                   max-h-32 overflow-y-auto"
                 style={{ height: 'auto', minHeight: '40px' }}
                 onInput={e => {
@@ -412,8 +412,8 @@ export function WarRoomChat({
             <button
               onClick={handleSend}
               disabled={!meetingActive || !input.trim() || isProcessing}
-              className="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-600 hover:bg-indigo-500
-                disabled:bg-zinc-800 disabled:text-zinc-600
+              className="flex-shrink-0 w-10 h-10 rounded-xl bg-brand-500 hover:bg-brand-600
+                disabled:bg-neutral-800 disabled:text-neutral-600
                 text-white flex items-center justify-center transition-colors">
               <svg
                 className="w-4 h-4"

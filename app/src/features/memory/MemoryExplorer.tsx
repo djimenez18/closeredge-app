@@ -18,10 +18,11 @@ function formatRelativeTime(isoStr: string): string {
 }
 
 function importanceColor(imp: number): string {
-  if (imp >= 0.8) return '#EF4444'; // red — critical
-  if (imp >= 0.6) return '#F59E0B'; // amber — important
-  if (imp >= 0.4) return '#3B82F6'; // blue — moderate
-  return '#6B7280'; // gray — low
+  // Brand-purple intensity ramp — hotter = more important, on-brand.
+  if (imp >= 0.8) return '#7C3AED'; // brand-500 — critical
+  if (imp >= 0.6) return '#A855F7'; // brand-400 — important
+  if (imp >= 0.4) return '#C4B5FD'; // brand-300 — moderate
+  return '#737373'; // neutral — low
 }
 
 function sourceLabel(source: MemorySource): string {
@@ -91,7 +92,7 @@ function ImportanceBar({ value }: { value: number }) {
 
 function EntityTag({ entity }: { entity: string }) {
   return (
-    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-purple-500/15 text-purple-300 border border-purple-500/20">
+    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-brand-500/15 text-brand-300 border border-brand-500/20">
       {entity}
     </span>
   );
@@ -101,11 +102,11 @@ function EntityTag({ entity }: { entity: string }) {
 
 function SourceBadge({ source }: { source: MemorySource }) {
   const colors: Record<MemorySource, string> = {
-    conversation: '#3B82F6',
-    observation: '#10B981',
-    obsidian: '#8B5CF6',
-    integration: '#F59E0B',
-    manual: '#6B7280',
+    conversation: '#5B9BF3', // palette info blue
+    observation: '#34C759', // sage
+    obsidian: '#9B8AFB', // accent lavender
+    integration: '#E8A728', // amber
+    manual: '#737373', // neutral
   };
   const color = colors[source] ?? '#6B7280';
 
@@ -189,18 +190,18 @@ function MemoryCard({ memory, onForget }: { memory: Memory; onForget: (id: numbe
           {!confirming ? (
             <button
               onClick={() => setConfirming(true)}
-              className="ml-auto text-[10px] text-red-400/40 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+              className="ml-auto text-[10px] text-coral-400/40 hover:text-coral-400 transition-colors opacity-0 group-hover:opacity-100">
               Forget
             </button>
           ) : (
             <div className="ml-auto flex items-center gap-2">
-              <span className="text-[10px] text-red-400/70">Delete this memory?</span>
+              <span className="text-[10px] text-coral-400/70">Delete this memory?</span>
               <button
                 onClick={() => {
                   onForget(memory.id);
                   setConfirming(false);
                 }}
-                className="text-[10px] text-red-400 font-semibold hover:text-red-300">
+                className="text-[10px] text-coral-400 font-semibold hover:text-coral-300">
                 Yes
               </button>
               <button
@@ -309,7 +310,7 @@ function StatsPanel({ stats }: { stats: MemoryStats }) {
 
       <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-3">
         <p className="text-[10px] text-white/40 uppercase tracking-wider mb-1">Top Entity</p>
-        <p className="text-sm font-semibold text-purple-300 truncate">
+        <p className="text-sm font-semibold text-brand-300 truncate">
           {stats.topEntities[0]?.entity ?? '--'}
         </p>
         <p className="text-[10px] text-white/30 tabular-nums">
@@ -398,7 +399,7 @@ export function MemoryExplorer() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white/90">Memory Explorer</h1>
+          <h1 className="font-display text-2xl font-bold text-white/90">Memory Explorer</h1>
           <p className="text-sm text-white/40 mt-1">
             Browse, search, and manage long-term memories across all agents
           </p>
@@ -406,7 +407,7 @@ export function MemoryExplorer() {
         <button
           onClick={() => void loadData()}
           disabled={loading}
-          className="px-3 py-1.5 text-xs text-purple-400/70 hover:text-purple-400 border border-purple-400/20 hover:border-purple-400/40 rounded-lg transition-all disabled:opacity-50">
+          className="px-3 py-1.5 text-xs text-brand-400/70 hover:text-brand-400 border border-brand-400/20 hover:border-brand-400/40 rounded-lg transition-all disabled:opacity-50">
           {loading ? 'Loading...' : 'Refresh'}
         </button>
       </div>
@@ -422,11 +423,11 @@ export function MemoryExplorer() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search memories..."
-            className="flex-1 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white/80 placeholder:text-white/30 focus:outline-none focus:border-purple-500/40 focus:ring-1 focus:ring-purple-500/20"
+            className="flex-1 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-white/80 placeholder:text-white/30 focus:outline-none focus:border-brand-500/40 focus:ring-1 focus:ring-brand-500/20"
           />
           <button
             type="submit"
-            className="px-4 py-2 rounded-xl bg-purple-600/20 border border-purple-500/30 text-purple-300 text-sm font-medium hover:bg-purple-600/30 transition-colors">
+            className="px-4 py-2 rounded-xl bg-brand-600/20 border border-brand-500/30 text-brand-300 text-sm font-medium hover:bg-brand-600/30 transition-colors">
             Search
           </button>
         </form>
@@ -475,7 +476,7 @@ export function MemoryExplorer() {
               step="0.1"
               value={minImportance}
               onChange={e => setMinImportance(parseFloat(e.target.value))}
-              className="w-24 accent-purple-500"
+              className="w-24 accent-brand-500"
             />
             <span className="text-[10px] text-white/50 tabular-nums w-6">
               {minImportance.toFixed(1)}
@@ -490,7 +491,7 @@ export function MemoryExplorer() {
           onClick={() => setTab('memories')}
           className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
             tab === 'memories'
-              ? 'text-purple-400 border-purple-400'
+              ? 'text-brand-400 border-brand-400'
               : 'text-white/40 border-transparent hover:text-white/60'
           }`}>
           Memories ({memories.length})

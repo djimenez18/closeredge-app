@@ -197,14 +197,14 @@ export function WarRoomPage() {
   // ── Render ───────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col h-screen bg-zinc-950 text-zinc-100">
+    <div className="flex flex-col h-screen bg-neutral-950 text-neutral-100">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           {/* War Room icon */}
-          <div className="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center">
             <svg
-              className="w-4.5 h-4.5 text-indigo-400"
+              className="w-4.5 h-4.5 text-brand-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -217,18 +217,18 @@ export function WarRoomPage() {
             </svg>
           </div>
           <div>
-            <h1 className="text-base font-semibold text-zinc-100">War Room</h1>
-            <p className="text-xs text-zinc-500">Multi-agent strategy session</p>
+            <h1 className="font-display text-lg font-semibold text-neutral-100">War Room</h1>
+            <p className="text-xs text-neutral-500">Multi-agent strategy session</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Meeting status */}
           {meetingActive && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-600/10 border border-emerald-600/20">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-medium text-emerald-400">Live</span>
-              <span className="text-xs text-zinc-500">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-sage-500/10 border border-sage-500/20">
+              <span className="w-2 h-2 rounded-full bg-sage-400 animate-pulse" />
+              <span className="text-xs font-medium text-sage-400">Live</span>
+              <span className="text-xs text-neutral-500">
                 {enabledCount} agent{enabledCount !== 1 ? 's' : ''}
               </span>
             </div>
@@ -239,8 +239,8 @@ export function WarRoomPage() {
             <button
               onClick={handleStartMeeting}
               disabled={enabledCount === 0}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500
-                disabled:bg-zinc-800 disabled:text-zinc-600
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600
+                disabled:bg-neutral-800 disabled:text-neutral-600
                 text-sm font-medium text-white transition-colors">
               <svg
                 className="w-4 h-4"
@@ -259,8 +259,8 @@ export function WarRoomPage() {
           ) : (
             <button
               onClick={handleEndMeeting}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600/20 hover:bg-red-600/30
-                text-sm font-medium text-red-400 transition-colors border border-red-600/30">
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-coral-500/20 hover:bg-coral-500/30
+                text-sm font-medium text-coral-400 transition-colors border border-coral-500/30">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <rect x="6" y="6" width="12" height="12" rx="1" />
               </svg>
@@ -288,9 +288,9 @@ export function WarRoomPage() {
           ) : (
             /* Empty state */
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
-              <div className="w-16 h-16 rounded-2xl bg-zinc-800/50 flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-neutral-800/50 flex items-center justify-center mb-4">
                 <svg
-                  className="w-8 h-8 text-zinc-600"
+                  className="w-8 h-8 text-neutral-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -302,8 +302,10 @@ export function WarRoomPage() {
                   />
                 </svg>
               </div>
-              <h2 className="text-lg font-semibold text-zinc-300 mb-2">Ready to convene</h2>
-              <p className="text-sm text-zinc-500 max-w-md mb-6 leading-relaxed">
+              <h2 className="font-display text-xl font-semibold text-neutral-300 mb-2">
+                Ready to convene
+              </h2>
+              <p className="text-sm text-neutral-500 max-w-md mb-6 leading-relaxed">
                 Select the agents you want in the room, then start a meeting. Use @mentions to
                 direct questions to specific agents, or let the router decide who should respond.
               </p>
@@ -333,8 +335,8 @@ export function WarRoomPage() {
               <button
                 onClick={handleStartMeeting}
                 disabled={enabledCount === 0}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500
-                  disabled:bg-zinc-800 disabled:text-zinc-600
+                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-brand-500 hover:bg-brand-600
+                  disabled:bg-neutral-800 disabled:text-neutral-600
                   text-sm font-medium text-white transition-colors">
                 <svg
                   className="w-4 h-4"

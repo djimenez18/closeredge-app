@@ -74,7 +74,7 @@ function AgentRosterStrip({
               <div className="flex items-center gap-1 mt-0.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                    online ? 'bg-[#10b981]' : 'bg-[#888]/40'
+                    online ? 'bg-[#34C759]' : 'bg-[#888]/40'
                   }`}
                 />
                 <span className="text-[9px] font-mono text-gray-400 dark:text-[#888] uppercase tracking-wider">
@@ -356,7 +356,7 @@ export function HiveMindPage() {
               </div>
               <div className="w-px h-8 bg-[#25252f]" />
               <div className="text-right">
-                <div className="text-lg font-display font-bold text-[#10b981] tabular-nums leading-none">
+                <div className="text-lg font-display font-bold text-[#34C759] tabular-nums leading-none">
                   {activeAgents}
                 </div>
                 <div className="text-[9px] font-mono text-[#888] uppercase tracking-widest mt-0.5">
@@ -365,7 +365,7 @@ export function HiveMindPage() {
               </div>
               <div className="w-px h-8 bg-[#25252f]" />
               <div className="text-right">
-                <div className="text-lg font-display font-bold text-[#60a5fa] tabular-nums leading-none">
+                <div className="text-lg font-display font-bold text-[#5B9BF3] tabular-nums leading-none">
                   {stats.length}
                 </div>
                 <div className="text-[9px] font-mono text-[#888] uppercase tracking-widest mt-0.5">

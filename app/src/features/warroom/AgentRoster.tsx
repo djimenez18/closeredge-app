@@ -158,9 +158,9 @@ export function AgentRoster({
 
   const statusDot = (status: AgentStatus) => {
     const colors: Record<AgentStatus, string> = {
-      available: 'bg-emerald-400',
+      available: 'bg-sage-400',
       busy: 'bg-amber-400 animate-pulse',
-      offline: 'bg-zinc-500',
+      offline: 'bg-neutral-500',
     };
     return colors[status];
   };
@@ -177,26 +177,26 @@ export function AgentRoster({
   // ── Render ───────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col h-full bg-zinc-900/50 border-l border-zinc-800">
+    <div className="flex flex-col h-full bg-neutral-900/50 border-l border-neutral-800">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-zinc-800">
+      <div className="px-4 py-3 border-b border-neutral-800">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold text-zinc-200 uppercase tracking-wider">
+          <h3 className="text-sm font-semibold text-neutral-200 uppercase tracking-wider">
             Agent Roster
           </h3>
-          <span className="text-xs text-zinc-500">
+          <span className="text-xs text-neutral-500">
             {enabledCount}/{agents.length} active
           </span>
         </div>
         <div className="flex gap-2">
           <button
             onClick={onSelectAll}
-            className="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors">
+            className="text-xs px-2.5 py-1 rounded bg-neutral-800 text-neutral-400 hover:text-neutral-200 hover:bg-neutral-700 transition-colors">
             Select All
           </button>
           <button
             onClick={onDeselectAll}
-            className="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors">
+            className="text-xs px-2.5 py-1 rounded bg-neutral-800 text-neutral-400 hover:text-neutral-200 hover:bg-neutral-700 transition-colors">
             Deselect All
           </button>
         </div>
@@ -225,8 +225,8 @@ export function AgentRoster({
                 mx-2 mb-1 px-3 py-2.5 rounded-lg cursor-grab active:cursor-grabbing
                 transition-all duration-150
                 ${isDragging ? 'opacity-40 scale-95' : 'opacity-100'}
-                ${isDragOver ? 'ring-1 ring-indigo-500/50' : ''}
-                ${agent.enabled ? 'bg-zinc-800/60 hover:bg-zinc-800' : 'bg-zinc-900/40'}
+                ${isDragOver ? 'ring-1 ring-brand-500/50' : ''}
+                ${agent.enabled ? 'bg-neutral-800/60 hover:bg-neutral-800' : 'bg-neutral-900/40'}
               `}>
               <div className="flex items-center gap-3">
                 {/* Avatar */}
@@ -236,7 +236,7 @@ export function AgentRoster({
                   {initials}
                   {/* Status dot */}
                   <span
-                    className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-900 ${statusDot(status)}`}
+                    className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-neutral-900 ${statusDot(status)}`}
                   />
                 </div>
 
@@ -245,12 +245,12 @@ export function AgentRoster({
                   <div className="flex items-center gap-1.5">
                     <span
                       className={`text-sm font-medium truncate ${
-                        agent.enabled ? 'text-zinc-100' : 'text-zinc-500'
+                        agent.enabled ? 'text-neutral-100' : 'text-neutral-500'
                       }`}>
                       {agent.name}
                     </span>
                     {isPinned && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-medium">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 font-medium">
                         PINNED
                       </span>
                     )}
@@ -260,7 +260,7 @@ export function AgentRoster({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-zinc-500 truncate">{agent.industry}</p>
+                  <p className="text-xs text-neutral-500 truncate">{agent.industry}</p>
                 </div>
 
                 {/* Controls */}
@@ -272,8 +272,8 @@ export function AgentRoster({
                       title={isPinned ? 'Unpin agent' : 'Pin as default responder'}
                       className={`p-1 rounded transition-colors ${
                         isPinned
-                          ? 'text-indigo-400 hover:text-indigo-300'
-                          : 'text-zinc-600 hover:text-zinc-400'
+                          ? 'text-brand-400 hover:text-brand-300'
+                          : 'text-neutral-600 hover:text-neutral-400'
                       }`}>
                       <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h3a1 1 0 001-1v-3h2v3a1 1 0 001 1h3a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
@@ -286,7 +286,7 @@ export function AgentRoster({
                     onClick={() => onToggleAgent(agent.id, !agent.enabled)}
                     className={`
                       relative w-8 h-[18px] rounded-full transition-colors
-                      ${agent.enabled ? 'bg-emerald-600' : 'bg-zinc-700'}
+                      ${agent.enabled ? 'bg-sage-600' : 'bg-neutral-700'}
                     `}
                     title={agent.enabled ? 'Disable agent' : 'Enable agent'}>
                     <span
@@ -301,15 +301,15 @@ export function AgentRoster({
               </div>
 
               {/* Status line */}
-              <div className="mt-1 ml-12 text-[11px] text-zinc-600">{statusLabel(status)}</div>
+              <div className="mt-1 ml-12 text-[11px] text-neutral-600">{statusLabel(status)}</div>
             </div>
           );
         })}
       </div>
 
       {/* Drag hint */}
-      <div className="px-4 py-2 border-t border-zinc-800">
-        <p className="text-[11px] text-zinc-600 text-center">Drag to reorder priority</p>
+      <div className="px-4 py-2 border-t border-neutral-800">
+        <p className="text-[11px] text-neutral-600 text-center">Drag to reorder priority</p>
       </div>
     </div>
   );
