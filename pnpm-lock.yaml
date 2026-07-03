@@ -54,9 +54,6 @@ importers:
       '@remotion/zod-types':
         specifier: 4.0.454
         version: 4.0.454(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(zod@4.3.6)
-      '@rive-app/react-webgl2':
-        specifier: ^4.28.6
-        version: 4.28.6(react@19.2.5)
       '@scure/base':
         specifier: ^2.2.0
         version: 2.2.0
@@ -1409,14 +1406,6 @@ packages:
     resolution: {integrity: sha512-tMEb7uDr+xuPny4HRVnkfGDHgTCkTFn15u7GHj12hC94N59g/dO15TiGr9312GVTO82FulOymOKy6sgxZyi5rw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0
-
-  '@rive-app/react-webgl2@4.28.6':
-    resolution: {integrity: sha512-QqtlD7bm01SxMLuEHE/BfhiPoX3RZ2/B32nF0IR0IRPe2ykxMeebWPtsX50AL9EKLbOh3Fgk3PJ7smkkvQwD2w==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0
-
-  '@rive-app/webgl2@2.37.8':
-    resolution: {integrity: sha512-Y2nXPwAeQtZrADNIzY7v3Lk7XZRMy4Gd+bpGFyzkaQ/EQ91Hp/6sCdd8yTCyjH4b71N/T6kU0MHIYA0IDmpjyQ==}
 
   '@rolldown/binding-android-arm64@1.0.0-rc.17':
     resolution: {integrity: sha512-s70pVGhw4zqGeFnXWvAzJDlvxhlRollagdCCKRgOsgUOH3N1l0LIxf83AtGzmb5SiVM4Hjl5HyarMRfdfj3DaQ==}
@@ -6958,13 +6947,6 @@ snapshots:
     dependencies:
       '@rive-app/canvas': 2.37.8
       react: 19.2.5
-
-  '@rive-app/react-webgl2@4.28.6(react@19.2.5)':
-    dependencies:
-      '@rive-app/webgl2': 2.37.8
-      react: 19.2.5
-
-  '@rive-app/webgl2@2.37.8': {}
 
   '@rolldown/binding-android-arm64@1.0.0-rc.17':
     optional: true
