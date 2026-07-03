@@ -1,0 +1,16 @@
+{
+  "name": "Haven",
+  "slug": "haven",
+  "industry": "healthcare",
+  "tagline": "Your AI Practice Manager",
+  "description": "Haven manages patient scheduling, intake forms, appointment reminders, insurance verification, and patient follow-up for medical and dental practices.",
+  "core_agents": ["scheduler", "intake", "reminder", "insurance-verifier", "patient-followup"],
+  "pro_agents": ["voice-receptionist", "ehr-sync", "recall-automation"],
+  "elite_agents": ["hipaa-compliance", "revenue-optimizer"],
+  "integrations": {
+    "foundation": ["gmail", "google_calendar", "telegram"],
+    "pro": ["elevenlabs_voice_hipaa", "dentrix", "open_dental"],
+    "elite": ["custom_ehr", "insurance_portals"]
+  },
+  "brain_domains": ["hipaa_compliance", "dental_codes", "insurance_billing", "patient_communication"]
+}

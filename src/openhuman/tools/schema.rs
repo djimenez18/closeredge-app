@@ -17,7 +17,7 @@
 //!
 //! ```rust
 //! use serde_json::json;
-//! use openhuman_core::openhuman::tools::schema::SchemaCleanr;
+//! use closeredge_core::openhuman::tools::schema::SchemaCleanr;
 //!
 //! let dirty_schema = json!({
 //!     "type": "object",

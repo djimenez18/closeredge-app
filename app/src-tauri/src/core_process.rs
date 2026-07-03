@@ -6,7 +6,7 @@
 //!
 //! Stale-listener policy (see issue #1130): if something is already listening
 //! on the configured port when `ensure_running` runs, we probe `GET /` to see
-//! whether it is an OpenHuman core. If it is, we treat it as a stale process
+//! whether it is a CloserEdge AI core. If it is, we treat it as a stale process
 //! left behind by a previous build/dev session and proactively terminate it
 //! (graceful signal, then a force-kill that *revalidates* the pid is still
 //! the same listener — guards against PID reuse if the original exits inside
@@ -38,7 +38,7 @@ const CORE_READY_TIMEOUT_MS: u64 = CORE_READY_POLL_MS * CORE_READY_ATTEMPTS as u
 
 /// Generate a 256-bit cryptographically-random bearer token as a hex string.
 ///
-/// Uses the same encoding as `openhuman_core::core::auth::generate_token`
+/// Uses the same encoding as `closeredge_core::core::auth::generate_token`
 /// (`hex::encode`) so the token format never silently diverges between the
 /// Tauri-side generator and the core-side validator.
 pub fn generate_rpc_token() -> String {
@@ -71,7 +71,7 @@ pub struct CoreProcessHandle {
     /// Bearer token the embedded server validates on every inbound request.
     ///
     /// Handed to the embedded server **in-memory** (via the `rpc_token`
-    /// argument of [`openhuman_core::core::jsonrpc::run_server_embedded_with_ready`])
+    /// argument of [`closeredge_core::core::jsonrpc::run_server_embedded_with_ready`])
     /// rather than through `OPENHUMAN_CORE_TOKEN` on the process environment.
     /// Avoiding the env crossing keeps the bearer off `/proc/<pid>/environ`
     /// (Linux) and out of `sysctl KERN_PROCARGS2` / `ps eww -p <pid>` (macOS)
@@ -134,7 +134,7 @@ impl CoreProcessHandle {
         // us — return Ok without identifying or taking over. Without this,
         // a second `start_core_process` call (e.g. HMR re-mounting the boot
         // gate) sees its own port as bound, classifies the listener as
-        // "stale OpenHuman", and walks into the SIGTERM/SIGKILL takeover
+        // "stale CloserEdge AI", and walks into the SIGTERM/SIGKILL takeover
         // path against itself. (#1130 takeover is meant to recover from
         // *external* leftover binaries, not our own in-process spawn.)
         {
@@ -157,7 +157,7 @@ impl CoreProcessHandle {
             // call (from BootCheckGate re-render, React StrictMode mount, or
             // any double-invoke of `start_core_process`) hits the
             // `identify_listener` path, identifies the listener as
-            // OpenHuman, calls `takeover_stale_listener`, and aborts with
+            // CloserEdge AI, calls `takeover_stale_listener`, and aborts with
             // "stale-listener pid <self> matches the Tauri host pid;
             // refusing to self-terminate". (#1316 introduced the
             // frontend-driven `start_core_process` invoke without
@@ -186,7 +186,7 @@ impl CoreProcessHandle {
             match identify_listener(self.preferred_port).await {
                 ListenerKind::OpenHuman => {
                     log::warn!(
-                        "[core] found stale OpenHuman listener on port {} — taking over (issue #1130)",
+                        "[core] found stale CloserEdge AI listener on port {} — taking over (issue #1130)",
                         self.preferred_port
                     );
                     self.takeover_stale_listener().await?;
@@ -195,7 +195,7 @@ impl CoreProcessHandle {
                 ListenerKind::Unknown { reason } => {
                     if is_expected_port_clash(&reason) {
                         log::warn!(
-                            "[core] preferred RPC port {} is occupied by non-OpenHuman listener ({reason}); attempting fallback bind range",
+                            "[core] preferred RPC port {} is occupied by non-CloserEdge AI listener ({reason}); attempting fallback bind range",
                             self.preferred_port
                         );
                     } else {
@@ -212,7 +212,7 @@ impl CoreProcessHandle {
             let mut retry_after_takeover = false;
             let shutdown_token = self.fresh_shutdown_token().await;
             let (ready_tx, mut ready_rx) = tokio::sync::oneshot::channel::<
-                openhuman_core::core::jsonrpc::EmbeddedReadySignal,
+                closeredge_core::core::jsonrpc::EmbeddedReadySignal,
             >();
             let mut received_ready = false;
 
@@ -280,7 +280,7 @@ impl CoreProcessHandle {
                         "[core] spawning embedded in-process core server on preferred port {port}"
                     );
                     let task = tokio::spawn(async move {
-                        openhuman_core::core::jsonrpc::run_server_embedded_with_ready(
+                        closeredge_core::core::jsonrpc::run_server_embedded_with_ready(
                             None,
                             Some(port),
                             true,
@@ -343,8 +343,8 @@ impl CoreProcessHandle {
                                     .to_string())
                             }
                             Ok(Err(err)) => {
-                                if let Some(openhuman_core::openhuman::connectivity::rpc::PickListenPortError::WouldTakeOver { preferred, .. }) = err
-                                    .downcast_ref::<openhuman_core::openhuman::connectivity::rpc::PickListenPortError>()
+                                if let Some(closeredge_core::openhuman::connectivity::rpc::PickListenPortError::WouldTakeOver { preferred, .. }) = err
+                                    .downcast_ref::<closeredge_core::openhuman::connectivity::rpc::PickListenPortError>()
                                 {
                                     if startup_attempt == 0 {
                                         log::warn!(
@@ -428,7 +428,7 @@ impl CoreProcessHandle {
 
     pub(crate) fn apply_embedded_ready_signal(
         &self,
-        ready: openhuman_core::core::jsonrpc::EmbeddedReadySignal,
+        ready: closeredge_core::core::jsonrpc::EmbeddedReadySignal,
     ) {
         *self.active_port.write() = ready.port;
         std::env::set_var("OPENHUMAN_CORE_RPC_URL", self.rpc_url());
@@ -452,7 +452,7 @@ impl CoreProcessHandle {
 
     /// Identify the OS pid currently bound to our port and terminate it,
     /// then wait for the port to free. Used when the listener has been
-    /// fingerprinted as an OpenHuman core (via `GET /`) so killing it is safe.
+    /// fingerprinted as a CloserEdge AI core (via `GET /`) so killing it is safe.
     async fn takeover_stale_listener(&self) -> Result<(), String> {
         let port = self.preferred_port;
         let pid = match find_pid_on_port(port) {
@@ -474,7 +474,7 @@ impl CoreProcessHandle {
             ));
         }
         log::warn!(
-            "[core] terminating stale OpenHuman process pid={pid} on port {} (issue #1130)",
+            "[core] terminating stale CloserEdge AI process pid={pid} on port {} (issue #1130)",
             port
         );
         if let Err(e) = kill_pid_term(pid) {
@@ -668,7 +668,7 @@ pub struct RecoveryOutcome {
 }
 
 impl CoreProcessHandle {
-    /// Attempt to recover from a port conflict: reap stale OpenHuman processes,
+    /// Attempt to recover from a port conflict: reap stale CloserEdge AI processes,
     /// wait briefly for the port to free, then start the embedded core.
     ///
     /// Called from the `recover_port_conflict` Tauri command when the frontend's
@@ -744,8 +744,8 @@ async fn is_port_open(port: u16) -> bool {
 /// What is currently listening on the core RPC port.
 #[derive(Debug)]
 enum ListenerKind {
-    /// `GET /` returned a JSON body with `"name": "openhuman"` — i.e. a
-    /// stale OpenHuman core process from a previous build/session.
+    /// `GET /` returned a JSON body with `"name": "closeredge"` — i.e. a
+    /// stale CloserEdge AI core process from a previous build/session.
     OpenHuman,
     /// Either the listener didn't speak HTTP, didn't respond, or returned
     /// a body that doesn't identify as openhuman.
@@ -809,7 +809,7 @@ fn is_openhuman_root_body(body: &str) -> bool {
     value
         .get("name")
         .and_then(|v| v.as_str())
-        .map(|s| s == "openhuman")
+        .map(|s| s == "closeredge")
         .unwrap_or(false)
 }
 

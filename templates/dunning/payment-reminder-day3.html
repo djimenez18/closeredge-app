@@ -1,0 +1,51 @@
+<!-- Subject: Quick reminder — update your payment for {{agent_name}} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Reminder</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7;">
+    <tr>
+      <td align="center" style="padding: 24px 16px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+          <!-- Header -->
+          <tr>
+            <td style="background-color: #7C3AED; padding: 32px 40px; text-align: center;">
+              <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: -0.5px;">CloserEdge AI</h1>
+            </td>
+          </tr>
+          <!-- Body -->
+          <tr>
+            <td style="padding: 40px;">
+              <p style="margin: 0 0 16px; color: #333333; font-size: 16px; line-height: 1.6;">Hi {{customer_name}},</p>
+              <p style="margin: 0 0 16px; color: #333333; font-size: 16px; line-height: 1.6;">Just a quick reminder &mdash; we still haven't been able to process your payment of <strong>{{amount_due}}</strong> for <strong>{{agent_name}}</strong> ({{tier}} plan).</p>
+              <p style="margin: 0 0 16px; color: #333333; font-size: 16px; line-height: 1.6;">Your AI employee is still fully operational right now, but we'll need a valid payment method on file to keep things running smoothly.</p>
+              <p style="margin: 0 0 24px; color: #333333; font-size: 16px; line-height: 1.6;">It only takes a minute to update:</p>
+              <!-- CTA Button -->
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto 24px;">
+                <tr>
+                  <td style="border-radius: 6px; background-color: #7C3AED;">
+                    <a href="{{payment_update_url}}" target="_blank" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 6px;">Update Payment Method</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 16px; color: #666666; font-size: 14px; line-height: 1.6;">If you're having trouble or have questions about your bill, just reply to this email. We're happy to help.</p>
+              <p style="margin: 0; color: #333333; font-size: 16px; line-height: 1.6;">Thanks,<br>The CloserEdge AI Team</p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f9fafb; padding: 24px 40px; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0 0 8px; color: #9ca3af; font-size: 13px; text-align: center;">CloserEdge AI | <a href="https://closeredge.ai" style="color: #7C3AED; text-decoration: none;">closeredge.ai</a></p>
+              <p style="margin: 0; color: #9ca3af; font-size: 12px; text-align: center;"><a href="{{unsubscribe_url}}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe from billing emails</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

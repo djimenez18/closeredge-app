@@ -3,15 +3,15 @@ use std::path::{Path, PathBuf};
 use std::sync::{Mutex, OnceLock};
 
 use chrono::Utc;
-use openhuman_core::openhuman::app_state::{
+use closeredge_core::openhuman::app_state::{
     peek_cached_current_user_identity, snapshot, update_local_state, StoredAppStatePatch,
     StoredOnboardingTasks,
 };
-use openhuman_core::openhuman::config::rpc as config_rpc;
-use openhuman_core::openhuman::credentials::profiles::{
+use closeredge_core::openhuman::config::rpc as config_rpc;
+use closeredge_core::openhuman::credentials::profiles::{
     AuthProfile, AuthProfileKind, AuthProfilesStore, TokenSet,
 };
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::credentials::{
     list_provider_credentials_by_prefix, AuthService, APP_SESSION_PROVIDER,
     DEFAULT_AUTH_PROFILE_NAME,
 };
@@ -62,7 +62,7 @@ struct Harness {
 }
 
 impl Harness {
-    async fn config(&self) -> openhuman_core::openhuman::config::Config {
+    async fn config(&self) -> closeredge_core::openhuman::config::Config {
         config_rpc::load_config_with_timeout()
             .await
             .expect("isolated config should load")
@@ -123,7 +123,7 @@ embedding_strict = false
 "#
     );
     std::fs::write(root.join("config.toml"), &cfg).expect("write config.toml");
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(&cfg).expect("round14 config must match schema");
 }
 
@@ -464,20 +464,20 @@ async fn round14_credentials_prefix_listing_and_composio_direct_edges() {
     let config = harness.config().await;
 
     let empty =
-        openhuman_core::openhuman::credentials::store_composio_api_key(&config, "   ").await;
+        closeredge_core::openhuman::credentials::store_composio_api_key(&config, "   ").await;
     assert_eq!(
         empty.expect_err("empty composio key rejected"),
         "composio api_key must not be empty"
     );
 
-    openhuman_core::openhuman::credentials::store_composio_api_key(
+    closeredge_core::openhuman::credentials::store_composio_api_key(
         &config,
         "  composio-round14-key  ",
     )
     .await
     .expect("store composio key");
     assert_eq!(
-        openhuman_core::openhuman::credentials::get_composio_api_key(&config)
+        closeredge_core::openhuman::credentials::get_composio_api_key(&config)
             .expect("get composio key")
             .as_deref(),
         Some("composio-round14-key")
@@ -518,16 +518,16 @@ async fn round14_credentials_prefix_listing_and_composio_direct_edges() {
         .iter()
         .any(|profile| profile.metadata_keys == vec!["chat_id"]));
 
-    let cleared = openhuman_core::openhuman::credentials::clear_composio_api_key(&config)
+    let cleared = closeredge_core::openhuman::credentials::clear_composio_api_key(&config)
         .await
         .expect("clear composio key");
     assert_eq!(cleared.value["removed"], true);
     assert_eq!(
-        openhuman_core::openhuman::credentials::get_composio_api_key(&config)
+        closeredge_core::openhuman::credentials::get_composio_api_key(&config)
             .expect("get cleared composio key"),
         None
     );
-    let cleared_again = openhuman_core::openhuman::credentials::clear_composio_api_key(&config)
+    let cleared_again = closeredge_core::openhuman::credentials::clear_composio_api_key(&config)
         .await
         .expect("clear composio key idempotent");
     assert_eq!(cleared_again.value["removed"], false);

@@ -1,4 +1,4 @@
-//! Startup recovery for OpenHuman processes left behind by hard exits.
+//! Startup recovery for CloserEdge AI processes left behind by hard exits.
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
 pub(crate) struct ProcessInfo {
@@ -67,13 +67,13 @@ mod imp {
         let initial = match enumerate_openhuman_processes() {
             Ok(processes) => processes,
             Err(err) => {
-                log::warn!("[startup-recovery] failed to enumerate OpenHuman processes: {err}");
+                log::warn!("[startup-recovery] failed to enumerate CloserEdge AI processes: {err}");
                 return;
             }
         };
         let stale = filter_self_pid(&initial, std::process::id());
         if stale.is_empty() {
-            log::info!("[startup-recovery] no stale OpenHuman processes found");
+            log::info!("[startup-recovery] no stale CloserEdge AI processes found");
             return;
         }
 
@@ -81,12 +81,12 @@ mod imp {
         for process in &stale {
             match killer.term(process.pid) {
                 Ok(()) => log::warn!(
-                    "[startup-recovery] SIGTERM stale OpenHuman pid={} argv0={}",
+                    "[startup-recovery] SIGTERM stale CloserEdge AI pid={} argv0={}",
                     process.pid,
                     process.argv0
                 ),
                 Err(err) => log::warn!(
-                    "[startup-recovery] failed to SIGTERM stale OpenHuman pid={}: {err}",
+                    "[startup-recovery] failed to SIGTERM stale CloserEdge AI pid={}: {err}",
                     process.pid
                 ),
             }
@@ -179,13 +179,13 @@ mod imp {
                 Ok(()) => {
                     summary.kill += 1;
                     log::warn!(
-                        "[startup-recovery] SIGKILL stale OpenHuman pid={} argv0={}",
+                        "[startup-recovery] SIGKILL stale CloserEdge AI pid={} argv0={}",
                         process.pid,
                         process.argv0
                     );
                 }
                 Err(err) => log::warn!(
-                    "[startup-recovery] failed to SIGKILL stale OpenHuman pid={}: {err}",
+                    "[startup-recovery] failed to SIGKILL stale CloserEdge AI pid={}: {err}",
                     process.pid
                 ),
             }
@@ -320,19 +320,19 @@ mod imp {
         use super::*;
 
         fn contents_dir() -> PathBuf {
-            PathBuf::from("/Applications/OpenHuman.app/Contents")
+            PathBuf::from("/Applications/CloserEdge AI.app/Contents")
         }
 
         fn main_exe() -> PathBuf {
-            contents_dir().join("MacOS/OpenHuman")
+            contents_dir().join("MacOS/CloserEdge AI")
         }
 
         #[test]
         fn parse_ps_matches_main_and_helper_bundle_argv0() {
             let stdout = "\
-  123   1 /Applications/OpenHuman.app/Contents/MacOS/OpenHuman
-  124 123 /Applications/OpenHuman.app/Contents/Frameworks/OpenHuman Helper (Renderer).app/Contents/MacOS/OpenHuman Helper (Renderer) --type=renderer
-  999   1 /Applications/Other.app/Contents/MacOS/OpenHuman
+  123   1 /Applications/CloserEdge AI.app/Contents/MacOS/CloserEdge AI
+  124 123 /Applications/CloserEdge AI.app/Contents/Frameworks/CloserEdge AI Helper (Renderer).app/Contents/MacOS/CloserEdge AI Helper (Renderer) --type=renderer
+  999   1 /Applications/Other.app/Contents/MacOS/CloserEdge AI
 ";
             let processes = parse_ps_output(stdout, &contents_dir(), Some(&main_exe()));
             assert_eq!(processes.len(), 2);
@@ -341,7 +341,7 @@ mod imp {
             assert_eq!(processes[1].pid, 124);
             assert_eq!(
                 processes[1].argv0,
-                "/Applications/OpenHuman.app/Contents/Frameworks/OpenHuman Helper (Renderer).app/Contents/MacOS/OpenHuman Helper (Renderer)"
+                "/Applications/CloserEdge AI.app/Contents/Frameworks/CloserEdge AI Helper (Renderer).app/Contents/MacOS/CloserEdge AI Helper (Renderer)"
             );
         }
 
@@ -436,7 +436,7 @@ mod linux_imp {
         }
 
         let self_pid = std::process::id();
-        log::debug!("[startup-recovery] linux: scanning /proc for stale OpenHuman processes (self_pid={self_pid})");
+        log::debug!("[startup-recovery] linux: scanning /proc for stale CloserEdge AI processes (self_pid={self_pid})");
 
         let stale = match enumerate_openhuman_processes() {
             Ok(procs) => procs,
@@ -447,18 +447,18 @@ mod linux_imp {
         };
 
         if stale.is_empty() {
-            log::info!("[startup-recovery] linux: no stale OpenHuman processes found");
+            log::info!("[startup-recovery] linux: no stale CloserEdge AI processes found");
             return;
         }
 
         log::info!(
-            "[startup-recovery] linux: found {} stale OpenHuman process(es), sending SIGTERM",
+            "[startup-recovery] linux: found {} stale CloserEdge AI process(es), sending SIGTERM",
             stale.len()
         );
         for proc in &stale {
             match kill_pid_term(proc.pid) {
                 Ok(()) => log::warn!(
-                    "[startup-recovery] linux: SIGTERM stale OpenHuman pid={} cmd={}",
+                    "[startup-recovery] linux: SIGTERM stale CloserEdge AI pid={} cmd={}",
                     proc.pid,
                     proc.argv0
                 ),
@@ -487,7 +487,7 @@ mod linux_imp {
                     Ok(()) => {
                         kill_count += 1;
                         log::warn!(
-                            "[startup-recovery] linux: SIGKILL stale OpenHuman pid={} cmd={}",
+                            "[startup-recovery] linux: SIGKILL stale CloserEdge AI pid={} cmd={}",
                             proc.pid,
                             proc.argv0
                         );
@@ -551,7 +551,7 @@ mod linux_imp {
             let command = cmdline.join(" ");
 
             log::debug!(
-                "[startup-recovery] linux: found OpenHuman process pid={pid} argv0={argv0}"
+                "[startup-recovery] linux: found CloserEdge AI process pid={pid} argv0={argv0}"
             );
             results.push(ProcessInfo {
                 pid,
@@ -593,12 +593,12 @@ mod linux_imp {
         fn is_openhuman_executable_matches_core_binary() {
             assert!(is_openhuman_executable("/usr/local/bin/openhuman-core"));
             assert!(is_openhuman_executable("openhuman-core"));
-            assert!(is_openhuman_executable("/opt/OpenHuman/openhuman-core"));
+            assert!(is_openhuman_executable("/opt/CloserEdge AI/openhuman-core"));
         }
 
         #[test]
         fn is_openhuman_executable_matches_app_binary() {
-            assert!(is_openhuman_executable("/opt/OpenHuman/OpenHuman"));
+            assert!(is_openhuman_executable("/opt/CloserEdge AI/CloserEdge AI"));
             assert!(is_openhuman_executable("openhuman"));
         }
 
@@ -643,7 +643,7 @@ mod windows_imp {
 
         let self_pid = std::process::id();
         log::debug!(
-            "[startup-recovery] windows: scanning processes for stale OpenHuman (self_pid={self_pid})"
+            "[startup-recovery] windows: scanning processes for stale CloserEdge AI (self_pid={self_pid})"
         );
 
         let stale = match enumerate_openhuman_processes() {
@@ -655,18 +655,18 @@ mod windows_imp {
         };
 
         if stale.is_empty() {
-            log::info!("[startup-recovery] windows: no stale OpenHuman processes found");
+            log::info!("[startup-recovery] windows: no stale CloserEdge AI processes found");
             return;
         }
 
         log::info!(
-            "[startup-recovery] windows: found {} stale OpenHuman process(es), sending terminate",
+            "[startup-recovery] windows: found {} stale CloserEdge AI process(es), sending terminate",
             stale.len()
         );
         for proc in &stale {
             match kill_pid_term(proc.pid) {
                 Ok(()) => log::warn!(
-                    "[startup-recovery] windows: TERM stale OpenHuman pid={} exe={}",
+                    "[startup-recovery] windows: TERM stale CloserEdge AI pid={} exe={}",
                     proc.pid,
                     proc.argv0
                 ),
@@ -697,7 +697,7 @@ mod windows_imp {
                     Ok(()) => {
                         kill_count += 1;
                         log::warn!(
-                            "[startup-recovery] windows: force-killed stale OpenHuman pid={} exe={}",
+                            "[startup-recovery] windows: force-killed stale CloserEdge AI pid={} exe={}",
                             proc.pid,
                             proc.argv0
                         );
@@ -805,7 +805,7 @@ mod windows_imp {
             }
 
             log::debug!(
-                "[startup-recovery] windows: found OpenHuman process pid={pid} argv0={argv0}"
+                "[startup-recovery] windows: found CloserEdge AI process pid={pid} argv0={argv0}"
             );
             results.push(ProcessInfo {
                 pid,
@@ -840,7 +840,7 @@ mod windows_imp {
             let csv = "\
 Node,Caption,ExecutablePath,ParentProcessId,ProcessId\r\n\
 \r\n\
-DESKTOP-ABC,openhuman-core.exe,C:\\Program Files\\OpenHuman\\openhuman-core.exe,1234,5678\r\n\
+DESKTOP-ABC,openhuman-core.exe,C:\\Program Files\\CloserEdge AI\\openhuman-core.exe,1234,5678\r\n\
 DESKTOP-ABC,chrome.exe,C:\\Program Files\\Google\\Chrome\\chrome.exe,1,9000\r\n\
 ";
             let results = parse_wmic_output(csv, 9999);
@@ -855,7 +855,7 @@ DESKTOP-ABC,chrome.exe,C:\\Program Files\\Google\\Chrome\\chrome.exe,1,9000\r\n\
             let csv = "\
 Node,Caption,ExecutablePath,ParentProcessId,ProcessId\r\n\
 \r\n\
-DESKTOP-ABC,openhuman-core.exe,C:\\Program Files\\OpenHuman\\openhuman-core.exe,1,1234\r\n\
+DESKTOP-ABC,openhuman-core.exe,C:\\Program Files\\CloserEdge AI\\openhuman-core.exe,1,1234\r\n\
 ";
             let results = parse_wmic_output(csv, 1234);
             assert!(results.is_empty(), "self pid should be excluded");
@@ -868,8 +868,8 @@ DESKTOP-ABC,openhuman-core.exe,C:\\Program Files\\OpenHuman\\openhuman-core.exe,
                 "C:\\path\\openhuman-core.exe"
             ));
             assert!(is_openhuman_executable(
-                "OpenHuman.exe",
-                "C:\\path\\OpenHuman.exe"
+                "CloserEdge AI.exe",
+                "C:\\path\\CloserEdge AI.exe"
             ));
         }
 

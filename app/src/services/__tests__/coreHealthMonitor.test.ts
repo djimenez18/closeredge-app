@@ -16,6 +16,11 @@ vi.mock('../../store/connectivitySlice', () => ({ setCore: (p: unknown) => setCo
 const callCoreRpcMock = vi.fn();
 vi.mock('../coreRpcClient', () => ({ callCoreRpc: callCoreRpcMock }));
 
+// The monitor is dormant in browser mode (no Rust sidecar to poll) — force
+// the Tauri runtime so these tests keep exercising the desktop polling path.
+const isTauriMock = vi.fn(() => true);
+vi.mock('../../utils/tauriCommands/common', () => ({ isTauri: () => isTauriMock() }));
+
 /** Flush all pending microtasks (resolved promises). */
 async function flushPromises(): Promise<void> {
   // Multiple rounds handle chained .then() callbacks.

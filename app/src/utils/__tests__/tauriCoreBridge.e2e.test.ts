@@ -49,10 +49,15 @@ describe('Web → frontend JSON-RPC → Core bridge', () => {
     expect(response.result.url).toContain('127.0.0.1');
   });
 
-  test('fails fast in web-only mode without Tauri runtime', async () => {
+  test('resolves to a browser-mode stub in web-only mode without Tauri runtime', async () => {
+    // The CloserEdge web flavor no longer throws outside Tauri — service
+    // commands resolve to an inert "browser-mode" status without hitting RPC.
     mockIsTauri.mockReturnValue(false);
 
-    await expect(openhumanServiceStatus()).rejects.toThrow('Not running in Tauri');
+    await expect(openhumanServiceStatus()).resolves.toEqual({
+      result: { state: 'NotInstalled', label: 'browser-mode' },
+      logs: [],
+    });
     expect(mockCallCoreRpc).not.toHaveBeenCalled();
   });
 });

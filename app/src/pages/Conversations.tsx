@@ -12,6 +12,7 @@ import { ConfirmationModal } from '../components/intelligence/ConfirmationModal'
 import PillTabBar from '../components/PillTabBar';
 import UpsellBanner from '../components/upsell/UpsellBanner';
 import { dismissBanner, shouldShowBanner } from '../components/upsell/upsellDismissState';
+import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import MicComposer from '../features/human/MicComposer';
 import { useStickToBottom } from '../hooks/useStickToBottom';
 import { useUsageState } from '../hooks/useUsageState';
@@ -63,8 +64,6 @@ import type { ConfirmationModal as ConfirmationModalType } from '../types/intell
 import type { ThreadMessage } from '../types/thread';
 import type { TaskBoardCard, TaskBoardCardStatus } from '../types/turnState';
 import { splitAgentMessageIntoBubbles } from '../utils/agentMessageBubbles';
-import { BILLING_DASHBOARD_URL } from '../utils/links';
-import { openUrl } from '../utils/openUrl';
 import {
   isTauri,
   notifyOverlaySttState,
@@ -1599,7 +1598,7 @@ const Conversations = ({
         )}
         <div
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto px-5 py-4 bg-[#f6f6f6] dark:bg-neutral-950">
+          className="flex-1 overflow-y-auto px-5 py-4 bg-stone-100 dark:bg-neutral-950">
           {isLoadingMessages ? (
             <div className="space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -1973,8 +1972,28 @@ const Conversations = ({
               <div ref={messagesEndRef} />
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center h-full">
-              <p className="text-sm text-stone-600 dark:text-neutral-300">{t('chat.noMessages')}</p>
+            <div className="flex-1 flex flex-col items-center justify-center h-full gap-3 px-6 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/10 ring-1 ring-brand-500/20">
+                <svg
+                  className="h-7 w-7 text-brand-500 dark:text-brand-400"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+              </div>
+              <p className="font-display text-xl font-semibold text-stone-800 dark:text-neutral-100">
+                {t('chat.startConversation')}
+              </p>
+              <p className="max-w-xs text-sm leading-relaxed text-stone-500 dark:text-neutral-400">
+                {t('chat.noMessages')}
+              </p>
             </div>
           )}
         </div>
@@ -1995,7 +2014,7 @@ const Conversations = ({
                     )}
                     ctaLabel={t('chat.upgrade')}
                     onCtaClick={() => {
-                      void openUrl(BILLING_DASHBOARD_URL);
+                      navigate(SUBSCRIPTION_ROUTE);
                     }}
                     dismissible
                     onDismiss={() => dismissBanner('conversations-warning')}
@@ -2025,7 +2044,7 @@ const Conversations = ({
                 </div>
                 <button
                   onClick={() => {
-                    void openUrl(BILLING_DASHBOARD_URL);
+                    navigate(SUBSCRIPTION_ROUTE);
                   }}
                   className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-coral-500 hover:bg-coral-400 text-white text-xs font-medium transition-colors">
                   {t('chat.topUp')}

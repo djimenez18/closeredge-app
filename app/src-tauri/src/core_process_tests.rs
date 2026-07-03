@@ -66,7 +66,7 @@ fn core_process_handle_new_creates_instance() {
 #[test]
 fn ready_signal_updates_runtime_port_and_fallback_notice() {
     let handle = CoreProcessHandle::new(7788);
-    handle.apply_embedded_ready_signal(openhuman_core::core::jsonrpc::EmbeddedReadySignal {
+    handle.apply_embedded_ready_signal(closeredge_core::core::jsonrpc::EmbeddedReadySignal {
         port: 7789,
         fallback_from: Some(7788),
     });
@@ -137,7 +137,7 @@ fn ensure_running_does_not_publish_token_to_env() {
     );
 }
 
-/// Issue #1613: when the preferred port is occupied by a non-OpenHuman
+/// Issue #1613: when the preferred port is occupied by a non-CloserEdge AI
 /// listener, startup should fall back to a nearby port instead of failing.
 #[test]
 fn ensure_running_falls_back_for_unknown_listener_on_port() {

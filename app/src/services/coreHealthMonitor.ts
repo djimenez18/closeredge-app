@@ -12,6 +12,7 @@
  */
 import { setCore } from '../store/connectivitySlice';
 import { store } from '../store/index';
+import { isTauri } from '../utils/tauriCommands/common';
 import { callCoreRpc } from './coreRpcClient';
 
 const HEALTHY_INTERVAL_MS = 30_000;
@@ -52,6 +53,16 @@ function schedule(): void {
 
 export function startCoreHealthMonitor(): void {
   if (!stopped) return;
+
+  // In browser mode (no Tauri runtime) there is no local Rust sidecar to
+  // poll. Mark the core channel as reachable so the UI doesn't show a
+  // permanent "Core offline / Reconnecting" banner and leave the monitor
+  // dormant. The desktop (Tauri) path is unchanged.
+  if (!isTauri()) {
+    store.dispatch(setCore({ value: 'reachable' }));
+    return;
+  }
+
   stopped = false;
   consecutiveFails = 0;
   void probe();

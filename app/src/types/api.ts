@@ -29,12 +29,6 @@ export interface IUserUsage {
   cycleStartDate: Date;
 }
 
-export interface UserReferral {
-  invitedByCode?: string | null;
-  inviteCodeUsedAt?: string;
-  invitedBy?: string | null;
-}
-
 export interface UserSettings {
   dailySummariesEnabled: boolean;
   dailySummaryUtcTriggerHour?: number;
@@ -50,7 +44,6 @@ export interface User {
   telegramId: number;
   hasAccess: boolean;
   magicWord: string;
-  referral: UserReferral;
   subscription: UserSubscription;
   role: 'admin' | 'team' | 'user';
   settings: UserSettings;

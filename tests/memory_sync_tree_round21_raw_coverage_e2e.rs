@@ -15,29 +15,29 @@ use chrono::{TimeZone, Utc};
 use serde_json::{json, Value};
 use tempfile::TempDir;
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::memory::global as memory_global;
-use openhuman_core::openhuman::memory_store::chunks::store::with_connection;
-use openhuman_core::openhuman::memory_store::content::atomic::stage_summary;
-use openhuman_core::openhuman::memory_store::content::{SummaryComposeInput, SummaryTreeKind};
-use openhuman_core::openhuman::memory_store::trees::types::{SummaryNode, Tree, TreeKind};
-use openhuman_core::openhuman::memory_sync::composio::periodic::record_sync_success;
-use openhuman_core::openhuman::memory_sync::composio::providers::gmail::GmailProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::linear::LinearProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::slack::rpc::{
+use closeredge_core::openhuman::memory::global as memory_global;
+use closeredge_core::openhuman::memory_store::chunks::store::with_connection;
+use closeredge_core::openhuman::memory_store::content::atomic::stage_summary;
+use closeredge_core::openhuman::memory_store::content::{SummaryComposeInput, SummaryTreeKind};
+use closeredge_core::openhuman::memory_store::trees::types::{SummaryNode, Tree, TreeKind};
+use closeredge_core::openhuman::memory_sync::composio::periodic::record_sync_success;
+use closeredge_core::openhuman::memory_sync::composio::providers::gmail::GmailProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::linear::LinearProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::slack::rpc::{
     sync_status_rpc, SyncStatusRequest,
 };
-use openhuman_core::openhuman::memory_sync::composio::providers::sync_state::SyncState;
-use openhuman_core::openhuman::memory_sync::composio::providers::{
+use closeredge_core::openhuman::memory_sync::composio::providers::sync_state::SyncState;
+use closeredge_core::openhuman::memory_sync::composio::providers::{
     ComposioProvider, ProviderContext, SyncReason, TaskFetchFilter,
 };
-use openhuman_core::openhuman::memory_tree::retrieval::source::query_source;
-use openhuman_core::openhuman::memory_tree::score::embed::{pack_embedding, EMBEDDING_DIM};
-use openhuman_core::openhuman::memory_tree::tree::store as tree_store;
-use openhuman_core::openhuman::memory_tree::tree::TreeStatus;
+use closeredge_core::openhuman::memory_tree::retrieval::source::query_source;
+use closeredge_core::openhuman::memory_tree::score::embed::{pack_embedding, EMBEDDING_DIM};
+use closeredge_core::openhuman::memory_tree::tree::store as tree_store;
+use closeredge_core::openhuman::memory_tree::tree::TreeStatus;
 
 static ENV_LOCK: OnceLock<Mutex<()>> = OnceLock::new();
 
@@ -468,7 +468,7 @@ async fn memory_tree_source_query_filters_reranks_and_hydrates_manual_summaries(
     let chat = query_source(
         &config,
         None,
-        Some(openhuman_core::openhuman::memory_store::chunks::types::SourceKind::Chat),
+        Some(closeredge_core::openhuman::memory_store::chunks::types::SourceKind::Chat),
         None,
         Some("semantic query keeps embedded rows first"),
         10,

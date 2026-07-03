@@ -1,0 +1,16 @@
+{
+  "name": "Forge",
+  "slug": "forge",
+  "industry": "home_services",
+  "tagline": "Your AI Contractor Assistant",
+  "description": "Forge handles job scheduling, estimate generation, customer follow-ups, review management, and crew coordination for home services contractors.",
+  "core_agents": ["scheduler", "estimator", "follow-up", "review-manager", "dispatch"],
+  "pro_agents": ["voice-booking", "servicetitan-sync", "marketing"],
+  "elite_agents": ["recruiter", "fleet-manager"],
+  "integrations": {
+    "foundation": ["gmail", "google_calendar", "telegram"],
+    "pro": ["elevenlabs_voice", "servicetitan", "jobber"],
+    "elite": ["custom_fleet", "recruiting_platforms"]
+  },
+  "brain_domains": ["trade_licensing", "building_codes", "seasonal_pricing", "warranty_management"]
+}

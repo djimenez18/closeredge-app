@@ -16,15 +16,15 @@ use axum::{Json, Router};
 use serde_json::{json, Value};
 use tempfile::{Builder, TempDir};
 
-use openhuman_core::openhuman::composio::ops::{
+use closeredge_core::openhuman::composio::ops::{
     cached_active_integrations, composio_authorize, composio_execute, composio_list_connections,
     composio_list_toolkits, composio_list_tools, fetch_connected_integrations_status,
 };
-use openhuman_core::openhuman::composio::{
+use closeredge_core::openhuman::composio::{
     invalidate_connected_integrations_cache, FetchConnectedIntegrationsStatus,
 };
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::tools::{ComposioListToolsTool, Tool, ToolCallOptions};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::tools::{ComposioListToolsTool, Tool, ToolCallOptions};
 
 static ENV_LOCK: OnceLock<Mutex<()>> = OnceLock::new();
 

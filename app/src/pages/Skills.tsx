@@ -15,7 +15,6 @@ import PillTabBar from '../components/PillTabBar';
 import AutocompleteSetupModal from '../components/skills/AutocompleteSetupModal';
 import CreateSkillModal from '../components/skills/CreateSkillModal';
 import InstallSkillDialog from '../components/skills/InstallSkillDialog';
-// import MeetingBotsCard from '../components/skills/MeetingBotsCard';
 import ScreenIntelligenceSetupModal from '../components/skills/ScreenIntelligenceSetupModal';
 import UnifiedSkillCard from '../components/skills/SkillCard';
 import { SKILL_CATEGORY_ORDER, type SkillCategory } from '../components/skills/skillCategories';
@@ -919,13 +918,15 @@ export default function Skills() {
             </div> */}
 
             {composioError && (
-              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 shadow-soft">
+              <div className="rounded-2xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 p-3 shadow-soft">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <h2 className="text-sm font-semibold text-amber-900">
+                    <h2 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
                       {t('skills.composio.staleStatusTitle')}
                     </h2>
-                    <p className="mt-1 text-xs leading-relaxed text-amber-800">{composioError}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-amber-800 dark:text-amber-300">
+                      {composioError}
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -1022,8 +1023,6 @@ export default function Skills() {
                   </div>
                 )}
 
-                {/* <MeetingBotsCard onToast={addToast} /> */}
-
                 {activeTab === 'composio' && (
                   <div className="rounded-2xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3 shadow-soft animate-fade-up">
                     <div className="px-1 pb-3 pt-1">
@@ -1111,7 +1110,21 @@ export default function Skills() {
                       </div>
                     ) : (
                       <div className="flex flex-col items-center justify-center py-16 text-center">
-                        <div className="text-3xl mb-3">🔌</div>
+                        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 dark:bg-primary-500/10">
+                          <svg
+                            className="h-6 w-6 text-primary-500 dark:text-primary-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={1.5}
+                            aria-hidden="true">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                            />
+                          </svg>
+                        </div>
                         <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">
                           {t('misc.comingSoon')}
                         </p>

@@ -38,15 +38,15 @@ const OAUTH_LOADING_TIMEOUT_MS = 300_000;
 const OAUTH_PREFLIGHT_TIMEOUT_MS = 4_000;
 
 const BACKEND_UNAVAILABLE_MESSAGE =
-  'OpenHuman cloud sign-in is temporarily unavailable. Please try again in a few minutes.';
+  'CloserEdge AI cloud sign-in is temporarily unavailable. Please try again in a few minutes.';
 
 const log = debug('oauth:button');
 const warnLog = debug('oauth:button:warn');
 const errorLog = debug('oauth:button:error');
 
 const SAFE_READINESS_STARTUP_MESSAGE_PREFIXES = [
-  'Finish choosing how OpenHuman runs',
-  'OpenHuman could not reach its local runtime',
+  'Finish choosing how CloserEdge AI runs',
+  'CloserEdge AI could not reach its local runtime',
 ];
 
 const getSafeReadinessStartupMessage = (error: unknown): string | null => {
@@ -71,7 +71,7 @@ const getOAuthStartupFailureMessage = (provider: OAuthProviderConfig, error?: un
   }
 
   if (provider.id === 'twitter') {
-    return 'Twitter/X sign-in could not start. Check that the Twitter OAuth app callback URL, client ID/secret, and requested scopes match the OpenHuman backend, then try again.';
+    return 'Twitter/X sign-in could not start. Check that the Twitter OAuth app callback URL, client ID/secret, and requested scopes match the CloserEdge AI backend, then try again.';
   }
 
   return `${provider.name} sign-in could not start. Please try again.`;
@@ -209,7 +209,7 @@ const OAuthProviderButton = ({
     browserOpenedRef.current = false;
 
     try {
-      // Fail-fast pre-flight: hitting `api.tinyhumans.ai/health` before opening
+      // Fail-fast pre-flight: hitting `api.closeredge.ai/health` before opening
       // the browser lets us catch Cloudflare 504s / DNS outages immediately
       // (issue #1985) instead of sending the user into a system browser that
       // lands on a gateway-error page with no path back into the app.

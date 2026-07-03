@@ -387,7 +387,7 @@ function useAISettings() {
       // unreachable between add-time and save-time, etc.) before they reach
       // the saved config and start routing chat traffic to a dead host.
       //
-      // OpenHuman is exempt (session JWT, no /models endpoint to hit).
+      // CloserEdge AI is exempt (session JWT, no /models endpoint to hit).
       const savedById = new Map(saved.cloudProviders.map(p => [p.id, p]));
       const toProbe = draft.cloudProviders.filter(p => {
         if (p.slug === 'openhuman') return false;
@@ -841,7 +841,7 @@ function summarizeSpendSample(transactions: CreditTransaction[]) {
 }
 
 function describeProvider(ref: ProviderRef, providers: BackgroundLoopProviderView[]): string {
-  if (ref.kind === 'openhuman') return 'Managed · OpenHuman';
+  if (ref.kind === 'openhuman') return 'Managed · CloserEdge AI';
   if (ref.kind === 'default') return 'Default route';
   if (ref.kind === 'local') return `Local ${ref.model}`;
   const provider = providers.find(p => p.slug === ref.providerSlug);
@@ -1789,7 +1789,7 @@ const CustomRoutingDialog = ({
 }: CustomRoutingDialogProps) => {
   const { t } = useT();
   // Non-openhuman cloud providers + local-ollama (if available) are the
-  // "Custom" options. OpenHuman is its own Managed path; Default serializes
+  // "Custom" options. CloserEdge AI is its own Managed path; Default serializes
   // to the backend's `cloud` sentinel.
   const customCloud = cloudProviders.filter(p => p.slug !== 'openhuman');
   const localAvailable = ollamaRunning && localModels.length > 0;
@@ -2936,7 +2936,7 @@ const AIPanel = ({ embedded = false }: AIPanelProps = {}) => {
         {/* end of Auth section */}
 
         {/* ═══════════════════════════════════════════════════════════════
-            ROUTING — top-level routing mode. Managed = OpenHuman decides.
+            ROUTING — top-level routing mode. Managed = CloserEdge AI decides.
             Own = one provider/model for everything. Custom = fine-grained
             per-workload routing.
             ═══════════════════════════════════════════════════════════════ */}
@@ -3146,7 +3146,7 @@ const AIPanel = ({ embedded = false }: AIPanelProps = {}) => {
 
               // Live verification — flush the new cloud_providers list and
               // call `/models` through the Rust controller. Skip for the
-              // OpenHuman backend (session JWT, no probe-able endpoint).
+              // CloserEdge AI backend (session JWT, no probe-able endpoint).
               if (upserted.slug !== 'openhuman') {
                 const list =
                   editing === 'new'

@@ -2,9 +2,9 @@ import createDebug from 'debug';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import BrandWordmark from '../components/BrandWordmark';
 import OAuthProviderButton from '../components/oauth/OAuthProviderButton';
 import { oauthProviderConfigs } from '../components/oauth/providerConfigs';
-import RotatingTetrahedronCanvas from '../components/RotatingTetrahedronCanvas';
 import Button from '../components/ui/Button';
 import { useT } from '../lib/i18n/I18nContext';
 import { useCoreState } from '../providers/CoreStateProvider';
@@ -127,12 +127,10 @@ const Welcome = () => {
             </button>
           </div>
           <div className="flex justify-center mb-6">
-            <div className="h-20 w-20">
-              <RotatingTetrahedronCanvas />
-            </div>
+            <BrandWordmark className="h-10 w-auto" />
           </div>
 
-          <h1 className="text-2xl font-bold text-stone-900 dark:text-neutral-100 text-center mb-2">
+          <h1 className="text-2xl font-display font-bold text-stone-900 dark:text-neutral-100 text-center mb-2">
             {t('welcome.title')}
           </h1>
 

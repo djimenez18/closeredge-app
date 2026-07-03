@@ -527,7 +527,7 @@ async fn build_runtime_snapshot(config: &Config, req_id: u64) -> RuntimeSnapshot
                     ServiceStatus {
                         state: ServiceState::Unknown(message.clone()),
                         unit_path: None,
-                        label: "OpenHuman".to_string(),
+                        label: "CloserEdge AI".to_string(),
                         details: Some(message),
                     }
                 }
@@ -600,7 +600,7 @@ pub async fn snapshot() -> Result<RpcOutcome<AppStateSnapshot>, String> {
     // than serially halves the worst-case bootstrap latency when the backend is
     // unreachable. Together with the fast auth-profile lock reclaim this keeps
     // the first `app_state_snapshot` from stranding the UI on "Initializing
-    // OpenHuman" (the FE clears `isBootstrapping` on this call). `tokio::join!`
+    // CloserEdge AI" (the FE clears `isBootstrapping` on this call). `tokio::join!`
     // polls both on the current task — no extra threads.
     let t_enrich = Instant::now();
     let current_user_future = async {
@@ -758,7 +758,7 @@ fn degraded_runtime_snapshot(config: &Config) -> RuntimeSnapshot {
         service: ServiceStatus {
             state: ServiceState::Unknown("snapshot timed out".to_string()),
             unit_path: None,
-            label: "OpenHuman".to_string(),
+            label: "CloserEdge AI".to_string(),
             details: Some("runtime snapshot timed out".to_string()),
         },
     }

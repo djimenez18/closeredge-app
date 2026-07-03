@@ -124,13 +124,13 @@ export default function AgentWorkflows() {
 
             {/* Error banner */}
             {storeError ? (
-              <div className="rounded-2xl border border-coral-200 bg-coral-50 p-3 shadow-soft">
+              <div className="rounded-2xl border border-coral-200 dark:border-coral-500/30 bg-coral-50 dark:bg-coral-500/10 p-3 shadow-soft">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-xs text-coral-800">{storeError}</p>
+                  <p className="text-xs text-coral-800 dark:text-coral-200">{storeError}</p>
                   <button
                     type="button"
                     onClick={() => void dispatch(loadWorkflows())}
-                    className="flex-shrink-0 rounded-lg border border-coral-200 bg-white px-3 py-1.5 text-[11px] font-medium text-coral-700 hover:bg-coral-50">
+                    className="flex-shrink-0 rounded-lg border border-coral-200 dark:border-coral-500/40 bg-white dark:bg-neutral-900 px-3 py-1.5 text-[11px] font-medium text-coral-700 dark:text-coral-300 hover:bg-coral-50 dark:hover:bg-coral-500/15">
                     {t('common.retry')}
                   </button>
                 </div>

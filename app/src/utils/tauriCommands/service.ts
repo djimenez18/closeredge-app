@@ -32,7 +32,7 @@ export interface RestartStatus {
 
 export async function openhumanServiceInstall(): Promise<CommandResponse<ServiceStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { state: 'NotInstalled', label: 'browser-mode' }, logs: [] };
   }
   try {
     return await callCoreRpc<CommandResponse<ServiceStatus>>({
@@ -46,7 +46,7 @@ export async function openhumanServiceInstall(): Promise<CommandResponse<Service
 
 export async function openhumanServiceStart(): Promise<CommandResponse<ServiceStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { state: 'NotInstalled', label: 'browser-mode' }, logs: [] };
   }
   try {
     return await callCoreRpc<CommandResponse<ServiceStatus>>({ method: 'openhuman.service_start' });
@@ -58,7 +58,7 @@ export async function openhumanServiceStart(): Promise<CommandResponse<ServiceSt
 
 export async function openhumanServiceStop(): Promise<CommandResponse<ServiceStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { state: 'NotInstalled', label: 'browser-mode' }, logs: [] };
   }
   try {
     return await callCoreRpc<CommandResponse<ServiceStatus>>({ method: 'openhuman.service_stop' });
@@ -70,7 +70,7 @@ export async function openhumanServiceStop(): Promise<CommandResponse<ServiceSta
 
 export async function openhumanServiceStatus(): Promise<CommandResponse<ServiceStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { state: 'NotInstalled', label: 'browser-mode' }, logs: [] };
   }
   try {
     return await callCoreRpc<CommandResponse<ServiceStatus>>({
@@ -84,7 +84,7 @@ export async function openhumanServiceStatus(): Promise<CommandResponse<ServiceS
 
 export async function openhumanServiceUninstall(): Promise<CommandResponse<ServiceStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { state: 'NotInstalled', label: 'browser-mode' }, logs: [] };
   }
   try {
     return await callCoreRpc<CommandResponse<ServiceStatus>>({
@@ -101,7 +101,10 @@ export async function openhumanServiceRestart(
   reason?: string
 ): Promise<CommandResponse<RestartStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return {
+      result: { accepted: false, source: 'browser-mode', reason: 'Not available in browser mode' },
+      logs: [],
+    };
   }
   return await callCoreRpc<CommandResponse<RestartStatus>>({
     method: 'openhuman.service_restart',
@@ -111,7 +114,9 @@ export async function openhumanServiceRestart(
 
 export async function openhumanAgentServerStatus(): Promise<CommandResponse<AgentServerStatus>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    // Browser mode — no local sidecar. Return a non-running stub so callers
+    // degrade gracefully instead of spamming "Not running in Tauri" errors.
+    return { result: { running: false, url: '' }, logs: [] };
   }
   return await callCoreRpc<CommandResponse<AgentServerStatus>>({
     method: 'openhuman.agent_server_status',
@@ -120,7 +125,7 @@ export async function openhumanAgentServerStatus(): Promise<CommandResponse<Agen
 
 export async function openhumanGetDaemonHostConfig(): Promise<CommandResponse<DaemonHostConfig>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { show_tray: false }, logs: [] };
   }
   return await callCoreRpc<CommandResponse<DaemonHostConfig>>({
     method: 'openhuman.service_daemon_host_get',
@@ -131,7 +136,7 @@ export async function openhumanSetDaemonHostConfig(
   showTray: boolean
 ): Promise<CommandResponse<DaemonHostConfig>> {
   if (!isTauri()) {
-    throw new Error('Not running in Tauri');
+    return { result: { show_tray: showTray }, logs: [] };
   }
   return await callCoreRpc<CommandResponse<DaemonHostConfig>>({
     method: 'openhuman.service_daemon_host_set',

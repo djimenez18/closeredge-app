@@ -1,4 +1,4 @@
-export type MascotColor = 'yellow' | 'burgundy' | 'black' | 'navy' | 'green';
+export type MascotColor = 'yellow' | 'burgundy' | 'black' | 'navy' | 'green' | 'purple';
 
 export interface MascotPalette {
   armHighlightMatrix: string;
@@ -65,6 +65,16 @@ const palettes: Record<MascotColor, MascotPalette> = {
     headHighlightMatrix: '0 0 0 0 0.780392 0 0 0 0 0.894118 0 0 0 0 0.733333 0 0 0 1 0',
     headShadowMatrix: '0 0 0 0 0.113725 0 0 0 0 0.270588 0 0 0 0 0.117647 0 0 0 1 0',
     neckShadowColor: '#2E5A24',
+  },
+  purple: {
+    armHighlightMatrix: '0 0 0 0 0.619608 0 0 0 0 0.439216 0 0 0 0 0.878431 0 0 0 1 0',
+    armShadowMatrix: '0 0 0 0 0.298039 0 0 0 0 0.133333 0 0 0 0 0.580392 0 0 0 1 0',
+    bodyFill: '#7C3AED',
+    bodyHighlightMatrix: '0 0 0 0 0.619608 0 0 0 0 0.439216 0 0 0 0 0.878431 0 0 0 1 0',
+    bodyShadowMatrix: '0 0 0 0 0.298039 0 0 0 0 0.133333 0 0 0 0 0.580392 0 0 0 1 0',
+    headHighlightMatrix: '0 0 0 0 0.819608 0 0 0 0 0.698039 0 0 0 0 0.956863 0 0 0 1 0',
+    headShadowMatrix: '0 0 0 0 0.298039 0 0 0 0 0.133333 0 0 0 0 0.580392 0 0 0 1 0',
+    neckShadowColor: '#4C1D95',
   },
 };
 

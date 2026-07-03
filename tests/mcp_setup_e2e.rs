@@ -10,8 +10,8 @@
 use std::collections::HashMap;
 use std::time::Duration;
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::mcp_registry::setup::{self, SecretRef};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::mcp_registry::setup::{self, SecretRef};
 
 #[tokio::test]
 async fn request_secret_blocks_until_submit_then_resolves() {
@@ -53,7 +53,7 @@ async fn request_secret_blocks_until_submit_then_resolves() {
 
 #[tokio::test]
 async fn test_connection_against_stub_returns_tools() {
-    use openhuman_core::openhuman::mcp_client::McpStdioClient;
+    use closeredge_core::openhuman::mcp_client::McpStdioClient;
 
     // Mirror what setup_ops::test_connection does end-to-end, minus the
     // registry::registry_get step (we don't want to hit a real upstream

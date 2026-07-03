@@ -80,8 +80,8 @@ pub async fn scan(cdp: &mut CdpConn, session: &str) -> Result<DomScan, String> {
 pub fn scan_to_core_payload(
     account_id: &str,
     scan: &DomScan,
-) -> openhuman_core::openhuman::webview_accounts::WechatScanPayload {
-    use openhuman_core::openhuman::webview_accounts::{
+) -> closeredge_core::openhuman::webview_accounts::WechatScanPayload {
+    use closeredge_core::openhuman::webview_accounts::{
         WechatChatRow, WechatMessageRow, WechatScanPayload,
     };
     WechatScanPayload {
@@ -114,7 +114,7 @@ pub fn scan_to_core_payload(
 
 #[allow(dead_code)]
 pub fn ingest_payload_for_scan(scan: &DomScan) -> Value {
-    openhuman_core::openhuman::webview_accounts::list_ingest_payload(&scan_to_core_payload(
+    closeredge_core::openhuman::webview_accounts::list_ingest_payload(&scan_to_core_payload(
         "test-account",
         scan,
     ))

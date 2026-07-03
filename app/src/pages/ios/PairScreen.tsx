@@ -8,7 +8,7 @@
  *   4. Generates a fresh device X25519 keypair.
  *   5. Builds a ConnectionProfile and saves it via profileStore.
  *   6. Probes the channel via TransportManager.isHealthy().
- *   7. On success: navigates to /human (mobile tab bar shows Human/Chat/Settings).
+ *   7. On success: navigates to /chat (mobile tab bar shows Chat/Settings).
  *   8. On failure: shows error + retry button.
  *
  * No dynamic imports. Static import of barcode scanner — caller guard is
@@ -160,16 +160,16 @@ export const PairScreen: FC = () => {
         setState({ kind: 'error', message: t('iosPair.error.unreachableDesktop') });
         return;
       }
-      log('[ios] transport healthy kind=%s; navigating to /human', transport.kind);
+      log('[ios] transport healthy kind=%s; navigating to /chat', transport.kind);
     } catch (err) {
       logErr('[ios] transport probe error: %o', err);
       setState({ kind: 'error', message: t('iosPair.error.connectionFailed') });
       return;
     }
 
-    // 6. Navigate to the Human page now that pairing is established.
+    // 6. Navigate to the chat page now that pairing is established.
     setState({ kind: 'success' });
-    navigate('/human', { replace: true });
+    navigate('/chat', { replace: true });
   }
 
   return (

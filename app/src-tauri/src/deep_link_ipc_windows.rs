@@ -1,6 +1,6 @@
 //! Pre-CEF deep-link forwarding for Windows.
 //!
-//! `openhuman://` OAuth callbacks launch a second `OpenHuman.exe` with the
+//! `openhuman://` OAuth callbacks launch a second `CloserEdgeAI.exe` with the
 //! URL in argv. The Windows pre-CEF mutex guard exits secondaries before Tauri's
 //! single-instance/deep-link plugins can run, so the URL must be forwarded here.
 
@@ -342,7 +342,7 @@ mod tests {
     #[test]
     fn collect_deep_link_urls_filters_args() {
         let urls = collect_deep_link_urls_from_args([
-            "OpenHuman.exe",
+            "CloserEdgeAI.exe",
             "openhuman://auth?token=secret&key=auth",
             "--flag",
             "https://example.test",

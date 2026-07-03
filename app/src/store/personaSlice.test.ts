@@ -96,7 +96,7 @@ describe('personaSlice', () => {
       const seeded = reducer(undefined, setPersonaDisplayName('Nova'));
       const after = reducer(seeded, {
         type: REHYDRATE,
-        key: 'mascot',
+        key: 'theme',
         payload: { displayName: 'overwritten' },
       });
       expect(after.displayName).toBe('Nova');

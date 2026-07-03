@@ -148,10 +148,9 @@ const Routines = () => {
 
         {/* Loading */}
         {loading && (
-          <div className="flex justify-center py-12">
-            <div className="text-sm text-stone-400 dark:text-neutral-500">
-              {t('routines.loading')}
-            </div>
+          <div className="flex flex-col items-center justify-center gap-3 py-12">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-stone-300 dark:border-neutral-700 border-t-primary-500" />
+            <p className="text-sm text-stone-400 dark:text-neutral-500">{t('routines.loading')}</p>
           </div>
         )}
 

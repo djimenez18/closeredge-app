@@ -1,16 +1,18 @@
 use async_trait::async_trait;
-use openhuman_core::core::event_bus::{init_global, request_native_global, DEFAULT_CAPACITY};
-use openhuman_core::openhuman::agent::bus::{
+use closeredge_core::core::event_bus::{init_global, request_native_global, DEFAULT_CAPACITY};
+use closeredge_core::openhuman::agent::bus::{
     register_agent_handlers, AgentTurnRequest, AgentTurnResponse, AGENT_RUN_TURN_METHOD,
 };
-use openhuman_core::openhuman::agent::progress::AgentProgress;
-use openhuman_core::openhuman::config::{MultimodalConfig, MultimodalFileConfig};
-use openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::agent::progress::AgentProgress;
+use closeredge_core::openhuman::config::{MultimodalConfig, MultimodalFileConfig};
+use closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ProviderDelta, UsageInfo,
 };
-use openhuman_core::openhuman::security::POLICY_BLOCKED_MARKER;
-use openhuman_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult, ToolScope};
+use closeredge_core::openhuman::security::POLICY_BLOCKED_MARKER;
+use closeredge_core::openhuman::tools::{
+    PermissionLevel, Tool, ToolContent, ToolResult, ToolScope,
+};
 use serde_json::json;
 use std::collections::VecDeque;
 use std::sync::{Arc, Mutex};

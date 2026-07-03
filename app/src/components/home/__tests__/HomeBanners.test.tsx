@@ -1,10 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { BILLING_DASHBOARD_URL, DISCORD_INVITE_URL } from '../../../utils/links';
+import { SUBSCRIPTION_ROUTE } from '../../../constants/links';
+import { COMMUNITY_URL } from '../../../utils/links';
 import { openUrl } from '../../../utils/openUrl';
 import {
-  DiscordBanner,
+  CommunityBanner,
   EarlyBirdyBanner,
   PromotionalCreditsBanner,
   UsageLimitBanner,
@@ -12,12 +13,18 @@ import {
 
 vi.mock('../../../utils/openUrl', () => ({ openUrl: vi.fn() }));
 
+const mockNavigate = vi.hoisted(() => vi.fn());
+vi.mock('react-router-dom', async importOriginal => {
+  const actual = await importOriginal<typeof import('react-router-dom')>();
+  return { ...actual, useNavigate: () => mockNavigate };
+});
+
 describe('HomeBanners', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('opens the billing dashboard through openUrl from the usage limit banner', () => {
+  it('navigates to the in-app subscription page from the usage limit banner', () => {
     render(
       <UsageLimitBanner
         tone="warning"
@@ -30,7 +37,8 @@ describe('HomeBanners', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Buy top-up credits' }));
 
-    expect(openUrl).toHaveBeenCalledWith('https://tinyhumans.ai/dashboard');
+    expect(mockNavigate).toHaveBeenCalledWith(SUBSCRIPTION_ROUTE);
+    expect(openUrl).not.toHaveBeenCalled();
   });
 
   it('renders danger tone styles for UsageLimitBanner', () => {
@@ -45,23 +53,24 @@ describe('HomeBanners', () => {
     );
     expect(screen.getByText('Out of Usage')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Get a subscription' }));
-    expect(openUrl).toHaveBeenCalledWith(BILLING_DASHBOARD_URL);
+    expect(mockNavigate).toHaveBeenCalledWith(SUBSCRIPTION_ROUTE);
   });
 
-  it('opens the billing dashboard through openUrl from the promotional credits banner', () => {
+  it('navigates to the in-app subscription page from the promotional credits banner', () => {
     render(<PromotionalCreditsBanner promoCredits={12} />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Get a subscription' }));
 
-    expect(openUrl).toHaveBeenCalledWith('https://tinyhumans.ai/dashboard');
+    expect(mockNavigate).toHaveBeenCalledWith(SUBSCRIPTION_ROUTE);
+    expect(openUrl).not.toHaveBeenCalled();
   });
 
-  it('opens the Discord invite through openUrl from the Discord banner', () => {
-    render(<DiscordBanner />);
+  it('opens the community URL through openUrl from the community banner', () => {
+    render(<CommunityBanner />);
 
-    fireEvent.click(screen.getByRole('button', { name: /join our discord/i }));
+    fireEvent.click(screen.getByRole('button', { name: /join our community/i }));
 
-    expect(openUrl).toHaveBeenCalledWith(DISCORD_INVITE_URL);
+    expect(openUrl).toHaveBeenCalledWith(COMMUNITY_URL);
   });
 
   describe('EarlyBirdyBanner', () => {
@@ -72,12 +81,13 @@ describe('HomeBanners', () => {
       expect(screen.getByText('EARLYBIRDY')).toBeInTheDocument();
     });
 
-    it('opens the billing dashboard when the subscription link is clicked', () => {
+    it('navigates to the in-app subscription page when the subscription link is clicked', () => {
       render(<EarlyBirdyBanner />);
 
       fireEvent.click(screen.getByRole('button', { name: /first subscription/i }));
 
-      expect(openUrl).toHaveBeenCalledWith(BILLING_DASHBOARD_URL);
+      expect(mockNavigate).toHaveBeenCalledWith(SUBSCRIPTION_ROUTE);
+      expect(openUrl).not.toHaveBeenCalled();
     });
 
     it('does not render a dismiss button when onDismiss is not provided', () => {
@@ -106,12 +116,13 @@ describe('HomeBanners', () => {
       expect(onDismiss).toHaveBeenCalledOnce();
     });
 
-    it('does not call openUrl when the dismiss button is clicked', () => {
+    it('does not navigate when the dismiss button is clicked', () => {
       const onDismiss = vi.fn();
       render(<EarlyBirdyBanner onDismiss={onDismiss} />);
 
       fireEvent.click(screen.getByRole('button', { name: /dismiss early bird banner/i }));
 
+      expect(mockNavigate).not.toHaveBeenCalled();
       expect(openUrl).not.toHaveBeenCalled();
     });
   });

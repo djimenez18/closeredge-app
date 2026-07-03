@@ -15,28 +15,28 @@ use axum::{Json, Router};
 use serde_json::{json, Value};
 use tempfile::TempDir;
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::memory_sources::readers::SourceReader;
-use openhuman_core::openhuman::memory_sources::{
+use closeredge_core::openhuman::memory_sources::readers::SourceReader;
+use closeredge_core::openhuman::memory_sources::{
     add_source, get_source, list_enabled_by_kind, list_sources, remove_source, update_source,
     upsert_composio_source, MemorySourceEntry, MemorySourcePatch, SourceKind,
 };
-use openhuman_core::openhuman::memory_sync::composio::bus::{
+use closeredge_core::openhuman::memory_sync::composio::bus::{
     ComposioConfigChangedSubscriber, ComposioConnectionCreatedSubscriber, ComposioTriggerSubscriber,
 };
-use openhuman_core::openhuman::memory_sync::composio::providers::clickup::ClickUpProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::github::GitHubProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::gmail::GmailProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::slack::{
+use closeredge_core::openhuman::memory_sync::composio::providers::clickup::ClickUpProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::github::GitHubProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::gmail::GmailProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::slack::{
     run_backfill_via_search, SlackProvider,
 };
-use openhuman_core::openhuman::memory_sync::composio::providers::{
+use closeredge_core::openhuman::memory_sync::composio::providers::{
     ComposioProvider, ProviderContext, SyncReason, TaskFetchFilter,
 };
-use openhuman_core::openhuman::memory_sync::composio::{
+use closeredge_core::openhuman::memory_sync::composio::{
     all_composio_sync_providers, get_composio_sync_provider, init_default_composio_sync_providers,
 };
 
@@ -253,7 +253,7 @@ async fn rss_reader_lists_reads_and_reports_feed_errors_from_loopback() {
     );
     let (base, server) = loopback_router(router).await;
 
-    let reader = openhuman_core::openhuman::memory_sources::readers::rss::RssReader;
+    let reader = closeredge_core::openhuman::memory_sources::readers::rss::RssReader;
     let mut entry = source(SourceKind::RssFeed, "rss-round15");
     entry.url = Some(format!("{base}/rss"));
     entry.max_items = Some(1);
@@ -269,7 +269,7 @@ async fn rss_reader_lists_reads_and_reports_feed_errors_from_loopback() {
     assert_eq!(content.id, "https://example.test/first");
     assert_eq!(
         content.content_type,
-        openhuman_core::openhuman::memory_sources::ContentType::Html
+        closeredge_core::openhuman::memory_sources::ContentType::Html
     );
     assert!(content.body.contains("HTML body"));
 
@@ -314,9 +314,9 @@ async fn github_reader_uses_fake_gh_for_list_and_read_paths() {
     let old_path = std::env::var("PATH").unwrap_or_default();
     let _path = EnvGuard::set("PATH", format!("{}:{old_path}", bin.display()));
 
-    let reader = openhuman_core::openhuman::memory_sources::readers::github::GithubReader;
+    let reader = closeredge_core::openhuman::memory_sources::readers::github::GithubReader;
     let mut entry = source(SourceKind::GithubRepo, "github-round15");
-    entry.url = Some("https://github.com/tinyhumansai/openhuman.git".to_string());
+    entry.url = Some("https://github.com/closeredgeai/closeredge.git".to_string());
 
     let items = reader
         .list_items(&entry, &config)
@@ -365,7 +365,7 @@ async fn github_reader_uses_fake_gh_for_list_and_read_paths() {
     assert!(invalid.contains("invalid item id"));
 
     let mut bad_url = entry;
-    bad_url.url = Some("https://github.com/tinyhumansai/openhuman/tree/main".to_string());
+    bad_url.url = Some("https://github.com/closeredgeai/closeredge/tree/main".to_string());
     let bad = reader
         .list_items(&bad_url, &config)
         .await
@@ -430,7 +430,7 @@ async fn composio_providers_fetch_profiles_tasks_and_cover_error_branches() {
         .fetch_tasks(
             &ctx,
             &TaskFetchFilter {
-                repo: Some("tinyhumansai/openhuman".to_string()),
+                repo: Some("closeredgeai/closeredge".to_string()),
                 labels: vec!["coverage".to_string()],
                 state: Some("open".to_string()),
                 max: 2,
@@ -513,19 +513,19 @@ fn composio_provider_registry_and_bus_subscribers_expose_stable_metadata() {
     let connection = ComposioConnectionCreatedSubscriber::new();
     let config_changed = ComposioConfigChangedSubscriber::new();
     assert_eq!(
-        openhuman_core::core::event_bus::EventHandler::name(&trigger),
+        closeredge_core::core::event_bus::EventHandler::name(&trigger),
         "composio::trigger"
     );
     assert_eq!(
-        openhuman_core::core::event_bus::EventHandler::domains(&trigger),
+        closeredge_core::core::event_bus::EventHandler::domains(&trigger),
         Some(&["composio"][..])
     );
     assert_eq!(
-        openhuman_core::core::event_bus::EventHandler::name(&connection),
+        closeredge_core::core::event_bus::EventHandler::name(&connection),
         "composio::connection_created"
     );
     assert_eq!(
-        openhuman_core::core::event_bus::EventHandler::name(&config_changed),
+        closeredge_core::core::event_bus::EventHandler::name(&config_changed),
         "composio::config_changed"
     );
 
@@ -555,7 +555,7 @@ fn execute_response_for(body: &Value) -> Value {
                 "number": 17,
                 "title": "Cover provider task normalization",
                 "body": "Add deterministic task fixture coverage",
-                "html_url": "https://github.com/tinyhumansai/openhuman/issues/17",
+                "html_url": "https://github.com/closeredgeai/closeredge/issues/17",
                 "state": "open",
                 "updated_at": "2026-05-29T12:34:56Z",
                 "labels": [{"name": "coverage"}],
@@ -611,37 +611,37 @@ if [[ "${1:-}" != "api" ]]; then
   exit 2
 fi
 case "${2:-}" in
-  repos/tinyhumansai/openhuman/commits?per_page=30)
+  repos/closeredgeai/closeredge/commits?per_page=30)
     cat <<'JSON'
 [{"sha":"abc123","commit":{"message":"Add coverage hooks\n\nMore details","author":{"name":"Ada","email":"ada@example.test","date":"2026-05-28T10:00:00Z"},"committer":{"name":"Ada","email":"ada@example.test","date":"2026-05-28T10:00:00Z"}}}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues?per_page=30\&state=all)
+  repos/closeredgeai/closeredge/issues?per_page=30\&state=all)
     cat <<'JSON'
 [{"number":7,"title":"Memory source reader gap","body":"Needs fixture coverage","state":"open","user":{"login":"ada"},"labels":[{"name":"coverage"}],"created_at":"2026-05-27T10:00:00Z","updated_at":"2026-05-28T11:00:00Z","pull_request":null},{"number":99,"title":"PR-shaped issue","body":"","state":"open","user":{"login":"bot"},"labels":[],"created_at":"2026-05-27T10:00:00Z","updated_at":"2026-05-28T11:00:00Z","pull_request":{}}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/pulls?per_page=30\&state=all)
+  repos/closeredgeai/closeredge/pulls?per_page=30\&state=all)
     cat <<'JSON'
 [{"number":9,"title":"Raw coverage PR","body":"PR body","state":"open","user":{"login":"grace"},"labels":[{"name":"tests"}],"created_at":"2026-05-27T10:00:00Z","updated_at":"2026-05-28T12:00:00Z","merged_at":null,"comments":1}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/commits/abc123)
+  repos/closeredgeai/closeredge/commits/abc123)
     cat <<'JSON'
 {"sha":"abc123","commit":{"message":"Add coverage hooks\n\nMore details","author":{"name":"Ada","email":"ada@example.test","date":"2026-05-28T10:00:00Z"},"committer":{"name":"Ada","email":"ada@example.test","date":"2026-05-28T10:00:00Z"}}}
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues/7)
+  repos/closeredgeai/closeredge/issues/7)
     cat <<'JSON'
 {"number":7,"title":"Memory source reader gap","body":"Needs fixture coverage","state":"open","user":{"login":"ada"},"labels":[{"name":"coverage"}],"created_at":"2026-05-27T10:00:00Z","updated_at":"2026-05-28T11:00:00Z","pull_request":null}
 JSON
     ;;
-  repos/tinyhumansai/openhuman/pulls/9)
+  repos/closeredgeai/closeredge/pulls/9)
     cat <<'JSON'
 {"number":9,"title":"Raw coverage PR","body":"PR body","state":"open","user":{"login":"grace"},"labels":[{"name":"tests"}],"created_at":"2026-05-27T10:00:00Z","updated_at":"2026-05-28T12:00:00Z","merged_at":null,"comments":1}
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues/7/comments?per_page=50|repos/tinyhumansai/openhuman/issues/9/comments?per_page=50)
+  repos/closeredgeai/closeredge/issues/7/comments?per_page=50|repos/closeredgeai/closeredge/issues/9/comments?per_page=50)
     cat <<'JSON'
 [{"user":{"login":"reviewer"},"body":"Looks deterministic","created_at":"2026-05-28T13:00:00Z"}]
 JSON

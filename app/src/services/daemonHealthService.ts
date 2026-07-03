@@ -10,6 +10,7 @@ import {
   updateHealthSnapshot,
 } from '../features/daemon/store';
 import { getCoreStateSnapshot } from '../lib/coreState/store';
+import { isTauri } from '../utils/tauriCommands/common';
 import { callCoreRpc } from './coreRpcClient';
 
 export class DaemonHealthService {
@@ -19,6 +20,12 @@ export class DaemonHealthService {
   private readonly POLL_MS = 2000;
 
   async setupHealthListener(): Promise<(() => void) | null> {
+    // In browser mode there is no local Rust sidecar — skip polling entirely
+    // so we don't fire failed HTTP requests every 2 seconds.
+    if (!isTauri()) {
+      return null;
+    }
+
     if (this.pollingIntervalId) {
       return () => this.cleanup();
     }

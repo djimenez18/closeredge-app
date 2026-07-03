@@ -15,11 +15,11 @@ use std::sync::{Mutex, OnceLock};
 
 use tempfile::tempdir;
 
-use openhuman_core::openhuman::memory::ops::{
+use closeredge_core::openhuman::memory::ops::{
     clear_namespace, doc_put, memory_recall_context, memory_recall_memories, ClearNamespaceParams,
     PutDocParams,
 };
-use openhuman_core::openhuman::memory::rpc_models::{RecallContextRequest, RecallMemoriesRequest};
+use closeredge_core::openhuman::memory::rpc_models::{RecallContextRequest, RecallMemoriesRequest};
 
 // ── Env isolation ────────────────────────────────────────────────────
 

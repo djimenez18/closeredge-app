@@ -1,9 +1,9 @@
 # ---------------------------------------------------------------------------
-# OpenHuman Core — multi-stage Docker build
-# Produces a minimal image running the `openhuman-core` binary (JSON-RPC server).
+# CloserEdge AI Core — multi-stage Docker build
+# Produces a minimal image running the `closeredge-core` binary (JSON-RPC server).
 #
-# Build:   docker build -t openhuman-core .
-# Run:     docker run -p 7788:7788 --env-file .env openhuman-core
+# Build:   docker build -t closeredge-core .
+# Run:     docker run -p 7788:7788 --env-file .env closeredge-core
 # ---------------------------------------------------------------------------
 
 # ==========================================================================
@@ -49,15 +49,17 @@ COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
 RUN mkdir -p src && \
     echo 'fn main() {}' > src/main.rs && \
     echo 'pub fn run_core_from_args(_: &[String]) -> anyhow::Result<()> { Ok(()) }' > src/lib.rs && \
-    cargo build --profile "${CARGO_PROFILE}" --bin openhuman-core 2>/dev/null || true && \
+    cargo build --profile "${CARGO_PROFILE}" --bin closeredge-core 2>/dev/null || true && \
     rm -rf src
 
+# Bust cache to ensure .md prompt files are included
+ARG CACHE_BUST=1
 # Copy actual source and build
 COPY src/ src/
 # Touch main.rs to force rebuild of our code (not deps)
 RUN touch src/main.rs src/lib.rs && \
-    cargo build --profile "${CARGO_PROFILE}" --bin openhuman-core && \
-    cp "target/${CARGO_PROFILE}/openhuman-core" /tmp/openhuman-core
+    cargo build --profile "${CARGO_PROFILE}" --bin closeredge-core && \
+    cp "target/${CARGO_PROFILE}/closeredge-core" /tmp/closeredge-core
 
 # ==========================================================================
 # Stage 2: Minimal runtime image
@@ -80,18 +82,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Non-root user for security — fixed UID/GID so volume ownership is stable
 # across image rebuilds.
-RUN groupadd --gid 10001 openhuman \
- && useradd --uid 10001 --gid 10001 --create-home --shell /bin/bash openhuman
+RUN groupadd --gid 10001 closeredge \
+ && useradd --uid 10001 --gid 10001 --create-home --shell /bin/bash closeredge
 
 # Pre-create and own the workspace directory inside the image so the
 # entrypoint chown is a no-op on a fresh (root-owned) named volume and on
 # first-time anonymous volume mounts.
-ENV HOME=/home/openhuman
-RUN mkdir -p /home/openhuman/.openhuman \
- && chown -R openhuman:openhuman /home/openhuman
+ENV HOME=/home/closeredge
+RUN mkdir -p /home/closeredge/.closeredge \
+ && chown -R closeredge:closeredge /home/closeredge
 
 # Copy the built binary
-COPY --from=builder /tmp/openhuman-core /usr/local/bin/openhuman-core
+COPY --from=builder /tmp/closeredge-core /usr/local/bin/closeredge-core
 
 # Copy the entrypoint script that chowns the workspace volume before dropping
 # privileges.  The script is a separate file so the E2E entrypoint
@@ -104,21 +106,29 @@ RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint-core.sh \
  && chmod +x /usr/local/bin/docker-entrypoint-core.sh
 
 # The entrypoint runs as root so it can chown the mounted volume, then execs
-# gosu to drop to the openhuman user before starting the binary.
+# gosu to drop to the closeredge user before starting the binary.
 USER root
 
 # Default workspace directory
-ENV OPENHUMAN_WORKSPACE=/home/openhuman/.openhuman
+ENV CLOSEREDGE_WORKSPACE=/home/closeredge/.closeredge
 # Bind to all interfaces so the container is reachable
-ENV OPENHUMAN_CORE_HOST=0.0.0.0
-ENV OPENHUMAN_CORE_PORT=7788
+ENV CLOSEREDGE_CORE_HOST=0.0.0.0
+ENV CLOSEREDGE_CORE_PORT=7788
 ENV RUST_LOG=info
 
-EXPOSE 7788
+# Railway (and similar PaaS) injects a PORT env var at runtime.
+# Fall back to 7788 for local/docker-compose usage.
+ENV PORT=7788
 
-# Health check against the root endpoint
+EXPOSE ${PORT}
+
+# Health check — uses PORT so it tracks the runtime value.
+# NOTE: Docker build-time HEALTHCHECK bakes the literal string; the
+# entrypoint bridges PORT -> CLOSEREDGE_CORE_PORT at startup so the
+# binary always listens on the correct port.  The healthcheck shell
+# form expands $PORT at runtime.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -sf http://localhost:7788/health || exit 1
+    CMD curl -sf http://localhost:${PORT}/health || exit 1
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint-core.sh"]
 CMD ["serve"]

@@ -1,11 +1,11 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use openhuman_core::openhuman::agent::dispatcher::NativeToolDispatcher;
-use openhuman_core::openhuman::agent::Agent;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::agent::dispatcher::NativeToolDispatcher;
+use closeredge_core::openhuman::agent::Agent;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ToolCall,
 };
-use openhuman_core::openhuman::tools::{PermissionLevel, Tool, ToolResult};
+use closeredge_core::openhuman::tools::{PermissionLevel, Tool, ToolResult};
 use parking_lot::Mutex;
 use serde_json::json;
 use std::sync::Arc;
@@ -138,9 +138,9 @@ async fn test_integrations_agent_has_current_date_context() -> Result<()> {
         iter_count: Arc::new(Mutex::new(0)),
     });
 
-    let _ = openhuman_core::openhuman::agent::harness::definition::AgentDefinitionRegistry::init_global_builtins();
+    let _ = closeredge_core::openhuman::agent::harness::definition::AgentDefinitionRegistry::init_global_builtins();
 
-    let parent = openhuman_core::openhuman::agent::harness::ParentExecutionContext {
+    let parent = closeredge_core::openhuman::agent::harness::ParentExecutionContext {
         provider: provider.clone(),
         all_tools: Arc::new(vec![Box::new(MockCalendarTool)]),
         all_tool_specs: Arc::new(vec![MockCalendarTool.spec()]),
@@ -148,20 +148,20 @@ async fn test_integrations_agent_has_current_date_context() -> Result<()> {
         temperature: 0.4,
         workspace_dir: std::env::temp_dir(),
         memory: Arc::new(StubMemory),
-        agent_config: openhuman_core::openhuman::config::AgentConfig::default(),
+        agent_config: closeredge_core::openhuman::config::AgentConfig::default(),
         skills: Arc::new(vec![]),
         memory_context: Arc::new(None),
         session_id: "test-session".into(),
         channel: "test".into(),
         connected_integrations: vec![],
-        tool_call_format: openhuman_core::openhuman::context::prompt::ToolCallFormat::PFormat,
+        tool_call_format: closeredge_core::openhuman::context::prompt::ToolCallFormat::PFormat,
         session_key: "0_test".into(),
         session_parent_prefix: None,
         on_progress: None,
     };
 
     let mut def =
-        openhuman_core::openhuman::agent::harness::definition::AgentDefinitionRegistry::global()
+        closeredge_core::openhuman::agent::harness::definition::AgentDefinitionRegistry::global()
             .unwrap()
             .get("integrations_agent")
             .unwrap()
@@ -176,13 +176,13 @@ async fn test_integrations_agent_has_current_date_context() -> Result<()> {
     // definition (prompt, tools, scope) while routing through the captured
     // mock provider. Provider *routing* for Hint sub-agents is covered by
     // `subagent_runner::ops::tests::resolve_subagent_provider_*`.
-    def.model = openhuman_core::openhuman::agent::harness::definition::ModelSpec::Inherit;
+    def.model = closeredge_core::openhuman::agent::harness::definition::ModelSpec::Inherit;
 
-    let _ = openhuman_core::openhuman::agent::harness::with_parent_context(parent, async {
-        openhuman_core::openhuman::agent::harness::run_subagent(
+    let _ = closeredge_core::openhuman::agent::harness::with_parent_context(parent, async {
+        closeredge_core::openhuman::agent::harness::run_subagent(
             &def,
             "list my calendar events for today",
-            openhuman_core::openhuman::agent::harness::SubagentRunOptions::default(),
+            closeredge_core::openhuman::agent::harness::SubagentRunOptions::default(),
         )
         .await
     })
@@ -209,13 +209,13 @@ async fn test_integrations_agent_has_current_date_context() -> Result<()> {
 struct StubMemory;
 
 #[async_trait]
-impl openhuman_core::openhuman::memory::Memory for StubMemory {
+impl closeredge_core::openhuman::memory::Memory for StubMemory {
     async fn store(
         &self,
         _: &str,
         _: &str,
         _: &str,
-        _: openhuman_core::openhuman::memory::MemoryCategory,
+        _: closeredge_core::openhuman::memory::MemoryCategory,
         _: Option<&str>,
     ) -> Result<()> {
         Ok(())
@@ -224,23 +224,23 @@ impl openhuman_core::openhuman::memory::Memory for StubMemory {
         &self,
         _: &str,
         _: usize,
-        _: openhuman_core::openhuman::memory::RecallOpts<'_>,
-    ) -> Result<Vec<openhuman_core::openhuman::memory::MemoryEntry>> {
+        _: closeredge_core::openhuman::memory::RecallOpts<'_>,
+    ) -> Result<Vec<closeredge_core::openhuman::memory::MemoryEntry>> {
         Ok(vec![])
     }
     async fn get(
         &self,
         _: &str,
         _: &str,
-    ) -> Result<Option<openhuman_core::openhuman::memory::MemoryEntry>> {
+    ) -> Result<Option<closeredge_core::openhuman::memory::MemoryEntry>> {
         Ok(None)
     }
     async fn list(
         &self,
         _: Option<&str>,
-        _: Option<&openhuman_core::openhuman::memory::MemoryCategory>,
+        _: Option<&closeredge_core::openhuman::memory::MemoryCategory>,
         _: Option<&str>,
-    ) -> Result<Vec<openhuman_core::openhuman::memory::MemoryEntry>> {
+    ) -> Result<Vec<closeredge_core::openhuman::memory::MemoryEntry>> {
         Ok(vec![])
     }
     async fn forget(&self, _: &str, _: &str) -> Result<bool> {
@@ -248,7 +248,7 @@ impl openhuman_core::openhuman::memory::Memory for StubMemory {
     }
     async fn namespace_summaries(
         &self,
-    ) -> Result<Vec<openhuman_core::openhuman::memory::NamespaceSummary>> {
+    ) -> Result<Vec<closeredge_core::openhuman::memory::NamespaceSummary>> {
         Ok(vec![])
     }
     async fn count(&self) -> Result<usize> {

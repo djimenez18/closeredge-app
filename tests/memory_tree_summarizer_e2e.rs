@@ -30,9 +30,9 @@ use async_trait::async_trait;
 use chrono::{DateTime, TimeZone, Utc};
 use tempfile::tempdir;
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::inference::provider::traits::Provider;
-use openhuman_core::openhuman::memory_tree::tree_runtime::{engine, store};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::inference::provider::traits::Provider;
+use closeredge_core::openhuman::memory_tree::tree_runtime::{engine, store};
 
 // ── Env isolation ─────────────────────────────────────────────────────────
 

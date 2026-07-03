@@ -54,7 +54,10 @@ describe('ProtectedRoute', () => {
     expect(screen.getByText('Protected Content')).toBeInTheDocument();
   });
 
-  it('redirects to / when no token and requireAuth=true', () => {
+  // The auth check is temporarily bypassed in the CloserEdge fork (see the
+  // TODO in ProtectedRoute.tsx) — until Supabase auth replaces OpenHuman
+  // auth, protected children render even without a session token.
+  it('renders children without a token while the auth gate is bypassed (requireAuth=true)', () => {
     mockUseCoreState.mockReturnValue({ isBootstrapping: false, snapshot: { sessionToken: null } });
 
     renderRoute(
@@ -72,11 +75,11 @@ describe('ProtectedRoute', () => {
       ['/dashboard']
     );
 
-    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
-    expect(screen.getByText('Landing')).toBeInTheDocument();
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.queryByText('Landing')).not.toBeInTheDocument();
   });
 
-  it('redirects to custom redirectTo when no token', () => {
+  it('ignores custom redirectTo without a token while the auth gate is bypassed', () => {
     mockUseCoreState.mockReturnValue({ isBootstrapping: false, snapshot: { sessionToken: null } });
 
     renderRoute(
@@ -94,6 +97,7 @@ describe('ProtectedRoute', () => {
       ['/custom']
     );
 
-    expect(screen.getByText('Login Page')).toBeInTheDocument();
+    expect(screen.getByText('Custom Protected')).toBeInTheDocument();
+    expect(screen.queryByText('Login Page')).not.toBeInTheDocument();
   });
 });

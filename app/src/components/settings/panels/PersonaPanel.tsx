@@ -24,7 +24,7 @@ const log = debug('persona:panel');
 
 const PersonaPanel = () => {
   const { t } = useT();
-  const { navigateBack, navigateToSettings, breadcrumbs } = useSettingsNavigation();
+  const { navigateBack, breadcrumbs } = useSettingsNavigation();
   const dispatch = useAppDispatch();
 
   const storedDisplayName = useAppSelector(selectPersonaDisplayName);
@@ -243,33 +243,6 @@ const PersonaPanel = () => {
           </div>
           <p className="text-xs text-stone-500 dark:text-neutral-400 leading-relaxed px-1 mt-2">
             {t('settings.persona.soul.desc')}
-          </p>
-        </div>
-
-        {/* ── Appearance & Voice (handled in Mascot settings) ──────── */}
-        <div>
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-neutral-500 mb-2 px-1">
-            {t('settings.persona.appearanceHeading')}
-          </h3>
-          <div className="bg-white dark:bg-neutral-900 rounded-xl border border-stone-200 dark:border-neutral-800 p-4">
-            <button
-              type="button"
-              data-testid="persona-open-mascot"
-              onClick={() => navigateToSettings('mascot')}
-              className="flex w-full items-center justify-between text-left text-sm text-stone-700 dark:text-neutral-200 hover:text-primary-700 dark:hover:text-primary-300">
-              <span>{t('settings.persona.openMascotSettings')}</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </div>
-          <p className="text-xs text-stone-500 dark:text-neutral-400 leading-relaxed px-1 mt-2">
-            {t('settings.persona.appearanceDesc')}
           </p>
         </div>
       </div>

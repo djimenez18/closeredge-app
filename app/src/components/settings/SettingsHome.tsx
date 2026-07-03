@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { SUBSCRIPTION_ROUTE } from '../../constants/links';
 import { useT } from '../../lib/i18n/I18nContext';
 import { useCoreState } from '../../providers/CoreStateProvider';
-import { BILLING_DASHBOARD_URL } from '../../utils/links';
 import { isLocalSessionToken } from '../../utils/localSession';
-import { openUrl } from '../../utils/openUrl';
 import LanguageSelect from '../LanguageSelect';
 import SettingsHeader from './components/SettingsHeader';
 import SettingsMenuItem from './components/SettingsMenuItem';
@@ -27,6 +27,7 @@ interface SettingsItem {
 
 const SettingsHome = () => {
   const { navigateToSettings } = useSettingsNavigation();
+  const navigate = useNavigate();
   const { t } = useT();
   const { snapshot } = useCoreState();
   const isLocalSession = isLocalSessionToken(snapshot.sessionToken);
@@ -56,7 +57,7 @@ const SettingsHome = () => {
         {
           id: 'devices',
           title: 'Devices',
-          description: 'Pair iOS phones with this OpenHuman',
+          description: 'Pair iOS phones with this CloserEdge AI',
           icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -133,34 +134,17 @@ const SettingsHome = () => {
           ),
           onClick: () => navigateToSettings('crypto'),
         },
-        {
-          id: 'mascot',
-          title: t('settings.mascot.menuTitle'),
-          description: t('settings.mascot.menuDesc'),
-          icon: (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9.5 15c.83.67 1.67 1 2.5 1s1.67-.33 2.5-1"
-              />
-            </svg>
-          ),
-          onClick: () => navigateToSettings('mascot'),
-        },
       ],
     },
     // Features tile (Screen Awareness / Messaging Channels / Notifications /
     // Tools) used to live here. Everything under it moved into Advanced
     // (DeveloperOptionsPanel), so the section is gone from the home menu.
-    // Billing & Rewards requires a backend-authenticated session.
-    // Hidden in local/offline mode — no auth headers are sent and the
-    // billing dashboard would not recognise the session.
+    // Billing requires a backend-authenticated session.
+    // Hidden in local/offline mode — there is no subscription to show.
     ...(!isLocalSession
       ? [
           {
-            label: t('settings.billingAndRewards'),
+            label: t('settings.billingUsage'),
             items: [
               {
                 id: 'billing',
@@ -177,7 +161,7 @@ const SettingsHome = () => {
                   </svg>
                 ),
                 onClick: () => {
-                  openUrl(BILLING_DASHBOARD_URL).catch(() => {});
+                  navigate(SUBSCRIPTION_ROUTE);
                 },
               },
             ],

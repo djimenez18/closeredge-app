@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
+import { isTauri } from '../../utils/tauriCommands/common';
 import { selectBlockingState } from '../connectivitySelectors';
 import type { ConnectivityState } from '../connectivitySlice';
 import type { RootState } from '../index';
+
+// Mock isTauri so we can test both Tauri and browser-mode paths.
+vi.mock('../../utils/tauriCommands/common', () => ({ isTauri: vi.fn(() => false) }));
+
+const mockIsTauri = vi.mocked(isTauri);
 
 const make = (over: Partial<ConnectivityState>): RootState =>
   ({
@@ -34,8 +40,15 @@ describe('selectBlockingState', () => {
     expect(selectBlockingState(make({ core: 'unreachable' }))).toBe('core-unreachable');
   });
 
-  it('returns backend-only when just the websocket is degraded', () => {
+  it('returns backend-only when just the websocket is degraded (Tauri)', () => {
+    mockIsTauri.mockReturnValue(true);
     expect(selectBlockingState(make({ backend: 'disconnected' }))).toBe('backend-only');
     expect(selectBlockingState(make({ backend: 'connecting' }))).toBe('backend-only');
+  });
+
+  it('returns browser-mode when websocket is degraded outside Tauri', () => {
+    mockIsTauri.mockReturnValue(false);
+    expect(selectBlockingState(make({ backend: 'disconnected' }))).toBe('browser-mode');
+    expect(selectBlockingState(make({ backend: 'connecting' }))).toBe('browser-mode');
   });
 });

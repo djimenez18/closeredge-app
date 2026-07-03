@@ -1,0 +1,68 @@
+{
+  "tiers": {
+    "foundation": {
+      "label": "Foundation",
+      "features": {
+        "core_agents": true,
+        "gmail_calendar": true,
+        "telegram": true,
+        "sms": true,
+        "brain_vault": true,
+        "voice": false,
+        "crm_integration": false,
+        "advanced_agents": false,
+        "strategy_sessions": false,
+        "custom_brain_tuning": false
+      },
+      "support": {
+        "onboarding_days": 30,
+        "response_hours": 72,
+        "dedicated_manager": false
+      }
+    },
+    "pro": {
+      "label": "Pro",
+      "features": {
+        "core_agents": true,
+        "gmail_calendar": true,
+        "telegram": true,
+        "sms": true,
+        "brain_vault": true,
+        "voice": true,
+        "crm_integration": true,
+        "advanced_agents": true,
+        "strategy_sessions": false,
+        "custom_brain_tuning": false
+      },
+      "support": {
+        "onboarding_days": 45,
+        "response_hours": 24,
+        "dedicated_manager": false,
+        "monthly_checkin": true,
+        "weekly_digest": true
+      }
+    },
+    "elite": {
+      "label": "Elite",
+      "features": {
+        "core_agents": true,
+        "gmail_calendar": true,
+        "telegram": true,
+        "sms": true,
+        "brain_vault": true,
+        "voice": true,
+        "crm_integration": true,
+        "advanced_agents": true,
+        "strategy_sessions": true,
+        "custom_brain_tuning": true
+      },
+      "support": {
+        "onboarding_days": 45,
+        "response_hours": 4,
+        "dedicated_manager": true,
+        "monthly_strategy": true,
+        "quarterly_review": true
+      }
+    }
+  }
+}

@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { MARKETING_URLS, SUBSCRIPTION_ROUTE } from '../constants/links';
 import { useChannelDefinitions } from '../hooks/useChannelDefinitions';
 import { useT } from '../lib/i18n/I18nContext';
 import {
@@ -30,7 +31,6 @@ import {
   type AccountStatus,
   PROVIDERS,
 } from '../types/accounts';
-import { BILLING_DASHBOARD_URL } from '../utils/links';
 import { openUrl } from '../utils/openUrl';
 import { ProviderIcon } from './accounts/providerIcons';
 import ChannelSetupModal from './channels/ChannelSetupModal';
@@ -234,12 +234,12 @@ const NotificationsBody = ({ close }: { close: () => void }) => {
         setPermissionState(nextState);
         setStatus('error');
         setError(
-          'Notification permission is off. Enable OpenHuman in System Settings → Notifications, then retry.'
+          'Notification permission is off. Enable CloserEdge AI in System Settings → Notifications, then retry.'
         );
         return;
       }
       const sendResult = await showNativeNotification({
-        title: 'OpenHuman is good to go',
+        title: 'CloserEdge AI is good to go',
         body: 'You will get pings here when something needs your attention.',
         tag: 'welcome-notification-test',
       });
@@ -247,7 +247,7 @@ const NotificationsBody = ({ close }: { close: () => void }) => {
         setStatus('error');
         setError(
           sendResult.error ??
-            'OpenHuman could not trigger a system notification. Check OS notification settings and retry.'
+            'CloserEdge AI could not trigger a system notification. Check OS notification settings and retry.'
         );
         return;
       }
@@ -306,6 +306,7 @@ const NotificationsBody = ({ close }: { close: () => void }) => {
 
 const BillingBody = ({ close }: { close: () => void }) => {
   const { t } = useT();
+  const navigate = useNavigate();
   return (
     <div className="space-y-4 text-sm text-stone-700 dark:text-neutral-200">
       <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-stone-50 dark:bg-neutral-800/60 p-4">
@@ -320,7 +321,8 @@ const BillingBody = ({ close }: { close: () => void }) => {
       <button
         type="button"
         onClick={() => {
-          void openUrl(BILLING_DASHBOARD_URL).catch(() => {});
+          navigate(SUBSCRIPTION_ROUTE);
+          close();
         }}
         className="w-full rounded-xl bg-primary-500 text-white text-sm font-medium py-2.5 hover:bg-primary-600 transition-colors">
         {t('app.openhumanLink.billing.openDashboard')}
@@ -332,7 +334,7 @@ const BillingBody = ({ close }: { close: () => void }) => {
 
 // ── Discord ──────────────────────────────────────────────────────────────
 
-const DISCORD_INVITE_URL = 'https://discord.tinyhumans.ai/';
+const COMMUNITY_INVITE_URL = MARKETING_URLS.community;
 
 const DiscordBody = ({ close }: { close: () => void }) => {
   const { t } = useT();
@@ -360,7 +362,7 @@ const DiscordBody = ({ close }: { close: () => void }) => {
       <button
         type="button"
         onClick={() => {
-          void openUrl(DISCORD_INVITE_URL).catch(() => {});
+          void openUrl(COMMUNITY_INVITE_URL).catch(() => {});
         }}
         className="w-full rounded-xl bg-primary-500 text-white text-sm font-medium py-2.5 hover:bg-primary-600 transition-colors">
         {t('app.openhumanLink.discord.openInvite')}

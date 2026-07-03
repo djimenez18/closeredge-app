@@ -2,7 +2,7 @@ use axum::extract::Json;
 use axum::http::StatusCode;
 use axum::routing::post;
 use axum::Router;
-use openhuman_core::openhuman::memory_tree::score::embed::{
+use closeredge_core::openhuman::memory_tree::score::embed::{
     Embedder, OllamaEmbedder, EMBEDDING_DIM,
 };
 use serde_json::{json, Value};

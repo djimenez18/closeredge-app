@@ -183,13 +183,15 @@ const PairPhoneModal = ({ onClose, onPaired }: PairPhoneModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30">
-      <div className="bg-white rounded-2xl max-w-sm w-full border border-stone-200 shadow-large overflow-hidden">
+      <div className="bg-white dark:bg-[#1a1a22] rounded-2xl max-w-sm w-full border border-stone-200 dark:border-neutral-800 shadow-large overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-stone-100">
-          <h3 className="text-base font-semibold text-stone-900">{t('devices.pairModal.title')}</h3>
+        <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-stone-100 dark:border-neutral-800">
+          <h3 className="text-base font-semibold text-stone-900 dark:text-neutral-100">
+            {t('devices.pairModal.title')}
+          </h3>
           <button
             onClick={onClose}
-            className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-stone-100 transition-colors"
+            className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-stone-100 dark:hover:bg-neutral-800 transition-colors"
             aria-label={t('common.close')}>
             <svg
               className="w-4 h-4 text-stone-500"
@@ -242,7 +244,7 @@ const PairPhoneModal = ({ onClose, onPaired }: PairPhoneModalProps) => {
           <div className="px-5 pb-5">
             <button
               onClick={onClose}
-              className="w-full px-4 py-2 text-sm text-stone-600 hover:text-stone-800 transition-colors">
+              className="w-full px-4 py-2 text-sm text-stone-600 dark:text-neutral-400 hover:text-stone-800 dark:hover:text-neutral-200 transition-colors">
               {t('common.cancel')}
             </button>
           </div>
@@ -275,7 +277,9 @@ function LoadingBody() {
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
         />
       </svg>
-      <p className="text-sm text-stone-500">{t('devices.pairModal.loading')}</p>
+      <p className="text-sm text-stone-500 dark:text-neutral-400">
+        {t('devices.pairModal.loading')}
+      </p>
     </div>
   );
 }
@@ -297,14 +301,16 @@ function QrBody({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <p className="text-sm text-stone-600 text-center">{t('devices.pairModal.instructions')}</p>
+      <p className="text-sm text-stone-600 dark:text-neutral-400 text-center">
+        {t('devices.pairModal.instructions')}
+      </p>
 
       {/* QR code */}
       <div className="p-3 bg-white rounded-xl border border-stone-200 shadow-sm">
         <QRCodeSVG value={qrUrl} size={200} level="M" bgColor="#ffffff" fgColor="#1c1917" />
       </div>
 
-      <p className="text-xs text-stone-400">
+      <p className="text-xs text-stone-400 dark:text-neutral-500">
         {t(
           minutesLeft === 1 ? 'devices.pairModal.expiresIn' : 'devices.pairModal.expiresInPlural'
         ).replace('{count}', String(minutesLeft))}
@@ -320,26 +326,26 @@ function QrBody({
       {showDetails && (
         <div className="w-full space-y-2">
           <div>
-            <p className="text-xs font-medium text-stone-500 mb-1">
+            <p className="text-xs font-medium text-stone-500 dark:text-neutral-400 mb-1">
               {t('devices.pairModal.channelId')}
             </p>
-            <p className="text-xs font-mono text-stone-700 bg-stone-50 rounded px-2 py-1 break-all select-all">
+            <p className="text-xs font-mono text-stone-700 dark:text-neutral-300 bg-stone-50 dark:bg-[#141418] rounded px-2 py-1 break-all select-all">
               {session.channel_id}
             </p>
           </div>
           <div>
-            <p className="text-xs font-medium text-stone-500 mb-1">
+            <p className="text-xs font-medium text-stone-500 dark:text-neutral-400 mb-1">
               {t('devices.pairModal.pairingUrl')}
             </p>
             <div className="relative">
-              <p className="text-xs font-mono text-stone-700 bg-stone-50 rounded px-2 py-1 break-all select-all pr-16">
+              <p className="text-xs font-mono text-stone-700 dark:text-neutral-300 bg-stone-50 dark:bg-[#141418] rounded px-2 py-1 break-all select-all pr-16">
                 {qrUrl}
               </p>
               <button
                 onClick={() => {
                   void navigator.clipboard.writeText(qrUrl);
                 }}
-                className="absolute top-1 right-1 text-xs text-primary-500 hover:text-primary-600 px-1 py-0.5 bg-white border border-stone-200 rounded">
+                className="absolute top-1 right-1 text-xs text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 px-1 py-0.5 bg-white dark:bg-[#1a1a22] border border-stone-200 dark:border-neutral-700 rounded">
                 {t('devices.pairModal.copyUrl')}
               </button>
             </div>
@@ -354,7 +360,7 @@ function ExpiredBody({ onRegenerate }: { onRegenerate: () => void }) {
   const { t } = useT();
   return (
     <div className="flex flex-col items-center gap-4 py-4">
-      <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+      <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
         <svg
           className="w-6 h-6 text-amber-500"
           fill="none"
@@ -368,8 +374,12 @@ function ExpiredBody({ onRegenerate }: { onRegenerate: () => void }) {
           />
         </svg>
       </div>
-      <p className="text-sm font-medium text-stone-700">{t('devices.pairModal.expiredTitle')}</p>
-      <p className="text-xs text-stone-500 text-center">{t('devices.pairModal.expiredBody')}</p>
+      <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">
+        {t('devices.pairModal.expiredTitle')}
+      </p>
+      <p className="text-xs text-stone-500 dark:text-neutral-400 text-center">
+        {t('devices.pairModal.expiredBody')}
+      </p>
       <button
         onClick={onRegenerate}
         className="px-4 py-2 text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors rounded-lg">
@@ -383,7 +393,7 @@ function SuccessBody({ label, channelId }: { label: string; channelId: string })
   const { t } = useT();
   return (
     <div className="flex flex-col items-center gap-4 py-4">
-      <div className="w-12 h-12 rounded-xl bg-sage-50 flex items-center justify-center">
+      <div className="w-12 h-12 rounded-xl bg-sage-50 dark:bg-sage-500/10 flex items-center justify-center">
         <svg
           className="w-6 h-6 text-sage-500"
           fill="none"
@@ -393,13 +403,17 @@ function SuccessBody({ label, channelId }: { label: string; channelId: string })
         </svg>
       </div>
       <div className="text-center">
-        <p className="text-sm font-medium text-stone-800">{t('devices.pairModal.successTitle')}</p>
-        <p className="text-xs text-stone-500 mt-1">{label}</p>
-        <p className="text-xs font-mono text-stone-400 mt-0.5">
+        <p className="text-sm font-medium text-stone-800 dark:text-neutral-200">
+          {t('devices.pairModal.successTitle')}
+        </p>
+        <p className="text-xs text-stone-500 dark:text-neutral-400 mt-1">{label}</p>
+        <p className="text-xs font-mono text-stone-400 dark:text-neutral-500 mt-0.5">
           {channelId.slice(0, 8)}…{channelId.slice(-6)}
         </p>
       </div>
-      <p className="text-xs text-stone-400">{t('devices.pairModal.autoClose')}</p>
+      <p className="text-xs text-stone-400 dark:text-neutral-500">
+        {t('devices.pairModal.autoClose')}
+      </p>
     </div>
   );
 }
@@ -408,7 +422,7 @@ function ErrorBody({ message, onRetry }: { message: string; onRetry: () => void 
   const { t } = useT();
   return (
     <div className="flex flex-col items-center gap-4 py-4">
-      <div className="w-12 h-12 rounded-xl bg-coral-50 flex items-center justify-center">
+      <div className="w-12 h-12 rounded-xl bg-coral-50 dark:bg-coral-500/10 flex items-center justify-center">
         <svg
           className="w-6 h-6 text-coral-500"
           fill="none"
@@ -422,8 +436,12 @@ function ErrorBody({ message, onRetry }: { message: string; onRetry: () => void 
           />
         </svg>
       </div>
-      <p className="text-sm font-medium text-stone-700">{t('devices.pairModal.errorTitle')}</p>
-      <p className="text-xs text-stone-500 text-center break-all">{message}</p>
+      <p className="text-sm font-medium text-stone-700 dark:text-neutral-300">
+        {t('devices.pairModal.errorTitle')}
+      </p>
+      <p className="text-xs text-stone-500 dark:text-neutral-400 text-center break-all">
+        {message}
+      </p>
       <button
         onClick={onRetry}
         className="px-4 py-2 text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors rounded-lg">

@@ -1,0 +1,100 @@
+{
+  "products": {
+    "eden": {
+      "product_id": "prod_xxx",
+      "prices": {
+        "foundation_monthly": "price_xxx",
+        "foundation_setup": "price_xxx",
+        "pro_monthly": "price_xxx",
+        "pro_setup": "price_xxx",
+        "elite_monthly": "price_xxx",
+        "elite_setup": "price_xxx"
+      }
+    },
+    "crest": {
+      "product_id": "prod_xxx",
+      "prices": {
+        "foundation_monthly": "price_xxx",
+        "foundation_setup": "price_xxx",
+        "pro_monthly": "price_xxx",
+        "pro_setup": "price_xxx",
+        "elite_monthly": "price_xxx",
+        "elite_setup": "price_xxx"
+      }
+    },
+    "lexis": {
+      "product_id": "prod_xxx",
+      "prices": {
+        "foundation_monthly": "price_xxx",
+        "foundation_setup": "price_xxx",
+        "pro_monthly": "price_xxx",
+        "pro_setup": "price_xxx",
+        "elite_monthly": "price_xxx",
+        "elite_setup": "price_xxx"
+      }
+    },
+    "haven": {
+      "product_id": "prod_xxx",
+      "prices": {
+        "foundation_monthly": "price_xxx",
+        "foundation_setup": "price_xxx",
+        "pro_monthly": "price_xxx",
+        "pro_setup": "price_xxx",
+        "elite_monthly": "price_xxx",
+        "elite_setup": "price_xxx"
+      }
+    },
+    "forge": {
+      "product_id": "prod_xxx",
+      "prices": {
+        "foundation_monthly": "price_xxx",
+        "foundation_setup": "price_xxx",
+        "pro_monthly": "price_xxx",
+        "pro_setup": "price_xxx",
+        "elite_monthly": "price_xxx",
+        "elite_setup": "price_xxx"
+      }
+    },
+    "nora": {
+      "product_id": "prod_xxx",
+      "prices": {
+        "foundation_monthly": "price_xxx",
+        "foundation_setup": "price_xxx",
+        "pro_monthly": "price_xxx",
+        "pro_setup": "price_xxx",
+        "elite_monthly": "price_xxx",
+        "elite_setup": "price_xxx"
+      }
+    }
+  },
+  "addons": {
+    "voice": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    },
+    "mentor": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    },
+    "mls_data": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    },
+    "social_media": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    },
+    "seasonal_campaigns": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    },
+    "review_automation": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    },
+    "investor_reporting": {
+      "product_id": "prod_xxx",
+      "price_id": "price_xxx"
+    }
+  }
+}

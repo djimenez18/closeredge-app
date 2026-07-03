@@ -1,10 +1,60 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/alpha.svg" />
+    <link rel="icon" type="image/svg+xml" href="/brand/closeredge-mark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OpenHuman</title>
+    <!--
+      CloserEdge brand type system — loaded here (not via CSS @import) so the
+      three families resolve in one parallel request before first paint. This
+      is the REACHABLE entry: Vite `root: "src"` serves this file, so the
+      sibling `app/index.html` is dead. Tailwind maps:
+        font-sans    → DM Sans            (body / UI)
+        font-display → Cormorant Garamond (serif display headings)
+        font-mono    → DM Mono            (numerals / code)
+      Falls back to the OS sans/serif/mono if the CDN is unreachable (offline).
+      A future hardening step is to self-host these as woff2 under public/fonts.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+      rel="stylesheet" />
+    <title>CloserEdge AI</title>
+    <script>
+      // Pre-paint theme bootstrap — mirrors ThemeProvider's resolution so the
+      // first frame already has the right background (no light/dark flash).
+      // Reads the redux-persist blob written by store/index.ts (key
+      // `persist:theme`, field `mode` is itself JSON-encoded by redux-persist).
+      (function () {
+        var mode = 'system';
+        try {
+          var raw = localStorage.getItem('persist:theme');
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.mode === 'string') {
+              var m = JSON.parse(parsed.mode);
+              if (m === 'light' || m === 'dark' || m === 'system') mode = m;
+            }
+          }
+        } catch (e) {
+          /* storage unavailable or corrupt — fall back to system */
+        }
+        var dark = mode === 'dark';
+        if (mode === 'system') {
+          try {
+            dark = !!(
+              window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            );
+          } catch (e) {
+            dark = false;
+          }
+        }
+        var root = document.documentElement;
+        if (dark) root.classList.add('dark');
+        root.style.colorScheme = dark ? 'dark' : 'light';
+      })();
+    </script>
   </head>
 
   <body>

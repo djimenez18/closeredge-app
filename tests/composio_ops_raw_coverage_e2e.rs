@@ -16,8 +16,8 @@ use serde_json::Map;
 use serde_json::{json, Value};
 use tempfile::tempdir;
 
-use openhuman_core::core::all::RegisteredController;
-use openhuman_core::openhuman::composio::ops::{
+use closeredge_core::core::all::RegisteredController;
+use closeredge_core::openhuman::composio::ops::{
     cached_active_integrations, composio_authorize, composio_create_trigger,
     composio_delete_connection, composio_disable_trigger, composio_enable_trigger,
     composio_execute, composio_get_mode, composio_list_agent_ready_toolkits,
@@ -27,15 +27,15 @@ use openhuman_core::openhuman::composio::ops::{
     fetch_connected_integrations, fetch_connected_integrations_status,
     invalidate_connected_integrations_cache, FetchConnectedIntegrationsStatus,
 };
-use openhuman_core::openhuman::composio::{
+use closeredge_core::openhuman::composio::{
     all_composio_controller_schemas, all_composio_registered_controllers,
 };
-use openhuman_core::openhuman::composio::{init_composio_trigger_history, ComposioActionTool};
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::composio::{init_composio_trigger_history, ComposioActionTool};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::tools::{ComposioExecuteTool, Tool};
+use closeredge_core::openhuman::tools::{ComposioExecuteTool, Tool};
 
 #[derive(Clone, Default)]
 struct MockState {
@@ -201,14 +201,14 @@ async fn composio_ops_use_loopback_backend_for_happy_and_error_paths() {
         .expect("repos json");
     assert_eq!(
         repos.pointer("/result/repositories/0/fullName"),
-        Some(&json!("tinyhumansai/openhuman"))
+        Some(&json!("closeredgeai/closeredge"))
     );
 
     let created = composio_create_trigger(
         &config,
         "GITHUB_PULL_REQUEST_EVENT",
         Some("conn-github".into()),
-        Some(json!({ "owner": "tinyhumansai", "repo": "openhuman" })),
+        Some(json!({ "owner": "closeredgeai", "repo": "openhuman" })),
     )
     .await
     .expect("create trigger")
@@ -280,7 +280,7 @@ async fn composio_ops_use_loopback_backend_for_happy_and_error_paths() {
 
     init_composio_trigger_history(config.workspace_dir.clone())
         .expect("init trigger history store");
-    let store = openhuman_core::openhuman::composio::global_composio_trigger_history()
+    let store = closeredge_core::openhuman::composio::global_composio_trigger_history()
         .expect("global trigger history");
     store
         .record_trigger(
@@ -429,13 +429,13 @@ async fn composio_controller_registry_validates_params_without_backend_network()
         ("set_api_key", 2),
         ("clear_api_key", 0),
     ] {
-        let schema = openhuman_core::openhuman::composio::schemas::schemas(function);
+        let schema = closeredge_core::openhuman::composio::schemas::schemas(function);
         assert_eq!(schema.namespace, "composio");
         assert_eq!(schema.function, function);
         assert_eq!(schema.inputs.len(), input_count, "{function}");
         assert!(!schema.description.is_empty(), "{function}");
     }
-    let unknown = openhuman_core::openhuman::composio::schemas::schemas("missing");
+    let unknown = closeredge_core::openhuman::composio::schemas::schemas("missing");
     assert_eq!(unknown.function, "unknown");
 
     let authorize_missing = composio_call(controller(&controllers, "authorize"), json!({}))
@@ -638,12 +638,12 @@ async fn composio_backend_handler(State(state): State<MockState>, request: Reque
         (Method::GET, "/agent-integrations/composio/github/repos") => ok(json!({
             "connectionId": "conn-github",
             "repositories": [{
-                "owner": "tinyhumansai",
+                "owner": "closeredgeai",
                 "repo": "openhuman",
-                "fullName": "tinyhumansai/openhuman",
+                "fullName": "closeredgeai/closeredge",
                 "private": false,
                 "defaultBranch": "main",
-                "htmlUrl": "https://github.com/tinyhumansai/openhuman"
+                "htmlUrl": "https://github.com/closeredgeai/closeredge"
             }]
         })),
         (Method::POST, "/agent-integrations/composio/triggers") => {
@@ -671,7 +671,7 @@ async fn composio_backend_handler(State(state): State<MockState>, request: Reque
                 "scope": "github_repo",
                 "defaultConfig": { "event": "pull_request" },
                 "requiredConfigKeys": ["owner", "repo"],
-                "repo": { "owner": "tinyhumansai", "repo": "openhuman" }
+                "repo": { "owner": "closeredgeai", "repo": "openhuman" }
             }]
         })),
         (Method::GET, "/agent-integrations/composio/triggers") => ok(json!({

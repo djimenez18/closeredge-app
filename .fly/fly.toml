@@ -1,13 +1,13 @@
-# .fly/fly.toml — openhuman-core on Fly.io
+# .fly/fly.toml — closeredge-core on Fly.io
 #
 # See gitbooks/features/cloud-deploy.md for the full deployment guide.
 # See https://fly.io/docs/reference/configuration/ for fly.toml reference.
 #
 # Quickstart:
 #   fly launch --no-deploy --config .fly/fly.toml
-#   fly volumes create openhuman_workspace --size 5 --region <region> --config .fly/fly.toml
-#   fly secrets set OPENHUMAN_CORE_TOKEN="$(openssl rand -hex 32)"
-#   fly secrets set BACKEND_URL="https://api.tinyhumans.ai"
+#   fly volumes create closeredge_workspace --size 5 --region <region> --config .fly/fly.toml
+#   fly secrets set CLOSEREDGE_CORE_TOKEN="$(openssl rand -hex 32)"
+#   fly secrets set BACKEND_URL="https://api.closeredge.ai"
 #   fly deploy --config .fly/fly.toml
 
 app = '<your-app-name>'
@@ -17,14 +17,14 @@ primary_region = '<your-region>'
   dockerfile = "Dockerfile"
 
 [env]
-  OPENHUMAN_CORE_HOST = "0.0.0.0"
-  OPENHUMAN_CORE_PORT = "7788"
-  OPENHUMAN_WORKSPACE = "/home/openhuman/.openhuman"
+  CLOSEREDGE_CORE_HOST = "0.0.0.0"
+  CLOSEREDGE_CORE_PORT = "7788"
+  CLOSEREDGE_WORKSPACE = "/home/closeredge/.closeredge"
   RUST_LOG = "info"
 
 [[mounts]]
-  source = "openhuman_workspace"
-  destination = "/home/openhuman/.openhuman"
+  source = "closeredge_workspace"
+  destination = "/home/closeredge/.closeredge"
 
 [http_service]
   internal_port = 7788

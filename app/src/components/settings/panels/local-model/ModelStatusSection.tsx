@@ -142,7 +142,7 @@ const ModelStatusSection = ({
   savedOllamaBaseUrl,
 }: ModelStatusSectionProps) => {
   const { t } = useT();
-  // OpenHuman no longer installs or launches Ollama itself. When the runtime
+  // CloserEdge AI no longer installs or launches Ollama itself. When the runtime
   // is unavailable, surface manual guidance instead of management controls.
   const showInstallOllamaCta = downloads?.ollama_available === false;
 

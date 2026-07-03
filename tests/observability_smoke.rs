@@ -8,7 +8,7 @@
 //! behaves as designed: transient events are dropped, permanent events
 //! and aggregate `all_exhausted` events still surface.
 
-use openhuman_core::core::observability::{
+use closeredge_core::core::observability::{
     is_budget_event, is_session_expired_event, is_transient_backend_api_failure,
     is_transient_integrations_failure, is_transient_provider_http_failure,
     is_updater_transient_event,
@@ -90,7 +90,7 @@ fn drops_updater_transient_check_failure() {
     let event = event_with_tags_and_message(
         &[],
         "failed to check for updates: error sending request for url \
-         (https://github.com/tinyhumansai/openhuman/releases/latest/download/latest.json)",
+         (https://github.com/closeredgeai/closeredge/releases/latest/download/latest.json)",
     );
     assert_eq!(
         count_captured(vec![event]),

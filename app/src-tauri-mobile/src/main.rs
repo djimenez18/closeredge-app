@@ -1,3 +1,3 @@
 fn main() {
-    openhuman_mobile::run();
+    closeredge_mobile::run();
 }

@@ -1,0 +1,53 @@
+{
+  "model_routing": {
+    "providers": {
+      "openrouter": {
+        "label": "OpenRouter (Production)",
+        "base_url": "https://openrouter.ai/api/v1",
+        "env_key": "OPENROUTER_API_KEY",
+        "default_model": "anthropic/claude-sonnet-4-20250514",
+        "models": {
+          "fast": "anthropic/claude-haiku-4-5-20251001",
+          "balanced": "anthropic/claude-sonnet-4-20250514",
+          "powerful": "anthropic/claude-opus-4-20250115",
+          "coding": "anthropic/claude-sonnet-4-20250514"
+        },
+        "notes": "Production provider — routes through OpenRouter for cost management and model flexibility"
+      },
+      "anthropic": {
+        "label": "Anthropic (Development/Testing)",
+        "base_url": "https://api.anthropic.com/v1",
+        "env_key": "ANTHROPIC_API_KEY",
+        "default_model": "claude-sonnet-4-20250514",
+        "models": {
+          "fast": "claude-haiku-4-5-20251001",
+          "balanced": "claude-sonnet-4-20250514",
+          "powerful": "claude-opus-4-20250115",
+          "coding": "claude-sonnet-4-20250514"
+        },
+        "notes": "Direct Anthropic API — use during development and testing"
+      },
+      "openai": {
+        "label": "OpenAI (Development/Testing)",
+        "base_url": "https://api.openai.com/v1",
+        "env_key": "OPENAI_API_KEY",
+        "default_model": "gpt-4.1",
+        "models": {
+          "fast": "gpt-4.1-mini",
+          "balanced": "gpt-4.1",
+          "powerful": "o3",
+          "coding": "gpt-4.1"
+        },
+        "notes": "OpenAI API — alternative during development and testing"
+      }
+    },
+    "active_provider": "anthropic",
+    "notes": "Set active_provider to 'anthropic' or 'openai' during development. Switch to 'openrouter' for production deployment."
+  },
+  "voice": {
+    "provider": "elevenlabs",
+    "env_key": "ELEVENLABS_API_KEY",
+    "tier_required": "pro",
+    "notes": "Voice is gated to Pro and Elite tiers. ElevenLabs provides TTS and STT."
+  }
+}

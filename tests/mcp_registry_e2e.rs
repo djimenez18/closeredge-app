@@ -7,10 +7,10 @@
 //! → `connections::disconnect` round-trips correctly through the unified
 //! `mcp_client::McpStdioClient` transport.
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::mcp_registry::connections;
-use openhuman_core::openhuman::mcp_registry::store;
-use openhuman_core::openhuman::mcp_registry::types::{CommandKind, InstalledServer, Transport};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::mcp_registry::connections;
+use closeredge_core::openhuman::mcp_registry::store;
+use closeredge_core::openhuman::mcp_registry::types::{CommandKind, InstalledServer, Transport};
 
 fn fresh_workspace_config() -> (tempfile::TempDir, Config) {
     let tmp = tempfile::tempdir().expect("tempdir");

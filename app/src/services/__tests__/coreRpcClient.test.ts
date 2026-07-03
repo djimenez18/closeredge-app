@@ -676,7 +676,7 @@ describe('classifyRpcError', () => {
     // OPENHUMAN-REACT-13 verbatim — backend-side connect timeout. Body never
     // hits the `timed out after \d+ms` matcher and stays `transport`.
     [
-      'backend request GET /teams: error sending request for url (https://api.tinyhumans.ai/teams): client error (Connect): operation timed out',
+      'backend request GET /teams: error sending request for url (https://api.closeredge.ai/teams): client error (Connect): operation timed out',
       undefined,
       'transport',
     ],
@@ -687,7 +687,7 @@ describe('classifyRpcError', () => {
       'provider_auth',
     ],
     [
-      '[composio] list_connections failed: Backend returned 500 Internal Server Error for GET https://api.tinyhumans.ai/agent-integrations/composio/connections: 401 {"error":{"message":"Invalid API key: ak_o1Og5*****","code":10401,"slug":"HTTP_Unauthorized","status":401}}',
+      '[composio] list_connections failed: Backend returned 500 Internal Server Error for GET https://api.closeredge.ai/agent-integrations/composio/connections: 401 {"error":{"message":"Invalid API key: ak_o1Og5*****","code":10401,"slug":"HTTP_Unauthorized","status":401}}',
       undefined,
       'provider_auth',
     ],

@@ -139,7 +139,7 @@ describe('ModelStatusSection diagnostics', () => {
       />
     );
     expect(
-      screen.getByText(/Manage the Ollama process and model pulls outside OpenHuman/)
+      screen.getByText(/Manage the Ollama process and model pulls outside CloserEdge AI/)
     ).toBeTruthy();
   });
 

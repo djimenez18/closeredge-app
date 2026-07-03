@@ -13,13 +13,13 @@ use axum::http::{Response, StatusCode};
 use axum::response::IntoResponse;
 use axum::routing::get;
 use axum::Router;
-use flate2::write::GzEncoder;
-use flate2::Compression;
-use openhuman_core::core::all::RegisteredController;
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::inference::local::{
+use closeredge_core::core::all::RegisteredController;
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::inference::local::{
     all_local_ai_registered_controllers, local_ai_transcribe_bytes,
 };
+use flate2::write::GzEncoder;
+use flate2::Compression;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 

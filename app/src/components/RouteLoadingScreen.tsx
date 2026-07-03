@@ -7,9 +7,12 @@ interface RouteLoadingScreenProps {
 const RouteLoadingScreen = ({ label }: RouteLoadingScreenProps) => {
   const { t } = useT();
   return (
-    <div className="h-full min-h-[280px] w-full flex items-center justify-center">
-      <div className="rounded-xl border border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3 text-sm text-stone-700 dark:text-neutral-200">
-        {label ?? t('app.routeLoading.initializing')}
+    <div className="h-full min-h-[280px] w-full flex items-center justify-center animate-fade-in">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-stone-500 dark:text-neutral-400">
+          {label ?? t('app.routeLoading.initializing')}
+        </p>
       </div>
     </div>
   );

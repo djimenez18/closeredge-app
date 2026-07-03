@@ -105,10 +105,10 @@ describe('openUrl', () => {
     tauriOpenUrlMock.mockRejectedValue(ipcError);
 
     const { openUrl } = await import('./openUrl');
-    await openUrl('https://tinyhumans.ai/dashboard?token=secret-redact-me');
+    await openUrl('https://closeredge.ai/dashboard?token=secret-redact-me');
 
     expect(windowOpenMock).toHaveBeenCalledWith(
-      'https://tinyhumans.ai/dashboard?token=secret-redact-me',
+      'https://closeredge.ai/dashboard?token=secret-redact-me',
       '_blank',
       'noopener,noreferrer'
     );
@@ -119,7 +119,7 @@ describe('openUrl', () => {
         category: 'ipc',
         level: 'warning',
         message: 'tauriOpenUrl failed; evaluating fallback',
-        data: expect.objectContaining({ url: 'https://tinyhumans.ai' }),
+        data: expect.objectContaining({ url: 'https://closeredge.ai' }),
       })
     );
     const call = addBreadcrumbMock.mock.calls[0]?.[0] as { data?: { url?: string } } | undefined;
@@ -161,18 +161,18 @@ describe('openUrl', () => {
     );
 
     const { openUrl } = await import('./openUrl');
-    await openUrl('  https://tinyhumans.ai/dashboard?token=secret-redact-me  ');
+    await openUrl('  https://closeredge.ai/dashboard?token=secret-redact-me  ');
 
     expect(tauriOpenUrlMock).toHaveBeenCalledWith(
-      'https://tinyhumans.ai/dashboard?token=secret-redact-me'
+      'https://closeredge.ai/dashboard?token=secret-redact-me'
     );
     expect(windowOpenMock).toHaveBeenCalledWith(
-      'https://tinyhumans.ai/dashboard?token=secret-redact-me',
+      'https://closeredge.ai/dashboard?token=secret-redact-me',
       '_blank',
       'noopener,noreferrer'
     );
     expect(addBreadcrumbMock).toHaveBeenCalledWith(
-      expect.objectContaining({ data: expect.objectContaining({ url: 'https://tinyhumans.ai' }) })
+      expect.objectContaining({ data: expect.objectContaining({ url: 'https://closeredge.ai' }) })
     );
   });
 });

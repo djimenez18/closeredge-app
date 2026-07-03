@@ -4,15 +4,15 @@
 //! SMTP traffic is performed.
 
 use axum::{extract::Path, http::StatusCode, routing::get, Json, Router};
-use openhuman_core::openhuman::channels::providers::discord::api::test_support as discord_support;
-use openhuman_core::openhuman::channels::providers::email_channel::{
+use closeredge_core::openhuman::channels::providers::discord::api::test_support as discord_support;
+use closeredge_core::openhuman::channels::providers::email_channel::{
     test_support as email_support, EmailChannel, EmailConfig,
 };
-use openhuman_core::openhuman::channels::providers::lark::test_support as lark_support;
-use openhuman_core::openhuman::channels::test_support::{
+use closeredge_core::openhuman::channels::providers::lark::test_support as lark_support;
+use closeredge_core::openhuman::channels::test_support::{
     run_dispatch_harness, DispatchHarnessOptions, TestMemoryEntry,
 };
-use openhuman_core::openhuman::channels::LarkChannel;
+use closeredge_core::openhuman::channels::LarkChannel;
 use reqwest::StatusCode as ReqwestStatusCode;
 use serde_json::json;
 use tokio_tungstenite::tungstenite::Message as WsMsg;

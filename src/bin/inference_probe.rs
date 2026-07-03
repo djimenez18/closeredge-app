@@ -21,7 +21,7 @@
 //! # integrations client can fetch the user's Connected Integrations.
 //! BACKEND_URL=https://staging-api.tinyhumans.ai \
 //!   OPENHUMAN_APP_ENV=staging \
-//!   RUST_LOG=info,openhuman_core::openhuman::agent=debug,openhuman_core::openhuman::inference=debug \
+//!   RUST_LOG=info,closeredge_core::openhuman::agent=debug,closeredge_core::openhuman::inference=debug \
 //!   cargo run --bin inference-probe -- \
 //!     --mode harness --prompt "hey list my top 5 emails"
 //!
@@ -30,11 +30,11 @@
 //! ```
 use anyhow::{Context, Result};
 use clap::Parser;
-use openhuman_core::openhuman::agent::Agent;
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::inference::provider::create_chat_provider;
-use openhuman_core::openhuman::inference::provider::traits::{ChatMessage, ChatRequest};
-use openhuman_core::openhuman::tools::traits::ToolSpec;
+use closeredge_core::openhuman::agent::Agent;
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::inference::provider::create_chat_provider;
+use closeredge_core::openhuman::inference::provider::traits::{ChatMessage, ChatRequest};
+use closeredge_core::openhuman::tools::traits::ToolSpec;
 use serde_json::json;
 
 #[derive(Parser, Debug)]

@@ -13,30 +13,30 @@ use axum::{Json, Router};
 use serde_json::{json, Map, Value};
 use tempfile::tempdir;
 
-use openhuman_core::openhuman::agent::task_board::{
+use closeredge_core::openhuman::agent::task_board::{
     board_for_thread, TaskApprovalMode, TaskBoard, TaskBoardCard, TaskBoardStore, TaskCardStatus,
 };
-use openhuman_core::openhuman::composio::ComposioClient;
-use openhuman_core::openhuman::config::{
+use closeredge_core::openhuman::composio::ComposioClient;
+use closeredge_core::openhuman::config::{
     CapabilityProviderConfig, CapabilityProviderTrustState, Config, McpServerConfig,
 };
-use openhuman_core::openhuman::inference::provider::compatible::{
+use closeredge_core::openhuman::inference::provider::compatible::{
     AuthStyle, OpenAiCompatibleProvider,
 };
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, Provider, ProviderDelta,
 };
-use openhuman_core::openhuman::integrations::IntegrationClient;
-use openhuman_core::openhuman::tool_registry::{
+use closeredge_core::openhuman::integrations::IntegrationClient;
+use closeredge_core::openhuman::tool_registry::{
     all_tool_registry_controller_schemas, all_tool_registry_registered_controllers,
     capability_provider_by_id, capability_provider_diagnostics, get_tool,
     is_capability_provider_trusted_enabled, list_capability_providers, list_tools,
     normalize_capability_provider_id,
 };
-use openhuman_core::openhuman::tool_registry::{
+use closeredge_core::openhuman::tool_registry::{
     denials as tool_registry_denials, ops as tool_registry_ops,
 };
-use openhuman_core::openhuman::tools::ToolSpec;
+use closeredge_core::openhuman::tools::ToolSpec;
 
 static OWNED_DOMAIN_ENV_LOCK: Mutex<()> = Mutex::new(());
 

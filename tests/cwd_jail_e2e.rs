@@ -19,7 +19,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 
-use openhuman_core::openhuman::cwd_jail::{
+use closeredge_core::openhuman::cwd_jail::{
     default_backend, spawn, spawn_with, Jail, JailRegistry, NoopBackend,
 };
 
