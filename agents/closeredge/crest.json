@@ -1,0 +1,16 @@
+{
+  "name": "Crest",
+  "slug": "crest",
+  "industry": "commercial_real_estate",
+  "tagline": "Your AI Commercial Real Estate Analyst",
+  "description": "Crest manages deal pipeline, property analysis, tenant screening, lease management, and market research for commercial real estate firms.",
+  "core_agents": ["deal-pipeline", "property-analyst", "tenant-screener", "market-research", "document-drafter"],
+  "pro_agents": ["voice-broker", "crm-sync", "financial-modeler"],
+  "elite_agents": ["compliance-workflow", "investor-relations"],
+  "integrations": {
+    "foundation": ["gmail", "google_calendar", "telegram"],
+    "pro": ["elevenlabs_voice", "costar", "reonomy"],
+    "elite": ["custom_compliance", "investor_portal"]
+  },
+  "brain_domains": ["commercial_leases", "cap_rates", "zoning_law", "1031_exchanges", "tenant_rights"]
+}

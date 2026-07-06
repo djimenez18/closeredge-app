@@ -45,8 +45,6 @@ vi.mock('../../../providers/CoreStateProvider', () => ({
 
 vi.mock('../../../store', () => ({ persistor: { purge: vi.fn().mockResolvedValue(undefined) } }));
 
-vi.mock('../../../utils/links', () => ({ BILLING_DASHBOARD_URL: 'https://billing.example.com' }));
-
 vi.mock('../../../utils/openUrl', () => ({ openUrl: vi.fn().mockResolvedValue(undefined) }));
 
 vi.mock('../../../utils/tauriCommands', () => ({
@@ -83,10 +81,10 @@ describe('SettingsHome', () => {
   });
 
   describe('flat menu', () => {
-    // Section headers ("General", "Features & AI", "Billing & Rewards",
-    // "Support", "Danger Zone") were intentionally removed — the menu is
+    // Section headers ("General", "Features & AI", "Support",
+    // "Danger Zone") were intentionally removed — the menu is
     // now a single flat list to reduce visual noise.
-    it.each(['General', 'Features & AI', 'Billing & Rewards', 'Support', 'Danger Zone'])(
+    it.each(['General', 'Features & AI', 'Support', 'Danger Zone'])(
       'does not render section header: %s',
       label => {
         renderSettingsHome();
@@ -116,13 +114,11 @@ describe('SettingsHome', () => {
       expect(screen.queryByText('Log out')).not.toBeInTheDocument();
     });
 
-    it('localizes Appearance and Mascot menu items', () => {
+    it('localizes the Appearance menu item', () => {
       renderSettingsHome({ locale: 'zh-CN', withI18n: true });
 
       expect(screen.getByText('外观')).toBeInTheDocument();
       expect(screen.getByText('选择浅色、深色或跟随系统主题')).toBeInTheDocument();
-      expect(screen.getByText('吉祥物')).toBeInTheDocument();
-      expect(screen.getByText('选择应用内使用的吉祥物颜色')).toBeInTheDocument();
     });
 
     it('no longer renders Features / AI / Rewards / Restart Tour / About on the home screen', () => {
@@ -170,13 +166,12 @@ describe('SettingsHome', () => {
       expect(mockNavigateToSettings).toHaveBeenCalledWith('crypto');
     });
 
-    it('opens billing URL when Billing & Usage is clicked', async () => {
-      const { openUrl } = await import('../../../utils/openUrl');
+    it('navigates to the in-app subscription page when Billing & Usage is clicked', async () => {
       const user = userEvent.setup();
       renderSettingsHome();
 
       await user.click(screen.getByText('Billing & Usage').closest('button')!);
-      expect(openUrl).toHaveBeenCalledWith('https://billing.example.com');
+      expect(mockNavigate).toHaveBeenCalledWith('/subscription');
     });
 
     it('navigates to developer-options when Advanced is clicked', async () => {

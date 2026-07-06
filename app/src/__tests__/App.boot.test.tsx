@@ -81,7 +81,6 @@ vi.mock('../components/DictationHotkeyManager', () => ({ default: () => null }))
 vi.mock('../components/OpenhumanLinkModal', () => ({ default: () => null }));
 vi.mock('../components/upsell/GlobalUpsellBanner', () => ({ default: () => null }));
 vi.mock('../components/walkthrough/AppWalkthrough', () => ({ default: () => null }));
-vi.mock('../features/meet/MascotFrameProducer', () => ({ MascotFrameProducer: () => null }));
 vi.mock('../services/analytics', () => ({ trackPageView: vi.fn() }));
 vi.mock('../utils/accountsFullscreen', () => ({ isAccountsFullscreen: vi.fn(() => false) }));
 vi.mock('../store/hooks', () => ({ useAppSelector: vi.fn(() => null) }));

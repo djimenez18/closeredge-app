@@ -17,7 +17,8 @@
     /* Path aliases */
     "baseUrl": ".",
     "paths": {
-      "@openhuman/skill-types": ["src/lib/skills/types.ts"],
+      "@/*": ["src/*"],
+      "@closeredge/skill-types": ["src/lib/skills/types.ts"],
       "tauri-plugin-ptt-api": ["../packages/tauri-plugin-ptt/guest-js/index.ts"]
     },
 

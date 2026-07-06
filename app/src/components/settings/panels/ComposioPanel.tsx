@@ -32,7 +32,7 @@ interface ComposioPanelProps {
   /** When true, render without the SettingsHeader chrome (used when embedded
    *  inside the onboarding custom wizard). */
   embedded?: boolean;
-  /** Whether OpenHuman-managed auth should be offered. Defaults to true for
+  /** Whether CloserEdge AI-managed auth should be offered. Defaults to true for
    *  cloud-authenticated sessions and false otherwise. */
   managedAuthEnabled?: boolean;
 }

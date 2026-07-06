@@ -5,11 +5,11 @@
 
 use std::time::Duration;
 
-use openhuman_core::core::event_bus::{DomainEvent, EventHandler};
-use openhuman_core::openhuman::agent::memory_loader::MemoryCitation;
-use openhuman_core::openhuman::channels::bus::ChannelInboundSubscriber;
-use openhuman_core::openhuman::channels::providers::presentation::test_support as presentation_test_support;
-use openhuman_core::openhuman::channels::providers::web::{
+use closeredge_core::core::event_bus::{DomainEvent, EventHandler};
+use closeredge_core::openhuman::agent::memory_loader::MemoryCitation;
+use closeredge_core::openhuman::channels::bus::ChannelInboundSubscriber;
+use closeredge_core::openhuman::channels::providers::presentation::test_support as presentation_test_support;
+use closeredge_core::openhuman::channels::providers::web::{
     subscribe_web_channel_events, test_support as web_test_support,
 };
 use serde_json::json;

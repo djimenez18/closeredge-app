@@ -94,12 +94,34 @@ if ! command -v cl.exe >/dev/null 2>&1; then
     echo "[run-dev-win] install Visual Studio 2022 Build Tools with the 'Desktop development with C++' workload." >&2
     exit 1
   fi
-  vs_install_path="$("$vswhere_exe" -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath || true)"
+  # Probe for an install carrying the MSVC x64 C++ tools. We pass `-all`
+  # because vswhere's default filter (and `-latest` alone) silently
+  # excludes installs the VS Installer has flagged "incomplete" — a state
+  # that persists after some updates / pending reboots even though the
+  # MSVC toolset, vcvars64.bat, and Windows SDK are all present and fully
+  # functional on disk. `-all` includes those; we then verify vcvars64.bat
+  # actually exists before trusting the path, so a genuinely-broken install
+  # still fails loudly below.
+  vs_install_path="$("$vswhere_exe" -all -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath || true)"
+  if [[ -z "$vs_install_path" ]]; then
+    # Fall back to a component-agnostic probe (covers installs whose
+    # component metadata is stale but whose VC tools are on disk).
+    vs_install_path="$("$vswhere_exe" -all -latest -products '*' -property installationPath || true)"
+  fi
   if [[ -z "$vs_install_path" ]]; then
     echo "[run-dev-win] no VS install with MSVC C++ tools found via vswhere" >&2
+    echo "[run-dev-win] install Visual Studio 2022 Build Tools with the 'Desktop development with C++' workload." >&2
     exit 1
   fi
   vcvars_bat="${vs_install_path}\\VC\\Auxiliary\\Build\\vcvars64.bat"
+  # Verify the toolchain is actually on disk — `-all` may have surfaced an
+  # install whose component metadata is stale; if vcvars64.bat is genuinely
+  # missing the install needs a repair, so fail loudly rather than limp on.
+  if [[ ! -f "$(cygpath -u "$vcvars_bat")" ]]; then
+    echo "[run-dev-win] vcvars64.bat not found at $vcvars_bat" >&2
+    echo "[run-dev-win] repair Visual Studio 2022 Build Tools ('Desktop development with C++')." >&2
+    exit 1
+  fi
   echo "[run-dev-win] loading MSVC env from $vcvars_bat"
   # Git Bash's MSYS layer mangles inner quotes when we invoke `cmd //c`
   # directly (the literal backslash-quotes get passed through to cmd, which
@@ -546,6 +568,53 @@ PATH_PREFIX="$APP_DIR/node_modules/.bin:$PATH_PREFIX"
 if [[ -n "${PNPM_EXE:-}" ]]; then
   PNPM_EXE_DIR="$(dirname "$PNPM_EXE")"
   PATH_PREFIX="$PNPM_EXE_DIR:$PATH_PREFIX"
+fi
+
+# Ensure `bash` is resolvable by the cmd.exe children pnpm spawns for nested
+# script bodies. Several package scripts (tauri:ensure → `bash
+# ../scripts/ensure-tauri-cli.sh`, core:stage, etc.) shell out to bash, and
+# pnpm runs script bodies through cmd.exe (%COMSPEC%). Git for Windows' bin
+# dir — where bash.exe lives — is usually NOT on the system PATH, so cmd.exe
+# fails with "'bash' is not recognized". MSYS converts this colon PATH to a
+# Windows ;-PATH for native children, so adding the Git bin dir here makes
+# bash findable down the bash → pnpm → cmd chain.
+git_bash_dir=""
+for cand in \
+    "/c/Program Files/Git/bin" \
+    "/c/Program Files (x86)/Git/bin" \
+    "/c/Program Files/Git/usr/bin" \
+    "/c/Program Files (x86)/Git/usr/bin"; do
+  if [[ -x "$cand/bash.exe" ]]; then
+    git_bash_dir="$cand"
+    break
+  fi
+done
+# Fall back to the running shell's own directory if Git was installed
+# somewhere non-standard (portable Git, scoop, winget, etc.).
+if [[ -z "$git_bash_dir" && -n "${BASH:-}" ]]; then
+  bash_self_dir="$(dirname "$BASH")"
+  if [[ -x "$bash_self_dir/bash.exe" || -x "$bash_self_dir/bash" ]]; then
+    git_bash_dir="$bash_self_dir"
+  fi
+fi
+if [[ -n "$git_bash_dir" ]]; then
+  PATH_PREFIX="$git_bash_dir:$PATH_PREFIX"
+  echo "[run-dev-win] git bash dir on PATH for cmd children: $git_bash_dir"
+  # Run pnpm script bodies through bash, not cmd.exe. Several scripts shell
+  # out to bash (tauri:ensure → `bash ../scripts/ensure-tauri-cli.sh`), and
+  # cmd.exe can't find `bash` because Git's bin dir isn't reliably carried
+  # through the bash → pnpm-shim → node → cmd PATH-translation chain.
+  # Pointing pnpm's script-shell at bash sidesteps that entirely: the body
+  # runs under MSYS bash, where `bash` resolves via /usr/bin. This dev flow
+  # is already bash-orchestrated and the invoked bodies (tauri:ensure,
+  # core:stage's echo, `pnpm run dev` → vite) are all bash-safe.
+  if [[ -x "$git_bash_dir/bash.exe" ]]; then
+    git_bash_win="$(cygpath -w "$git_bash_dir/bash.exe")"
+    export npm_config_script_shell="$git_bash_win"
+    echo "[run-dev-win] pnpm script-shell pinned to: $git_bash_win"
+  fi
+else
+  echo "[run-dev-win] WARNING: could not locate Git bash dir; nested 'bash' script bodies may fail" >&2
 fi
 
 export PATH="$PATH_PREFIX:$PATH"

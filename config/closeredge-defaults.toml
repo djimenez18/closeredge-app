@@ -1,0 +1,45 @@
+[general]
+product_name = "CloserEdge AI"
+workspace_dir = "~/.closeredge"
+
+[api]
+# Direct mode — no tinyhumans.ai backend needed
+# Set your inference URL to go directly to the LLM provider
+# inference_url = "https://openrouter.ai/api/v1/chat/completions"
+# Or use Anthropic directly:
+# inference_url = "https://api.anthropic.com/v1/messages"
+
+[auth]
+provider = "supabase"
+# Set these in env vars: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+
+[integrations]
+provider = "composio"
+mode = "direct"
+# Set COMPOSIO_API_KEY per client in Railway env vars
+
+[search]
+provider = "searxng"
+enabled = false
+# base_url = "http://localhost:8080"
+# Enable and set URL when SearXNG is deployed on Railway
+
+[voice]
+tts_provider = "elevenlabs"
+stt_provider = "groq"
+# Set ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID in env
+# Set GROQ_API_KEY in env for Whisper STT
+
+[memory]
+backend = "sqlite"
+# Default local SQLite — change to "agentmemory" for shared memory
+
+[local_ai]
+runtime_enabled = false
+provider = "ollama"
+# Enable for local embeddings and summaries
+
+[model_routing]
+default_provider = "anthropic"
+# Options: anthropic, openai, openrouter
+# Set the appropriate API key in env

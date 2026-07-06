@@ -10,17 +10,17 @@ use std::sync::{Mutex, OnceLock};
 use std::time::Duration as StdDuration;
 
 use chrono::Utc;
-use openhuman_core::openhuman::app_state::{
+use closeredge_core::openhuman::app_state::{
     snapshot, update_local_state, StoredAppStatePatch, StoredOnboardingTasks,
 };
-use openhuman_core::openhuman::config::rpc as config_rpc;
-use openhuman_core::openhuman::credentials::profiles::{
+use closeredge_core::openhuman::config::rpc as config_rpc;
+use closeredge_core::openhuman::credentials::profiles::{
     AuthProfile, AuthProfileKind, AuthProfilesStore,
 };
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     ai_list_memory_files, ai_read_memory_file, ai_write_memory_file, clear_namespace,
     context_query, context_recall, doc_delete, doc_list, doc_put, memory_delete_document,
     memory_init, memory_list_documents, memory_list_namespaces, memory_query_namespace,
@@ -29,11 +29,11 @@ use openhuman_core::openhuman::memory::{
     PutDocParams, QueryNamespaceParams, QueryNamespaceRequest, ReadMemoryFileRequest,
     RecallContextRequest, RecallMemoriesRequest, RecallNamespaceParams, WriteMemoryFileRequest,
 };
-use openhuman_core::openhuman::memory_sources::readers::SourceReader;
-use openhuman_core::openhuman::memory_sources::sync::sync_source;
-use openhuman_core::openhuman::memory_sources::{ContentType, MemorySourceEntry, SourceKind};
-use openhuman_core::openhuman::threads::ops as thread_ops;
-use openhuman_core::openhuman::threads::welcome_migration::migrate_welcome_agent_artifacts;
+use closeredge_core::openhuman::memory_sources::readers::SourceReader;
+use closeredge_core::openhuman::memory_sources::sync::sync_source;
+use closeredge_core::openhuman::memory_sources::{ContentType, MemorySourceEntry, SourceKind};
+use closeredge_core::openhuman::threads::ops as thread_ops;
+use closeredge_core::openhuman::threads::welcome_migration::migrate_welcome_agent_artifacts;
 use serde_json::{json, Value};
 use tempfile::{Builder, TempDir};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -79,7 +79,7 @@ struct Harness {
 }
 
 impl Harness {
-    async fn config(&self) -> openhuman_core::openhuman::config::Config {
+    async fn config(&self) -> closeredge_core::openhuman::config::Config {
         config_rpc::load_config_with_timeout()
             .await
             .expect("isolated config should load")
@@ -148,7 +148,7 @@ embedding_strict = false
 "#
     );
     std::fs::write(root.join("config.toml"), &cfg).expect("write config.toml");
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(&cfg).expect("round20 config must match schema");
 }
 
@@ -394,7 +394,7 @@ async fn round20_memory_sources_readers_and_sync_cover_error_edges_without_netwo
     let harness = setup("http://127.0.0.1:9");
     let config = harness.config().await;
 
-    let rss = openhuman_core::openhuman::memory_sources::readers::rss::RssReader;
+    let rss = closeredge_core::openhuman::memory_sources::readers::rss::RssReader;
     let mut missing_url = source_entry("rss-missing-url", SourceKind::RssFeed);
     assert_eq!(
         rss.list_items(&missing_url, &config)
@@ -433,9 +433,9 @@ async fn round20_memory_sources_readers_and_sync_cover_error_edges_without_netwo
     let old_path = std::env::var("PATH").unwrap_or_default();
     let _path = EnvGuard::set("PATH", format!("{}:{old_path}", bin.display()));
 
-    let github = openhuman_core::openhuman::memory_sources::readers::github::GithubReader;
+    let github = closeredge_core::openhuman::memory_sources::readers::github::GithubReader;
     let mut entry = source_entry("github-round20", SourceKind::GithubRepo);
-    entry.url = Some("git@github.com:tinyhumansai/openhuman.git".to_string());
+    entry.url = Some("git@github.com:closeredgeai/closeredge.git".to_string());
     let items = github
         .list_items(&entry, &config)
         .await
@@ -636,7 +636,7 @@ async fn round20_memory_documents_files_and_envelopes_cover_success_and_failure_
     assert!(!memories.memories.is_empty());
 
     let deleted =
-        memory_delete_document(openhuman_core::openhuman::memory::DeleteDocumentRequest {
+        memory_delete_document(closeredge_core::openhuman::memory::DeleteDocumentRequest {
             namespace: namespace.clone(),
             document_id: "doc-round20".to_string(),
         })
@@ -669,7 +669,7 @@ async fn round20_threads_fallback_title_delete_missing_and_welcome_noop_paths() 
     let harness = setup("http://127.0.0.1:9");
 
     let created = thread_ops::thread_create_new(
-        openhuman_core::openhuman::memory::CreateConversationThreadRequest {
+        closeredge_core::openhuman::memory::CreateConversationThreadRequest {
             labels: None,
             personality_id: None,
         },
@@ -680,7 +680,7 @@ async fn round20_threads_fallback_title_delete_missing_and_welcome_noop_paths() 
     .data
     .expect("created data");
 
-    let user_message = openhuman_core::openhuman::memory::ConversationMessageRecord {
+    let user_message = closeredge_core::openhuman::memory::ConversationMessageRecord {
         id: "round20-user-msg".to_string(),
         content: "Please map the onboarding telemetry rollout across product analytics and QA."
             .to_string(),
@@ -690,7 +690,7 @@ async fn round20_threads_fallback_title_delete_missing_and_welcome_noop_paths() 
         created_at: Utc::now().to_rfc3339(),
     };
     thread_ops::message_append(
-        openhuman_core::openhuman::memory::AppendConversationMessageRequest {
+        closeredge_core::openhuman::memory::AppendConversationMessageRequest {
             thread_id: created.id.clone(),
             message: user_message,
         },
@@ -699,7 +699,7 @@ async fn round20_threads_fallback_title_delete_missing_and_welcome_noop_paths() 
     .expect("append user");
 
     let fallback = thread_ops::thread_generate_title(
-        openhuman_core::openhuman::memory::GenerateConversationThreadTitleRequest {
+        closeredge_core::openhuman::memory::GenerateConversationThreadTitleRequest {
             thread_id: created.id.clone(),
             assistant_message: None,
         },
@@ -713,7 +713,7 @@ async fn round20_threads_fallback_title_delete_missing_and_welcome_noop_paths() 
     assert_ne!(fallback.title, created.title);
 
     let missing_update = thread_ops::message_update(
-        openhuman_core::openhuman::memory::UpdateConversationMessageRequest {
+        closeredge_core::openhuman::memory::UpdateConversationMessageRequest {
             thread_id: created.id.clone(),
             message_id: "missing-message".to_string(),
             extra_metadata: Some(json!({"x": true})),
@@ -724,7 +724,7 @@ async fn round20_threads_fallback_title_delete_missing_and_welcome_noop_paths() 
     assert!(missing_update.contains("message") || missing_update.contains("not found"));
 
     let missing_delete = thread_ops::thread_delete(
-        openhuman_core::openhuman::memory::DeleteConversationThreadRequest {
+        closeredge_core::openhuman::memory::DeleteConversationThreadRequest {
             thread_id: "missing-thread-round20".to_string(),
             deleted_at: Utc::now().to_rfc3339(),
         },
@@ -760,27 +760,27 @@ if [[ "${1:-}" != "api" ]]; then
   exit 2
 fi
 case "${2:-}" in
-  repos/tinyhumansai/openhuman/commits?per_page=30)
+  repos/closeredgeai/closeredge/commits?per_page=30)
     cat <<'JSON'
 [{"sha":"def456","commit":{"message":"Round20 commit fixture","author":{"name":"Ada","email":"ada@example.test","date":"2026-05-29T00:00:00Z"},"committer":{"name":"Ada","email":"ada@example.test","date":"2026-05-29T00:00:00Z"}}}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues?per_page=30\&state=all)
+  repos/closeredgeai/closeredge/issues?per_page=30\&state=all)
     cat <<'JSON'
 [{"number":20,"title":"Round20 issue","body":null,"state":"closed","user":null,"labels":[],"created_at":null,"updated_at":"2026-05-29T00:30:00Z","pull_request":null}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/pulls?per_page=30\&state=all)
+  repos/closeredgeai/closeredge/pulls?per_page=30\&state=all)
     cat <<'JSON'
 [{"number":21,"title":"Round20 merged PR","body":null,"state":"closed","user":null,"labels":[],"created_at":null,"updated_at":"2026-05-29T01:00:00Z","merged_at":"2026-05-29T01:00:00Z","comments":0}]
 JSON
     ;;
-  repos/tinyhumansai/openhuman/pulls/21)
+  repos/closeredgeai/closeredge/pulls/21)
     cat <<'JSON'
 {"number":21,"title":"Round20 merged PR","body":null,"state":"closed","user":null,"labels":[],"created_at":null,"updated_at":"2026-05-29T01:00:00Z","merged_at":"2026-05-29T01:00:00Z","comments":0}
 JSON
     ;;
-  repos/tinyhumansai/openhuman/issues/21/comments?per_page=50)
+  repos/closeredgeai/closeredge/issues/21/comments?per_page=50)
     cat <<'JSON'
 []
 JSON

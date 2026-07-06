@@ -1,0 +1,19 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+restartPolicyType = "on_failure"
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+startCommand = "closeredge-core serve"
+numReplicas = 1
+
+[[mounts]]
+mountPath = "/home/closeredge/.closeredge"
+
+[variables]
+CLOSEREDGE_WORKSPACE = "/home/closeredge/.closeredge"
+CLOSEREDGE_CORE_HOST = "0.0.0.0"
+CLOSEREDGE_CORE_PORT = "7788"
+RUST_LOG = "info"

@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { getCurrent, onOpenUrl } from '@tauri-apps/plugin-deep-link';
 
+import { SUBSCRIPTION_ROUTE } from '../constants/links';
 import { getCoreStateSnapshot, patchCoreStateSnapshot } from '../lib/coreState/store';
 import { consumeLoginToken } from '../services/api/authApi';
 import { clearCoreRpcTokenCache, clearCoreRpcUrlCache } from '../services/coreRpcClient';
@@ -11,7 +12,6 @@ import {
   failDeepLinkAuthProcessing,
 } from '../store/deepLinkAuthState';
 import { getStoredCoreMode } from './configPersistence';
-import { BILLING_DASHBOARD_URL } from './links';
 import {
   evaluateOAuthAppVersionGate,
   oauthAuthReadinessUserMessage,
@@ -210,13 +210,13 @@ const handlePaymentDeepLink = async (parsed: URL) => {
     // payment completion events.
     window.dispatchEvent(new CustomEvent('payment:success', { detail: { sessionId } }));
 
-    await openUrl(BILLING_DASHBOARD_URL);
-    window.location.hash = '/home';
+    // Show the in-app subscription page (HashRouter) — the old external
+    // closeredge.ai/dashboard page no longer exists.
+    window.location.hash = SUBSCRIPTION_ROUTE;
   } else if (path === 'cancel') {
     console.log('[DeepLink] Payment cancelled');
     window.dispatchEvent(new CustomEvent('payment:cancel', {}));
-    await openUrl(BILLING_DASHBOARD_URL);
-    window.location.hash = '/home';
+    window.location.hash = SUBSCRIPTION_ROUTE;
   } else {
     console.warn('[DeepLink] Unknown payment path:', path);
   }

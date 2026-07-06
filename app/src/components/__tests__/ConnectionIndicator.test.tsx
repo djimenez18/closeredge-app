@@ -1,8 +1,15 @@
 import { screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { renderWithProviders } from '../../test/test-utils';
+import { isTauri } from '../../utils/tauriCommands/common';
 import ConnectionIndicator from '../ConnectionIndicator';
+
+// Default to Tauri mode so existing tests that assert backend-only behaviour
+// keep working. Individual tests can override via mockIsTauri.mockReturnValue.
+vi.mock('../../utils/tauriCommands/common', () => ({ isTauri: vi.fn(() => true) }));
+
+const mockIsTauri = vi.mocked(isTauri);
 
 describe('ConnectionIndicator', () => {
   it('renders connected state with override prop', () => {
@@ -107,5 +114,21 @@ describe('ConnectionIndicator', () => {
       },
     });
     expect(screen.getByText(/Connecting|Reconnecting/)).toBeInTheDocument();
+  });
+
+  it('shows "Browser Mode" when blocking=browser-mode (non-Tauri)', () => {
+    mockIsTauri.mockReturnValue(false);
+    renderWithProviders(<ConnectionIndicator />, {
+      preloadedState: {
+        connectivity: {
+          internet: 'online',
+          core: 'reachable',
+          backend: 'disconnected',
+          lastError: {},
+        },
+      },
+    });
+    expect(screen.getByText('Browser Mode')).toBeInTheDocument();
+    mockIsTauri.mockReturnValue(true);
   });
 });

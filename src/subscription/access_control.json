@@ -1,0 +1,55 @@
+{
+  "tiers": {
+    "foundation": {
+      "max_conversations_per_day": 50,
+      "max_agent_requests_per_day": 200,
+      "max_agent_requests_per_week": 1000,
+      "max_tokens_per_week": 2500000,
+      "max_tokens_per_month": 8000000,
+      "voice_enabled": false,
+      "crm_integration": false,
+      "advanced_agents": false,
+      "custom_brain_tuning": false,
+      "war_room": false,
+      "audio_briefs": false,
+      "dedicated_infrastructure": false,
+      "integrations": ["gmail", "google_calendar", "telegram", "sms"]
+    },
+    "pro": {
+      "max_conversations_per_day": 200,
+      "max_agent_requests_per_day": 1000,
+      "max_agent_requests_per_week": 5000,
+      "max_tokens_per_week": 10000000,
+      "max_tokens_per_month": 35000000,
+      "voice_enabled": true,
+      "crm_integration": true,
+      "advanced_agents": true,
+      "custom_brain_tuning": false,
+      "war_room": true,
+      "audio_briefs": true,
+      "dedicated_infrastructure": false,
+      "integrations": ["gmail", "google_calendar", "telegram", "sms", "elevenlabs", "crm_native"]
+    },
+    "elite": {
+      "max_conversations_per_day": -1,
+      "max_agent_requests_per_day": -1,
+      "max_agent_requests_per_week": -1,
+      "max_tokens_per_week": 50000000,
+      "max_tokens_per_month": 175000000,
+      "voice_enabled": true,
+      "crm_integration": true,
+      "advanced_agents": true,
+      "custom_brain_tuning": true,
+      "war_room": true,
+      "audio_briefs": true,
+      "dedicated_infrastructure": true,
+      "integrations": ["gmail", "google_calendar", "telegram", "sms", "elevenlabs", "crm_native", "custom"]
+    }
+  },
+  "access_levels": {
+    "full": { "can_read": true, "can_write": true, "can_agent": true, "can_admin": true },
+    "read_only": { "can_read": true, "can_write": false, "can_agent": false, "can_admin": false },
+    "billing_only": { "can_read": false, "can_write": false, "can_agent": false, "can_admin": false, "can_billing": true },
+    "denied": { "can_read": false, "can_write": false, "can_agent": false, "can_admin": false }
+  }
+}

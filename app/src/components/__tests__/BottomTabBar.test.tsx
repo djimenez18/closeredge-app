@@ -7,7 +7,7 @@
  * [#1123] Covers the walkthroughAttr object added for the Joyride walkthrough.
  */
 import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -120,31 +120,35 @@ describe('BottomTabBar', () => {
     expect(chatBtn).toHaveAttribute('data-walkthrough', 'tab-chat');
   });
 
-  it('renders Settings tab with data-walkthrough="tab-settings"', async () => {
+  // The CloserEdge redesign moved Settings out of the primary tabs into the
+  // "More" overflow popover (overflow items carry no data-walkthrough attrs).
+  it('shows the Settings entry inside the "More" overflow menu', async () => {
     await renderBottomTabBar('/home');
-    const settingsBtn = screen.getByRole('button', { name: 'Settings' });
-    expect(settingsBtn).toHaveAttribute('data-walkthrough', 'tab-settings');
+
+    // Not a primary tab anymore.
+    expect(screen.queryByRole('button', { name: 'Settings' })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'More' }));
+    expect(screen.getByRole('button', { name: 'Settings' })).toBeInTheDocument();
   });
 
-  it('returns null when there is no session token', async () => {
+  it('still renders when there is no session token (auth gate bypassed in the fork)', async () => {
     const { container } = await renderBottomTabBar('/home', { hasToken: false });
-    expect(container.firstChild).toBeNull();
+    expect(container.firstChild).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Home' })).toBeInTheDocument();
   });
 
-  it('still shows the Rewards tab for local sessions', async () => {
+  it('still shows the Settings entry (via More) for local sessions', async () => {
     await renderBottomTabBar('/home', { tokenValue: 'header.payload.local' });
-    expect(screen.getByRole('button', { name: 'Rewards' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'More' }));
+    expect(screen.getByRole('button', { name: 'Settings' })).toBeInTheDocument();
   });
 
-  it('renders the pulsing companion dot on the Settings tab when a session is active', async () => {
+  it('no longer renders the pulsing companion dot on primary tabs (Settings moved into More)', async () => {
     const { container } = await renderBottomTabBar('/home', { companionSessionActive: true });
-    const settingsBtn = screen.getByRole('button', { name: 'Settings' });
-    const dot = settingsBtn.querySelector('.animate-pulse.bg-blue-500');
-    expect(dot).not.toBeNull();
-    // And not on a non-Settings tab.
-    const homeBtn = screen.getByRole('button', { name: 'Home' });
-    expect(homeBtn.querySelector('.animate-pulse.bg-blue-500')).toBeNull();
-    void container;
+    // The dot was tied to the top-level Settings tab, which the redesign
+    // moved into the More popover — no primary tab shows it now.
+    expect(container.querySelector('.animate-pulse.bg-blue-500')).toBeNull();
   });
 
   it('returns null on the "/" path even with a session token', async () => {

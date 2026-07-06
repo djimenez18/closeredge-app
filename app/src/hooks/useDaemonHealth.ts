@@ -22,6 +22,7 @@ import {
   openhumanServiceStop,
   type ServiceStatus,
 } from '../utils/tauriCommands';
+import { isTauri } from '../utils/tauriCommands/common';
 
 export const useDaemonHealth = (userId?: string) => {
   const daemonState = useDaemonUserState(userId);
@@ -162,10 +163,16 @@ export const useDaemonHealth = (userId?: string) => {
     : 'Unknown';
 
   useEffect(() => {
+    // In browser mode the daemon is not available — skip probing to avoid
+    // console noise and unnecessary state churn.
+    if (!isTauri()) return;
     void probeAgentStatus();
   }, [probeAgentStatus]);
 
   useEffect(() => {
+    // In browser mode there is no sidecar to monitor.
+    if (!isTauri()) return;
+
     let cleanup: (() => void) | null = null;
     let cancelled = false;
 

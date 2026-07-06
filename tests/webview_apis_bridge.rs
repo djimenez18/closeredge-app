@@ -12,7 +12,7 @@
 //!
 //! Tests are serial because they all mutate the `OPENHUMAN_WEBVIEW_APIS_PORT`
 //! env var and share the lazy global `CLIENT` inside
-//! `openhuman_core::openhuman::webview_apis::client`.
+//! `closeredge_core::openhuman::webview_apis::client`.
 
 use std::net::SocketAddr;
 
@@ -22,7 +22,7 @@ use tokio::net::TcpListener;
 use tokio::sync::Mutex;
 use tokio_tungstenite::tungstenite::Message;
 
-use openhuman_core::openhuman::webview_apis::{client, types::GmailLabel};
+use closeredge_core::openhuman::webview_apis::{client, types::GmailLabel};
 
 /// The webview_apis client caches its WebSocket connection (and the
 /// reader/writer tasks that service it) in a process-global `OnceLock`.

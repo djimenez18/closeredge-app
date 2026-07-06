@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 pub const CEF_CACHE_PATH_ENV: &str = "OPENHUMAN_CEF_CACHE_PATH";
 const ACTIVE_USER_STATE_FILE: &str = "active_user.toml";
-/// Sibling of the OpenHuman data dir (not under it) so the marker survives
+/// Sibling of the CloserEdge AI data dir (not under it) so the marker survives
 /// `reset_local_data` removing the whole `default_openhuman_dir` tree.
 const PENDING_PURGE_STATE_FILE: &str = "openhuman_pending_cef_purge.toml";
 /// Pre–sibling-layout marker (lived under the data root; `reset_local_data` removed it).
@@ -24,9 +24,9 @@ struct PendingCefPurgeState {
     paths: Vec<String>,
 }
 
-/// Resolves the on-disk OpenHuman root dir name (`.openhuman` vs
+/// Resolves the on-disk CloserEdge AI root dir name (`.openhuman` vs
 /// `.openhuman-staging`) for the Tauri shell. Delegates to
-/// [`openhuman_core::api::config::app_env_from_env`] so the shell and the
+/// [`closeredge_core::api::config::app_env_from_env`] so the shell and the
 /// embedded core agree on the channel selection — including the
 /// `option_env!` compile-time fallback that staging CI bakes into the
 /// build. Without that fallback the packaged staging `.app` launched from
@@ -34,8 +34,8 @@ struct PendingCefPurgeState {
 /// collides with any older production install's CEF profile, producing
 /// the startup crash loop reported in #1490.
 fn default_root_dir_name() -> &'static str {
-    if openhuman_core::api::config::is_staging_app_env(
-        openhuman_core::api::config::app_env_from_env().as_deref(),
+    if closeredge_core::api::config::is_staging_app_env(
+        closeredge_core::api::config::app_env_from_env().as_deref(),
     ) {
         ".openhuman-staging"
     } else {
@@ -163,12 +163,12 @@ fn is_trusted_queued_purge_path(default_openhuman_dir: &Path, target: &Path) -> 
     true
 }
 
-/// Marker file lives in the **parent** of the OpenHuman data root so a full
+/// Marker file lives in the **parent** of the CloserEdge AI data root so a full
 /// `remove_dir_all(default_openhuman_dir)` (e.g. from core `reset_local_data`) does
 /// not delete the pending-purge list before it is processed.
 fn pending_purge_marker_path(default_openhuman_dir: &Path) -> Result<PathBuf, String> {
     let parent = default_openhuman_dir.parent().ok_or_else(|| {
-        "default OpenHuman data dir has no parent; cannot place CEF purge marker outside the data tree"
+        "default CloserEdge AI data dir has no parent; cannot place CEF purge marker outside the data tree"
             .to_string()
     })?;
     Ok(parent.join(PENDING_PURGE_STATE_FILE))
@@ -233,7 +233,7 @@ fn save_pending_purge_state(
 ) -> Result<(), String> {
     std::fs::create_dir_all(default_openhuman_dir).map_err(|error| {
         format!(
-            "create OpenHuman root dir {}: {error}",
+            "create CloserEdge AI root dir {}: {error}",
             default_openhuman_dir.display()
         )
     })?;
@@ -284,7 +284,7 @@ pub fn prepare_process_cache_path() -> Result<PathBuf, String> {
     drain_pending_purges(&default_openhuman_dir)?;
 
     // Honor a pre-set `OPENHUMAN_CEF_CACHE_PATH` so harnesses (E2E in
-    // particular) can locate the CEF cache outside the OpenHuman workspace
+    // particular) can locate the CEF cache outside the CloserEdge AI workspace
     // tree. The mega-flow spec calls `openhuman.config_reset_local_data`
     // between scenarios, which `remove_dir_all`'s the whole workspace —
     // if CEF's cache lives inside it the running renderer crashes mid-spec
@@ -461,7 +461,7 @@ mod tests {
     /// Tauri shell must resolve the dedicated `.openhuman-staging` data
     /// dir — never the production `.openhuman` dir. Prior to the fix
     /// this function had its own runtime-only lookup and would diverge
-    /// from `openhuman_core::api::config::app_env_from_env`, producing a
+    /// from `closeredge_core::api::config::app_env_from_env`, producing a
     /// split-brain datadir (CEF profile under prod, sidecar state under
     /// staging) that crashed the app on launch.
     #[test]
@@ -496,7 +496,7 @@ mod tests {
     }
 
     /// Whitespace and casing are folded by
-    /// `openhuman_core::api::config::app_env_from_env` — confirm the shell
+    /// `closeredge_core::api::config::app_env_from_env` — confirm the shell
     /// inherits that behavior rather than re-implementing it.
     #[test]
     fn default_root_dir_name_normalizes_staging_casing_and_whitespace() {

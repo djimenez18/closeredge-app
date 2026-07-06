@@ -20,7 +20,6 @@ import companionReducer from './companionSlice';
 import connectivityReducer from './connectivitySlice';
 import coreModeReducer from './coreModeSlice';
 import localeReducer from './localeSlice';
-import mascotReducer from './mascotSlice';
 import notificationReducer from './notificationSlice';
 import personaReducer from './personaSlice';
 import providerSurfacesReducer from './providerSurfaceSlice';
@@ -134,19 +133,9 @@ const persistedNotificationReducer = persistReducer(notificationPersistConfig, n
 const threadPersistConfig = { key: 'thread', storage, whitelist: ['selectedThreadId'] };
 const persistedThreadReducer = persistReducer(threadPersistConfig, threadReducer);
 
-// Persist only previously persisted mascot appearance fields plus the custom
-// GIF override added by this feature; leave existing non-persisted mascot
-// fields as runtime state to avoid changing refresh behavior.
-const mascotPersistConfig = {
-  key: 'mascot',
-  storage,
-  whitelist: ['color', 'voiceId', 'customMascotGifUrl'],
-};
-const persistedMascotReducer = persistReducer(mascotPersistConfig, mascotReducer);
-
 // Persona Pack v1 (issue #2345): persist the cosmetic display name + description
-// per user, mirroring how mascot appearance is stored. SOUL.md lives on disk and
-// is round-tripped over RPC, so it is intentionally not in this slice.
+// per user. SOUL.md lives on disk and is round-tripped over RPC, so it is
+// intentionally not in this slice.
 const personaPersistConfig = { key: 'persona', storage, whitelist: ['displayName', 'description'] };
 const persistedPersonaReducer = persistReducer(personaPersistConfig, personaReducer);
 
@@ -164,7 +153,6 @@ export const store = configureStore({
     providerSurfaces: providerSurfacesReducer,
     coreMode: persistedCoreModeReducer,
     locale: persistedLocaleReducer,
-    mascot: persistedMascotReducer,
     persona: persistedPersonaReducer,
     theme: persistedThemeReducer,
     workflows: workflowsReducer,

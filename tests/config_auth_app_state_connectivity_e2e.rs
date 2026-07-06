@@ -18,17 +18,17 @@ use reqwest::StatusCode;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 
-use openhuman_core::api::config::{
+use closeredge_core::api::config::{
     api_base_from_env, api_url, app_env_from_env, default_api_base_url_for_env, effective_api_url,
     effective_backend_api_url, effective_inference_url, looks_like_local_ai_endpoint,
     normalize_api_base_url, APP_ENV_VAR, DEFAULT_API_BASE_URL, DEFAULT_STAGING_API_BASE_URL,
     OPENHUMAN_INFERENCE_PATH, VITE_APP_ENV_VAR,
 };
-use openhuman_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
-use openhuman_core::core::event_bus::{DomainEvent, EventHandler};
-use openhuman_core::core::jsonrpc::build_core_http_router;
-use openhuman_core::openhuman::app_state::app_state_schemas;
-use openhuman_core::openhuman::config::schema::{
+use closeredge_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
+use closeredge_core::core::event_bus::{DomainEvent, EventHandler};
+use closeredge_core::core::jsonrpc::build_core_http_router;
+use closeredge_core::openhuman::app_state::app_state_schemas;
+use closeredge_core::openhuman::config::schema::{
     generate_provider_id, generate_voice_provider_id, is_slug_reserved, is_voice_slug_reserved,
     migrate_legacy_fields, AuditConfig, AuthStyle, CapabilityProviderConfig,
     CapabilityProviderTrustState, CloudProviderCreds, CloudProviderType, DashboardConfig,
@@ -38,30 +38,30 @@ use openhuman_core::openhuman::config::schema::{
     SttApiStyle, TelegramConfig, TtsApiStyle, VoiceCapability, VoiceProviderCreds, WebhookConfig,
     WhatsAppConfig,
 };
-use openhuman_core::openhuman::config::settings_cli::{
+use closeredge_core::openhuman::config::settings_cli::{
     settings_section_json, ConfigSnapshotFields,
 };
-use openhuman_core::openhuman::config::{
+use closeredge_core::openhuman::config::{
     clear_active_user, default_projects_dir, output_language_directive, pre_login_user_dir,
     read_active_user_id, user_openhuman_dir, write_active_user_id, AgentConfig, ChannelsConfig,
     Config, DaemonConfig, DelegateAgentConfig, DictationActivationMode, LlmBackend,
     ReflectionSource, TeamModelConfig, UpdateRestartStrategy,
 };
-use openhuman_core::openhuman::connectivity::{
+use closeredge_core::openhuman::connectivity::{
     all_connectivity_controller_schemas, all_connectivity_registered_controllers,
     connectivity_controller_schema,
 };
-use openhuman_core::openhuman::credentials::bus::SessionExpiredSubscriber;
-use openhuman_core::openhuman::credentials::cli::{
+use closeredge_core::openhuman::credentials::bus::SessionExpiredSubscriber;
+use closeredge_core::openhuman::credentials::cli::{
     cli_auth_list, cli_auth_login, cli_auth_logout, cli_auth_status, parse_field_equals_entries,
 };
-use openhuman_core::openhuman::credentials::profiles::{AuthProfile, AuthProfilesStore, TokenSet};
-use openhuman_core::openhuman::credentials::session_support::{
+use closeredge_core::openhuman::credentials::profiles::{AuthProfile, AuthProfilesStore, TokenSet};
+use closeredge_core::openhuman::credentials::session_support::{
     build_session_state, get_session_token, is_local_session_token, load_app_session_profile,
     parse_fields_value, profile_name_or_default, session_state_from_profile,
     session_token_from_profile, summarize_auth_profile,
 };
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::credentials::{
     clear_composio_api_key, decrypt_secret, encrypt_secret, get_composio_api_key,
     list_provider_credentials_by_prefix, normalize_provider, rpc_store_composio_api_key,
     store_composio_api_key, AuthService, APP_SESSION_PROVIDER, COMPOSIO_DIRECT_PROVIDER,
@@ -489,7 +489,7 @@ auto_save = false
 embedding_strict = false
 "#;
     std::fs::write(openhuman_dir.join("config.toml"), cfg).expect("write config.toml");
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(cfg).expect("test config must match schema");
 }
 
@@ -733,7 +733,7 @@ fn config_schema_helpers_cover_provider_voice_agent_and_channel_defaults() {
     assert_eq!(voice_defaults.stt_api_style, SttApiStyle::OpenaiAudio);
     assert_eq!(voice_defaults.tts_api_style, TtsApiStyle::OpenaiAudio);
     assert_eq!(
-        openhuman_core::openhuman::config::schema::voice_providers::builtin_voice_provider(
+        closeredge_core::openhuman::config::schema::voice_providers::builtin_voice_provider(
             "deepgram"
         )
         .expect("deepgram builtin")
@@ -1049,29 +1049,29 @@ fn config_schema_defaults_cover_dashboard_capability_memory_and_security_shapes(
     assert_eq!(audit.log_path, "audit.log");
     assert_eq!(audit.max_size_mb, 100);
 
-    let meet: openhuman_core::openhuman::config::schema::MeetConfig =
+    let meet: closeredge_core::openhuman::config::schema::MeetConfig =
         serde_json::from_value(json!({})).expect("meet defaults");
     assert!(!meet.auto_orchestrator_handoff);
-    let observability: openhuman_core::openhuman::config::schema::ObservabilityConfig =
+    let observability: closeredge_core::openhuman::config::schema::ObservabilityConfig =
         serde_json::from_value(json!({})).expect("observability defaults");
     assert!(observability.analytics_enabled);
     assert!(observability.sentry_dsn.is_none());
-    let scheduler_gate: openhuman_core::openhuman::config::schema::SchedulerGateConfig =
+    let scheduler_gate: closeredge_core::openhuman::config::schema::SchedulerGateConfig =
         serde_json::from_value(json!({})).expect("scheduler gate defaults");
     assert_eq!(
         scheduler_gate.mode,
-        openhuman_core::openhuman::config::schema::SchedulerGateMode::Auto
+        closeredge_core::openhuman::config::schema::SchedulerGateMode::Auto
     );
     assert_eq!(
-        openhuman_core::openhuman::config::schema::SchedulerGateMode::AlwaysOn.as_str(),
+        closeredge_core::openhuman::config::schema::SchedulerGateMode::AlwaysOn.as_str(),
         "always_on"
     );
     assert_eq!(
-        openhuman_core::openhuman::config::schema::SchedulerGateMode::Off.as_str(),
+        closeredge_core::openhuman::config::schema::SchedulerGateMode::Off.as_str(),
         "off"
     );
 
-    let multimodal = openhuman_core::openhuman::config::schema::MultimodalConfig {
+    let multimodal = closeredge_core::openhuman::config::schema::MultimodalConfig {
         max_images: 99,
         max_image_size_mb: 0,
         allow_remote_fetch: true,
@@ -1079,9 +1079,9 @@ fn config_schema_defaults_cover_dashboard_capability_memory_and_security_shapes(
     assert_eq!(multimodal.effective_limits(), (16, 1));
     assert_eq!(multimodal.clamp_image_count(120), 99);
 
-    let mut local_ai = openhuman_core::openhuman::config::schema::LocalAiConfig {
+    let mut local_ai = closeredge_core::openhuman::config::schema::LocalAiConfig {
         runtime_enabled: false,
-        usage: openhuman_core::openhuman::config::schema::LocalAiUsage {
+        usage: closeredge_core::openhuman::config::schema::LocalAiUsage {
             embeddings: true,
             heartbeat: true,
             learning_reflection: true,
@@ -1101,15 +1101,15 @@ fn config_schema_defaults_cover_dashboard_capability_memory_and_security_shapes(
         assert!(local_ai.use_local_for_subconscious());
     }
 
-    let mut search = openhuman_core::openhuman::config::schema::SearchConfig {
+    let mut search = closeredge_core::openhuman::config::schema::SearchConfig {
         engine: " Parallel ".into(),
         ..Default::default()
     };
     assert_eq!(
         search.effective_engine(),
-        openhuman_core::openhuman::config::schema::SearchEngine::Managed
+        closeredge_core::openhuman::config::schema::SearchEngine::Managed
     );
-    search.parallel = openhuman_core::openhuman::config::schema::SearchEngineCredentials {
+    search.parallel = closeredge_core::openhuman::config::schema::SearchEngineCredentials {
         api_key: Some(" parallel-key ".into()),
     };
     assert_eq!(
@@ -1119,33 +1119,33 @@ fn config_schema_defaults_cover_dashboard_capability_memory_and_security_shapes(
     );
     assert_eq!(
         search.effective_engine(),
-        openhuman_core::openhuman::config::schema::SearchEngine::Parallel
+        closeredge_core::openhuman::config::schema::SearchEngine::Parallel
     );
     assert_eq!(search.requested_engine_str(), "Parallel");
     search.engine = "   ".into();
     assert_eq!(search.requested_engine_str(), "managed");
 
-    let integration = openhuman_core::openhuman::config::schema::IntegrationToggle {
+    let integration = closeredge_core::openhuman::config::schema::IntegrationToggle {
         enabled: true,
         mode: "byo".into(),
         api_key: Some("   ".into()),
     };
     assert!(!integration.is_active());
-    let managed_integration = openhuman_core::openhuman::config::schema::IntegrationToggle {
+    let managed_integration = closeredge_core::openhuman::config::schema::IntegrationToggle {
         enabled: true,
         mode: "managed".into(),
         api_key: None,
     };
     assert!(managed_integration.is_active());
 
-    let mcp_default = openhuman_core::openhuman::config::schema::McpServerConfig::default();
+    let mcp_default = closeredge_core::openhuman::config::schema::McpServerConfig::default();
     assert!(mcp_default.enabled);
     assert_eq!(mcp_default.timeout_secs, 30);
     assert!(matches!(
         mcp_default.auth,
-        openhuman_core::openhuman::config::schema::McpAuthConfig::None
+        closeredge_core::openhuman::config::schema::McpAuthConfig::None
     ));
-    let mcp_with_auth: openhuman_core::openhuman::config::schema::McpServerConfig =
+    let mcp_with_auth: closeredge_core::openhuman::config::schema::McpServerConfig =
         serde_json::from_value(json!({
             "name": "worker-a-mcp",
             "endpoint": "https://mcp.example.test",
@@ -1158,24 +1158,24 @@ fn config_schema_defaults_cover_dashboard_capability_memory_and_security_shapes(
         .expect("mcp server auth config");
     assert!(matches!(
         mcp_with_auth.auth,
-        openhuman_core::openhuman::config::schema::McpAuthConfig::Header { .. }
+        closeredge_core::openhuman::config::schema::McpAuthConfig::Header { .. }
     ));
     for auth in [
         json!({ "kind": "bearer_token", "token": "bearer" }),
         json!({ "kind": "basic", "username": "u", "password": "p" }),
         json!({ "kind": "query_param", "name": "api_key", "value": "secret" }),
     ] {
-        let _: openhuman_core::openhuman::config::schema::McpAuthConfig =
+        let _: closeredge_core::openhuman::config::schema::McpAuthConfig =
             serde_json::from_value(auth).expect("mcp auth variant should deserialize");
     }
 
-    let incomplete_poly = openhuman_core::openhuman::config::schema::PolymarketClobCredentials {
+    let incomplete_poly = closeredge_core::openhuman::config::schema::PolymarketClobCredentials {
         api_key: " key ".into(),
         secret: "   ".into(),
         passphrase: " pass ".into(),
     };
     assert!(!incomplete_poly.is_complete());
-    let complete_poly = openhuman_core::openhuman::config::schema::PolymarketClobCredentials {
+    let complete_poly = closeredge_core::openhuman::config::schema::PolymarketClobCredentials {
         api_key: " key ".into(),
         secret: " secret ".into(),
         passphrase: " pass ".into(),
@@ -1406,23 +1406,23 @@ fn config_proxy_public_paths_normalize_validate_and_apply_scope() {
         invalid.enabled = false;
     }
 
-    openhuman_core::openhuman::config::set_runtime_proxy_config(services.clone());
-    assert!(openhuman_core::openhuman::config::runtime_proxy_config()
+    closeredge_core::openhuman::config::set_runtime_proxy_config(services.clone());
+    assert!(closeredge_core::openhuman::config::runtime_proxy_config()
         .should_apply_to_service("tool.browser"));
-    let _cached = openhuman_core::openhuman::config::build_runtime_proxy_client("tool.browser");
+    let _cached = closeredge_core::openhuman::config::build_runtime_proxy_client("tool.browser");
     let _cached_again =
-        openhuman_core::openhuman::config::build_runtime_proxy_client("tool.browser");
+        closeredge_core::openhuman::config::build_runtime_proxy_client("tool.browser");
     let _timeout_client =
-        openhuman_core::openhuman::config::build_runtime_proxy_client_with_timeouts(
+        closeredge_core::openhuman::config::build_runtime_proxy_client_with_timeouts(
             "memory.embeddings",
             1,
             1,
         );
-    let _builder = openhuman_core::openhuman::config::apply_runtime_proxy_to_builder(
+    let _builder = closeredge_core::openhuman::config::apply_runtime_proxy_to_builder(
         reqwest::Client::builder(),
         "tool.http_request",
     );
-    openhuman_core::openhuman::config::set_runtime_proxy_config(ProxyConfig::default());
+    closeredge_core::openhuman::config::set_runtime_proxy_config(ProxyConfig::default());
 }
 
 #[test]
@@ -2581,28 +2581,30 @@ async fn credentials_public_ops_cover_service_and_missing_session_error_paths() 
     std::fs::create_dir_all(config.config_path.parent().expect("config parent"))
         .expect("create config parent");
 
-    openhuman_core::openhuman::credentials::start_login_gated_services(&config).await;
-    openhuman_core::openhuman::credentials::stop_login_gated_services(&config).await;
+    closeredge_core::openhuman::credentials::start_login_gated_services(&config).await;
+    closeredge_core::openhuman::credentials::stop_login_gated_services(&config).await;
 
     assert!(
-        openhuman_core::openhuman::credentials::auth_create_channel_link_token(&config, "   ")
+        closeredge_core::openhuman::credentials::auth_create_channel_link_token(&config, "   ")
             .await
             .expect_err("blank channel should fail")
             .contains("channel is required")
     );
     assert!(
-        openhuman_core::openhuman::credentials::auth_create_channel_link_token(&config, "matrix")
+        closeredge_core::openhuman::credentials::auth_create_channel_link_token(&config, "matrix")
             .await
             .expect_err("unsupported channel should fail")
             .contains("unsupported channel")
     );
     assert!(
-        openhuman_core::openhuman::credentials::auth_create_channel_link_token(&config, "telegram")
-            .await
-            .expect_err("missing session should fail")
-            .contains("session JWT required")
+        closeredge_core::openhuman::credentials::auth_create_channel_link_token(
+            &config, "telegram"
+        )
+        .await
+        .expect_err("missing session should fail")
+        .contains("session JWT required")
     );
-    assert!(openhuman_core::openhuman::credentials::oauth_connect(
+    assert!(closeredge_core::openhuman::credentials::oauth_connect(
         &config,
         "github",
         Some("skill"),
@@ -2613,13 +2615,13 @@ async fn credentials_public_ops_cover_service_and_missing_session_error_paths() 
     .expect_err("oauth connect without session should fail")
     .contains("session JWT required"));
     assert!(
-        openhuman_core::openhuman::credentials::oauth_list_integrations(&config)
+        closeredge_core::openhuman::credentials::oauth_list_integrations(&config)
             .await
             .expect_err("oauth list without session should fail")
             .contains("session JWT required")
     );
     assert!(
-        openhuman_core::openhuman::credentials::oauth_fetch_integration_tokens(
+        closeredge_core::openhuman::credentials::oauth_fetch_integration_tokens(
             &config,
             "0123456789abcdef01234567",
             "0123456789abcdef0123456789abcdef",
@@ -2629,7 +2631,7 @@ async fn credentials_public_ops_cover_service_and_missing_session_error_paths() 
         .contains("session JWT required")
     );
     assert!(
-        openhuman_core::openhuman::credentials::oauth_fetch_client_key(
+        closeredge_core::openhuman::credentials::oauth_fetch_client_key(
             &config,
             "0123456789abcdef01234567",
         )
@@ -2638,7 +2640,7 @@ async fn credentials_public_ops_cover_service_and_missing_session_error_paths() 
         .contains("session JWT required")
     );
     assert!(
-        openhuman_core::openhuman::credentials::oauth_revoke_integration(
+        closeredge_core::openhuman::credentials::oauth_revoke_integration(
             &config,
             "0123456789abcdef01234567",
         )
@@ -3571,10 +3573,10 @@ async fn config_auto_approve_public_helper_persists_once_and_is_idempotent() {
         EnvVarGuard::unset(VITE_APP_ENV_VAR),
     ];
 
-    openhuman_core::openhuman::config::add_auto_approve_tool("tool.config.round10")
+    closeredge_core::openhuman::config::add_auto_approve_tool("tool.config.round10")
         .await
         .expect("add auto approve tool");
-    openhuman_core::openhuman::config::add_auto_approve_tool("tool.config.round10")
+    closeredge_core::openhuman::config::add_auto_approve_tool("tool.config.round10")
         .await
         .expect("idempotent auto approve tool");
 
@@ -4192,7 +4194,7 @@ async fn auth_remote_backend_paths_and_app_state_current_user_cache_round_trip()
         "the second snapshot should reuse the current-user cache"
     );
 
-    let identity = openhuman_core::openhuman::app_state::peek_cached_current_user_identity()
+    let identity = closeredge_core::openhuman::app_state::peek_cached_current_user_identity()
         .expect("snapshot should seed cached identity");
     assert_eq!(identity.id.as_deref(), Some("remote-user-1"));
     assert_eq!(identity.name.as_deref(), Some("Remote Worker"));
@@ -4311,7 +4313,7 @@ async fn app_state_snapshot_clears_empty_current_user_cache_and_falls_back_to_st
         "empty backend users should clear the cache and fall back to stored identity"
     );
     assert!(
-        openhuman_core::openhuman::app_state::peek_cached_current_user_identity().is_none(),
+        closeredge_core::openhuman::app_state::peek_cached_current_user_identity().is_none(),
         "empty backend user should clear the process current-user cache"
     );
 
@@ -4458,7 +4460,7 @@ async fn app_state_snapshot_clears_null_current_user_cache_and_falls_back_to_sto
         "null backend users should clear the cache and fall back to stored identity"
     );
     assert!(
-        openhuman_core::openhuman::app_state::peek_cached_current_user_identity().is_none(),
+        closeredge_core::openhuman::app_state::peek_cached_current_user_identity().is_none(),
         "null backend user should clear the process current-user cache"
     );
 
@@ -4518,7 +4520,7 @@ async fn app_state_cached_identity_peek_accepts_legacy_current_user_fields() {
         2,
         "store_session and snapshot should each fetch the static backend once"
     );
-    let identity = openhuman_core::openhuman::app_state::peek_cached_current_user_identity()
+    let identity = closeredge_core::openhuman::app_state::peek_cached_current_user_identity()
         .expect("legacy current-user keys should produce a prompt identity");
     assert_eq!(identity.id.as_deref(), Some("legacy-user-id"));
     assert_eq!(identity.name.as_deref(), Some("Legacy Display"));
@@ -4577,7 +4579,7 @@ async fn app_state_cached_identity_peek_accepts_camel_case_fallback_fields() {
             .and_then(Value::as_str),
         Some("camel-user-id")
     );
-    let identity = openhuman_core::openhuman::app_state::peek_cached_current_user_identity()
+    let identity = closeredge_core::openhuman::app_state::peek_cached_current_user_identity()
         .expect("camel-case current-user keys should produce a prompt identity");
     assert_eq!(identity.id.as_deref(), Some("camel-user-id"));
     assert_eq!(identity.name.as_deref(), Some("Camel Full Name"));
@@ -4638,7 +4640,7 @@ async fn app_state_cached_identity_peek_ignores_current_user_without_identity_fi
         "store_session and snapshot should each fetch the no-identity backend once"
     );
     assert!(
-        openhuman_core::openhuman::app_state::peek_cached_current_user_identity().is_none(),
+        closeredge_core::openhuman::app_state::peek_cached_current_user_identity().is_none(),
         "current-user objects without id/name/email should not produce prompt identity"
     );
 
@@ -5307,7 +5309,7 @@ fn credentials_profile_store_recovers_dropped_entries_empty_files_and_datetime_e
     let tmp = tempdir().expect("tempdir");
 
     let default_profiles =
-        openhuman_core::openhuman::credentials::profiles::AuthProfilesData::default();
+        closeredge_core::openhuman::credentials::profiles::AuthProfilesData::default();
     assert_eq!(default_profiles.schema_version, 1);
     assert!(default_profiles.profiles.is_empty());
 
@@ -5552,7 +5554,7 @@ fn credentials_profile_store_keychain_migration_and_fallback_paths_are_determini
     let hit_dir = tmp.path().join("keychain-hit");
     std::fs::create_dir_all(&hit_dir).expect("create keychain hit dir");
     let hit_profile_id = "github:main";
-    openhuman_core::openhuman::keyring::set(
+    closeredge_core::openhuman::keyring::set(
         "keychain-hit",
         &format!("auth:{hit_profile_id}"),
         &json!({
@@ -5651,7 +5653,7 @@ fn credentials_profile_store_keychain_migration_and_fallback_paths_are_determini
             .and_then(|profile| profile.token.as_deref()),
         Some("plain-token-for-migration")
     );
-    let migrated_keychain = openhuman_core::openhuman::keyring::get(
+    let migrated_keychain = closeredge_core::openhuman::keyring::get(
         "keychain-migrate",
         &format!("auth:{migrate_profile_id}"),
     )
@@ -5665,7 +5667,7 @@ fn credentials_profile_store_keychain_migration_and_fallback_paths_are_determini
     let fallback_dir = tmp.path().join("keychain-fallback");
     std::fs::create_dir_all(&fallback_dir).expect("create keychain fallback dir");
     let fallback_profile_id = "slack:bot";
-    openhuman_core::openhuman::keyring::set(
+    closeredge_core::openhuman::keyring::set(
         "keychain-fallback",
         &format!("auth:{fallback_profile_id}"),
         "not-json",
@@ -5711,7 +5713,7 @@ fn credentials_profile_store_keychain_migration_and_fallback_paths_are_determini
         "migrated profile should be removable"
     );
     assert!(
-        openhuman_core::openhuman::keyring::get(
+        closeredge_core::openhuman::keyring::get(
             "keychain-migrate",
             &format!("auth:{migrate_profile_id}"),
         )
@@ -5762,9 +5764,9 @@ fn connectivity_public_helpers_cover_schemas_and_port_probe() {
 
     let listener = std::net::TcpListener::bind("127.0.0.1:0").expect("bind probe listener");
     let port = listener.local_addr().expect("probe local addr").port();
-    assert!(openhuman_core::openhuman::connectivity::ops::is_port_in_use(port));
+    assert!(closeredge_core::openhuman::connectivity::ops::is_port_in_use(port));
     drop(listener);
-    let _ = openhuman_core::openhuman::connectivity::ops::is_port_in_use(port);
+    let _ = closeredge_core::openhuman::connectivity::ops::is_port_in_use(port);
 }
 
 #[tokio::test]
@@ -5784,7 +5786,7 @@ async fn connectivity_pick_listen_port_uses_fallback_when_preferred_is_busy() {
     }
     let held_listener = held_listener.expect("find preferred port with fallback room");
 
-    let picked = openhuman_core::openhuman::connectivity::rpc::pick_listen_port_for_host(
+    let picked = closeredge_core::openhuman::connectivity::rpc::pick_listen_port_for_host(
         "127.0.0.1",
         preferred,
     )
@@ -5801,7 +5803,7 @@ async fn connectivity_pick_listen_port_covers_direct_bind_and_exhausted_fallback
     let _lock = env_lock();
 
     let direct =
-        openhuman_core::openhuman::connectivity::rpc::pick_listen_port_for_host("127.0.0.1", 0)
+        closeredge_core::openhuman::connectivity::rpc::pick_listen_port_for_host("127.0.0.1", 0)
             .await
             .expect("port 0 should bind directly");
     assert_eq!(direct.fallback_from, None);
@@ -5833,14 +5835,14 @@ async fn connectivity_pick_listen_port_covers_direct_bind_and_exhausted_fallback
         }
     }
     let preferred = preferred.expect("reserve preferred port and fallback range");
-    let exhausted = openhuman_core::openhuman::connectivity::rpc::pick_listen_port_for_host(
+    let exhausted = closeredge_core::openhuman::connectivity::rpc::pick_listen_port_for_host(
         "127.0.0.1",
         preferred,
     )
     .await
     .expect_err("busy preferred and fallback range should fail");
     match &exhausted {
-        openhuman_core::openhuman::connectivity::rpc::PickListenPortError::NoAvailablePort {
+        closeredge_core::openhuman::connectivity::rpc::PickListenPortError::NoAvailablePort {
             preferred: err_preferred,
             attempted,
             fingerprint,
@@ -5862,7 +5864,7 @@ async fn connectivity_pick_listen_port_covers_direct_bind_and_exhausted_fallback
     );
 
     let takeover =
-        openhuman_core::openhuman::connectivity::rpc::PickListenPortError::WouldTakeOver {
+        closeredge_core::openhuman::connectivity::rpc::PickListenPortError::WouldTakeOver {
             preferred,
             fingerprint: "openhuman-core".into(),
         };
@@ -5870,7 +5872,7 @@ async fn connectivity_pick_listen_port_covers_direct_bind_and_exhausted_fallback
         .to_string()
         .contains("stale-listener takeover required"));
     let bind_failed =
-        openhuman_core::openhuman::connectivity::rpc::PickListenPortError::BindFailed {
+        closeredge_core::openhuman::connectivity::rpc::PickListenPortError::BindFailed {
             port: preferred,
             reason: "synthetic bind failure".into(),
         };
@@ -5917,19 +5919,19 @@ async fn connectivity_diag_reports_runtime_port_sources() {
     {
         let _rpc_url = EnvVarGuard::set("OPENHUMAN_CORE_RPC_URL", "http://127.0.0.1:4567/rpc");
         let _core_port = EnvVarGuard::set("OPENHUMAN_CORE_PORT", "7788");
-        let snapshot = openhuman_core::openhuman::connectivity::rpc::snapshot();
+        let snapshot = closeredge_core::openhuman::connectivity::rpc::snapshot();
         assert_eq!(snapshot.listen_port, 4567);
     }
     {
         let _rpc_url = EnvVarGuard::set("OPENHUMAN_CORE_RPC_URL", "not a url");
         let _core_port = EnvVarGuard::set("OPENHUMAN_CORE_PORT", "4568");
-        let snapshot = openhuman_core::openhuman::connectivity::rpc::snapshot();
+        let snapshot = closeredge_core::openhuman::connectivity::rpc::snapshot();
         assert_eq!(snapshot.listen_port, 4568);
     }
     {
         let _rpc_url = EnvVarGuard::unset("OPENHUMAN_CORE_RPC_URL");
         let _core_port = EnvVarGuard::set("OPENHUMAN_CORE_PORT", "not-a-port");
-        let snapshot = openhuman_core::openhuman::connectivity::rpc::snapshot();
+        let snapshot = closeredge_core::openhuman::connectivity::rpc::snapshot();
         assert_eq!(snapshot.listen_port, 7788);
     }
 

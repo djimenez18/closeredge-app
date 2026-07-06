@@ -57,7 +57,7 @@ declare global {
 }
 
 const OPENPANEL_CLIENT_ID = 'e9c996d5-497f-4eec-9bde-630019ad525b';
-const OPENPANEL_API_URL = 'https://panel.tinyhumans.ai/api';
+const OPENPANEL_API_URL = 'https://api.openpanel.dev';
 
 // ---------------------------------------------------------------------------
 // Module-level state
@@ -244,6 +244,8 @@ export function initSentry(): void {
  * `trackEvent` respect the new consent state without reinitializing GA.
  */
 export function syncAnalyticsConsent(enabled: boolean): void {
+  if (enabled === analyticsEnabled) return;
+
   const client = Sentry.getClient();
   if (client && !enabled) {
     void Sentry.flush(2000);

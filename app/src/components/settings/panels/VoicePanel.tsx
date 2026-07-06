@@ -86,7 +86,7 @@ interface VoicePanelProps {
 
 const VoicePanel = ({ embedded = false }: VoicePanelProps = {}) => {
   const { t } = useT();
-  const { navigateBack, navigateToSettings, breadcrumbs } = useSettingsNavigation();
+  const { navigateBack, breadcrumbs } = useSettingsNavigation();
   const [settings, setSettings] = useState<VoiceServerSettings | null>(null);
   const [savedSettings, setSavedSettings] = useState<VoiceServerSettings | null>(null);
   const [voiceStatus, setVoiceStatus] = useState<VoiceStatus | null>(null);
@@ -391,10 +391,7 @@ const VoicePanel = ({ embedded = false }: VoicePanelProps = {}) => {
     [voiceSettings, t]
   );
 
-  // Mascot voice picker moved to MascotPanel — see
-  // `app/src/components/settings/panels/MascotPanel.tsx`. The voice id,
-  // gender, and locale-default toggle all live in `mascotSlice`; this
-  // panel only handles Piper / Whisper / dictation now.
+  // This panel handles Piper / Whisper / dictation provider settings.
 
   /**
    * Map an install status snapshot to a button label. Single source of
@@ -1228,28 +1225,6 @@ const VoicePanel = ({ embedded = false }: VoicePanelProps = {}) => {
             </div>
           </div>
         </section>
-
-        {/* Mascot voice picker now lives in Mascot settings. Link
-            kept here so users hunting in Voice settings can find it. */}
-        {ttsProvider !== 'piper' && (
-          <section className="space-y-3" data-testid="mascot-voice-link">
-            <div className="bg-stone-50 dark:bg-neutral-800/60 rounded-lg border border-stone-200 dark:border-neutral-800 p-4">
-              <h3 className="text-sm font-semibold text-stone-900 dark:text-neutral-100">
-                {t('voice.providers.mascotVoice')}
-              </h3>
-              <p className="text-xs text-stone-500 dark:text-neutral-400 mt-1">
-                {t('voice.providers.mascotVoiceDescPrefix')}{' '}
-                <button
-                  type="button"
-                  onClick={() => navigateToSettings('mascot')}
-                  className="underline text-primary-600 dark:text-primary-300 hover:text-primary-700 dark:hover:text-primary-200">
-                  {t('voice.providers.mascotSettings')}
-                </button>
-                {t('voice.providers.mascotVoiceDescSuffix')}
-              </p>
-            </div>
-          </section>
-        )}
 
         {error && (
           <div className="rounded-md border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 p-3 text-xs text-red-600 dark:text-red-300">

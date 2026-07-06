@@ -1,0 +1,6 @@
+{
+  "day0": "Hi {{customer_name}}, we had trouble processing your {{amount_due}} payment for {{agent_name}}. Update here: {{payment_update_url}}",
+  "day3": "Reminder: Your CloserEdge AI payment is overdue. {{agent_name}} is still running but needs attention: {{payment_update_url}}",
+  "day7": "{{agent_name}}'s features are now limited due to overdue payment. Restore access: {{payment_update_url}}",
+  "day14": "Your CloserEdge AI account is suspended. Reactivate instantly: {{payment_update_url}}"
+}

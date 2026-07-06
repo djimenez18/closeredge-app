@@ -13,23 +13,23 @@ use axum::{Json, Router};
 use serde_json::{json, Value};
 use tempfile::TempDir;
 
-use openhuman_core::core::event_bus::{DomainEvent, EventHandler};
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::core::event_bus::{DomainEvent, EventHandler};
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::memory::global as memory_global;
-use openhuman_core::openhuman::memory_sync::composio::bus::{
+use closeredge_core::openhuman::memory::global as memory_global;
+use closeredge_core::openhuman::memory_sync::composio::bus::{
     ComposioConfigChangedSubscriber, ComposioConnectionCreatedSubscriber, ComposioTriggerSubscriber,
 };
-use openhuman_core::openhuman::memory_sync::composio::providers::clickup::ClickUpProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::github::GitHubProvider;
-use openhuman_core::openhuman::memory_sync::composio::providers::gmail::ingest as gmail_ingest;
-use openhuman_core::openhuman::memory_sync::composio::providers::slack::ingest as slack_ingest;
-use openhuman_core::openhuman::memory_sync::composio::providers::slack::{
+use closeredge_core::openhuman::memory_sync::composio::providers::clickup::ClickUpProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::github::GitHubProvider;
+use closeredge_core::openhuman::memory_sync::composio::providers::gmail::ingest as gmail_ingest;
+use closeredge_core::openhuman::memory_sync::composio::providers::slack::ingest as slack_ingest;
+use closeredge_core::openhuman::memory_sync::composio::providers::slack::{
     SlackMessage, SlackProvider,
 };
-use openhuman_core::openhuman::memory_sync::composio::providers::{
+use closeredge_core::openhuman::memory_sync::composio::providers::{
     ComposioProvider, ProviderContext, SyncReason, TaskFetchFilter,
 };
 
@@ -230,7 +230,7 @@ fn execute_response_for(body: &Value) -> Value {
                     "labels": [{ "name": "coverage" }],
                     "assignee": { "login": "octo-round17" },
                     "updated_at": "2026-05-29T10:00:00Z",
-                    "html_url": "https://github.com/tinyhumansai/openhuman/issues/1701"
+                    "html_url": "https://github.com/closeredgeai/closeredge/issues/1701"
                 },
                 {
                     "title": "Missing id is skipped",
@@ -527,7 +527,7 @@ async fn github_clickup_and_composio_bus_cover_provider_branches() {
         .fetch_tasks(
             &github_ctx,
             &TaskFetchFilter {
-                repo: Some("tinyhumansai/openhuman".to_string()),
+                repo: Some("closeredgeai/closeredge".to_string()),
                 labels: vec!["coverage".to_string()],
                 state: Some("open".to_string()),
                 max: 5,

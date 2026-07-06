@@ -1,0 +1,62 @@
+<!-- Subject: Your CloserEdge AI account has been suspended -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Suspended</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7;">
+    <tr>
+      <td align="center" style="padding: 24px 16px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+          <!-- Header -->
+          <tr>
+            <td style="background-color: #7C3AED; padding: 32px 40px; text-align: center;">
+              <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: -0.5px;">CloserEdge AI</h1>
+            </td>
+          </tr>
+          <!-- Body -->
+          <tr>
+            <td style="padding: 40px;">
+              <p style="margin: 0 0 16px; color: #333333; font-size: 16px; line-height: 1.6;">Hi {{customer_name}},</p>
+              <p style="margin: 0 0 16px; color: #333333; font-size: 16px; line-height: 1.6;">Your CloserEdge AI account has been suspended due to an unpaid balance of <strong>{{amount_due}}</strong>.</p>
+              <!-- Status Box -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 0 0 24px;">
+                <tr>
+                  <td style="background-color: #f3f4f6; border-left: 4px solid #6b7280; padding: 16px 20px; border-radius: 0 6px 6px 0;">
+                    <p style="margin: 0 0 8px; color: #374151; font-size: 15px; font-weight: 600;">Current account status:</p>
+                    <p style="margin: 0 0 4px; color: #4b5563; font-size: 14px; line-height: 1.5;">&bull; <strong>{{agent_name}}</strong> ({{tier}} plan) is fully paused</p>
+                    <p style="margin: 0 0 4px; color: #4b5563; font-size: 14px; line-height: 1.5;">&bull; All data and conversation history are preserved</p>
+                    <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.5;">&bull; You still have access to billing and account settings</p>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 16px; color: #333333; font-size: 16px; line-height: 1.6;">We've preserved everything exactly as you left it. When you're ready to come back, just update your payment method and {{agent_name}} will be reactivated instantly with all your settings, data, and conversation history intact.</p>
+              <p style="margin: 0 0 24px; color: #333333; font-size: 16px; line-height: 1.6;">No reconfiguration needed &mdash; pick up right where you left off.</p>
+              <!-- CTA Button -->
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto 24px;">
+                <tr>
+                  <td style="border-radius: 6px; background-color: #7C3AED;">
+                    <a href="{{payment_update_url}}" target="_blank" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 6px;">Reactivate My Account</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 16px; color: #666666; font-size: 14px; line-height: 1.6;">If you'd like to discuss your account or need assistance, reply to this email. We're here to help.</p>
+              <p style="margin: 0; color: #333333; font-size: 16px; line-height: 1.6;">Thanks,<br>The CloserEdge AI Team</p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f9fafb; padding: 24px 40px; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0 0 8px; color: #9ca3af; font-size: 13px; text-align: center;">CloserEdge AI | <a href="https://closeredge.ai" style="color: #7C3AED; text-decoration: none;">closeredge.ai</a></p>
+              <p style="margin: 0; color: #9ca3af; font-size: 12px; text-align: center;"><a href="{{unsubscribe_url}}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe from billing emails</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

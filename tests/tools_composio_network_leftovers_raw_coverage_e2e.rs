@@ -14,13 +14,13 @@ use axum::{Json, Router};
 use serde_json::{json, Value};
 use tempfile::{Builder, TempDir};
 
-use openhuman_core::openhuman::composio::ops::{composio_authorize, composio_list_tools};
-use openhuman_core::openhuman::config::{Config, PolymarketClobCredentials};
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::composio::ops::{composio_authorize, composio_list_tools};
+use closeredge_core::openhuman::config::{Config, PolymarketClobCredentials};
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::security::SecurityPolicy;
-use openhuman_core::openhuman::tools::{
+use closeredge_core::openhuman::security::SecurityPolicy;
+use closeredge_core::openhuman::tools::{
     ComposioAuthorizeTool, ComposioListConnectionsTool, ComposioListToolkitsTool,
     ComposioListToolsTool, ComposioTool, PolymarketTool, SpawnSubagentTool, Tool, ToolCallOptions,
 };

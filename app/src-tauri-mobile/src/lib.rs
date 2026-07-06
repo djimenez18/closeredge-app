@@ -1,4 +1,4 @@
-// OpenHuman mobile (iOS + Android) Tauri host.
+// CloserEdge AI mobile (iOS + Android) Tauri host.
 //
 // No CEF runtime, no Rust core sidecar, no desktop chrome. The React app
 // (built from `app/src/`) is loaded into a single WKWebView (iOS) /
@@ -8,7 +8,7 @@
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 compile_error!(
-    "openhuman-mobile only supports iOS and Android. Use app/src-tauri for desktop."
+    "closeredge-mobile only supports iOS and Android. Use app/src-tauri for desktop."
 );
 
 use tauri::{AppHandle, Manager, Runtime};

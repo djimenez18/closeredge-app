@@ -16,10 +16,10 @@ use futures_util::StreamExt;
 use serde_json::{json, Value};
 use tempfile::tempdir;
 
-use openhuman_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
-use openhuman_core::core::jsonrpc::build_core_http_router;
-use openhuman_core::openhuman::connectivity::rpc::pick_listen_port;
-use openhuman_core::openhuman::memory_tree::all_memory_tree_registered_controllers;
+use closeredge_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
+use closeredge_core::core::jsonrpc::build_core_http_router;
+use closeredge_core::openhuman::connectivity::rpc::pick_listen_port;
+use closeredge_core::openhuman::memory_tree::all_memory_tree_registered_controllers;
 
 const TEST_RPC_TOKEN: &str = "json-rpc-e2e-local-token";
 static JSON_RPC_AUTH_INIT: OnceLock<()> = OnceLock::new();
@@ -792,11 +792,11 @@ async fn wait_for_chat_completion_requests_len(expected_len: usize) -> Vec<Value
 
 async fn encrypt_test_mnemonic() -> String {
     let _keyring_backend_guard = EnvVarGuard::set("OPENHUMAN_KEYRING_BACKEND", "file");
-    let config = openhuman_core::openhuman::config::load_config_with_timeout()
+    let config = closeredge_core::openhuman::config::load_config_with_timeout()
         .await
         .expect("load config for encrypted test mnemonic");
-    openhuman_core::openhuman::keyring::init_workspace(&config.workspace_dir);
-    openhuman_core::openhuman::encryption::rpc::encrypt_secret(
+    closeredge_core::openhuman::keyring::init_workspace(&config.workspace_dir);
+    closeredge_core::openhuman::encryption::rpc::encrypt_secret(
         &config,
         "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
     )
@@ -860,7 +860,7 @@ encrypt = false
         write_config_file(&openhuman_dir.join("users").join("local"), &cfg);
     }
 
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(&cfg).expect("config toml must match Config schema");
 }
 
@@ -893,7 +893,7 @@ enabled = false
         write_config_file(&openhuman_dir.join("users").join("local"), &cfg);
     }
 
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(&cfg).expect("config toml must match Config schema");
 }
 
@@ -2304,21 +2304,21 @@ async fn json_rpc_thread_turn_state_lifecycle() {
     // Drop a snapshot directly through the store — this is exactly what
     // the web-channel progress mirror does mid-turn.
     let workspace_dir = {
-        let cfg = openhuman_core::openhuman::config::Config::load_or_init()
+        let cfg = closeredge_core::openhuman::config::Config::load_or_init()
             .await
             .expect("load config");
         cfg.workspace_dir
     };
-    let mut state = openhuman_core::openhuman::threads::turn_state::TurnState::started(
+    let mut state = closeredge_core::openhuman::threads::turn_state::TurnState::started(
         "thread-turn-1",
         "req-turn-1",
         25,
         chrono::Utc::now().to_rfc3339(),
     );
-    state.lifecycle = openhuman_core::openhuman::threads::turn_state::TurnLifecycle::Streaming;
+    state.lifecycle = closeredge_core::openhuman::threads::turn_state::TurnLifecycle::Streaming;
     state.iteration = 2;
     state.streaming_text = "partial".into();
-    openhuman_core::openhuman::threads::turn_state::store::put(workspace_dir.clone(), &state)
+    closeredge_core::openhuman::threads::turn_state::store::put(workspace_dir.clone(), &state)
         .expect("seed snapshot");
 
     // get → present
@@ -3327,10 +3327,10 @@ async fn json_rpc_web_chat_custom_chat_provider_with_auth_none_omits_auth_header
             .any(|e| e.get("slug").and_then(Value::as_str) == Some("proxy")),
         "user's auth-none 'proxy' entry must survive the update: {providers:?}"
     );
-    let loaded_config = openhuman_core::openhuman::config::load_config_with_timeout()
+    let loaded_config = closeredge_core::openhuman::config::load_config_with_timeout()
         .await
         .expect("load_config after auth-none update");
-    let (provider, model) = openhuman_core::openhuman::inference::provider::create_chat_provider(
+    let (provider, model) = closeredge_core::openhuman::inference::provider::create_chat_provider(
         "chat",
         &loaded_config,
     )
@@ -6945,10 +6945,10 @@ async fn rpc_update_apply_can_be_disabled_by_config_policy() {
     let tmp = tempdir().expect("tempdir");
     let _workspace_guard = EnvVarGuard::set_to_path("OPENHUMAN_WORKSPACE", tmp.path());
 
-    let mut config = openhuman_core::openhuman::config::Config {
+    let mut config = closeredge_core::openhuman::config::Config {
         workspace_dir: tmp.path().join("workspace"),
         config_path: tmp.path().join("config.toml"),
-        ..openhuman_core::openhuman::config::Config::default()
+        ..closeredge_core::openhuman::config::Config::default()
     };
     config.update.rpc_mutations_enabled = false;
     config
@@ -7126,8 +7126,8 @@ async fn whatsapp_data_ingest_and_query_e2e() {
     // Init the whatsapp_data global before the router handles any requests.
     // Reset first so we attach to *this* test's tempdir even if a sibling
     // test left a stale handle pointing at an already-dropped tempdir.
-    openhuman_core::openhuman::whatsapp_data::global::reset_for_tests();
-    openhuman_core::openhuman::whatsapp_data::global::init(openhuman_home.clone())
+    closeredge_core::openhuman::whatsapp_data::global::reset_for_tests();
+    closeredge_core::openhuman::whatsapp_data::global::init(openhuman_home.clone())
         .expect("whatsapp_data global init");
 
     let (rpc_addr, rpc_join) = serve_on_ephemeral(build_core_http_router(false)).await;
@@ -7818,11 +7818,11 @@ async fn json_rpc_meet_agent_session_lifecycle() {
 ///    the read-only boundary the issue requires.
 #[tokio::test(flavor = "multi_thread")]
 async fn whatsapp_data_agent_tools_e2e_1341() {
-    use openhuman_core::openhuman::tools::traits::Tool;
-    use openhuman_core::openhuman::tools::{
+    use closeredge_core::openhuman::tools::traits::Tool;
+    use closeredge_core::openhuman::tools::{
         WhatsAppDataListChatsTool, WhatsAppDataListMessagesTool, WhatsAppDataSearchMessagesTool,
     };
-    use openhuman_core::openhuman::whatsapp_data::{
+    use closeredge_core::openhuman::whatsapp_data::{
         all_whatsapp_data_controller_schemas, global as wa_global, ops as wa_ops,
         types::{ChatMeta, IngestMessage, IngestRequest},
     };
@@ -7900,7 +7900,7 @@ async fn whatsapp_data_agent_tools_e2e_1341() {
     .expect("ingest");
 
     // Helper: parse a successful Tool response back into JSON.
-    fn parse_tool_output(result: openhuman_core::openhuman::skills::types::ToolResult) -> Value {
+    fn parse_tool_output(result: closeredge_core::openhuman::skills::types::ToolResult) -> Value {
         assert!(!result.is_error, "tool returned error: {result:?}");
         serde_json::from_str(&result.output()).expect("tool output is valid JSON")
     }
@@ -8360,10 +8360,10 @@ async fn mcp_clients_install_connect_tool_call_happy_path() {
             "exampleConfig": { "command": stub_path, "args": [] }
         }]
     });
-    let seed_config = openhuman_core::openhuman::config::load_config_with_timeout()
+    let seed_config = closeredge_core::openhuman::config::load_config_with_timeout()
         .await
         .expect("load config for cache seed");
-    openhuman_core::openhuman::mcp_registry::store::set_cached(
+    closeredge_core::openhuman::mcp_registry::store::set_cached(
         &seed_config,
         &format!("smithery:detail:{qualified_name}"),
         &detail.to_string(),
@@ -8718,7 +8718,7 @@ encrypt = false
     //    next call to load_config_with_timeout reads the on-disk file, finds
     //    it broken, falls back to the .bak, and returns the backup sentinel
     //    temperature (1.2) without returning an error.
-    let recovered = openhuman_core::openhuman::config::load_config_with_timeout()
+    let recovered = closeredge_core::openhuman::config::load_config_with_timeout()
         .await
         .expect("load_config_with_timeout must not error even with corrupt primary");
     assert!(
@@ -8821,7 +8821,7 @@ encrypt = false
     //    It should recover from the `.bak` (if save was called) or fall back
     //    to `Config::default()`.  Either outcome is acceptable — the contract
     //    is "no Err returned, no panic".
-    let recovered = openhuman_core::openhuman::config::load_config_with_timeout()
+    let recovered = closeredge_core::openhuman::config::load_config_with_timeout()
         .await
         .expect("load_config_with_timeout must not return Err with corrupt primary");
 
@@ -9199,8 +9199,8 @@ async fn json_rpc_config_agent_timeout_settings_roundtrip() {
 
     // Restore the process-global timeout so later tests in this binary don't
     // inherit the 300s value set above (the AtomicU64 is per-process, not per-test).
-    openhuman_core::openhuman::tool_timeout::set_tool_timeout_secs(
-        openhuman_core::openhuman::tool_timeout::DEFAULT_TIMEOUT_SECS,
+    closeredge_core::openhuman::tool_timeout::set_tool_timeout_secs(
+        closeredge_core::openhuman::tool_timeout::DEFAULT_TIMEOUT_SECS,
     );
 
     mock_join.abort();
@@ -9340,7 +9340,7 @@ async fn json_rpc_task_sources_crud_and_status() {
             "name": "My issues",
             "filter": {
                 "provider": "github",
-                "repo": "tinyhumansai/openhuman",
+                "repo": "closeredgeai/closeredge",
                 "labels": ["bug"],
                 "assignee_is_me": true
             }
@@ -9467,7 +9467,7 @@ async fn json_rpc_task_sources_crud_and_status() {
 /// without a live Composio connection.
 mod task_sources_stub {
     use async_trait::async_trait;
-    use openhuman_core::openhuman::memory_sync::composio::providers::{
+    use closeredge_core::openhuman::memory_sync::composio::providers::{
         ComposioProvider, NormalizedTask, ProviderContext, ProviderUserProfile, SyncOutcome,
         SyncReason, TaskFetchFilter,
     };
@@ -9537,7 +9537,7 @@ async fn json_rpc_task_sources_fetch_pipeline_e2e() {
 
     // Register the stub github provider BEFORE serving so the fetch RPC
     // resolves it from the global registry.
-    openhuman_core::openhuman::memory_sync::composio::providers::register_provider(Arc::new(
+    closeredge_core::openhuman::memory_sync::composio::providers::register_provider(Arc::new(
         task_sources_stub::StubGithubProvider {
             tasks: vec![
                 task_sources_stub::task("101", "Fix flaky test", "2025-01-01T00:00:00Z"),
@@ -9658,7 +9658,7 @@ async fn json_rpc_task_sources_fetch_pipeline_e2e() {
     // Restore the global provider registry so the stub "github" provider
     // does not leak into other tests in this binary (re-registers the
     // real built-in providers).
-    openhuman_core::openhuman::memory_sync::composio::providers::init_default_providers();
+    closeredge_core::openhuman::memory_sync::composio::providers::init_default_providers();
 
     rpc_join.abort();
 }

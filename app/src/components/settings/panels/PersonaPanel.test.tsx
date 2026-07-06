@@ -152,11 +152,4 @@ describe('PersonaPanel', () => {
       expect(screen.getByTestId('persona-soul-error')).toHaveTextContent('boom');
     });
   });
-
-  it('navigates to mascot settings for avatar & voice', async () => {
-    renderWithProviders(<PersonaPanel />);
-    await waitFor(() => expect(screen.getByTestId('persona-soul-editor')).toBeInTheDocument());
-    fireEvent.click(screen.getByTestId('persona-open-mascot'));
-    expect(mockNavigateToSettings).toHaveBeenCalledWith('mascot');
-  });
 });

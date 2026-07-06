@@ -1,0 +1,19 @@
+{
+  "name": "Nora",
+  "slug": "nora",
+  "industry": "property_management",
+  "tagline": "Your AI Property Manager",
+  "description": "Nora handles tenant communications, maintenance requests, lease renewals, rent collection reminders, and vendor coordination for property managers.",
+  "core_agents": ["tenant-comms", "maintenance-dispatcher", "lease-manager", "rent-collector", "vacancy-marketer"],
+  "pro_agents": ["voice-tenant-line", "appfolio-sync", "inspection-scheduler"],
+  "elite_agents": ["vendor-manager", "portfolio-analyst"],
+  "integrations": {
+    "foundation": ["gmail", "google_calendar", "telegram"],
+    "pro": ["elevenlabs_voice", "appfolio", "buildium"],
+    "elite": ["custom_vendor_portal", "financial_reporting"]
+  },
+  "brain_domains": ["landlord_tenant_law", "fair_housing", "maintenance_triage", "lease_compliance"],
+  "elite_limits": {
+    "max_units": 100
+  }
+}

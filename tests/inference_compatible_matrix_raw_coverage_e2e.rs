@@ -16,16 +16,16 @@ use futures_util::StreamExt;
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::inference::local::LocalAiService;
-use openhuman_core::openhuman::inference::provider::compatible::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::inference::local::LocalAiService;
+use closeredge_core::openhuman::inference::provider::compatible::{
     AuthStyle as CompatibleAuthStyle, OpenAiCompatibleProvider,
 };
-use openhuman_core::openhuman::inference::provider::traits::StreamOptions;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::inference::provider::traits::StreamOptions;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, Provider, ProviderDelta,
 };
-use openhuman_core::openhuman::tools::ToolSpec;
+use closeredge_core::openhuman::tools::ToolSpec;
 
 #[derive(Clone, Default)]
 struct MockState {

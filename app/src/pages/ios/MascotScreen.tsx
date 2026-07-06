@@ -1,9 +1,13 @@
 /**
- * MascotScreen — iOS-only full-screen mascot chat interface.
+ * MascotScreen — iOS-only full-screen chat interface.
+ *
+ * Note: the animated mascot was removed in the CloserEdge rebrand; the brand
+ * canvas now shows the CloserEdge mark. The filename is kept to avoid churn in
+ * the iOS route table and tests.
  *
  * Layout:
  *   - Small header: paired desktop label + Disconnect button
- *   - YellowMascot canvas (fills the upper ~60% of screen)
+ *   - CloserEdge brand canvas (fills the upper ~60% of screen)
  *   - Scrolling transcript of messages above the input row
  *   - Text input row pinned to bottom
  *   - PTT round button (hold to talk, release to send)
@@ -11,8 +15,7 @@
  * Chat:
  *   - Sends via openhuman.channel_web_chat RPC (same as desktop chat).
  *   - Subscribes to chat events (text_delta, chat_done, chat_error) for
- *     mascot face transitions and transcript display.
- *   - Uses useHumanMascot() to drive face/viseme state.
+ *     transcript display.
  *
  * PTT (Layer 6):
  *   - onPointerDown -> startListening(); pttActive = true.
@@ -35,8 +38,6 @@ import {
 } from 'tauri-plugin-ptt-api';
 
 import { CloserEdgeMark } from '../../components/mobile/CloserEdgeBrand';
-import { RiveMascot } from '../../features/human/Mascot';
-import { useHumanMascot } from '../../features/human/useHumanMascot';
 import { useT } from '../../lib/i18n/I18nContext';
 import {
   type ChatDoneEvent,
@@ -205,8 +206,6 @@ export const MascotScreen: FC = () => {
   // Ref tracks whether PTT session is live — readable from async callbacks
   // without a stale closure over the pttActive state variable.
   const pttActiveRef = useRef(false);
-
-  const { face } = useHumanMascot({ listening: pttActive });
 
   // Derive label from stored profile.
   const pairedLabel = (() => {
@@ -437,10 +436,10 @@ export const MascotScreen: FC = () => {
         </button>
       </div>
 
-      {/* Mascot canvas */}
+      {/* Brand canvas — CloserEdge mark (mascot removed in the CloserEdge rebrand) */}
       <div className="flex-1 flex items-center justify-center overflow-hidden min-h-0 py-4">
-        <div className="w-full max-w-xs aspect-square">
-          <RiveMascot face={face} />
+        <div className="flex items-center justify-center w-full max-w-xs aspect-square">
+          <CloserEdgeMark size={112} className="opacity-90" />
         </div>
       </div>
 

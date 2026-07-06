@@ -1,21 +1,23 @@
 use async_trait::async_trait;
-use openhuman_core::core::event_bus::{init_global, request_native_global, DEFAULT_CAPACITY};
-use openhuman_core::openhuman::agent::bus::{
+use closeredge_core::core::event_bus::{init_global, request_native_global, DEFAULT_CAPACITY};
+use closeredge_core::openhuman::agent::bus::{
     register_agent_handlers, AgentTurnRequest, AgentTurnResponse, AGENT_RUN_TURN_METHOD,
 };
-use openhuman_core::openhuman::agent::debug::{dump_agent_prompt, DumpPromptOptions};
-use openhuman_core::openhuman::agent::dispatcher::XmlToolDispatcher;
-use openhuman_core::openhuman::agent::{Agent, AgentBuilder};
-use openhuman_core::openhuman::config::{AgentConfig, MultimodalConfig, MultimodalFileConfig};
-use openhuman_core::openhuman::context::prompt::LearnedContextData;
-use openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::agent::debug::{dump_agent_prompt, DumpPromptOptions};
+use closeredge_core::openhuman::agent::dispatcher::XmlToolDispatcher;
+use closeredge_core::openhuman::agent::{Agent, AgentBuilder};
+use closeredge_core::openhuman::config::{AgentConfig, MultimodalConfig, MultimodalFileConfig};
+use closeredge_core::openhuman::context::prompt::LearnedContextData;
+use closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ProviderDelta, ToolCall, UsageInfo,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     Memory, MemoryCategory, MemoryEntry, NamespaceSummary, RecallOpts,
 };
-use openhuman_core::openhuman::tools::{PermissionLevel, Tool, ToolContent, ToolResult, ToolScope};
+use closeredge_core::openhuman::tools::{
+    PermissionLevel, Tool, ToolContent, ToolResult, ToolScope,
+};
 use serde_json::json;
 use std::collections::{HashSet, VecDeque};
 use std::path::PathBuf;

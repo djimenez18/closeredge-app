@@ -35,11 +35,11 @@ use image::imageops::FilterType;
 use image::{ImageBuffer, Rgb, RgbImage};
 use tempfile::tempdir;
 
-use openhuman_core::openhuman::embeddings::NoopEmbedding;
-use openhuman_core::openhuman::memory_store::types::NamespaceDocumentInput;
-use openhuman_core::openhuman::memory_store::UnifiedMemory;
-use openhuman_core::openhuman::screen_intelligence::CaptureFrame;
-use openhuman_core::openhuman::screen_intelligence::{
+use closeredge_core::openhuman::embeddings::NoopEmbedding;
+use closeredge_core::openhuman::memory_store::types::NamespaceDocumentInput;
+use closeredge_core::openhuman::memory_store::UnifiedMemory;
+use closeredge_core::openhuman::screen_intelligence::CaptureFrame;
+use closeredge_core::openhuman::screen_intelligence::{
     global_engine, AccessibilityEngine, VisionSummary,
 };
 
@@ -148,7 +148,7 @@ fn make_capture_frame(image_ref: Option<String>) -> CaptureFrame {
 
 /// Open a UnifiedMemory backed by NoopEmbedding in a temp dir.
 fn open_test_memory(dir: &Path) -> UnifiedMemory {
-    let embedder: Arc<dyn openhuman_core::openhuman::embeddings::EmbeddingProvider> =
+    let embedder: Arc<dyn closeredge_core::openhuman::embeddings::EmbeddingProvider> =
         Arc::new(NoopEmbedding);
     UnifiedMemory::new(dir, embedder, Some(5)).expect("UnifiedMemory::new")
 }
@@ -181,7 +181,7 @@ encrypt = false
     );
     std::fs::create_dir_all(root).expect("mkdir test root");
     std::fs::write(root.join("config.toml"), &cfg).expect("write config");
-    let _: openhuman_core::openhuman::config::Config =
+    let _: closeredge_core::openhuman::config::Config =
         toml::from_str(&cfg).expect("test config should deserialize");
 }
 
@@ -715,7 +715,7 @@ async fn engine_pipeline_with_mocked_local_vision_persists_to_memory() {
         .expect("mocked engine pipeline should succeed");
     assert_eq!(summary.ui_state, "browser with docs");
 
-    let config = openhuman_core::openhuman::config::Config::load_or_init()
+    let config = closeredge_core::openhuman::config::Config::load_or_init()
         .await
         .expect("load config");
     let mem = open_test_memory(&config.workspace_dir);
@@ -786,7 +786,7 @@ async fn macos_real_capture_cycle_persists_summary() {
         "summary should include actionable notes"
     );
 
-    let config = openhuman_core::openhuman::config::Config::load_or_init()
+    let config = closeredge_core::openhuman::config::Config::load_or_init()
         .await
         .expect("load config");
     let mem = open_test_memory(&config.workspace_dir);

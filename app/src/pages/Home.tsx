@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import BrandWordmark from '../components/BrandWordmark';
 import ConnectionIndicator from '../components/ConnectionIndicator';
-import { PromotionalCreditsBanner, UsageLimitBanner } from '../components/home/HomeBanners';
+import {
+  CommunityBanner,
+  PromotionalCreditsBanner,
+  UsageLimitBanner,
+} from '../components/home/HomeBanners';
 import { useUsageState } from '../hooks/useUsageState';
 import { useUser } from '../hooks/useUser';
 import { useT } from '../lib/i18n/I18nContext';
@@ -48,7 +53,11 @@ const Home = () => {
   const showPromoBanner = isFreeTier && promoCredits > 0.01;
 
   const welcomeVariants = useMemo(
-    () => [`Welcome, ${userName} 👋`, `Let's cook, ${userName} 🧑‍🍳.`, `Time to Zone In 🧘🏻`],
+    () => [
+      `Welcome, ${userName} 👋`,
+      `Your AI employee is ready 🚀`,
+      `Let's get to work, ${userName} 💼`,
+    ],
     [userName]
   );
   const [welcomeVariantIndex, setWelcomeVariantIndex] = useState(0);
@@ -86,6 +95,7 @@ const Home = () => {
     'backend-only': t('home.statusBackendOnly'),
     'core-unreachable': t('home.statusCoreUnreachable'),
     'internet-offline': t('home.statusInternetOffline'),
+    'browser-mode': t('home.statusBrowserMode'),
   }[blocking];
 
   // Open in-app chat.
@@ -133,38 +143,54 @@ const Home = () => {
     <div className="min-h-full flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full">
         {shouldShowBudgetCompletedMessage && (
-          <UsageLimitBanner
-            tone="danger"
-            icon="⚠️"
-            title={t('home.usageExhaustedTitle')}
-            message={t('home.usageExhaustedBody')}
-            ctaLabel={t('home.usageExhaustedCta')}
-          />
+          <div
+            className="animate-stagger-fade-up"
+            style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
+            <UsageLimitBanner
+              tone="danger"
+              icon={'⚠️'}
+              title={t('home.usageExhaustedTitle')}
+              message={t('home.usageExhaustedBody')}
+              ctaLabel={t('home.usageExhaustedCta')}
+            />
+          </div>
         )}
 
-        {showPromoBanner && <PromotionalCreditsBanner promoCredits={promoCredits} />}
+        {showPromoBanner && (
+          <div
+            className="animate-stagger-fade-up"
+            style={{ animationDelay: '0ms', animationFillMode: 'both' }}>
+            <PromotionalCreditsBanner promoCredits={promoCredits} />
+          </div>
+        )}
 
         {/* Main card — data-walkthrough target for step 1 */}
         <div
           data-walkthrough="home-card"
-          className="bg-white dark:bg-neutral-900 rounded-2xl shadow-soft border border-stone-200 dark:border-neutral-800 p-6 animate-fade-up">
-          {/* Header row: version centered, theme toggle right-aligned.
-              The empty left spacer matches the toggle's width so the version
-              stays visually centered. */}
+          className="ce-hover-lift bg-white dark:bg-neutral-900 rounded-2xl shadow-soft border border-stone-200 dark:border-neutral-800 p-6 animate-stagger-fade-up"
+          style={{ animationDelay: '80ms', animationFillMode: 'both' }}>
+          {/* Header row: brand + version centered, theme toggle right-aligned. */}
           <div className="flex items-center justify-between mb-4">
             <div className="w-9" aria-hidden="true" />
-            <span className="text-xs text-center text-stone-400 dark:text-neutral-500">
-              v{APP_VERSION}
-            </span>
+            <div className="flex flex-col items-center gap-1">
+              <BrandWordmark className="h-6 w-auto" />
+              <span className="text-[10px] text-stone-400 dark:text-neutral-500">
+                v{APP_VERSION}
+              </span>
+            </div>
             <button
               type="button"
               onClick={toggleTheme}
               aria-label={isDark ? t('home.themeToggle.toLight') : t('home.themeToggle.toDark')}
               title={isDark ? t('home.themeToggle.toLight') : t('home.themeToggle.toDark')}
               className="p-2 rounded-full text-stone-500 dark:text-neutral-400 hover:text-stone-700 dark:hover:text-neutral-200 hover:bg-stone-100 dark:hover:bg-neutral-800/60 transition-colors">
-              {isDark ? (
+              {/* Sun / moon morph — both icons stay mounted and cross-rotate
+                  so the flip animates instead of hard-swapping. */}
+              <span className="relative inline-flex w-5 h-5">
                 <svg
-                  className="w-5 h-5"
+                  className={`absolute inset-0 w-5 h-5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    isDark ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-50 opacity-0'
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}
@@ -176,9 +202,10 @@ const Home = () => {
                     d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
                   />
                 </svg>
-              ) : (
                 <svg
-                  className="w-5 h-5"
+                  className={`absolute inset-0 w-5 h-5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    isDark ? '-rotate-90 scale-50 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}
@@ -190,12 +217,12 @@ const Home = () => {
                     d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
                   />
                 </svg>
-              )}
+              </span>
             </button>
           </div>
 
           {/* Welcome title */}
-          <h1 className="min-h-[3.5rem] text-32l font-bold text-stone-900 dark:text-neutral-100 text-center">
+          <h1 className="min-h-[3.5rem] text-3xl font-display font-bold text-stone-900 dark:text-neutral-100 text-center">
             {typedWelcome}
             <span aria-hidden="true" className="ml-0.5 inline-block text-primary-500 animate-pulse">
               |
@@ -236,10 +263,12 @@ const Home = () => {
             data-walkthrough="home-cta"
             onClick={handleStartCooking}
             disabled={blocking === 'core-unreachable' || blocking === 'internet-offline'}
-            className="w-full py-3 bg-primary-500 hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors duration-200">
+            className="ce-press-scale w-full py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900">
             {t('home.askAssistant')}
           </button>
         </div>
+
+        <CommunityBanner />
 
         {/* Next steps — compact directory of where to go next */}
         {/* <div className="mt-3 bg-white rounded-2xl shadow-soft border border-stone-200 p-4">
@@ -252,50 +281,6 @@ const Home = () => {
                 <div className="text-sm font-medium text-stone-900">Connect your services</div>
                 <div className="text-xs text-stone-500">
                   Give your assistant access to Gmail, Calendar, and more.
-                </div>
-              </div>
-              <svg
-                className="w-4 h-4 text-stone-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => navigate('/rewards')}
-              className="w-full flex items-center justify-between py-2.5 text-left hover:bg-stone-50 rounded-md px-2 -mx-2 transition-colors">
-              <div>
-                <div className="text-sm font-medium text-stone-900">Earn rewards</div>
-                <div className="text-xs text-stone-500">
-                  Unlock credits by using OpenHuman and completing milestones.
-                </div>
-              </div>
-              <svg
-                className="w-4 h-4 text-stone-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => navigate('/invites')}
-              className="w-full flex items-center justify-between py-2.5 text-left hover:bg-stone-50 rounded-md px-2 -mx-2 transition-colors">
-              <div>
-                <div className="text-sm font-medium text-stone-900">Invite a friend</div>
-                <div className="text-xs text-stone-500">
-                  Share an invite — both of you get credits.
                 </div>
               </div>
               <svg

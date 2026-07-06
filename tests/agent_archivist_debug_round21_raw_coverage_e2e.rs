@@ -1,26 +1,26 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use openhuman_core::openhuman::agent::debug::{
+use closeredge_core::openhuman::agent::debug::{
     dump_agent_prompt, write_prompt_dumps, DumpPromptOptions, DumpedPrompt,
 };
-use openhuman_core::openhuman::agent::harness::archivist::ArchivistHook;
-use openhuman_core::openhuman::agent::harness::{
+use closeredge_core::openhuman::agent::harness::archivist::ArchivistHook;
+use closeredge_core::openhuman::agent::harness::{
     run_subagent, with_parent_context, AgentDefinition, DefinitionSource, ModelSpec,
     ParentExecutionContext, PromptSource, SandboxMode, SubagentRunError, SubagentRunOptions,
     ToolScope,
 };
-use openhuman_core::openhuman::agent::hooks::{PostTurnHook, ToolCallRecord, TurnContext};
-use openhuman_core::openhuman::config::AgentConfig;
-use openhuman_core::openhuman::context::prompt::ToolCallFormat;
-use openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::agent::hooks::{PostTurnHook, ToolCallRecord, TurnContext};
+use closeredge_core::openhuman::config::AgentConfig;
+use closeredge_core::openhuman::context::prompt::ToolCallFormat;
+use closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities;
+use closeredge_core::openhuman::inference::provider::{
     ChatRequest, ChatResponse, Provider, ToolCall, UsageInfo,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     Memory, MemoryCategory, MemoryEntry, NamespaceSummary, RecallOpts,
 };
-use openhuman_core::openhuman::memory_store::{events, fts5, profile, segments};
-use openhuman_core::openhuman::tools::{PermissionLevel, Tool, ToolResult};
+use closeredge_core::openhuman::memory_store::{events, fts5, profile, segments};
+use closeredge_core::openhuman::tools::{PermissionLevel, Tool, ToolResult};
 use parking_lot::Mutex;
 use rusqlite::Connection;
 use serde_json::json;

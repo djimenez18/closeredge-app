@@ -8,13 +8,13 @@ use tempfile::tempdir;
 
 use chrono::{TimeZone, Utc};
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::memory_queue::drain_until_idle;
-use openhuman_core::openhuman::memory_store::content::atomic::stage_summary;
-use openhuman_core::openhuman::memory_store::content::obsidian::ensure_obsidian_defaults;
-use openhuman_core::openhuman::memory_store::content::{SummaryComposeInput, SummaryTreeKind};
-use openhuman_core::openhuman::memory_sync::composio::providers::slack::ingest::ingest_page_into_memory_tree;
-use openhuman_core::openhuman::memory_sync::composio::providers::slack::SlackMessage;
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::memory_queue::drain_until_idle;
+use closeredge_core::openhuman::memory_store::content::atomic::stage_summary;
+use closeredge_core::openhuman::memory_store::content::obsidian::ensure_obsidian_defaults;
+use closeredge_core::openhuman::memory_store::content::{SummaryComposeInput, SummaryTreeKind};
+use closeredge_core::openhuman::memory_sync::composio::providers::slack::ingest::ingest_page_into_memory_tree;
+use closeredge_core::openhuman::memory_sync::composio::providers::slack::SlackMessage;
 
 fn make_config(workspace_dir: &std::path::Path) -> Config {
     let mut config = Config::default();

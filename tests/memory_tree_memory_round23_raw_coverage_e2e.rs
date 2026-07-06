@@ -13,14 +13,14 @@ use chrono::{TimeZone, Utc};
 use serde_json::{json, Map, Value};
 use tempfile::TempDir;
 
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::embeddings::NoopEmbedding;
-use openhuman_core::openhuman::inference::provider::traits::Provider;
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::embeddings::NoopEmbedding;
+use closeredge_core::openhuman::inference::provider::traits::Provider;
+use closeredge_core::openhuman::memory::{
     ExtractionMode, MemoryIngestionConfig, MemoryIngestionRequest,
 };
-use openhuman_core::openhuman::memory_store::{NamespaceDocumentInput, UnifiedMemory};
-use openhuman_core::openhuman::memory_tree::tree_runtime::{
+use closeredge_core::openhuman::memory_store::{NamespaceDocumentInput, UnifiedMemory};
+use closeredge_core::openhuman::memory_tree::tree_runtime::{
     all_tree_summarizer_registered_controllers, engine, rpc as tree_runtime_rpc,
     store as tree_runtime_store,
 };

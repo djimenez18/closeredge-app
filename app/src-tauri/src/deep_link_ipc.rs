@@ -1,6 +1,6 @@
 //! Pre-CEF deep-link forwarding for Linux (issue #2359).
 //!
-//! On Linux, `openhuman://` OAuth callbacks launch a second OpenHuman
+//! On Linux, `openhuman://` OAuth callbacks launch a second CloserEdge AI
 //! binary with the URL in argv. That secondary hits
 //! `cef_preflight::check_default_cache()` and exits before Builder::setup
 //! runs, so tauri-plugin-deep-link never gets a chance to forward the URL.
@@ -330,7 +330,7 @@ mod tests {
     fn extract_deep_link_urls_filters_correctly() {
         // We can't mutate std::env::args(), so test the filtering logic directly.
         let args = vec![
-            "OpenHuman".to_string(),
+            "CloserEdgeAI".to_string(),
             "openhuman://auth?token=abc".to_string(),
             "--some-flag".to_string(),
             "openhuman://other".to_string(),

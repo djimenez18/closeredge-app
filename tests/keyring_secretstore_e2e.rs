@@ -1,5 +1,5 @@
-use openhuman_core::openhuman::config::schema::{Config, StreamMode, TelegramConfig};
-use openhuman_core::openhuman::keyring;
+use closeredge_core::openhuman::config::schema::{Config, StreamMode, TelegramConfig};
+use closeredge_core::openhuman::keyring;
 use std::sync::{Mutex, OnceLock};
 
 fn env_lock() -> std::sync::MutexGuard<'static, ()> {
@@ -67,14 +67,14 @@ async fn config_secrets_roundtrip_via_keyring_backed_master_key_migration() {
         config_path: config_path.clone(),
         workspace_dir: workspace_dir.clone(),
         api_key: Some("sk-direct-secret".into()),
-        search: openhuman_core::openhuman::config::schema::SearchConfig {
-            parallel: openhuman_core::openhuman::config::schema::SearchEngineCredentials {
+        search: closeredge_core::openhuman::config::schema::SearchConfig {
+            parallel: closeredge_core::openhuman::config::schema::SearchEngineCredentials {
                 api_key: Some("parallel-secret".into()),
                 ..Default::default()
             },
             ..Default::default()
         },
-        channels_config: openhuman_core::openhuman::config::schema::ChannelsConfig {
+        channels_config: closeredge_core::openhuman::config::schema::ChannelsConfig {
             telegram: Some(TelegramConfig {
                 bot_token: "tg-bot-secret".into(),
                 allowed_users: vec!["alice".into()],

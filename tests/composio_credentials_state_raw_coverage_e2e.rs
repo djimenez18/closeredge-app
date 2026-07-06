@@ -18,36 +18,36 @@ use chrono::{Duration as ChronoDuration, Utc};
 use serde_json::{json, Value};
 use tempfile::{Builder, TempDir};
 
-use openhuman_core::openhuman::app_state::{
+use closeredge_core::openhuman::app_state::{
     snapshot, update_local_state, StoredAppStatePatch, StoredOnboardingTasks,
 };
-use openhuman_core::openhuman::composio::ops::{
+use closeredge_core::openhuman::composio::ops::{
     cached_active_integrations, composio_authorize, composio_clear_api_key, composio_get_mode,
     composio_list_connections, composio_list_tools, composio_list_trigger_history,
     composio_set_api_key, fetch_connected_integrations_status,
 };
-use openhuman_core::openhuman::composio::trigger_history::ComposioTriggerHistoryStore;
-use openhuman_core::openhuman::composio::{
+use closeredge_core::openhuman::composio::trigger_history::ComposioTriggerHistoryStore;
+use closeredge_core::openhuman::composio::{
     init_composio_trigger_history, invalidate_connected_integrations_cache, ComposioActionTool,
     FetchConnectedIntegrationsStatus,
 };
-use openhuman_core::openhuman::config::rpc as config_rpc;
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::profiles::{AuthProfile, AuthProfilesStore, TokenSet};
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::config::rpc as config_rpc;
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::profiles::{AuthProfile, AuthProfilesStore, TokenSet};
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     AppendConversationMessageRequest, ConversationMessageRecord, CreateConversationThreadRequest,
     EmptyRequest, GenerateConversationThreadTitleRequest, UpdateConversationMessageRequest,
     UpdateConversationThreadTitleRequest,
 };
-use openhuman_core::openhuman::threads::migrate_welcome_agent_artifacts;
-use openhuman_core::openhuman::threads::ops::{
+use closeredge_core::openhuman::threads::migrate_welcome_agent_artifacts;
+use closeredge_core::openhuman::threads::ops::{
     message_append, message_update, messages_list, thread_create_new, thread_generate_title,
     thread_update_title, threads_list,
 };
-use openhuman_core::openhuman::tools::{
+use closeredge_core::openhuman::tools::{
     ComposioExecuteTool, ComposioListConnectionsTool, ComposioListToolkitsTool,
     ComposioListToolsTool, Tool, ToolCallOptions,
 };
@@ -407,7 +407,7 @@ async fn round15_composio_direct_key_mode_flips_without_network() {
     assert_eq!(mode["api_key_set"], true);
 
     let direct_toolkits =
-        openhuman_core::openhuman::composio::ops::composio_list_toolkits(&reloaded)
+        closeredge_core::openhuman::composio::ops::composio_list_toolkits(&reloaded)
             .await
             .expect("direct list toolkits is local")
             .value;
@@ -647,7 +647,7 @@ async fn round15_threads_ops_and_welcome_migration_public_paths() {
     assert_eq!(updated_msg.extra_metadata["edited"], true);
 
     let messages = messages_list(
-        openhuman_core::openhuman::memory::ConversationMessagesRequest {
+        closeredge_core::openhuman::memory::ConversationMessagesRequest {
             thread_id: thread_id.clone(),
         },
     )

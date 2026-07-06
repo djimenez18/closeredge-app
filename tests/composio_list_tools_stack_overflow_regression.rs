@@ -103,16 +103,16 @@
 
 use anyhow::Result;
 use async_trait::async_trait;
-use openhuman_core::openhuman::agent::harness::definition::{AgentDefinitionRegistry, ModelSpec};
-use openhuman_core::openhuman::agent::harness::{
+use closeredge_core::openhuman::agent::harness::definition::{AgentDefinitionRegistry, ModelSpec};
+use closeredge_core::openhuman::agent::harness::{
     run_subagent, with_parent_context, ParentExecutionContext, SubagentRunOptions,
 };
-use openhuman_core::openhuman::config::AgentConfig;
-use openhuman_core::openhuman::context::prompt::ToolCallFormat;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::config::AgentConfig;
+use closeredge_core::openhuman::context::prompt::ToolCallFormat;
+use closeredge_core::openhuman::inference::provider::{
     ChatRequest, ChatResponse, Provider, ToolCall,
 };
-use openhuman_core::openhuman::memory::{
+use closeredge_core::openhuman::memory::{
     Memory, MemoryCategory, MemoryEntry, NamespaceSummary, RecallOpts,
 };
 use parking_lot::Mutex;

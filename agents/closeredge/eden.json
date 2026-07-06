@@ -1,0 +1,16 @@
+{
+  "name": "Eden",
+  "slug": "eden",
+  "industry": "residential_real_estate",
+  "tagline": "Your AI Real Estate Agent",
+  "description": "Eden handles lead intake, property matching, showing scheduling, follow-ups, and client nurturing for residential real estate teams.",
+  "core_agents": ["intake", "scout", "analyst", "nurture", "listing-writer"],
+  "pro_agents": ["voice-followup", "crm-sync", "social"],
+  "elite_agents": ["closer", "concierge"],
+  "integrations": {
+    "foundation": ["gmail", "google_calendar", "telegram"],
+    "pro": ["elevenlabs_voice", "follow_up_boss", "kvcore"],
+    "elite": ["custom_mls", "zillow_api"]
+  },
+  "brain_domains": ["real_estate_contracts", "fair_housing", "local_market_data", "negotiation_tactics"]
+}

@@ -1,27 +1,46 @@
+import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import AppRoutesIOS from './AppRoutesIOS';
 import DefaultRedirect from './components/DefaultRedirect';
 import ProtectedRoute from './components/ProtectedRoute';
-import PublicRoute from './components/PublicRoute';
-import HumanPage from './features/human/HumanPage';
+import RouteLoadingScreen from './components/RouteLoadingScreen';
 import { getIsMobile } from './lib/platform';
 import Accounts from './pages/Accounts';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminRoute from './pages/admin/AdminRoute';
+import AgentHealth from './pages/admin/AgentHealth';
+import Analytics from './pages/admin/Analytics';
+import ClientDetail from './pages/admin/ClientDetail';
+import ClientsList from './pages/admin/ClientsList';
 import AgentWorkflows from './pages/AgentWorkflows';
 import Channels from './pages/Channels';
 import Home from './pages/Home';
 import Intelligence from './pages/Intelligence';
-import Invites from './pages/Invites';
 import Notifications from './pages/Notifications';
 import Onboarding from './pages/onboarding/Onboarding';
-import Rewards from './pages/Rewards';
 import Routines from './pages/Routines';
 import Settings from './pages/Settings';
 import SkillNew from './pages/SkillNew';
 import Skills from './pages/Skills';
 import SkillsRun from './pages/SkillsRun';
 import WebCallbackPage from './pages/WebCallbackPage';
-import Welcome from './pages/Welcome';
+
+// ── Lazy-loaded CloserEdge feature pages ────────────────────────────
+const HiveMindPage = lazy(() =>
+  import('./features/hivemind/HiveMindPage').then(m => ({ default: m.HiveMindPage }))
+);
+const WarRoomPage = lazy(() =>
+  import('./features/warroom/WarRoomPage').then(m => ({ default: m.WarRoomPage }))
+);
+const AdversaryPage = lazy(() =>
+  import('./features/adversary/AdversaryPage').then(m => ({ default: m.AdversaryPage }))
+);
+const MemoryExplorer = lazy(() =>
+  import('./features/memory/MemoryExplorer').then(m => ({ default: m.MemoryExplorer }))
+);
+const SubscriptionPage = lazy(() => import('./pages/SubscriptionPage'));
 
 const AppRoutes = () => {
   // Mobile target (iOS or Android): pair → Human/Chat/Settings only.
@@ -32,15 +51,8 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {/* Public routes - redirect to /home if logged in */}
-      <Route
-        path="/"
-        element={
-          <PublicRoute>
-            <Welcome />
-          </PublicRoute>
-        }
-      />
+      {/* TODO: Restore Welcome gate once Supabase auth fully replaces OpenHuman auth */}
+      <Route path="/" element={<Navigate to="/home" replace />} />
 
       <Route path="/callback/:kind" element={<WebCallbackPage />} />
       <Route path="/callback/:kind/:status" element={<WebCallbackPage />} />
@@ -61,15 +73,6 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute requireAuth={true}>
             <Home />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/human"
-        element={
-          <ProtectedRoute requireAuth={true}>
-            <HumanPage />
           </ProtectedRoute>
         }
       />
@@ -140,15 +143,6 @@ const AppRoutes = () => {
       />
 
       <Route
-        path="/invites"
-        element={
-          <ProtectedRoute requireAuth={true}>
-            <Invites />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
         path="/notifications"
         element={
           <ProtectedRoute requireAuth={true}>
@@ -167,19 +161,82 @@ const AppRoutes = () => {
       />
 
       <Route
-        path="/rewards"
+        path="/workflows"
         element={
           <ProtectedRoute requireAuth={true}>
-            <Rewards />
+            <AgentWorkflows />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin panel (role-gated) */}
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }>
+        <Route index element={<AdminDashboard />} />
+        <Route path="clients" element={<ClientsList />} />
+        <Route path="clients/:clientId" element={<ClientDetail />} />
+        <Route path="analytics" element={<Analytics />} />
+        <Route path="agents" element={<AgentHealth />} />
+        <Route path="settings/*" element={<Settings />} />
+      </Route>
+
+      {/* ── CloserEdge feature pages (lazy-loaded) ───────────────── */}
+      <Route
+        path="/hivemind"
+        element={
+          <ProtectedRoute requireAuth={true}>
+            <Suspense fallback={<RouteLoadingScreen />}>
+              <HiveMindPage />
+            </Suspense>
           </ProtectedRoute>
         }
       />
 
       <Route
-        path="/workflows"
+        path="/warroom"
         element={
           <ProtectedRoute requireAuth={true}>
-            <AgentWorkflows />
+            <Suspense fallback={<RouteLoadingScreen />}>
+              <WarRoomPage />
+            </Suspense>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/adversary"
+        element={
+          <ProtectedRoute requireAuth={true}>
+            <Suspense fallback={<RouteLoadingScreen />}>
+              <AdversaryPage />
+            </Suspense>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/memory"
+        element={
+          <ProtectedRoute requireAuth={true}>
+            <Suspense fallback={<RouteLoadingScreen />}>
+              <MemoryExplorer />
+            </Suspense>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/subscription"
+        element={
+          <ProtectedRoute requireAuth={true}>
+            <Suspense fallback={<RouteLoadingScreen />}>
+              <SubscriptionPage />
+            </Suspense>
           </ProtectedRoute>
         }
       />

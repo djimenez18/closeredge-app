@@ -4,8 +4,8 @@
 //! the test graph and exposes it through `CARGO_BIN_EXE_openhuman-core`. Running
 //! a nested `cargo build` from a lib unit test is prone to CI disk exhaustion.
 
-use openhuman_core::openhuman::config::McpClientIdentityConfig;
-use openhuman_core::openhuman::mcp_client::McpStdioClient;
+use closeredge_core::openhuman::config::McpClientIdentityConfig;
+use closeredge_core::openhuman::mcp_client::McpStdioClient;
 use std::path::PathBuf;
 
 const LATEST_PROTOCOL_VERSION: &str = "2025-11-25";

@@ -20,14 +20,11 @@ mod deep_link_ipc_windows;
 mod deep_link_registration_check;
 mod dictation_hotkeys;
 mod discord_scanner;
-mod fake_camera;
 mod file_logging;
 mod gmessages_scanner;
 mod imessage_scanner;
 mod local_data_reset;
 mod loopback_oauth;
-#[cfg(target_os = "macos")]
-mod mascot_native_window;
 mod mcp_commands;
 mod meet_audio;
 mod meet_call;
@@ -114,7 +111,7 @@ fn process_diagnostics_list_owned() -> Result<Vec<process_recovery::ProcessInfo>
     match process_recovery::enumerate_openhuman_processes() {
         Ok(processes) => {
             log::info!(
-                "[startup-recovery] diagnostics listed {} owned OpenHuman processes",
+                "[startup-recovery] diagnostics listed {} owned CloserEdge AI processes",
                 processes.len()
             );
             Ok(processes)
@@ -269,7 +266,7 @@ async fn restart_core_process(
     state.inner().restart().await
 }
 
-/// Attempt to auto-recover from a port conflict by reaping stale OpenHuman
+/// Attempt to auto-recover from a port conflict by reaping stale CloserEdge AI
 /// processes (cross-platform) and restarting the embedded core.
 ///
 /// Called by the BootCheckGate "Fix Automatically" button when the core is
@@ -307,13 +304,13 @@ async fn start_core_process(
     state.inner().ensure_running().await?;
     if let Some(notice) = state.inner().take_last_port_fallback_notice() {
         let body = format!(
-            "OpenHuman is using port {} because {} was busy",
+            "CloserEdge AI is using port {} because {} was busy",
             notice.chosen_port, notice.preferred_port
         );
         if let Err(err) = app
             .notification()
             .builder()
-            .title("OpenHuman")
+            .title("CloserEdge AI")
             .body(&body)
             .show()
         {
@@ -869,52 +866,6 @@ fn activate_main_window(app: AppHandle<AppRuntime>) -> Result<(), String> {
     show_main_window(&app)
 }
 
-/// Show the floating mascot. macOS: native NSPanel + WKWebView (so the
-/// window is actually transparent — vendored tauri-cef can't render
-/// transparent windowed-mode browsers). Loads the Vite dev URL in
-/// development and the bundled `index.html` in production. Other OSes:
-/// not yet wired up.
-#[tauri::command]
-fn mascot_window_show(app: AppHandle<AppRuntime>) -> Result<(), String> {
-    log::info!("[mascot-window] show requested");
-    #[cfg(target_os = "macos")]
-    {
-        return mascot_native_window::show(&app);
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = app;
-        Err("floating mascot window is macOS-only for now".into())
-    }
-}
-
-/// Hide the floating mascot.
-#[tauri::command]
-fn mascot_window_hide(app: AppHandle<AppRuntime>) -> Result<(), String> {
-    log::info!("[mascot-window] hide requested");
-    #[cfg(target_os = "macos")]
-    {
-        let _ = app;
-        mascot_native_window::hide();
-        Ok(())
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = app;
-        Ok(())
-    }
-}
-
-#[cfg(target_os = "macos")]
-fn mascot_native_window_is_open() -> bool {
-    mascot_native_window::is_open()
-}
-
-#[cfg(not(target_os = "macos"))]
-fn mascot_native_window_is_open() -> bool {
-    false
-}
-
 /// Hide or show the OS top-level main-window frame on Windows by enumerating
 /// this process's top-level windows and matching the visible
 /// `Chrome_WidgetWin_1` host. `WebviewWindow::hwnd()` from the vendored CEF
@@ -1104,7 +1055,7 @@ fn macos_app_menu(app: &AppHandle<AppRuntime>) -> tauri::Result<Menu<AppRuntime>
     let quit = MenuItem::with_id(
         app,
         APP_QUIT_MENU_ID,
-        "Quit OpenHuman",
+        "Quit CloserEdge AI",
         true,
         Some("CmdOrCtrl+Q"),
     )?;
@@ -1112,7 +1063,7 @@ fn macos_app_menu(app: &AppHandle<AppRuntime>) -> tauri::Result<Menu<AppRuntime>
     let app_sep_2 = PredefinedMenuItem::separator(app)?;
     let app_menu = Submenu::with_items(
         app,
-        "OpenHuman",
+        "CloserEdge AI",
         true,
         &[
             &about,
@@ -1173,27 +1124,11 @@ fn setup_tray(app: &AppHandle<AppRuntime>) -> tauri::Result<()> {
     let show_item = MenuItem::with_id(
         app,
         "tray_show_window",
-        "Open OpenHuman",
+        "Open CloserEdge AI",
         true,
         None::<&str>,
     )?;
     let quit_item = MenuItem::with_id(app, "tray_quit", "Quit", true, None::<&str>)?;
-    // The floating mascot has a native NSPanel + WKWebView host, so the
-    // tray entry only does anything on macOS. Don't surface a menu item
-    // on Windows that's guaranteed to error — gate it to the platform
-    // where `mascot_window_show` actually works.
-    #[cfg(target_os = "macos")]
-    let menu = {
-        let mascot_item = MenuItem::with_id(
-            app,
-            "tray_toggle_mascot",
-            "Toggle floating mascot",
-            true,
-            None::<&str>,
-        )?;
-        Menu::with_items(app, &[&show_item, &mascot_item, &quit_item])?
-    };
-    #[cfg(not(target_os = "macos"))]
     let menu = Menu::with_items(app, &[&show_item, &quit_item])?;
 
     let icon = app
@@ -1209,16 +1144,6 @@ fn setup_tray(app: &AppHandle<AppRuntime>) -> tauri::Result<()> {
                 log::info!("[tray] action=show_window source=menu");
                 if let Err(err) = show_main_window(app) {
                     log::warn!("[tray] failed to show main window from menu: {err}");
-                }
-            }
-            "tray_toggle_mascot" => {
-                log::info!("[tray] action=toggle_mascot source=menu");
-                if mascot_native_window_is_open() {
-                    if let Err(err) = mascot_window_hide(app.clone()) {
-                        log::error!("[tray] failed to hide mascot window: {err}");
-                    }
-                } else if let Err(err) = mascot_window_show(app.clone()) {
-                    log::error!("[tray] failed to show mascot window: {err}");
                 }
             }
             "tray_quit" => {
@@ -1457,7 +1382,7 @@ fn shutdown_app_sync(app_handle: &AppHandle<AppRuntime>, exit_code: i32) {
 }
 
 #[cfg(target_os = "linux")]
-const WSL_X11_DESKTOP_WARNING: &str = "[startup] likely unsupported desktop environment: WSL with classic X11 forwarding detected (DISPLAY is set, but WAYLAND_DISPLAY/WSLg markers are absent). OpenHuman's Tauri/CEF desktop flow is fragile in this setup; use native Windows development or Windows 11 WSLg for desktop GUI work.";
+const WSL_X11_DESKTOP_WARNING: &str = "[startup] likely unsupported desktop environment: WSL with classic X11 forwarding detected (DISPLAY is set, but WAYLAND_DISPLAY/WSLg markers are absent). CloserEdge AI's Tauri/CEF desktop flow is fragile in this setup; use native Windows development or Windows 11 WSLg for desktop GUI work.";
 
 #[cfg(any(target_os = "linux", test))]
 fn should_warn_for_wsl_x11_desktop(
@@ -1542,7 +1467,7 @@ fn check_linux_display_server() {
         return;
     }
     let msg = "[openhuman] no display server found (DISPLAY and WAYLAND_DISPLAY are both unset).\n\
-               OpenHuman requires an X11 or Wayland display to run.\n\
+               CloserEdge AI requires an X11 or Wayland display to run.\n\
                On WSL2: install WSLg or configure X11 forwarding from Windows.\n\
                Set DISPLAY (e.g. export DISPLAY=:0) or WAYLAND_DISPLAY before launching.";
     log::error!(
@@ -1749,7 +1674,7 @@ fn append_platform_cef_gpu_workarounds(
 ///
 /// XSetErrorHandler is a process-global registration; safe to install before
 /// any X display is opened. libX11 is already a runtime dep (verified via
-/// ldd of the compiled OpenHuman binary).
+/// ldd of the compiled CloserEdge AI binary).
 #[cfg(target_os = "linux")]
 fn install_silent_x_error_handler() {
     use std::ffi::c_void;
@@ -1853,7 +1778,7 @@ pub fn run() {
     // The guard is held for the entire lifetime of `run()` so events queued
     // during shutdown still flush. Only invoked here (and not in `main.rs`)
     // so renderer/GPU CEF helper subprocesses (re-exec'd via
-    // `tauri::cef_entry_point`) and the `OpenHuman core …` in-process core
+    // `tauri::cef_entry_point`) and the `CloserEdge AI core …` in-process core
     // path do NOT spin up a second client — those have their own reporting
     // surfaces.
     let _sentry_guard = sentry::init(sentry::ClientOptions {
@@ -1886,7 +1811,7 @@ pub fn run() {
                 );
                 return None;
             }
-            if openhuman_core::core::observability::is_budget_event(&event) {
+            if closeredge_core::core::observability::is_budget_event(&event) {
                 // Log only structured tag metadata — `event.message` can carry
                 // upstream provider error text including tokens / pasted-through
                 // secrets, and per `CLAUDE.md` "never log secrets or full PII".
@@ -1901,20 +1826,20 @@ pub fn run() {
             }
             // Defense-in-depth: drop max-tool-iterations cap events that
             // slipped past the call-site filters in the core (see
-            // `openhuman_core::core::observability::is_max_iterations_event`
+            // `closeredge_core::core::observability::is_max_iterations_event`
             // for the rationale). The shell links the core in-process so
             // any captured event for this deterministic agent-state
             // outcome is filtered here too (OPENHUMAN-TAURI-99 / -98).
-            if openhuman_core::core::observability::is_max_iterations_event(&event) {
+            if closeredge_core::core::observability::is_max_iterations_event(&event) {
                 log::debug!(
                     "[sentry-max-iter-filter] dropping max-iteration cap noise event: {:?}",
                     event.message.as_deref().unwrap_or("<no message>")
                 );
                 return None;
             }
-            if openhuman_core::core::observability::is_transient_backend_api_failure(&event)
-                || openhuman_core::core::observability::is_transient_integrations_failure(&event)
-                || openhuman_core::core::observability::is_updater_transient_event(&event)
+            if closeredge_core::core::observability::is_transient_backend_api_failure(&event)
+                || closeredge_core::core::observability::is_transient_integrations_failure(&event)
+                || closeredge_core::core::observability::is_updater_transient_event(&event)
             {
                 return None;
             }
@@ -1925,7 +1850,7 @@ pub fn run() {
             // captured by either surface lands in the same Sentry client
             // here and must be filtered identically. Keeps
             // OPENHUMAN-TAURI-25 / -1Q / -27 / -1G off Sentry.
-            if openhuman_core::core::observability::is_session_expired_event(&event) {
+            if closeredge_core::core::observability::is_session_expired_event(&event) {
                 // Metadata-only log shape — `event.message` carries the raw
                 // backend response body which CLAUDE.md forbids from local
                 // logs. Mirror the core binary's main.rs filter.
@@ -1945,7 +1870,7 @@ pub fn run() {
             // standalone `openhuman-core` binary's filter in `src/main.rs`.
             // Empty/missing on early-startup events (cache populates after
             // the first `auth_get_me` RPC); that's expected.
-            event.user = openhuman_core::openhuman::app_state::peek_cached_current_user_identity()
+            event.user = closeredge_core::openhuman::app_state::peek_cached_current_user_identity()
                 .and_then(|identity| identity.id)
                 .map(|id| sentry::User {
                     id: Some(id),
@@ -2106,7 +2031,7 @@ pub fn run() {
     #[cfg(windows)]
     let _deep_link_pipe_guard = deep_link_ipc_windows::bind_and_listen();
 
-    // CEF cache-lock preflight (macOS only): if another OpenHuman instance
+    // CEF cache-lock preflight (macOS only): if another CloserEdge AI instance
     // is already holding the CEF user-data-dir, the vendored
     // `tauri-runtime-cef` panics inside `cef::initialize` with a Rust
     // backtrace and no actionable message (issue #864). Catch the collision
@@ -2143,7 +2068,7 @@ pub fn run() {
         deep_link_ipc::bind_and_listen()
     };
 
-    // CEF cache-lock preflight: if another OpenHuman instance holds the CEF
+    // CEF cache-lock preflight: if another CloserEdge AI instance holds the CEF
     // user-data-dir SingletonLock, `cef_initialize` returns 0 and the vendored
     // runtime panics (`left: 0, right: 1`). Catch the collision here and exit
     // cleanly. Stale locks (PID dead) are removed so crashed processes don't
@@ -2223,7 +2148,7 @@ pub fn run() {
             // safe.
             ("--autoplay-policy", Some("no-user-gesture-required")),
             // Background-throttling defeaters. The MeetCallProducer
-            // pumps mascot frames at 24 fps from the *main* OpenHuman
+            // pumps mascot frames at 24 fps from the *main* CloserEdge AI
             // window, but as soon as the off-screen Meet webview opens
             // (or the user clicks anywhere outside main), macOS demotes
             // the renderer's priority and Chromium throttles its
@@ -2242,46 +2167,11 @@ pub fn run() {
             ("--disable-renderer-backgrounding", None),
             ("--disable-backgrounding-occluded-windows", None),
         ];
-        // Mascot fake-camera: bake the SVG into a one-frame Y4M and
-        // point Chromium's fake-video-capture pipeline at it so any
-        // CEF webview that calls `getUserMedia({video:true})` sees the
-        // mascot as the agent's webcam. `--use-fake-ui-for-media-stream`
-        // auto-allows the permission prompt so Meet's join page doesn't
-        // get stuck behind it. The flags are process-level (affect every
-        // CEF webview), which is fine today: only the Meet call window
-        // intentionally requests a camera, and other webviews don't ask
-        // for one. The path string is leaked with `Box::leak` so its
-        // `&str` outlives the args vec we hand to `command_line_args`.
-        let fake_camera_arg: Option<&'static str> =
-            match fake_camera::ensure_mascot_y4m(&file_logging::resolve_data_dir()) {
-                Ok(path) => {
-                    let leaked: &'static str =
-                        Box::leak(path.to_string_lossy().into_owned().into_boxed_str());
-                    log::info!("[cef-startup] fake-camera y4m path={leaked}");
-                    Some(leaked)
-                }
-                Err(err) => {
-                    log::warn!(
-                        "[cef-startup] mascot fake-camera unavailable: {err} \
-                     (Meet will see no camera)"
-                    );
-                    None
-                }
-            };
-        if let Some(path) = fake_camera_arg {
-            // `--use-file-for-fake-video-capture` alone (CEF 146 / Chromium 128+)
-            // injects the Y4M as the video capture source without replacing the
-            // audio capture device. The old belt-and-suspenders flag
-            // `--use-fake-device-for-media-stream` is deliberately omitted here:
-            // it replaced ALL media capture devices — including audio — with fake
-            // ones, causing a sine-wave test tone (beeping) to be recorded instead
-            // of the real microphone whenever `getUserMedia({audio:true})` was
-            // called from the main app WebView (e.g. the mascot voice composer).
-            // `--use-fake-ui-for-media-stream` is kept so Meet's permission prompt
-            // is auto-granted without interrupting the join flow.
-            args.push(("--use-fake-ui-for-media-stream", None));
-            args.push(("--use-file-for-fake-video-capture", Some(path)));
-        }
+        // Auto-grant getUserMedia permission prompts in embedded webviews so an
+        // in-app Meet join doesn't stall behind a camera/mic permission dialog.
+        // (The former mascot fake-webcam pipeline — a one-frame Y4M fed via
+        // `--use-file-for-fake-video-capture` — was removed with the mascot.)
+        args.push(("--use-fake-ui-for-media-stream", None));
         // Always expose the CDP port, not just in debug. The webview-accounts
         // CDP session opener navigates each embedded provider webview from its
         // `about:blank#openhuman-acct-...` placeholder to the real provider URL
@@ -2306,7 +2196,7 @@ pub fn run() {
         // Use an app-owned Quit item for Cmd+Q instead of the native
         // predefined Quit action. The predefined path calls
         // NSApplication::terminate, which reaches CEF shutdown before
-        // OpenHuman's child-webview/core teardown can run.
+        // CloserEdge AI's child-webview/core teardown can run.
         .menu(macos_app_menu)
         .on_menu_event(|app, event| {
             if event.id().as_ref() == APP_QUIT_MENU_ID {
@@ -2355,7 +2245,7 @@ pub fn run() {
         log::warn!(
             "[single-instance] D-Bus session bus unreachable (DBUS_SESSION_BUS_ADDRESS={:?}, \
              XDG_RUNTIME_DIR={:?}); skipping tauri-plugin-single-instance to avoid \
-             OPENHUMAN-TAURI-TM panic. Multiple OpenHuman instances will not be deduplicated.",
+             OPENHUMAN-TAURI-TM panic. Multiple CloserEdge AI instances will not be deduplicated.",
             std::env::var("DBUS_SESSION_BUS_ADDRESS").ok(),
             std::env::var("XDG_RUNTIME_DIR").ok()
         );
@@ -3024,7 +2914,7 @@ pub fn run() {
                         let args = meet_call::OpenWindowArgs {
                             request_id: request_id.clone(),
                             meet_url: meet_url.clone(),
-                            display_name: "OpenHuman Dev".to_string(),
+                            display_name: "CloserEdge AI Dev".to_string(),
                             // Dev-auto launch has no real user identity — the
                             // wake gate will fail-closed (no wakes fire) which
                             // is the safe posture for an automated harness.
@@ -3106,8 +2996,6 @@ pub fn run() {
             native_notifications::notification_permission_request,
             activate_main_window,
             native_notifications::show_native_notification,
-            mascot_window_show,
-            mascot_window_hide,
             file_logging::reveal_logs_folder,
             file_logging::logs_folder_path,
             workspace_paths::open_workspace_path,
@@ -3257,11 +3145,11 @@ pub fn run() {
 }
 
 pub fn run_core_from_args(args: &[String]) -> Result<(), String> {
-    // Core lives in-process: dispatch directly through the linked `openhuman_core`
+    // Core lives in-process: dispatch directly through the linked `closeredge_core`
     // library instead of shelling out to a separate binary. The Tauri main()
-    // routes `OpenHuman core <args>` here so users can still drive the core CLI
+    // routes `CloserEdge AI core <args>` here so users can still drive the core CLI
     // from the bundled app.
-    openhuman_core::run_core_from_args(args).map_err(|e| format!("{e:#}"))
+    closeredge_core::run_core_from_args(args).map_err(|e| format!("{e:#}"))
 }
 
 // ---------------------------------------------------------------------------

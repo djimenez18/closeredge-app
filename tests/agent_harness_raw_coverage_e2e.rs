@@ -1,19 +1,19 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use openhuman_core::openhuman::agent::dispatcher::NativeToolDispatcher;
-use openhuman_core::openhuman::agent::harness::session::Agent;
-use openhuman_core::openhuman::agent::harness::{
+use closeredge_core::openhuman::agent::dispatcher::NativeToolDispatcher;
+use closeredge_core::openhuman::agent::harness::session::Agent;
+use closeredge_core::openhuman::agent::harness::{
     run_subagent, with_parent_context, AgentDefinition, ParentExecutionContext, PromptSource,
     SandboxMode, SubagentRunOptions, ToolScope,
 };
-use openhuman_core::openhuman::config::AgentConfig;
-use openhuman_core::openhuman::context::prompt::ToolCallFormat;
-use openhuman_core::openhuman::inference::provider::traits::ProviderCapabilities;
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::config::AgentConfig;
+use closeredge_core::openhuman::context::prompt::ToolCallFormat;
+use closeredge_core::openhuman::inference::provider::traits::ProviderCapabilities;
+use closeredge_core::openhuman::inference::provider::{
     ChatMessage, ChatRequest, ChatResponse, Provider, ToolCall, UsageInfo,
 };
-use openhuman_core::openhuman::memory::{Memory, MemoryCategory, MemoryEntry, NamespaceSummary};
-use openhuman_core::openhuman::tools::{Tool, ToolResult};
+use closeredge_core::openhuman::memory::{Memory, MemoryCategory, MemoryEntry, NamespaceSummary};
+use closeredge_core::openhuman::tools::{Tool, ToolResult};
 use parking_lot::Mutex;
 use serde_json::json;
 use std::path::{Path, PathBuf};
@@ -96,7 +96,7 @@ impl Memory for StubMemory {
         &self,
         _query: &str,
         _limit: usize,
-        _opts: openhuman_core::openhuman::memory::RecallOpts<'_>,
+        _opts: closeredge_core::openhuman::memory::RecallOpts<'_>,
     ) -> Result<Vec<MemoryEntry>> {
         Ok(Vec::new())
     }

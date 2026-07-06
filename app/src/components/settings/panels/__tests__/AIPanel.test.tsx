@@ -579,7 +579,7 @@ describe('AIPanel', () => {
     // Routing entries that were pinned to openai must be reset to the user default route.
     expect(nextSettings.routing.reasoning).toEqual({ kind: 'default' });
     expect(nextSettings.routing.agentic).toEqual({ kind: 'default' });
-    // Entries that were already CloserEdge-managed remain unchanged.
+    // Entries that were already CloserEdge AI-managed remain unchanged.
     expect(nextSettings.routing.coding).toEqual({ kind: 'openhuman' });
   });
 

@@ -1,0 +1,53 @@
+{
+  "name": "Adversary",
+  "slug": "adversary",
+  "parent_product": "lexis",
+  "tier_required": "elite",
+  "tagline": "AI Opposing Counsel",
+  "description": "The Adversary Agent dismantles legal arguments by finding evidential gaps, logical fallacies, weak precedent reliance, and procedural vulnerabilities. It stress-tests briefs, motions, and legal strategies before they face real opposing counsel.",
+  "persona": {
+    "role": "opposing_counsel",
+    "style": "aggressive_but_precise",
+    "voice_id": "deep_authoritative",
+    "system_prompt_key": "adversary_system"
+  },
+  "capabilities": [
+    "argument_analysis",
+    "evidence_gap_detection",
+    "precedent_challenge",
+    "logical_fallacy_identification",
+    "procedural_vulnerability_scan",
+    "cross_examination_simulation",
+    "judge_perspective_analysis"
+  ],
+  "modes": {
+    "document_review": {
+      "description": "Upload a legal document and the Adversary attacks it",
+      "input": "document",
+      "output": "structured_critique"
+    },
+    "moot_court": {
+      "description": "Real-time adversarial debate with voice",
+      "input": "live_argument",
+      "output": "cross_examination",
+      "requires": ["voice"]
+    },
+    "brief_stress_test": {
+      "description": "Comprehensive stress test of a legal brief",
+      "input": "brief_document",
+      "output": "vulnerability_report"
+    }
+  },
+  "output_format": {
+    "sections": [
+      "executive_summary",
+      "weakest_arguments",
+      "evidential_gaps",
+      "precedent_challenges",
+      "logical_fallacies",
+      "procedural_issues",
+      "opposing_strategy",
+      "recommended_strengthening"
+    ]
+  }
+}

@@ -1,9 +1,9 @@
-//! The entry point for the OpenHuman core application.
+//! The entry point for the CloserEdge AI core application.
 //!
 //! This file is responsible for:
 //! - Initializing error tracking with Sentry.
 //! - Setting up secret scrubbing for outgoing error reports.
-//! - Dispatching command-line arguments to the core logic in `openhuman_core`.
+//! - Dispatching command-line arguments to the core logic in `closeredge_core`.
 
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -56,25 +56,25 @@ fn main() {
             // `openhuman::inference::provider::ops::should_report_provider_http_failure`
             // (transient codes excluded). This filter catches any future call
             // site that bypasses it.
-            if openhuman_core::core::observability::is_transient_provider_http_failure(&event) {
+            if closeredge_core::core::observability::is_transient_provider_http_failure(&event) {
                 return None;
             }
             // Defense-in-depth for budget-exhausted 400s. Emit sites demote the
             // known backend responses before they hit Sentry; this catches any
             // future non_2xx/status=400 event that carries the same tight body
             // phrases.
-            if openhuman_core::core::observability::is_budget_event(&event) {
+            if closeredge_core::core::observability::is_budget_event(&event) {
                 return None;
             }
             // CORE-RUST-EK (~827 events): drop all HTTP 401 responses from the
             // embeddings call path (domain=embeddings, failure=non_2xx,
-            // status=401). The primary suppression for the OpenHuman-backend
+            // status=401). The primary suppression for the CloserEdge AI-backend
             // "Invalid token" shape lives in `expected_error_kind` /
             // `is_session_expired_message`. This is defense-in-depth that also
             // catches third-party provider 401s (e.g. OpenAI `invalid_api_key`
-            // body) that don't carry the OpenHuman envelope and therefore fall
+            // body) that don't carry the CloserEdge AI envelope and therefore fall
             // through the string-based classifier to Sentry.
-            if openhuman_core::core::observability::is_embeddings_api_key_401_event(&event) {
+            if closeredge_core::core::observability::is_embeddings_api_key_401_event(&event) {
                 log::debug!(
                     "[sentry-embeddings-401-filter] dropping embeddings api-key 401 event_id={:?}",
                     event.event_id
@@ -89,12 +89,12 @@ fn main() {
             // deterministic agent-state outcome surfaced to the user via
             // the chat-rendered "Error: …" message — Sentry is the wrong
             // surface for it (OPENHUMAN-TAURI-99 / -98).
-            if openhuman_core::core::observability::is_max_iterations_event(&event) {
+            if closeredge_core::core::observability::is_max_iterations_event(&event) {
                 return None;
             }
-            if openhuman_core::core::observability::is_transient_backend_api_failure(&event)
-                || openhuman_core::core::observability::is_transient_integrations_failure(&event)
-                || openhuman_core::core::observability::is_updater_transient_event(&event)
+            if closeredge_core::core::observability::is_transient_backend_api_failure(&event)
+                || closeredge_core::core::observability::is_transient_integrations_failure(&event)
+                || closeredge_core::core::observability::is_updater_transient_event(&event)
             {
                 return None;
             }
@@ -125,7 +125,7 @@ fn main() {
                     .flatten()
                     .map(str::to_ascii_lowercase)
                     .any(|lower| {
-                        openhuman_core::core::observability::is_upstream_rate_limit_message(&lower)
+                        closeredge_core::core::observability::is_upstream_rate_limit_message(&lower)
                     });
                 if is_rate_limited {
                     log::debug!(
@@ -139,7 +139,7 @@ fn main() {
             // is an expected state (provider-side delete or backend GC). Primary
             // suppression lives in `authed_json`; this catches any future call
             // site that bypasses it. Targets OPENHUMAN-TAURI-R7 (28 events).
-            if openhuman_core::core::observability::is_channel_message_not_found_event(&event) {
+            if closeredge_core::core::observability::is_channel_message_not_found_event(&event) {
                 return None;
             }
             // Drop 401 "Session expired. Please log in again." bodies surfaced
@@ -152,7 +152,7 @@ fn main() {
             // filter catches any future call site that re-emits the same
             // shape — keeping OPENHUMAN-TAURI-25 / -1Q / -27 / -1G off
             // Sentry permanently (~185 events/day combined).
-            if openhuman_core::core::observability::is_session_expired_event(&event) {
+            if closeredge_core::core::observability::is_session_expired_event(&event) {
                 // Metadata-only log shape — `event.message` carries the raw
                 // backend response body (often a JSON envelope with the
                 // session JWT context attached) which CLAUDE.md forbids from
@@ -172,7 +172,7 @@ fn main() {
             // or IP — so this stays consistent with `send_default_pii: false`.
             // Empty/missing on early-startup events (cache populates after
             // the first `auth_get_me` RPC); that's expected.
-            event.user = openhuman_core::openhuman::app_state::peek_cached_current_user_identity()
+            event.user = closeredge_core::openhuman::app_state::peek_cached_current_user_identity()
                 .and_then(|identity| identity.id)
                 .map(|id| sentry::User {
                     id: Some(id),
@@ -197,7 +197,7 @@ fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
 
     // Delegate to the core library to handle the command.
-    if let Err(err) = openhuman_core::run_core_from_args(&args) {
+    if let Err(err) = closeredge_core::run_core_from_args(&args) {
         eprintln!("{err}");
         std::process::exit(1);
     }
@@ -207,7 +207,7 @@ fn main() {
 // Release / environment resolution for Sentry
 // ---------------------------------------------------------------------------
 
-/// Canonical release tag: `openhuman@<version>[+<short_sha>]`.
+/// Canonical release tag: `closeredge@<version>[+<short_sha>]`.
 ///
 /// Matches the string the frontend reports (`SENTRY_RELEASE` in
 /// `app/src/utils/config.ts`) so events from every surface group under
@@ -218,9 +218,9 @@ fn build_release_tag() -> String {
     let sha = option_env!("OPENHUMAN_BUILD_SHA").unwrap_or("").trim();
     let sha_short: String = sha.chars().take(12).collect();
     if sha_short.is_empty() {
-        format!("openhuman@{version}")
+        format!("closeredge@{version}")
     } else {
-        format!("openhuman@{version}+{sha_short}")
+        format!("closeredge@{version}+{sha_short}")
     }
 }
 

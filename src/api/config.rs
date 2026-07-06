@@ -12,7 +12,7 @@
 //! LM Studio). Those servers only speak `/v1/chat/completions` and 404 on
 //! every other path. Naïvely reusing a single base URL for both families
 //! caused every `/auth/*`, `/agent-integrations/*`, and `/voice/*` request to
-//! 404 against the local runner — see Sentry cluster `OPENHUMAN-TAURI-51/-80/-7Z`.
+//! 404 against the local runner — see Sentry cluster `CLOSEREDGE-TAURI-51/-80/-7Z`.
 //!
 //! The fix is the [`effective_backend_api_url`] / [`effective_inference_url`]
 //! split:
@@ -44,19 +44,19 @@
 
 /// Production hosted-API root. Used as the final fallback for non-staging
 /// builds when no override is configured.
-pub const DEFAULT_API_BASE_URL: &str = "https://api.tinyhumans.ai";
+pub const DEFAULT_API_BASE_URL: &str = "https://api.closeredge.ai";
 
-/// Staging hosted-API root. Activated when `OPENHUMAN_APP_ENV=staging` (or
+/// Staging hosted-API root. Activated when `CLOSEREDGE_APP_ENV=staging` (or
 /// the Vite equivalent) is set at runtime or baked in at compile time.
-pub const DEFAULT_STAGING_API_BASE_URL: &str = "https://staging-api.tinyhumans.ai";
+pub const DEFAULT_STAGING_API_BASE_URL: &str = "https://staging-api.closeredge.ai";
 
 /// Runtime env key used by the Tauri/core side to select the app environment.
-pub const APP_ENV_VAR: &str = "OPENHUMAN_APP_ENV";
+pub const APP_ENV_VAR: &str = "CLOSEREDGE_APP_ENV";
 
 /// Runtime env key exposed to the Vite frontend bundle. Mirrors `APP_ENV_VAR`
 /// so both the core sidecar and the renderer agree on the environment without
 /// a separate IPC round-trip.
-pub const VITE_APP_ENV_VAR: &str = "VITE_OPENHUMAN_APP_ENV";
+pub const VITE_APP_ENV_VAR: &str = "VITE_CLOSEREDGE_APP_ENV";
 
 /// The path the hosted backend appends to its root to expose the
 /// OpenAI-compatible inference proxy. Joined onto [`effective_api_url`] when
@@ -64,7 +64,7 @@ pub const VITE_APP_ENV_VAR: &str = "VITE_OPENHUMAN_APP_ENV";
 ///
 /// Having this as a named constant (rather than a string literal scattered
 /// across call-sites) means a backend path rename shows up as a single diff.
-pub const OPENHUMAN_INFERENCE_PATH: &str = "/openai/v1/chat/completions";
+pub const CLOSEREDGE_INFERENCE_PATH: &str = "/openai/v1/chat/completions";
 
 // ─── Known local-AI ports ────────────────────────────────────────────────────
 
@@ -92,7 +92,7 @@ const LOCAL_AI_PORTS: &[u16] = &[11434, 8000, 8080, 1234, 8888];
 /// 1. `inference_url_override` — user explicitly pointed inference at a
 ///    custom OpenAI-compatible endpoint (e.g. `https://api.openai.com/v1/chat/completions`
 ///    or a local Ollama). Used as-is; no path stripping.
-/// 2. [`effective_api_url`]`(api_url_override)` + [`OPENHUMAN_INFERENCE_PATH`] —
+/// 2. [`effective_api_url`]`(api_url_override)` + [`CLOSEREDGE_INFERENCE_PATH`] —
 ///    inference proxied through the hosted backend.
 ///
 /// # Why the split matters
@@ -114,7 +114,7 @@ pub fn effective_inference_url(
 
     api_url(
         &effective_api_url(api_url_override),
-        OPENHUMAN_INFERENCE_PATH,
+        CLOSEREDGE_INFERENCE_PATH,
     )
 }
 
@@ -139,7 +139,7 @@ pub fn effective_api_url(api_url: &Option<String>) -> String {
 /// # Key difference from [`effective_api_url`]
 ///
 /// The user override is **skipped** when it [`looks_like_local_ai_endpoint`]
-/// **and** does not [`looks_like_openhuman_backend_endpoint`]. In that case
+/// **and** does not [`looks_like_openhuman_backend_endpoint`] (CloserEdge AI backend). In that case
 /// the function falls through to the env / default chain so backend requests
 /// still reach the hosted API.
 ///
@@ -148,7 +148,7 @@ pub fn effective_api_url(api_url: &Option<String>) -> String {
 ///
 /// # Sentry context
 ///
-/// `OPENHUMAN-TAURI-51 / -80 / -7Z` — Ollama users saw every integration
+/// `CLOSEREDGE-TAURI-51 / -80 / -7Z` — Ollama users saw every integration
 /// request 404 because `config.api_url` (set to the Ollama endpoint) was also
 /// used as the integrations base.
 pub fn effective_backend_api_url(api_url: &Option<String>) -> String {
@@ -165,7 +165,7 @@ pub fn effective_backend_api_url(api_url: &Option<String>) -> String {
 
         // Let the override through only when it is NOT a local-AI endpoint,
         // OR when it is one of our own hosted backends (user deliberately set
-        // `api_url` to `https://api.tinyhumans.ai/openai/v1/chat/completions`).
+        // `api_url` to `https://api.closeredge.ai/openai/v1/chat/completions`).
         if !is_local_ai || is_openhuman {
             let normalized = normalize_backend_api_base_url(u);
             tracing::trace!(
@@ -185,7 +185,7 @@ pub fn effective_backend_api_url(api_url: &Option<String>) -> String {
 
     // Env / compile-time / default fallback — strip any inference path that
     // may have slipped through a misconfigured `BACKEND_URL` (Sentry
-    // `OPENHUMAN-TAURI-H6 / -HN`, issue #2075).
+    // `CLOSEREDGE-TAURI-H6 / -HN`, issue #2075).
     api_base_from_env()
         .map(|u| normalize_backend_api_base_url(&u))
         .unwrap_or_else(|| default_api_base_url_for_env(app_env_from_env().as_deref()).to_string())
@@ -194,7 +194,7 @@ pub fn effective_backend_api_url(api_url: &Option<String>) -> String {
 // ─── URL classification ──────────────────────────────────────────────────────
 
 /// Returns `true` when the URL appears to be a local / self-hosted model
-/// runner rather than the hosted OpenHuman backend.
+/// runner rather than the hosted CloserEdge AI backend.
 ///
 /// The heuristic is **intentionally tight** to avoid misclassifying:
 /// * ad-hoc mock backends used in integration tests
@@ -258,10 +258,10 @@ pub fn looks_like_local_ai_endpoint(url: &str) -> bool {
     port_is_llm || path_is_llm
 }
 
-/// Returns `true` when the URL's host is one of the known OpenHuman backends.
+/// Returns `true` when the URL's host is one of the known CloserEdge AI backends.
 ///
 /// Used in [`effective_backend_api_url`] to short-circuit the local-AI check:
-/// a user who set `api_url` to `https://api.tinyhumans.ai/openai/v1/chat/completions`
+/// a user who set `api_url` to `https://api.closeredge.ai/openai/v1/chat/completions`
 /// must still reach the real backend (not fall back to the default chain).
 fn looks_like_openhuman_backend_endpoint(url: &str) -> bool {
     let trimmed = url.trim();
@@ -271,7 +271,7 @@ fn looks_like_openhuman_backend_endpoint(url: &str) -> bool {
         Ok(p) => {
             tracing::trace!(
                 api_url = %redacted,
-                "[api/config] parsed api_url for OpenHuman backend classification"
+                "[api/config] parsed api_url for CloserEdge AI backend classification"
             );
             p
         }
@@ -279,7 +279,7 @@ fn looks_like_openhuman_backend_endpoint(url: &str) -> bool {
             tracing::trace!(
                 api_url = %redacted,
                 error   = %e,
-                "[api/config] api_url parse failed during OpenHuman backend classification"
+                "[api/config] api_url parse failed during CloserEdge AI backend classification"
             );
             return false;
         }
@@ -288,21 +288,21 @@ fn looks_like_openhuman_backend_endpoint(url: &str) -> bool {
     let Some(host) = parsed.host_str().map(str::to_ascii_lowercase) else {
         tracing::trace!(
             api_url = %redacted,
-            "[api/config] api_url has no host — not classified as OpenHuman backend"
+            "[api/config] api_url has no host — not classified as CloserEdge AI backend"
         );
         return false;
     };
 
     let is_openhuman = matches!(
         host.as_str(),
-        "api.tinyhumans.ai" | "staging-api.tinyhumans.ai"
+        "api.closeredge.ai" | "staging-api.closeredge.ai"
     );
 
     tracing::debug!(
         api_url = %redacted,
         host    = %host,
         is_openhuman,
-        "[api/config] OpenHuman backend classification complete"
+        "[api/config] CloserEdge AI backend classification complete"
     );
 
     is_openhuman
@@ -333,10 +333,10 @@ pub fn normalize_api_base_url(url: &str) -> String {
 /// # Scheme-less fallback
 ///
 /// `option_env!`-baked values occasionally omit the scheme
-/// (e.g. `api.tinyhumans.ai/openai/v1/chat/completions`). We retry with an
+/// (e.g. `api.closeredge.ai/openai/v1/chat/completions`). We retry with an
 /// `https://` prefix so the path can still be stripped before the value is
 /// used as a base. Without this, a scheme-less inference path survived into
-/// every backend call — Sentry `OPENHUMAN-TAURI-H6 / -HN`, issue #2075.
+/// every backend call — Sentry `CLOSEREDGE-TAURI-H6 / -HN`, issue #2075.
 pub(crate) fn normalize_backend_api_base_url(url: &str) -> String {
     let normalized = normalize_api_base_url(url);
     if normalized.is_empty() {
@@ -368,9 +368,9 @@ pub(crate) fn normalize_backend_api_base_url(url: &str) -> String {
 ///
 /// | `base`                                    | `path`                    | result                                                                 |
 /// |-------------------------------------------|---------------------------|------------------------------------------------------------------------|
-/// | `https://api.tinyhumans.ai`               | `/auth/me`                | `https://api.tinyhumans.ai/auth/me`                                   |
-/// | `https://api.tinyhumans.ai/openai/v1/…`   | `/agent-integrations/foo` | `https://api.tinyhumans.ai/agent-integrations/foo`  ← path replaced   |
-/// | `https://api.tinyhumans.ai`               | `""`                      | `https://api.tinyhumans.ai`                                           |
+/// | `https://api.closeredge.ai`               | `/auth/me`                | `https://api.closeredge.ai/auth/me`                                   |
+/// | `https://api.closeredge.ai/openai/v1/…`   | `/agent-integrations/foo` | `https://api.closeredge.ai/agent-integrations/foo`  ← path replaced   |
+/// | `https://api.closeredge.ai`               | `""`                      | `https://api.closeredge.ai`                                           |
 /// | `not a url`                               | `/x`                      | `not a url/x`  ← safe fallback concat                                 |
 ///
 /// Paths **must start with `/`**. Relative paths (no leading slash) are
@@ -498,8 +498,8 @@ fn compile_time_api_base_env_values() -> [Option<&'static str>; 2] {
 #[cfg(not(test))]
 fn compile_time_app_env_values() -> [Option<&'static str>; 2] {
     [
-        option_env!("OPENHUMAN_APP_ENV"),
-        option_env!("VITE_OPENHUMAN_APP_ENV"),
+        option_env!("CLOSEREDGE_APP_ENV"),
+        option_env!("VITE_CLOSEREDGE_APP_ENV"),
     ]
 }
 
@@ -651,16 +651,16 @@ mod tests {
     #[test]
     fn api_url_empty_path_returns_normalized_base() {
         assert_eq!(
-            api_url("https://api.tinyhumans.ai", ""),
-            "https://api.tinyhumans.ai"
+            api_url("https://api.closeredge.ai", ""),
+            "https://api.closeredge.ai"
         );
         assert_eq!(
-            api_url("https://api.tinyhumans.ai/", ""),
-            "https://api.tinyhumans.ai"
+            api_url("https://api.closeredge.ai/", ""),
+            "https://api.closeredge.ai"
         );
         assert_eq!(
-            api_url("  https://api.tinyhumans.ai/  ", ""),
-            "https://api.tinyhumans.ai"
+            api_url("  https://api.closeredge.ai/  ", ""),
+            "https://api.closeredge.ai"
         );
     }
 
@@ -670,26 +670,26 @@ mod tests {
         // /agent-integrations/* calls.
         assert_eq!(
             api_url(
-                "https://api.tinyhumans.ai/openai/v1/chat/completions",
+                "https://api.closeredge.ai/openai/v1/chat/completions",
                 "/agent-integrations/composio/toolkits",
             ),
-            "https://api.tinyhumans.ai/agent-integrations/composio/toolkits"
+            "https://api.closeredge.ai/agent-integrations/composio/toolkits"
         );
     }
 
     #[test]
     fn api_url_clean_base_joins_cleanly() {
-        let expected = "https://api.tinyhumans.ai/agent-integrations/composio/toolkits";
+        let expected = "https://api.closeredge.ai/agent-integrations/composio/toolkits";
         assert_eq!(
             api_url(
-                "https://api.tinyhumans.ai",
+                "https://api.closeredge.ai",
                 "/agent-integrations/composio/toolkits"
             ),
             expected
         );
         assert_eq!(
             api_url(
-                "https://api.tinyhumans.ai/",
+                "https://api.closeredge.ai/",
                 "/agent-integrations/composio/toolkits"
             ),
             expected
@@ -700,10 +700,10 @@ mod tests {
     fn api_url_preserves_query_string_on_path() {
         assert_eq!(
             api_url(
-                "https://api.tinyhumans.ai",
+                "https://api.closeredge.ai",
                 "/agent-integrations/composio/tools?toolkits=gmail"
             ),
-            "https://api.tinyhumans.ai/agent-integrations/composio/tools?toolkits=gmail"
+            "https://api.closeredge.ai/agent-integrations/composio/tools?toolkits=gmail"
         );
     }
 
@@ -727,8 +727,8 @@ mod tests {
     #[test]
     fn api_url_multiple_trailing_slashes_on_base_are_stripped() {
         assert_eq!(
-            api_url("https://api.tinyhumans.ai///", "/v1/foo"),
-            "https://api.tinyhumans.ai/v1/foo"
+            api_url("https://api.closeredge.ai///", "/v1/foo"),
+            "https://api.closeredge.ai/v1/foo"
         );
     }
 
@@ -737,7 +737,7 @@ mod tests {
         // Documented edge-case: relative paths are resolved RFC 3986-style
         // (last base segment dropped). The exact result depends on base
         // structure; we just pin the no-panic contract.
-        assert!(!api_url("https://api.tinyhumans.ai", "relative").is_empty());
+        assert!(!api_url("https://api.closeredge.ai", "relative").is_empty());
     }
 
     // ── normalize_api_base_url ────────────────────────────────────────────────
@@ -745,28 +745,28 @@ mod tests {
     #[test]
     fn normalize_strips_trailing_slashes_and_whitespace() {
         assert_eq!(
-            normalize_api_base_url("https://api.tinyhumans.ai/"),
-            "https://api.tinyhumans.ai"
+            normalize_api_base_url("https://api.closeredge.ai/"),
+            "https://api.closeredge.ai"
         );
         assert_eq!(
-            normalize_api_base_url("https://api.tinyhumans.ai///"),
-            "https://api.tinyhumans.ai"
+            normalize_api_base_url("https://api.closeredge.ai///"),
+            "https://api.closeredge.ai"
         );
         assert_eq!(
-            normalize_api_base_url("  https://api.tinyhumans.ai  "),
-            "https://api.tinyhumans.ai"
+            normalize_api_base_url("  https://api.closeredge.ai  "),
+            "https://api.closeredge.ai"
         );
         assert_eq!(
-            normalize_api_base_url("  https://api.tinyhumans.ai/  "),
-            "https://api.tinyhumans.ai"
+            normalize_api_base_url("  https://api.closeredge.ai/  "),
+            "https://api.closeredge.ai"
         );
     }
 
     #[test]
     fn normalize_preserves_mid_path() {
         assert_eq!(
-            normalize_api_base_url("https://api.tinyhumans.ai/v2"),
-            "https://api.tinyhumans.ai/v2"
+            normalize_api_base_url("https://api.closeredge.ai/v2"),
+            "https://api.closeredge.ai/v2"
         );
     }
 
@@ -780,25 +780,25 @@ mod tests {
     #[test]
     fn normalize_backend_strips_inference_path() {
         assert_eq!(
-            normalize_backend_api_base_url("https://api.tinyhumans.ai/openai/v1/chat/completions"),
-            "https://api.tinyhumans.ai"
+            normalize_backend_api_base_url("https://api.closeredge.ai/openai/v1/chat/completions"),
+            "https://api.closeredge.ai"
         );
     }
 
     #[test]
     fn normalize_backend_handles_schemeless_input() {
-        // Sentry OPENHUMAN-TAURI-H6 / issue #2075.
+        // Sentry CLOSEREDGE-TAURI-H6 / issue #2075.
         assert_eq!(
-            normalize_backend_api_base_url("api.tinyhumans.ai/openai/v1/chat/completions"),
-            "https://api.tinyhumans.ai"
+            normalize_backend_api_base_url("api.closeredge.ai/openai/v1/chat/completions"),
+            "https://api.closeredge.ai"
         );
     }
 
     #[test]
     fn normalize_backend_passes_through_clean_root() {
         assert_eq!(
-            normalize_backend_api_base_url("https://api.tinyhumans.ai/"),
-            "https://api.tinyhumans.ai"
+            normalize_backend_api_base_url("https://api.closeredge.ai/"),
+            "https://api.closeredge.ai"
         );
     }
 
@@ -864,13 +864,13 @@ mod tests {
     fn api_base_from_env_reads_runtime_var() {
         let _guard = env_lock();
         let prev = std::env::var("BACKEND_URL").ok();
-        std::env::set_var("BACKEND_URL", "https://staging-api.tinyhumans.ai/");
+        std::env::set_var("BACKEND_URL", "https://staging-api.closeredge.ai/");
         let result = api_base_from_env();
         match prev {
             Some(v) => std::env::set_var("BACKEND_URL", v),
             None => std::env::remove_var("BACKEND_URL"),
         }
-        assert_eq!(result.as_deref(), Some("https://staging-api.tinyhumans.ai"));
+        assert_eq!(result.as_deref(), Some("https://staging-api.closeredge.ai"));
     }
 
     #[test]
@@ -879,7 +879,7 @@ mod tests {
         let prev_p = std::env::var("BACKEND_URL").ok();
         let prev_s = std::env::var("VITE_BACKEND_URL").ok();
         std::env::set_var("BACKEND_URL", "");
-        std::env::set_var("VITE_BACKEND_URL", "https://staging-api.tinyhumans.ai/");
+        std::env::set_var("VITE_BACKEND_URL", "https://staging-api.closeredge.ai/");
         let result = api_base_from_env();
         match prev_p {
             Some(v) => std::env::set_var("BACKEND_URL", v),
@@ -889,7 +889,7 @@ mod tests {
             Some(v) => std::env::set_var("VITE_BACKEND_URL", v),
             None => std::env::remove_var("VITE_BACKEND_URL"),
         }
-        assert_eq!(result.as_deref(), Some("https://staging-api.tinyhumans.ai"));
+        assert_eq!(result.as_deref(), Some("https://staging-api.closeredge.ai"));
     }
 
     // ── looks_like_local_ai_endpoint ─────────────────────────────────────────
@@ -934,9 +934,9 @@ mod tests {
 
     #[test]
     fn local_ai_rejects_real_backends() {
-        assert!(!looks_like_local_ai_endpoint("https://api.tinyhumans.ai"));
+        assert!(!looks_like_local_ai_endpoint("https://api.closeredge.ai"));
         assert!(!looks_like_local_ai_endpoint(
-            "https://staging-api.tinyhumans.ai"
+            "https://staging-api.closeredge.ai"
         ));
         // OpenAI public API exposes /v1 as a version prefix — must NOT match.
         assert!(!looks_like_local_ai_endpoint("https://api.openai.com/v1"));
@@ -986,15 +986,15 @@ mod tests {
         ));
     }
 
-    // ── openhuman_backend detection ───────────────────────────────────────────
+    // ── closeredge_backend detection ────────────────────────────────────────────
 
     #[test]
     fn openhuman_backend_detection_accepts_hosted_api_paths() {
         assert!(looks_like_openhuman_backend_endpoint(
-            "https://api.tinyhumans.ai/openai/v1/chat/completions"
+            "https://api.closeredge.ai/openai/v1/chat/completions"
         ));
         assert!(looks_like_openhuman_backend_endpoint(
-            "https://staging-api.tinyhumans.ai/openai/v1/chat/completions"
+            "https://staging-api.closeredge.ai/openai/v1/chat/completions"
         ));
         assert!(!looks_like_openhuman_backend_endpoint(
             "https://openrouter.ai/api/v1/chat/completions"
@@ -1014,14 +1014,14 @@ mod tests {
 
         let cases: &[(&str, &str)] = &[
             (
-                "https://api.tinyhumans.ai/openai/v1/chat/completions",
-                "https://api.tinyhumans.ai",
+                "https://api.closeredge.ai/openai/v1/chat/completions",
+                "https://api.closeredge.ai",
             ),
             ("http://localhost:11434/v1/chat/completions", &fallback),
-            ("https://api.tinyhumans.ai", "https://api.tinyhumans.ai"),
+            ("https://api.closeredge.ai", "https://api.closeredge.ai"),
             (
-                "https://api.tinyhumans.ai/openai/v1/",
-                "https://api.tinyhumans.ai",
+                "https://api.closeredge.ai/openai/v1/",
+                "https://api.closeredge.ai",
             ),
             ("https://openrouter.ai/api/v1/chat/completions", &fallback),
         ];
@@ -1051,21 +1051,21 @@ mod tests {
     fn backend_url_falls_back_to_env_when_override_is_local_ai() {
         let _guard = env_lock();
         let _env = EnvSnapshot::clear_backend_env();
-        std::env::set_var("BACKEND_URL", "https://staging-api.tinyhumans.ai/");
+        std::env::set_var("BACKEND_URL", "https://staging-api.closeredge.ai/");
 
         assert_eq!(
             effective_backend_api_url(&Some(
                 "http://127.0.0.1:8080/v1/chat/completions".to_string()
             )),
-            "https://staging-api.tinyhumans.ai"
+            "https://staging-api.closeredge.ai"
         );
     }
 
     #[test]
     fn backend_url_keeps_real_backend_override() {
         assert_eq!(
-            effective_backend_api_url(&Some("https://staging-api.tinyhumans.ai/".to_string())),
-            "https://staging-api.tinyhumans.ai"
+            effective_backend_api_url(&Some("https://staging-api.closeredge.ai/".to_string())),
+            "https://staging-api.closeredge.ai"
         );
     }
 
@@ -1078,17 +1078,17 @@ mod tests {
 
     #[test]
     fn backend_url_strips_inference_path_from_env() {
-        // Regression: OPENHUMAN-TAURI-H6 / -HN, issue #2075.
+        // Regression: CLOSEREDGE-TAURI-H6 / -HN, issue #2075.
         let _guard = env_lock();
         let _env = EnvSnapshot::clear_backend_env();
         std::env::set_var(
             "BACKEND_URL",
-            "https://api.tinyhumans.ai/openai/v1/chat/completions",
+            "https://api.closeredge.ai/openai/v1/chat/completions",
         );
 
         assert_eq!(
             effective_backend_api_url(&None),
-            "https://api.tinyhumans.ai"
+            "https://api.closeredge.ai"
         );
     }
 }

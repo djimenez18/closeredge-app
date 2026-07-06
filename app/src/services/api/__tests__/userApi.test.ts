@@ -19,7 +19,6 @@ function getMockUser() {
     username: 'testuser',
     role: 'user',
     activeTeamId: 'team-1',
-    referral: {},
     subscription: { hasActiveSubscription: false, plan: 'FREE' },
     settings: {
       dailySummariesEnabled: false,

@@ -15,24 +15,24 @@ use axum::{Json, Router};
 use serde_json::{json, Value};
 use tempfile::{tempdir, TempDir};
 
-use openhuman_core::openhuman::config::schema::cloud_providers::{
+use closeredge_core::openhuman::config::schema::cloud_providers::{
     AuthStyle as CloudAuthStyle, CloudProviderCreds,
 };
-use openhuman_core::openhuman::config::Config;
-use openhuman_core::openhuman::credentials::{
+use closeredge_core::openhuman::config::Config;
+use closeredge_core::openhuman::credentials::{
     AuthService, APP_SESSION_PROVIDER, DEFAULT_AUTH_PROFILE_NAME,
 };
-use openhuman_core::openhuman::inference::local::LocalAiService;
-use openhuman_core::openhuman::inference::provider::compatible::{
+use closeredge_core::openhuman::inference::local::LocalAiService;
+use closeredge_core::openhuman::inference::provider::compatible::{
     AuthStyle as CompatibleAuthStyle, OpenAiCompatibleProvider,
 };
-use openhuman_core::openhuman::inference::provider::factory::{
+use closeredge_core::openhuman::inference::provider::factory::{
     auth_key_for_slug, create_chat_provider_from_string, provider_for_role,
 };
-use openhuman_core::openhuman::inference::provider::{
+use closeredge_core::openhuman::inference::provider::{
     list_configured_models, sanitize_api_error, ChatMessage, ChatRequest, Provider, ProviderDelta,
 };
-use openhuman_core::openhuman::tools::ToolSpec;
+use closeredge_core::openhuman::tools::ToolSpec;
 
 #[derive(Clone, Default)]
 struct MockState {

@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { getCoreStateSnapshot } from './lib/coreState/store';
-import MascotWindowApp from './mascot/MascotWindowApp';
 import OverlayApp from './overlay/OverlayApp';
 import './polyfills';
 import { initGA, initSentry, trackEvent } from './services/analytics';
@@ -28,29 +27,9 @@ setStoreForApiClient(() => getCoreStateSnapshot().snapshot.sessionToken);
 // desktop core RPC).
 startCloudPairingPublisher();
 
-// The floating mascot is hosted in a native macOS NSPanel + WKWebView
-// that lives OUTSIDE Tauri's runtime (the vendored tauri-cef can't render
-// transparent windowed-mode browsers). That webview can't read a Tauri
-// window label, so the Rust shell appends `?window=mascot` to the URL it
-// loads. Detect it via the URL param so we can skip `getCurrentWindow()`
-// — which would either throw or trigger the CEF IPC-bootstrap gap that
-// `tauriRuntimeAvailable()` (= the hardened `isTauri()`) now guards
-// against by reading `window.__TAURI_INTERNALS__.invoke`.
-const urlWindowParam = (() => {
-  try {
-    return new URLSearchParams(window.location.search).get('window');
-  } catch {
-    return null;
-  }
-})();
-const isMascotWindow = urlWindowParam === 'mascot';
-const currentWindowLabel = isMascotWindow
-  ? 'mascot'
-  : tauriRuntimeAvailable()
-    ? getCurrentWindow().label
-    : 'main';
+const currentWindowLabel = tauriRuntimeAvailable() ? getCurrentWindow().label : 'main';
 const isOverlayWindow = currentWindowLabel === 'overlay';
-const isStandaloneWindow = isOverlayWindow || isMascotWindow;
+const isStandaloneWindow = isOverlayWindow;
 
 const ensureDefaultHashRoute = () => {
   const hash = window.location.hash;
@@ -89,17 +68,11 @@ if (!isStandaloneWindow) {
 // namespace from the first storage call. (#900)
 function bootRender() {
   const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-  const tree = isMascotWindow ? <MascotWindowApp /> : isOverlayWindow ? <OverlayApp /> : <App />;
+  const tree = isOverlayWindow ? <OverlayApp /> : <App />;
   root.render(<React.StrictMode>{tree}</React.StrictMode>);
 }
 
-// The mascot lives in a native WKWebView (no Tauri IPC), so
-// `getActiveUserIdFromCore()` would just reject after a roundtrip and
-// delay first paint for nothing. Skip the bootstrap entirely in that
-// path — the mascot UI doesn't read user-scoped storage anyway.
-const activeUserBootstrap = isMascotWindow
-  ? Promise.resolve<string | null>(null)
-  : getActiveUserIdFromCore();
+const activeUserBootstrap = getActiveUserIdFromCore();
 
 activeUserBootstrap
   .then(id => primeActiveUserId(id))

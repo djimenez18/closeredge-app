@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
 import { useCoreState } from '../providers/CoreStateProvider';
-import { DEV_FORCE_ONBOARDING } from '../utils/config';
 import RouteLoadingScreen from './RouteLoadingScreen';
 
 /**
@@ -17,8 +16,10 @@ const DefaultRedirect = () => {
     return <RouteLoadingScreen />;
   }
 
+  // TODO: Re-enable auth gate once Supabase auth replaces OpenHuman auth.
+  // For now, bypass to /home so the app is usable during development.
   if (!snapshot.sessionToken) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   // Guard against the post-login race where the session token has arrived
@@ -39,9 +40,10 @@ const DefaultRedirect = () => {
     return <RouteLoadingScreen />;
   }
 
-  if (DEV_FORCE_ONBOARDING || !snapshot.onboardingCompleted) {
-    return <Navigate to="/onboarding" replace />;
-  }
+  // TODO: Re-enable onboarding gate
+  // if (DEV_FORCE_ONBOARDING || !snapshot.onboardingCompleted) {
+  //   return <Navigate to="/onboarding" replace />;
+  // }
 
   return <Navigate to="/home" replace />;
 };

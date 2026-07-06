@@ -13,9 +13,9 @@ use axum::routing::any;
 use axum::{Json, Router};
 use serde_json::{json, Value};
 
-use openhuman_core::openhuman::config::{PolymarketClobCredentials, PolymarketConfig};
-use openhuman_core::openhuman::security::{AutonomyLevel, SecurityPolicy};
-use openhuman_core::openhuman::tools::{ComposioTool, PolymarketTool, Tool};
+use closeredge_core::openhuman::config::{PolymarketClobCredentials, PolymarketConfig};
+use closeredge_core::openhuman::security::{AutonomyLevel, SecurityPolicy};
+use closeredge_core::openhuman::tools::{ComposioTool, PolymarketTool, Tool};
 
 #[derive(Clone, Debug)]
 struct RecordedRequest {

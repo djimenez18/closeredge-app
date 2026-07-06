@@ -1,9 +1,9 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Mutex, OnceLock};
 
-use openhuman_core::openhuman::config::rpc as config_rpc;
-use openhuman_core::openhuman::memory_sources::readers::SourceReader;
-use openhuman_core::openhuman::memory_sources::{
+use closeredge_core::openhuman::config::rpc as config_rpc;
+use closeredge_core::openhuman::memory_sources::readers::SourceReader;
+use closeredge_core::openhuman::memory_sources::{
     self, ContentType, MemorySourceEntry, MemorySourcePatch, SourceKind,
 };
 use tempfile::{Builder, TempDir};
@@ -51,7 +51,7 @@ struct Harness {
 }
 
 impl Harness {
-    async fn config(&self) -> openhuman_core::openhuman::config::Config {
+    async fn config(&self) -> closeredge_core::openhuman::config::Config {
         config_rpc::load_config_with_timeout()
             .await
             .expect("isolated config should load")
@@ -223,7 +223,7 @@ async fn round23_memory_sources_status_registry_and_readers_cover_remaining_edge
     assert_eq!(enabled_composio.len(), 1);
 
     let composio_reader =
-        openhuman_core::openhuman::memory_sources::readers::composio::ComposioReader;
+        closeredge_core::openhuman::memory_sources::readers::composio::ComposioReader;
     let items = composio_reader
         .list_items(&composio, &config)
         .await
@@ -236,7 +236,8 @@ async fn round23_memory_sources_status_registry_and_readers_cover_remaining_edge
     assert_eq!(content.content_type, ContentType::Plaintext);
     assert!(content.body.contains("provider sync pipeline"));
 
-    let twitter_reader = openhuman_core::openhuman::memory_sources::readers::twitter::TwitterReader;
+    let twitter_reader =
+        closeredge_core::openhuman::memory_sources::readers::twitter::TwitterReader;
     let missing_query = twitter_reader
         .list_items(
             &source_entry("tw-missing", SourceKind::TwitterQuery),

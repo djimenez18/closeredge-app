@@ -95,6 +95,13 @@ export type CoreRpcErrorKind =
   | 'rate_limited'
   | 'budget_exceeded'
   | 'thread_not_found'
+  // CloserEdge subscription gate (src/subscription/middleware.rs). The
+  // structured payload (access_level, upgrade_url, resets_at, …) rides in
+  // `data`.
+  | 'subscription_gated' // -32001: dunning state blocks this action
+  | 'tier_gated' //         -32002: feature needs a higher tier
+  | 'no_subscription' //    -32003: no valid subscription for the license
+  | 'limit_exceeded' //     -32004: usage limit (daily/weekly/monthly) hit
   | 'unknown';
 
 export class CoreRpcError extends Error {
@@ -124,9 +131,15 @@ export function classifyRpcError(
   data?: unknown
 ): CoreRpcErrorKind {
   if (isThreadNotFoundRpcData(data)) return 'thread_not_found';
+  // Subscription gate errors use their registry name as the JSON-RPC error
+  // message verbatim (middleware.rs `rpc_error`).
+  if (message === 'subscription_gated') return 'subscription_gated';
+  if (message === 'tier_gated') return 'tier_gated';
+  if (message === 'no_subscription') return 'no_subscription';
+  if (message === 'limit_exceeded') return 'limit_exceeded';
   if (httpStatus === 401) return 'auth_expired';
   if (httpStatus === 429) return 'rate_limited';
-  // Confirmed OpenHuman session expiry — explicit markers from the backend/core.
+  // Confirmed CloserEdge AI session expiry — explicit markers from the backend/core.
   if (/Session expired|SESSION_EXPIRED/i.test(message)) return 'auth_expired';
   // Core-side "no backend session token" → the auth profile is gone but the
   // frontend may still hold a stale sessionToken from an optimistic post-login
@@ -137,7 +150,7 @@ export function classifyRpcError(
   // "session JWT required" covers the case where a prior 401 already cleared
   // the token and the very next RPC call finds no JWT in the store.
   if (/session jwt required/i.test(message)) return 'auth_expired';
-  // OpenHuman backend path 401s (via authed_json): "{METHOD} /path failed (401 Unauthorized)"
+  // CloserEdge AI backend path 401s (via authed_json): "{METHOD} /path failed (401 Unauthorized)"
   // The HTTP method prefix distinguishes these from downstream provider 401s.
   // Fix for issue #2286: only match when the message starts with an HTTP verb
   // followed by a path — this excludes "Discord API error:", "OpenAI API error:", etc.

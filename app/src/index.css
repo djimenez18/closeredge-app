@@ -1,6 +1,7 @@
-/* Import Google Fonts for trust and professionalism */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+/* Brand webfonts (DM Sans / Cormorant Garamond / DM Mono) are loaded once in
+   src/index.html so they resolve in a single parallel request before paint —
+   not re-imported here. The OS sans/serif/mono stacks in tailwind.config.js
+   cover the fallback if the CDN is unreachable. */
 
 /* Tailwind CSS imports */
 @tailwind base;
@@ -12,6 +13,7 @@
   /* Set default font and improve text rendering */
   html {
     font-family:
+      'DM Sans',
       'Inter',
       -apple-system,
       BlinkMacSystemFont,
@@ -42,10 +44,7 @@
 
   html[data-window='overlay'],
   html[data-window='overlay'] body,
-  html[data-window='overlay'] #root,
-  html[data-window='mascot'],
-  html[data-window='mascot'] body,
-  html[data-window='mascot'] #root {
+  html[data-window='overlay'] #root {
     background: transparent;
     overflow: hidden;
     user-select: none;
@@ -75,7 +74,11 @@
   h5,
   h6 {
     @apply font-sans font-semibold;
-    @apply text-stone-900;
+    /* Theme-aware by default (was a hardcoded `text-stone-900`, i.e. near-black
+       on every heading — invisible in dark mode unless each component re-added
+       a `dark:` override). The semantic token resolves correctly in both
+       themes; per-element utilities still win where a component needs them. */
+    color: var(--color-text-primary);
     line-height: 1.2;
   }
 
@@ -480,7 +483,7 @@
 
 /* Command palette + help overlay — scoped tokens. */
 :root {
-  --cmd-accent: #2f6ef4;
+  --cmd-accent: #7c3aed;
   --cmd-surface: #ffffff;
   --cmd-surface-elevated: #f5f5f5;
   --cmd-foreground: #171717;
@@ -492,7 +495,7 @@
 }
 
 :root.dark {
-  --cmd-accent: #60a5fa;
+  --cmd-accent: #a855f7;
   --cmd-surface: #171717;
   --cmd-surface-elevated: #262626;
   --cmd-foreground: #fafafa;
@@ -510,4 +513,119 @@
     animation: none !important;
     transition: none !important;
   }
+
+  .ce-ambient-bg,
+  .animate-stagger-fade-up,
+  .ce-hover-lift,
+  .ce-press-scale {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── CloserEdge Premium Polish ──────────────────────────────────── */
+
+/* Ambient gradient drift — slow, GPU-composited background for auth/splash. */
+.ce-ambient-bg {
+  background: linear-gradient(
+    -45deg,
+    #0f0f12 0%,
+    #1a1025 25%,
+    #0f0f12 50%,
+    #141428 75%,
+    #0f0f12 100%
+  );
+  background-size: 400% 400%;
+  animation: ambientDrift 12s ease-in-out infinite;
+  will-change: background-position;
+}
+
+/* Light mode variant */
+:root:not(.dark) .ce-ambient-bg {
+  background: linear-gradient(
+    -45deg,
+    #f8f7ff 0%,
+    #ede9fe 25%,
+    #f5f3ff 50%,
+    #e8e4fc 75%,
+    #f8f7ff 100%
+  );
+  background-size: 400% 400%;
+}
+
+/* Card hover lift — subtle translateY + shadow increase on hover. */
+.ce-hover-lift {
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ce-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px -4px rgba(0, 0, 0, 0.1),
+    0 16px 32px -8px rgba(0, 0, 0, 0.1);
+}
+
+:root.dark .ce-hover-lift:hover {
+  box-shadow:
+    0 8px 24px -4px rgba(124, 58, 237, 0.08),
+    0 16px 32px -8px rgba(0, 0, 0, 0.3);
+}
+
+/* Press scale — brief shrink on active/click for tactile feedback. */
+.ce-press-scale:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease-out;
+}
+
+/* Polished skeleton shimmer with brand-tinted gradient. */
+.ce-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.04) 0%,
+    rgba(0, 0, 0, 0.08) 40%,
+    rgba(0, 0, 0, 0.04) 80%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+  border-radius: 0.375rem;
+}
+
+:root.dark .ce-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.07) 40%,
+    rgba(255, 255, 255, 0.03) 80%
+  );
+  background-size: 200% 100%;
+}
+
+/* Stagger delay utility — apply via style={{ animationDelay: `${i * 60}ms` }} */
+@keyframes ambientDrift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Focus ring utility for brand accent */
+.ce-focus-ring:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
 }

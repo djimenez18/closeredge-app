@@ -1,11 +1,11 @@
-use openhuman_core::core::event_bus::init_global;
-use openhuman_core::openhuman::agent::debug::DumpPromptOptions;
-use openhuman_core::openhuman::agent::task_board::{TaskBoardCard, TaskCardStatus};
-use openhuman_core::openhuman::agent::task_dispatcher::{dispatch_card, DispatchOutcome};
-use openhuman_core::openhuman::agent::triage::{
+use closeredge_core::core::event_bus::init_global;
+use closeredge_core::openhuman::agent::debug::DumpPromptOptions;
+use closeredge_core::openhuman::agent::task_board::{TaskBoardCard, TaskCardStatus};
+use closeredge_core::openhuman::agent::task_dispatcher::{dispatch_card, DispatchOutcome};
+use closeredge_core::openhuman::agent::triage::{
     apply_decision, TriageAction, TriageDecision, TriageResolutionPath, TriageRun, TriggerEnvelope,
 };
-use openhuman_core::openhuman::todos::ops::{self, BoardLocation, CardPatch};
+use closeredge_core::openhuman::todos::ops::{self, BoardLocation, CardPatch};
 use serde_json::json;
 use std::path::Path;
 use std::sync::Mutex;

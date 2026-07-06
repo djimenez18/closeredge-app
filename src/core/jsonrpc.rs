@@ -854,7 +854,9 @@ async fn dictation_ws_handler(ws: WebSocketUpgrade) -> Response {
 /// Middleware order (outermost → innermost):
 /// 1. `cors_middleware`       — handles `OPTIONS` preflight and adds CORS headers
 /// 2. `rpc_auth_middleware`   — validates `Authorization: Bearer <token>` on protected paths
-/// 3. `http_request_log_middleware` — logs non-RPC HTTP requests with timing
+/// 3. `subscription_gate_middleware` — enforces subscription access level, tier
+///    features and usage limits (inert unless `CLOSEREDGE_SUBSCRIPTION_GATING=1`)
+/// 4. `http_request_log_middleware` — logs non-RPC HTTP requests with timing
 pub fn build_core_http_router(socketio_enabled: bool) -> Router {
     let router = Router::new()
         .route("/", get(root_handler))
@@ -871,6 +873,9 @@ pub fn build_core_http_router(socketio_enabled: bool) -> Router {
         .nest("/v1", crate::openhuman::inference::http::router())
         .fallback(not_found_handler)
         .layer(middleware::from_fn(http_request_log_middleware))
+        .layer(middleware::from_fn(
+            crate::subscription::middleware::subscription_gate_middleware,
+        ))
         .layer(middleware::from_fn(crate::core::auth::rpc_auth_middleware))
         .layer(middleware::from_fn(cors_middleware))
         .with_state(AppState {
@@ -1292,7 +1297,7 @@ async fn root_handler() -> impl IntoResponse {
     (
         StatusCode::OK,
         Json(json!({
-            "name": "openhuman",
+            "name": "closeredge",
             "ok": true,
             "api_server": api_server,
             "endpoints": {
@@ -2065,6 +2070,15 @@ pub async fn bootstrap_core_runtime(embedded_core: bool) {
 
     // --- Workspace migrations --------------------------------------------
     crate::openhuman::startup::run_workspace_migrations(&workspace_dir);
+
+    // --- Subscription gate warmup + usage reporting -----------------------
+    // Both are no-ops unless CLOSEREDGE_SUBSCRIPTION_GATING=1. The warmup
+    // populates the license cache with backoff retries so a cold start
+    // during a brief Supabase outage doesn't deny the first requests; the
+    // reporter pushes local usage counters to Supabase every 15 minutes for
+    // fleet visibility (best-effort, never gates anything).
+    crate::subscription::supabase::spawn_warmup();
+    crate::subscription::supabase::spawn_usage_reporter();
 
     // --- MCP registry boot-spawn -----------------------------------------
     // Bring up every locally-installed MCP server's stdio subprocess so its

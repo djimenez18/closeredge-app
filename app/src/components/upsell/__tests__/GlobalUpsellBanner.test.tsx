@@ -16,7 +16,12 @@ const mockUseUsageState = vi.hoisted(() =>
 
 vi.mock('../../../hooks/useUsageState', () => ({ useUsageState: mockUseUsageState }));
 
-vi.mock('../../../utils/openUrl', () => ({ openUrl: vi.fn() }));
+// The banner navigates in-app (react-router) — tests render without a Router.
+const mockNavigate = vi.hoisted(() => vi.fn());
+vi.mock('react-router-dom', async importOriginal => {
+  const actual = await importOriginal<typeof import('react-router-dom')>();
+  return { ...actual, useNavigate: () => mockNavigate };
+});
 
 vi.mock('../UpsellBanner', () => ({
   default: ({ title, message, variant }: { title: string; message: string; variant: string }) => (
