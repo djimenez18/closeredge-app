@@ -22,7 +22,7 @@ use closeredge_core::api::config::{
     api_base_from_env, api_url, app_env_from_env, default_api_base_url_for_env, effective_api_url,
     effective_backend_api_url, effective_inference_url, looks_like_local_ai_endpoint,
     normalize_api_base_url, APP_ENV_VAR, DEFAULT_API_BASE_URL, DEFAULT_STAGING_API_BASE_URL,
-    OPENHUMAN_INFERENCE_PATH, VITE_APP_ENV_VAR,
+    CLOSEREDGE_INFERENCE_PATH, VITE_APP_ENV_VAR,
 };
 use closeredge_core::core::auth::{init_rpc_token, CORE_TOKEN_ENV_VAR};
 use closeredge_core::core::event_bus::{DomainEvent, EventHandler};
@@ -1484,7 +1484,7 @@ fn api_config_url_resolution_classifies_backend_and_inference_paths() {
     );
     assert_eq!(
         effective_inference_url(&Some("https://api.tinyhumans.ai".into()), &None),
-        format!("https://api.tinyhumans.ai{OPENHUMAN_INFERENCE_PATH}")
+        format!("https://api.tinyhumans.ai{CLOSEREDGE_INFERENCE_PATH}")
     );
     assert_eq!(
         effective_inference_url(
