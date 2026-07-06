@@ -414,7 +414,7 @@ jobs:
               repo,
               tag_name: tag,
               target_commitish: target,
-              name: `OpenHuman v${version}`,
+              name: `CloserEdge v${version}`,
               draft: true,
               prerelease: false,
               generate_release_notes: true,
@@ -447,7 +447,10 @@ jobs:
       base_url: ${{ needs.prepare-build.outputs.base_url }}
       app_env: production
       build_profile: release
-      telegram_bot_username: openhumanaibot
+      # TODO(rebrand): confirm the real CloserEdge Telegram bot handle before
+      # the next production release (LEDGER V-APP-3). Left as a placeholder so
+      # shipped builds never deep-link to the upstream OpenHuman bot.
+      telegram_bot_username: closeredge_bot
       # with_macos_signing defaults to true — left implicit; production
       # always notarizes. See build-desktop.yml inputs.
       with_release_upload: ${{ inputs.create_release }}
@@ -486,7 +489,7 @@ jobs:
     environment: Production
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: tinyhumansai/openhuman-core
+      IMAGE_NAME: ${{ github.repository_owner }}/closeredge-core
     steps:
       - name: Checkout build ref
         uses: actions/checkout@v5
@@ -529,7 +532,7 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ needs.prepare-build.outputs.sha }}
             org.opencontainers.image.version=${{ needs.prepare-build.outputs.version }}
-            org.opencontainers.image.title=openhuman-core
+            org.opencontainers.image.title=closeredge-core
           cache-from: type=gha,scope=release-production
           cache-to: type=gha,scope=release-production,mode=max
       - name: Verify pushed image is pullable
@@ -599,7 +602,7 @@ jobs:
           # baked elsewhere — see prepare-build.outputs.short_sha comment.
           OPENHUMAN_BUILD_SHA: ${{ needs.prepare-build.outputs.short_sha }}
           OPENHUMAN_APP_ENV: production
-        run: bash scripts/ci-cancel-aware.sh cargo build --release --bin openhuman-core
+        run: bash scripts/ci-cancel-aware.sh cargo build --release --bin closeredge-core
       - name: Package and upload tarball to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -608,7 +611,7 @@ jobs:
           TARGET: ${{ matrix.target }}
         run: |
           bash scripts/release/package-cli-tarball.sh \
-            target/release/openhuman-core \
+            target/release/closeredge-core \
             "$VERSION" \
             "$TARGET"
 
@@ -636,7 +639,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ needs.prepare-build.outputs.tag }}
           VERSION: ${{ needs.prepare-build.outputs.version }}
-          REPO: tinyhumansai/openhuman
+          REPO: ${{ github.repository }}
         run: bash scripts/release/publish-updater-manifest.sh
 
   # =========================================================================
@@ -718,10 +721,10 @@ jobs:
               // Linux standalone openhuman-core CLI tarballs (build-cli-linux).
               // Operators on headless Linux servers pull these instead of the
               // Tauri bundle; cloud-deploy.md documents both arches.
-              /^openhuman-core-.*-x86_64-unknown-linux-gnu\.tar\.gz$/,
-              /^openhuman-core-.*-x86_64-unknown-linux-gnu\.tar\.gz\.sha256$/,
-              /^openhuman-core-.*-aarch64-unknown-linux-gnu\.tar\.gz$/,
-              /^openhuman-core-.*-aarch64-unknown-linux-gnu\.tar\.gz\.sha256$/,
+              /^closeredge-core-.*-x86_64-unknown-linux-gnu\.tar\.gz$/,
+              /^closeredge-core-.*-x86_64-unknown-linux-gnu\.tar\.gz\.sha256$/,
+              /^closeredge-core-.*-aarch64-unknown-linux-gnu\.tar\.gz$/,
+              /^closeredge-core-.*-aarch64-unknown-linux-gnu\.tar\.gz\.sha256$/,
             ];
             const missing = requiredPatterns.filter((pattern) => !names.some((name) => pattern.test(name)));
             if (missing.length > 0) {
@@ -763,7 +766,7 @@ jobs:
     if: ${{ inputs.create_release && always() && needs.publish-release.result == 'success' }}
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: tinyhumansai/openhuman-core
+      IMAGE_NAME: ${{ github.repository_owner }}/closeredge-core
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -916,15 +919,15 @@ jobs:
           VERSION: ${{ needs.prepare-build.outputs.version }}
         run: |-
           set -uo pipefail
-          PACKAGE="openhuman-core"
+          PACKAGE="closeredge-core"
           for IMAGE_TAG in "${TAG}" "${VERSION}"; do
             echo "Attempting to delete Docker tag: ${IMAGE_TAG}"
             VERSION_ID="$(gh api \
               -H "Accept: application/vnd.github+json" \
-              "/orgs/tinyhumansai/packages/container/${PACKAGE}/versions" \
+              "/users/${{ github.repository_owner }}/packages/container/${PACKAGE}/versions" \
               --paginate --jq ".[] | select(.metadata.container.tags[]? == \"${IMAGE_TAG}\") | .id" 2>/dev/null | head -1)"
             if [ -n "$VERSION_ID" ]; then
-              gh api -X DELETE "/orgs/tinyhumansai/packages/container/${PACKAGE}/versions/${VERSION_ID}" || true
+              gh api -X DELETE "/users/${{ github.repository_owner }}/packages/container/${PACKAGE}/versions/${VERSION_ID}" || true
               echo "Deleted image version ${VERSION_ID} (tag ${IMAGE_TAG})"
             else
               echo "Tag ${IMAGE_TAG} not found or already deleted"

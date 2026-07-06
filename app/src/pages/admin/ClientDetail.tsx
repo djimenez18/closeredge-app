@@ -233,7 +233,7 @@ export default function ClientDetail() {
 
       setSubscription(prev => (prev ? { ...prev, status: newStatus } : null));
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Action failed');
+      window.alert(err instanceof Error ? err.message : 'Action failed');
     } finally {
       setActionLoading(false);
     }
@@ -251,7 +251,7 @@ export default function ClientDetail() {
       if (err) throw err;
       setSubscription(prev => (prev ? { ...prev, tier: newTier } : null));
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Tier change failed');
+      window.alert(err instanceof Error ? err.message : 'Tier change failed');
     } finally {
       setActionLoading(false);
     }

@@ -167,13 +167,12 @@ export default function Analytics() {
         buckets.set(key, (buckets.get(key) ?? 0) + price);
       }
     }
-    // Accumulate
-    let cumulative = 0;
+    // Accumulate: each point is the running total of itself and all prior months.
     const sorted = [...buckets.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-    return sorted.map(([month, val]) => {
-      cumulative += val;
-      return { label: month, value: cumulative };
-    });
+    return sorted.map(([month], i) => ({
+      label: month,
+      value: sorted.slice(0, i + 1).reduce((sum, [, v]) => sum + v, 0),
+    }));
   }, [subs]);
 
   // Clients by agent type

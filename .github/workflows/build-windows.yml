@@ -121,5 +121,5 @@ jobs:
         with:
           name: windows-cli
           path: |-
-            app/src-tauri/target/x86_64-pc-windows-msvc/release/openhuman-core.exe
-            target/x86_64-pc-windows-msvc/release/openhuman-core.exe
+            app/src-tauri/target/x86_64-pc-windows-msvc/release/closeredge-core.exe
+            target/x86_64-pc-windows-msvc/release/closeredge-core.exe

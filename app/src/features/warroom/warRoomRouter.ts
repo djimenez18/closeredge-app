@@ -167,7 +167,7 @@ export function isAcknowledgment(text: string): boolean {
  * Deduplicated. Only returns IDs that exist in the roster.
  */
 export function extractMentions(text: string, roster: RosterAgent[]): string[] {
-  const re = /(?:^|[\s,(\[{:;])@([a-z][a-z0-9_-]{0,29})\b/gi;
+  const re = /(?:^|[\s,([{:;])@([a-z][a-z0-9_-]{0,29})\b/gi;
   const rosterIds = new Set(roster.map(r => r.id));
   const seen = new Set<string>();
   const out: string[] = [];

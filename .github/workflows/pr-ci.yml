@@ -54,17 +54,17 @@ jobs:
           key: ${{ steps.pnpm-cache.outputs.cache-primary-key }}
 
       - name: Type check TypeScript files
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app compile
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app compile
         env:
           NODE_ENV: test
 
       - name: Check Prettier formatting
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app format:check
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app format:check
         env:
           NODE_ENV: test
 
       - name: Run ESLint
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app lint
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app lint
         env:
           NODE_ENV: test
 
@@ -197,7 +197,7 @@ jobs:
         if: steps.playwright-artifact-cache.outputs.cache-hit != 'true'
         run: |
           set -euo pipefail
-          bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:web:build
+          bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:web:build
 
           RUST_HOST_TRIPLE="$(rustc -vV | awk '/^host: / { print $2 }')"
           WEB_CORE_TARGET_DIR="target/e2e-web-${RUST_HOST_TRIPLE}"
@@ -207,7 +207,7 @@ jobs:
           mkdir -p .ci/artifacts
 
           cp -a app/dist-web/. "$STAGE/repo/app/dist-web/"
-          cp -a "$WEB_CORE_TARGET_DIR/debug/openhuman-core" "$STAGE/repo/$WEB_CORE_TARGET_DIR/debug/"
+          cp -a "$WEB_CORE_TARGET_DIR/debug/closeredge-core" "$STAGE/repo/$WEB_CORE_TARGET_DIR/debug/"
           tar -czf .ci/artifacts/e2e-playwright-linux.tar.gz -C "$STAGE" repo
           ls -lh .ci/artifacts/e2e-playwright-linux.tar.gz
 
@@ -503,10 +503,10 @@ jobs:
           mkdir -p target
           cp -a repo/target/. target/
           rm -rf repo e2e-playwright-linux.tar.gz
-          chmod +x target/e2e-web-*/debug/openhuman-core
+          chmod +x target/e2e-web-*/debug/closeredge-core
 
       - name: Install Playwright Chromium headless shell
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app exec playwright install chromium-headless-shell
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app exec playwright install chromium-headless-shell
 
       - name: Run Playwright web E2E suite (shard ${{ matrix.shard }}/4)
         env:

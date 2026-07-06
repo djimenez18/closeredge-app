@@ -32,15 +32,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Type check TypeScript files
-        run: pnpm --filter openhuman-app compile
+        run: pnpm --filter closeredge-app compile
         env:
           NODE_ENV: test
       - name: Check Prettier formatting
-        run: pnpm --filter openhuman-app format:check
+        run: pnpm --filter closeredge-app format:check
         env:
           NODE_ENV: test
       - name: Run ESLint
-        run: pnpm --filter openhuman-app lint
+        run: pnpm --filter closeredge-app lint
         env:
           NODE_ENV: test
   rust-quality:

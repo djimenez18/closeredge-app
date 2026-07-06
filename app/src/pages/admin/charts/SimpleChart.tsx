@@ -357,33 +357,37 @@ export function DonutChart({ data, size = 180, thickness = 32, className = '' }:
   const circumference = 2 * Math.PI * radius;
   const center = size / 2;
 
-  let accumulated = 0;
+  // Precompute each segment's rotation from the running total of prior slices so
+  // the render map below stays pure (no reassignment during render).
+  const segments = data.map((d, i) => {
+    const pct = d.value / total;
+    const priorTotal = data.slice(0, i).reduce((sum, prev) => sum + prev.value, 0);
+    return {
+      label: d.label,
+      color: pickColor(i, d.color),
+      offset: circumference * (1 - pct),
+      rotation: (priorTotal / total) * 360 - 90,
+    };
+  });
 
   return (
     <div className={`flex items-center gap-6 ${className}`}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        {data.map((d, i) => {
-          const pct = d.value / total;
-          const offset = circumference * (1 - pct);
-          const rotation = (accumulated / total) * 360 - 90;
-          accumulated += d.value;
-          const color = pickColor(i, d.color);
-          return (
-            <circle
-              key={d.label}
-              cx={center}
-              cy={center}
-              r={radius}
-              fill="none"
-              stroke={color}
-              strokeWidth={thickness}
-              strokeDasharray={circumference}
-              strokeDashoffset={offset}
-              transform={`rotate(${rotation} ${center} ${center})`}
-              className="transition-all duration-500"
-            />
-          );
-        })}
+        {segments.map(seg => (
+          <circle
+            key={seg.label}
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="none"
+            stroke={seg.color}
+            strokeWidth={thickness}
+            strokeDasharray={circumference}
+            strokeDashoffset={seg.offset}
+            transform={`rotate(${seg.rotation} ${center} ${center})`}
+            className="transition-all duration-500"
+          />
+        ))}
         {/* Center label */}
         <text
           x={center}

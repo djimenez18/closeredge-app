@@ -272,12 +272,12 @@ jobs:
           push: false
           load: true
           platforms: linux/amd64
-          tags: openhuman-core:staging-${{ needs.prepare-build.outputs.tag }}
+          tags: closeredge-core:staging-${{ needs.prepare-build.outputs.tag }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ needs.prepare-build.outputs.sha }}
             org.opencontainers.image.version=${{ needs.prepare-build.outputs.version }}
-            org.opencontainers.image.title=openhuman-core
+            org.opencontainers.image.title=closeredge-core
           cache-from: type=gha,scope=release-staging
           cache-to: type=gha,scope=release-staging,mode=max
 

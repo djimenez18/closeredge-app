@@ -225,10 +225,10 @@ export function NeuralConstellation({ className = '' }: { className?: string }) 
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, w, h);
 
-      animRef.current = requestAnimationFrame(animate);
+      animRef.current = window.requestAnimationFrame(animate);
     }
 
-    animRef.current = requestAnimationFrame(animate);
+    animRef.current = window.requestAnimationFrame(animate);
 
     const handleResize = () => {
       w = canvas.parentElement?.clientWidth ?? 800;
@@ -256,7 +256,7 @@ export function NeuralConstellation({ className = '' }: { className?: string }) 
     canvas.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      cancelAnimationFrame(animRef.current);
+      window.cancelAnimationFrame(animRef.current);
       ro.disconnect();
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);

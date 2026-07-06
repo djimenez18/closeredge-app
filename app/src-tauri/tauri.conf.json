@@ -45,7 +45,7 @@
       "icons/icon.ico"
     ],
     "resources": [
-      "../../src/closeredge/agent/prompts",
+      "../../src/openhuman/agent/prompts",
       "recipes/**/*"
     ],
     "linux": {
