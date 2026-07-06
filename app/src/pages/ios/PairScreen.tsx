@@ -8,7 +8,7 @@
  *   4. Generates a fresh device X25519 keypair.
  *   5. Builds a ConnectionProfile and saves it via profileStore.
  *   6. Probes the channel via TransportManager.isHealthy().
- *   7. On success: navigates to /chat (mobile tab bar shows Chat/Settings).
+ *   7. On success: navigates to /human (mobile tab bar shows Human/Chat/Settings).
  *   8. On failure: shows error + retry button.
  *
  * No dynamic imports. Static import of barcode scanner — caller guard is
@@ -20,64 +20,11 @@ import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useT } from '../../lib/i18n/I18nContext';
-import { base64urlEncode, generateKeypair } from '../../lib/tunnel/crypto';
-import { type ConnectionProfile, saveProfile } from '../../services/transport/profileStore';
-import { createTransportManager } from '../../services/transport/TransportManager';
-import { BACKEND_URL } from '../../utils/config';
+import { connectFromPairPayload } from '../../services/transport/connectFromPairPayload';
+import { parsePairUrl } from '../../services/transport/pairUrl';
 
 const log = debug('ios:pair-screen');
 const logErr = debug('ios:pair-screen:error');
-
-// -- QR payload parsing -------------------------------------------------------
-
-interface PairPayload {
-  channelId: string;
-  pairingToken: string;
-  corePubkey: string;
-  rpcUrl?: string;
-  expiresAt: number; // unix timestamp
-}
-
-function parsePairUrl(raw: string): PairPayload | null {
-  log('[ios] parsing pair URL len=%d', raw.length);
-  try {
-    // Accept both the openhuman:// deep-link and a plain https:// fallback.
-    // Normalise openhuman:// → https:// so URL() can parse it.
-    const normalised = raw.startsWith('openhuman://')
-      ? raw.replace('openhuman://', 'https://openhuman.app/')
-      : raw;
-    const url = new URL(normalised);
-    const p = url.searchParams;
-
-    const channelId = p.get('cid');
-    const pairingToken = p.get('pt');
-    const corePubkey = p.get('cpk');
-    const rpcRaw = p.get('rpc');
-    const expRaw = p.get('exp');
-
-    if (!channelId || !pairingToken || !corePubkey || !expRaw) {
-      logErr(
-        '[ios] missing required QR fields cid=%s pt_len=%d cpk_len=%d exp=%s',
-        channelId,
-        pairingToken?.length ?? 0,
-        corePubkey?.length ?? 0,
-        expRaw
-      );
-      return null;
-    }
-
-    const expiresAt = parseInt(expRaw, 10);
-    if (isNaN(expiresAt)) {
-      logErr('[ios] invalid exp field: %s', expRaw);
-      return null;
-    }
-
-    return { channelId, pairingToken, corePubkey, rpcUrl: rpcRaw ?? undefined, expiresAt };
-  } catch (err) {
-    logErr('[ios] URL parse error: %o', err);
-    return null;
-  }
-}
 
 // -- component ---------------------------------------------------------------
 
@@ -117,81 +64,43 @@ export const PairScreen: FC = () => {
       return;
     }
 
-    // 2. Check expiry
-    const nowSecs = Math.floor(Date.now() / 1000);
-    if (payload.expiresAt < nowSecs) {
-      log('[ios] QR expired at=%d now=%d', payload.expiresAt, nowSecs);
+    // 2. Shared connect path (expiry check → keypair → profile → probe);
+    // identical to the account-login flow in LoginScreen.
+    setState({ kind: 'connecting' });
+    const result = await connectFromPairPayload(payload, t('iosPair.desktopLabel'));
+    if (result.kind === 'expired') {
       setState({ kind: 'expired' });
       return;
     }
-    log('[ios] QR valid; expires in %ds', payload.expiresAt - nowSecs);
-
-    // 3. Generate device keypair
-    const keypair = generateKeypair();
-    const devicePubkeyB64 = base64urlEncode(keypair.publicKey);
-    const devicePrivkeyB64 = base64urlEncode(keypair.secretKey);
-    log('[ios] device keypair generated pubkey_len=%d', devicePubkeyB64.length);
-    // NOTE: Never log the private key value — log length only.
-    log('[ios] device privkey_len=%d (not logged)', devicePrivkeyB64.length);
-
-    // 4. Build and persist profile
-    const profile: ConnectionProfile = {
-      id: payload.channelId,
-      label: t('iosPair.desktopLabel'),
-      kind: 'tunnel',
-      channelId: payload.channelId,
-      pairingToken: payload.pairingToken,
-      corePubkey: payload.corePubkey,
-      rpcUrl: payload.rpcUrl,
-      devicePrivkey: devicePrivkeyB64,
-      // sessionToken will be written after the tunnel handshake completes.
-    };
-    saveProfile(profile);
-    log('[ios] profile saved id=%s kind=%s', profile.id, profile.kind);
-
-    // 5. Probe transport health
-    setState({ kind: 'connecting' });
-    try {
-      const manager = createTransportManager(profile, { backendSocketUrl: BACKEND_URL });
-      const transport = await manager.getTransport();
-      const healthy = await transport.isHealthy();
-      if (!healthy) {
-        logErr('[ios] transport health check failed kind=%s', transport.kind);
-        setState({ kind: 'error', message: t('iosPair.error.unreachableDesktop') });
-        return;
-      }
-      log('[ios] transport healthy kind=%s; navigating to /chat', transport.kind);
-    } catch (err) {
-      logErr('[ios] transport probe error: %o', err);
+    if (result.kind === 'unhealthy') {
+      setState({ kind: 'error', message: t('iosPair.error.unreachableDesktop') });
+      return;
+    }
+    if (result.kind === 'error') {
+      logErr('[ios] connect error: %s', result.message);
       setState({ kind: 'error', message: t('iosPair.error.connectionFailed') });
       return;
     }
 
-    // 6. Navigate to the chat page now that pairing is established.
+    // 3. Navigate to Home now that pairing is established.
     setState({ kind: 'success' });
-    navigate('/chat', { replace: true });
+    navigate('/home', { replace: true });
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f1117] text-white px-6 py-12">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen text-white px-6 py-12"
+      style={{
+        background:
+          'radial-gradient(ellipse at 50% -10%, rgba(123,110,246,0.28), transparent 60%), #171130',
+      }}>
       <div className="flex flex-col items-center gap-8 max-w-sm w-full">
-        {/* Logo / icon area */}
-        <div className="w-20 h-20 rounded-2xl bg-[#4A83DD] flex items-center justify-center shadow-lg">
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true">
-            <rect x="4" y="4" width="14" height="14" rx="2" fill="white" fillOpacity="0.9" />
-            <rect x="22" y="4" width="14" height="14" rx="2" fill="white" fillOpacity="0.9" />
-            <rect x="4" y="22" width="14" height="14" rx="2" fill="white" fillOpacity="0.9" />
-            <rect x="26" y="26" width="6" height="6" rx="1" fill="white" fillOpacity="0.9" />
-            <rect x="22" y="22" width="6" height="6" rx="1" fill="white" fillOpacity="0.6" />
-            <rect x="32" y="22" width="6" height="6" rx="1" fill="white" fillOpacity="0.6" />
-          </svg>
-        </div>
+        {/* Brand logo */}
+        <img
+          src="/closeredge-logo-white.png"
+          alt="CloserEdge AI"
+          className="w-56 max-w-[78%] h-auto drop-shadow-[0_10px_30px_rgba(123,110,246,0.3)]"
+        />
 
         {/* Heading */}
         <div className="text-center">
@@ -203,8 +112,8 @@ export const PairScreen: FC = () => {
         {state.kind === 'idle' && (
           <button
             onClick={() => void startScan()}
-            className="w-full py-4 rounded-xl bg-[#4A83DD] text-white font-medium text-base
-                       active:opacity-80 transition-opacity shadow-md">
+            className="w-full py-4 rounded-xl bg-edge-500 text-white font-medium text-base
+                       active:opacity-80 transition-opacity shadow-md shadow-edge-700/30">
             {t('iosPair.scanQrCode')}
           </button>
         )}
@@ -242,7 +151,7 @@ export const PairScreen: FC = () => {
             <p className="text-red-400 text-sm">{state.message}</p>
             <button
               onClick={() => void startScan()}
-              className="w-full py-3 rounded-xl bg-[#4A83DD]/80 text-white text-sm
+              className="w-full py-3 rounded-xl bg-edge-500/80 text-white text-sm
                          active:opacity-70 transition-opacity">
               {t('iosPair.retryScan')}
             </button>

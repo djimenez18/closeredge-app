@@ -1,9 +1,13 @@
 /**
- * MobileTabBar — bottom tab navigation for the iOS app.
+ * MobileTabBar — bottom tab navigation for the CloserEdge AI mobile app.
  *
- * Surfaces the three routes that ship on iOS: Human, Chat, Settings.
- * Sits at the bottom of the viewport with a thumb-reachable safe-area
- * inset so it clears the iPhone home indicator.
+ * Surfaces the three mobile routes: Home, Chat, Settings. Sits at the
+ * bottom of the viewport with a thumb-reachable safe-area inset so it
+ * clears the iPhone home indicator / Android gesture bar.
+ *
+ * Active tab gets the brand violet tint plus a small indicator dot.
+ * Light/dark aware via Tailwind `dark:` classes (ThemeProvider toggles
+ * the root class).
  */
 import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,15 +16,33 @@ import { useT } from '../../lib/i18n/I18nContext';
 
 interface Tab {
   id: string;
-  label: string;
+  labelKey: string;
+  labelFallback: string;
   path: string;
   icon: ReactNode;
 }
 
 const tabs: Tab[] = [
   {
+    id: 'home',
+    labelKey: 'mobile.tab.home',
+    labelFallback: 'Home',
+    path: '/home',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.8}
+          d="M3 10.5L12 3l9 7.5M5 9.5V21h5v-6h4v6h5V9.5"
+        />
+      </svg>
+    ),
+  },
+  {
     id: 'chat',
-    label: 'Chat',
+    labelKey: 'mobile.tab.chat',
+    labelFallback: 'Chat',
     path: '/chat',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +57,8 @@ const tabs: Tab[] = [
   },
   {
     id: 'settings',
-    label: 'Settings',
+    labelKey: 'mobile.tab.settings',
+    labelFallback: 'Settings',
     path: '/settings',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,23 +89,32 @@ const MobileTabBar = () => {
 
   return (
     <nav
-      className="flex-shrink-0 flex justify-around items-stretch border-t border-neutral-800 bg-[#0f1117]/95 backdrop-blur-md"
+      className="flex-shrink-0 flex justify-around items-stretch border-t
+                 border-stone-200 bg-white/95
+                 dark:border-white/10 dark:bg-edge-950/95 backdrop-blur-md"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       aria-label={t('mobile.nav.ariaLabel')}>
       {tabs.map(tab => {
         const active = isActive(tab.path);
+        const label = t(tab.labelKey, tab.labelFallback);
         return (
           <button
             key={tab.id}
             type="button"
             onClick={() => navigate(tab.path)}
-            className={`flex flex-col items-center justify-center gap-1 flex-1 py-2 transition-colors ${
-              active ? 'text-white' : 'text-neutral-400'
+            className={`relative flex flex-col items-center justify-center gap-1 flex-1 py-2.5 transition-colors ${
+              active ? 'text-edge-600 dark:text-edge-300' : 'text-stone-400 dark:text-white/40'
             }`}
             aria-current={active ? 'page' : undefined}
-            aria-label={tab.label}>
+            aria-label={label}>
             {tab.icon}
-            <span className="text-[11px] font-medium">{tab.label}</span>
+            <span className="text-[11px] font-medium">{label}</span>
+            <span
+              aria-hidden="true"
+              className={`absolute top-0.5 h-1 w-1 rounded-full bg-edge-500 transition-opacity ${
+                active ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
           </button>
         );
       })}

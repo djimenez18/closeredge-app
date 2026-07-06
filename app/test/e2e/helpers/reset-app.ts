@@ -154,9 +154,9 @@ export async function resetApp(userId: string, options: ResetAppOptions = {}): P
     while (Date.now() < welcomeDeadline) {
       welcomeVisible = await browser
         .execute(() => {
-          // Welcome.tsx renders an h1 with i18n key welcome.title ('Welcome to OpenHuman').
+          // Welcome.tsx renders an h1 with i18n key welcome.title ('Welcome to CloserEdge AI').
           const headings = Array.from(document.querySelectorAll('h1'));
-          return headings.some(h => /Welcome to OpenHuman/i.test(h.textContent ?? ''));
+          return headings.some(h => /Welcome to CloserEdge AI/i.test(h.textContent ?? ''));
         })
         .catch(() => false);
       if (welcomeVisible) break;

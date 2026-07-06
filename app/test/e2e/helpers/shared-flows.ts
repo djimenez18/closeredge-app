@@ -80,7 +80,7 @@ export async function waitForRequest(log, method, urlFragment, timeout = 15_000)
 export async function waitForHomePage(timeout = 15_000) {
   // Home page (Home.tsx) renders t('home.askAssistant') = 'Ask your assistant anything...'
   // as a stable CTA button. The animated typewriter heading ('Welcome, <name> 👋' etc.)
-  // and old strings ('Good morning', 'Message OpenHuman', 'Upgrade to Premium') are gone.
+  // and old strings ('Good morning', 'Message CloserEdge AI', 'Upgrade to Premium') are gone.
   const candidates = ['Ask your assistant anything', 'Your device is connected'];
   const deadline = Date.now() + timeout;
   while (Date.now() < deadline) {
@@ -450,7 +450,7 @@ export async function navigateToNotifications() {
 export const ONBOARDING_OVERLAY_TEXTS = [
   'Skip',
   'Welcome',
-  "Hi. I'm OpenHuman.",
+  "Hi. I'm CloserEdge AI.",
   "Let's Start",
   'Connect your Gmail',
   'Skip for Now',

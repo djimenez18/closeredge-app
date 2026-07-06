@@ -1,0 +1,243 @@
+---
+# iOS Build — cloud-Mac pipeline for a Windows-only dev team. No local Mac
+# is ever needed: GitHub's macOS runners are free for this public repo.
+#
+# Two lanes:
+#   simulator  — unsigned simulator .app via `tauri ios build -t aarch64-sim`.
+#                Needs NO Apple Developer account, NO certificates. The zip
+#                artifact can be uploaded to https://appetize.io (free tier:
+#                30 streaming min/month) to click around the real app in a
+#                browser. Caveat: Appetize has no microphone input, so PTT
+#                voice can only be smoke-tested there — full voice testing
+#                needs TestFlight on a physical iPhone.
+#   device     — signed IPA + TestFlight upload using Tauri's automatic
+#                signing (App Store Connect API key; no certificates handled
+#                by hand). Skipped until the Apple secrets are configured —
+#                see docs/mobile/CLOSEREDGE-MOBILE.md "Shipping without a
+#                Mac".
+#
+# Pinned to macos-15 (Xcode 16.4 default, iOS 18.x simulators preinstalled):
+# macos-latest switches to macOS 26 in June 2026 and Xcode 26 still has
+# known CI hangs (actions/runner-images#13264).
+name: iOS Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, feat/mobile-app]
+    paths:
+      - "app/src-tauri-mobile/**"
+      - "app/src/**"
+      - "packages/tauri-plugin-ptt/**"
+      - "scripts/ios-init.sh"
+      - ".github/workflows/ios-build.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+env:
+  IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+
+jobs:
+  simulator:
+    name: Simulator app (unsigned)
+    runs-on: macos-15
+    env:
+      APPETIZE_API_TOKEN: ${{ secrets.APPETIZE_API_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.93.0"
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim
+
+      - name: Cache Rust build artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            app/src-tauri-mobile -> target
+            packages/tauri-plugin-ptt -> target
+          cache-on-failure: true
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Install dependencies
+        run: bash scripts/ci-cancel-aware.sh pnpm install --frozen-lockfile
+
+      # Simulator builds need no real signing identity, but `tauri ios init`
+      # refuses to scaffold without a developmentTeam value — any placeholder
+      # works because the simulator build runs without code signing.
+      # ios-init.sh also copies brand icons + injects privacy keys; the
+      # `tauri ios init` it wraps auto-detects CI from the CI env var.
+      - name: Scaffold Xcode project (tauri ios init)
+        run: TEAM_ID="SIMULATORX" bash scripts/ios-init.sh
+
+      # Drive the build through `tauri ios build` so the parent CLI process
+      # stands up the WebSocket IPC + addr file the Build Rust Code phase
+      # script (running inside xcodebuild) needs. ios-init.sh already
+      # patched the phase script to load THIS crate's tauri.conf.json
+      # (not the desktop one) so its identifier resolves to com.closeredge.ai
+      # and it can find the addr file the parent wrote.
+      #
+      # The developmentTeam override must be repeated here: ios-init.sh
+      # only passed it to `tauri ios init`, and `tauri ios build` re-reads
+      # the on-disk tauri.conf.json where the field is deliberately empty.
+      # Release profile: the debug-profile app white-screened on Appetize;
+      # release embeds the vite bundle in the binary — the artifact shape
+      # we would actually ship.
+      - name: Build simulator .app (tauri ios build)
+        working-directory: app/src-tauri-mobile
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: >
+          bash ../../scripts/ci-cancel-aware.sh
+          npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --target aarch64-sim
+          -c '{"bundle":{"iOS":{"developmentTeam":"SIMULATORX"}}}'
+
+      - name: Zip simulator app
+        working-directory: app/src-tauri-mobile
+        run: |
+          set -euo pipefail
+          # Tauri drops the simulator bundle at gen/apple/build/arm64-sim/
+          APP=$(find gen/apple/build -type d -name "*.app" -path "*-sim*" | head -1)
+          if [ -z "$APP" ]; then
+            echo "::error::No .app produced under gen/apple/build"
+            find gen/apple/build -maxdepth 5 -type d 2>/dev/null | head -30
+            exit 1
+          fi
+          echo "Found simulator app: $APP"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" CloserEdgeAI-simulator.zip
+          ls -la CloserEdgeAI-simulator.zip
+
+      - name: Upload simulator artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloserEdgeAI-iOS-simulator
+          path: app/src-tauri-mobile/CloserEdgeAI-simulator.zip
+          retention-days: 30
+
+      # Optional: push the build straight to Appetize.io so it can be opened
+      # in a browser immediately. Configure APPETIZE_API_TOKEN; after the
+      # first upload set APPETIZE_PUBLIC_KEY so the same Appetize app URL
+      # keeps updating instead of creating a new one each run.
+      - name: Upload to Appetize.io
+        if: ${{ env.APPETIZE_API_TOKEN != '' }}
+        env:
+          APPETIZE_PUBLIC_KEY: ${{ secrets.APPETIZE_PUBLIC_KEY }}
+        working-directory: app/src-tauri-mobile
+        run: |
+          set -euo pipefail
+          URL="https://api.appetize.io/v1/apps"
+          if [ -n "${APPETIZE_PUBLIC_KEY:-}" ]; then URL="$URL/$APPETIZE_PUBLIC_KEY"; fi
+          HTTP=$(curl -sS -o /tmp/appetize-resp.json -w "%{http_code}" "$URL" \
+            -F "file=@CloserEdgeAI-simulator.zip" \
+            -F "platform=ios" \
+            -u "$APPETIZE_API_TOKEN:")
+          echo "Appetize HTTP $HTTP"
+          cat /tmp/appetize-resp.json; echo
+          [ "$HTTP" = "200" ]
+
+  device:
+    name: Signed IPA + TestFlight
+    runs-on: macos-15
+    # Skip cleanly until the Apple signing secrets exist (set the repo
+    # variable IOS_SIGNING_READY=true once they are configured).
+    if: ${{ vars.IOS_SIGNING_READY == 'true' }}
+    env:
+      # Tauri "automatic signing": the CLI talks to App Store Connect with
+      # this API key, creates/downloads certs + profiles itself, and signs.
+      # No certificate files are ever handled by a human.
+      APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+      APPLE_API_KEY: ${{ secrets.APPLE_API_KEY_ID }}
+      APPLE_API_KEY_PATH: ${{ github.workspace }}/AuthKey.p8
+      APPLE_DEVELOPMENT_TEAM: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.93.0"
+          targets: aarch64-apple-ios
+
+      - name: Cache Rust build artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            app/src-tauri-mobile -> target
+            packages/tauri-plugin-ptt -> target
+          cache-on-failure: true
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Install dependencies
+        run: bash scripts/ci-cancel-aware.sh pnpm install --frozen-lockfile
+
+      - name: Write App Store Connect API key
+        env:
+          APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY_CONTENT }}
+        run: echo "$APPLE_API_KEY_CONTENT" | base64 --decode > "$APPLE_API_KEY_PATH"
+
+      - name: Scaffold Xcode project (tauri ios init)
+        env:
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: bash scripts/ios-init.sh
+
+      - name: Build signed IPA
+        working-directory: app/src-tauri-mobile
+        run: |
+          bash ../../scripts/ci-cancel-aware.sh             npx --package=@tauri-apps/cli@2.10.1 tauri ios build --ci --export-method app-store-connect             -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$APPLE_DEVELOPMENT_TEAM\"}}}"
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloserEdgeAI-iOS-ipa
+          path: app/src-tauri-mobile/gen/apple/build/**/*.ipa
+          retention-days: 30
+
+      - name: Upload to TestFlight
+        run: |
+          set -euo pipefail
+          IPA=$(find app/src-tauri-mobile/gen/apple/build -name "*.ipa" | head -1)
+          echo "Uploading $IPA"
+          # altool resolves API keys from ~/.appstoreconnect/private_keys
+          mkdir -p ~/.appstoreconnect/private_keys
+          cp "$APPLE_API_KEY_PATH" ~/.appstoreconnect/private_keys/AuthKey_${APPLE_API_KEY}.p8
+          xcrun altool --upload-app --type ios --file "$IPA" \
+            --apiKey "$APPLE_API_KEY" \
+            --apiIssuer "$APPLE_API_ISSUER"

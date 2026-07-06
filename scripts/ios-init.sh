@@ -39,11 +39,11 @@ if [[ -z "$TEAM_ID" ]]; then
   exit 1
 fi
 
-npx --package=@tauri-apps/cli@^2 tauri ios init \
+npx --package=@tauri-apps/cli@2.10.1 tauri ios init \
   -c "{\"bundle\":{\"iOS\":{\"developmentTeam\":\"$TEAM_ID\"}}}"
 
 # Overwrite the placeholder AppIcon set Tauri generates with the real
-# OpenHuman brand icons committed to icons/ios/. The generated Xcode project
+# CloserEdge AI brand icons committed to icons/ios/. The generated Xcode project
 # uses `Assets.xcassets/AppIcon.appiconset/`, identical to the iOS source
 # layout under our `icons/ios/`.
 ICONSRC="$MOBILE_DIR/icons/ios/AppIcon.appiconset"
@@ -54,16 +54,47 @@ if [[ -n "$ICONDEST" && -d "$ICONSRC" ]]; then
   cp -R "$ICONSRC"/. "$ICONDEST"/
 fi
 
+# Patch the generated "Build Rust Code" phase script so it loads the
+# MOBILE tauri.conf.json rather than walking up and finding the desktop
+# one. The phase runs `tauri ios xcode-script` from `app/` (npm's cwd
+# resolution), which walks up looking for a Tauri project — and finds
+# `app/src-tauri/` (desktop) before `app/src-tauri-mobile/`. That gives
+# the child the WRONG bundle identifier, so it looks for the IPC addr
+# file at `${TMPDIR}/com.openhuman.app-server-addr` while the parent
+# wrote it as `${TMPDIR}/com.closeredge.ai-server-addr`. The result is
+# a `failed to read missing addr file` panic and a silent xcodebuild
+# failure (exit 65). Splice `-c <abs-path-to-mobile-config>` into the
+# CLI invocation so it loads the right project unambiguously.
+PBXPROJ=$(find "$MOBILE_DIR/gen/apple" -name project.pbxproj | head -1)
+if [[ -n "$PBXPROJ" && -f "$PBXPROJ" ]]; then
+  echo "[ios-init] patching Build Rust Code phase → $PBXPROJ"
+  # The shellScript value in pbxproj is a quoted string in NeXT old-style
+  # plist format. Embedded `"` would terminate it early. Our mobile-dir
+  # path has no spaces or shell-special chars (just A-Z, a-z, 0-9, /, -,
+  # _, .) so we leave it unquoted — both bash and the plist parser are
+  # happy.
+  #
+  # `tauri ios xcode-script` doesn't accept `-c`/`--config`; nor does the
+  # global tauri CLI in 2.10. The documented way to point Tauri at a
+  # specific project root is the `TAURI_APP_PATH` env var, which
+  # `resolve_tauri_dir()` reads BEFORE the cwd-based lookup. Prepend it to
+  # the `npm run` invocation so it propagates to the tauri subprocess.
+  # Without this, the child walks up from npm's cwd (`app/`) and finds
+  # `app/src-tauri/` (desktop) before `app/src-tauri-mobile/` — wrong
+  # identifier → IPC addr file lookup misses → silent fail.
+  perl -i -pe "s|npm run -- tauri ios xcode-script|TAURI_APP_PATH=$MOBILE_DIR npm run -- tauri ios xcode-script|g" "$PBXPROJ"
+fi
+
 # Inject privacy usage descriptions into the generated Info.plist. The
 # barcode scanner (camera) is mandatory for QR pairing; mic + speech are
 # needed by the PTT plugin. Without these, iOS will hard-crash the app on
 # first use of each API.
-INFO_PLIST=$(find "$MOBILE_DIR/gen/apple" -name "Info.plist" -path "*openhuman-mobile_iOS*" 2>/dev/null | head -1)
+INFO_PLIST=$(find "$MOBILE_DIR/gen/apple" -name "Info.plist" -path "*_iOS*" 2>/dev/null | head -1)
 if [[ -n "$INFO_PLIST" ]]; then
   echo "[ios-init] injecting privacy keys → $INFO_PLIST"
-  /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string 'OpenHuman uses the camera to scan the pairing QR code from your desktop.'" "$INFO_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string 'OpenHuman uses the microphone for push-to-talk voice messages.'" "$INFO_PLIST" 2>/dev/null || true
-  /usr/libexec/PlistBuddy -c "Add :NSSpeechRecognitionUsageDescription string 'OpenHuman uses on-device speech recognition to transcribe your voice messages.'" "$INFO_PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string 'CloserEdge AI uses the camera to scan the pairing QR code from your desktop.'" "$INFO_PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string 'CloserEdge AI uses the microphone for push-to-talk voice messages.'" "$INFO_PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :NSSpeechRecognitionUsageDescription string 'CloserEdge AI uses on-device speech recognition to transcribe your voice messages.'" "$INFO_PLIST" 2>/dev/null || true
 fi
 
 echo ""

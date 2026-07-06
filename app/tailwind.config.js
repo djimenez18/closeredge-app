@@ -81,6 +81,22 @@ module.exports = {
           950: '#1A1025',
         },
 
+        // Edge - CloserEdge brand violet (from the chevron logo gradients).
+        // Used by the mobile shell; safe to adopt on desktop surfaces too.
+        edge: {
+          50: '#F1EFFF',
+          100: '#E4E0FF',
+          200: '#CDC6FF',
+          300: '#ABA0FF',
+          400: '#9B8FFF',   // logo gradient light stop
+          500: '#7B6EF6',   // logo gradient mid stop
+          600: '#5B4BD6',
+          700: '#4A3DC9',   // logo gradient dark stop
+          800: '#3D32B0',
+          900: '#2C2480',
+          950: '#171130',   // mobile dark canvas
+        },
+
         // Sage - Success (from Figma: #34C759)
         sage: {
           50: '#F0FDF4',

@@ -1,19 +1,19 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "OpenHuman",
+  "productName": "CloserEdge AI",
   "version": "0.54.10",
-  "identifier": "com.openhuman.app",
+  "identifier": "com.closeredge.ai",
   "build": {
-    "beforeDevCommand": "pnpm --filter openhuman-app run dev",
+    "beforeDevCommand": "pnpm --filter closeredge-app run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm --filter openhuman-app run build:app",
+    "beforeBuildCommand": "pnpm --filter closeredge-app run build:app",
     "frontendDist": "../dist"
   },
   "app": {
     "windows": [
       {
         "label": "main",
-        "title": "OpenHuman",
+        "title": "CloserEdge AI",
         "width": 390,
         "height": 844,
         "decorations": true,

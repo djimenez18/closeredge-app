@@ -278,7 +278,7 @@ describe('Harness — Search tool-flow', () => {
     resetMockBehavior();
 
     const CANARY = 'canary-file-read-e5f6';
-    const FILE_SNIPPET = 'OpenHuman is an AI assistant for communities';
+    const FILE_SNIPPET = 'CloserEdge AI is an AI assistant for communities';
 
     // Tool name: "file_read" (src/openhuman/tools/impl/filesystem/file_read.rs)
     // Path: use a clearly fictional path so no real data is read in test env.
@@ -312,7 +312,7 @@ describe('Harness — Search tool-flow', () => {
 
     // UI: final reply contains the file snippet phrase.
     expect(
-      await waitForAssistantReplyContaining('OpenHuman is an AI assistant', {
+      await waitForAssistantReplyContaining('CloserEdge AI is an AI assistant', {
         logPrefix: LOG_PREFIX,
       })
     ).toBe(true);

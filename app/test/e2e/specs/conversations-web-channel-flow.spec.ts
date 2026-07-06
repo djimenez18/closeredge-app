@@ -71,7 +71,7 @@ suiteRunner('Conversations web channel flow', () => {
     this.timeout(180_000);
     stepLog('open conversations');
     // Navigate via hash to /chat (the unified agent + web channel page).
-    // 'Message OpenHuman' button was removed from Home in a redesign — navigate directly.
+    // 'Message CloserEdge AI' button was removed from Home in a redesign — navigate directly.
     await navigateToConversations();
     // If navigating to /chat doesn't show threads, retry via direct hash.
     const hasInput = await textExists('Type a message...');

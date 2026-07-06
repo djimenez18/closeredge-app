@@ -64,7 +64,7 @@ function stepLog(message: string, context?: unknown): void {
 
 const FIXTURE_REPO_REL = 'fixtures/967-git-fixture';
 const FIXTURE_FILE = 'README.md';
-const FIXTURE_COMMIT_AUTHOR = 'OpenHuman E2E Bot <e2e-967@openhuman.local>';
+const FIXTURE_COMMIT_AUTHOR = 'CloserEdge AI E2E Bot <e2e-967@openhuman.local>';
 
 interface ServerStatus {
   running?: boolean;
@@ -122,7 +122,7 @@ async function makeFixtureRepo(absRepoDir: string): Promise<void> {
     throw new Error(`git init failed in fixture: ${init.stderr || init.stdout}`);
   }
   await runLocal('git', ['config', 'user.email', 'e2e-967@openhuman.local'], absRepoDir);
-  await runLocal('git', ['config', 'user.name', 'OpenHuman E2E Bot'], absRepoDir);
+  await runLocal('git', ['config', 'user.name', 'CloserEdge AI E2E Bot'], absRepoDir);
   // Skip GPG signing in the fixture — the user's key is not provisioned in CI.
   await runLocal('git', ['config', 'commit.gpgsign', 'false'], absRepoDir);
   await fs.writeFile(

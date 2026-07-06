@@ -39,7 +39,7 @@ function stepLog(message: string, context?: unknown): void {
 const TEST_RELATIVE_PATH = 'e2e-967-filesystem-canary.txt';
 const TEST_WORKSPACE_RELATIVE_PATH = `memory/${TEST_RELATIVE_PATH}`;
 const TEST_CONTENT =
-  'OpenHuman filesystem tool canary fact — issue #967 — bytes asserted both via RPC and disk';
+  'CloserEdge AI filesystem tool canary fact — issue #967 — bytes asserted both via RPC and disk';
 const TRAVERSAL_PATH = '../escape-967.txt';
 const ABSOLUTE_PATH = '/tmp/openhuman-967-absolute-escape.txt';
 

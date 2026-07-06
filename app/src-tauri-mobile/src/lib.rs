@@ -35,9 +35,13 @@ pub fn run() {
         .plugin(tauri_plugin_ptt::init())
         .invoke_handler(tauri::generate_handler![app_quit])
         .setup(|app| {
-            if let Some(main) = app.get_webview_window("main") {
-                let _ = main.show();
-            }
+            // Mobile windows are always visible — `WebviewWindow::show()`
+            // is desktop-only API and does not exist for iOS/Android
+            // targets in tauri 2.10. Just sanity-log the window lookup.
+            log::info!(
+                "[mobile] main webview window present: {}",
+                app.get_webview_window("main").is_some()
+            );
             Ok(())
         })
         .run(tauri::generate_context!())

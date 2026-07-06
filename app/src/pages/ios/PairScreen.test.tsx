@@ -107,7 +107,7 @@ describe('PairScreen', () => {
     expect(screen.getByRole('button', { name: /scan qr code/i })).toBeInTheDocument();
   });
 
-  it('happy path: valid QR -> saves profile -> navigates to /chat', async () => {
+  it('happy path: valid QR -> saves profile -> navigates to /home', async () => {
     const pairUrl = buildPairUrl();
     mockScan.mockResolvedValueOnce({ content: pairUrl });
     mockIsHealthy.mockResolvedValue(true);
@@ -133,7 +133,7 @@ describe('PairScreen', () => {
     expect(savedProfile.devicePrivkey.length).toBeGreaterThan(0);
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/chat', { replace: true });
+      expect(mockNavigate).toHaveBeenCalledWith('/home', { replace: true });
     });
   });
 

@@ -11,6 +11,7 @@ import OverlayApp from './overlay/OverlayApp';
 import './polyfills';
 import { initGA, initSentry, trackEvent } from './services/analytics';
 import { setStoreForApiClient } from './services/apiClient';
+import { startCloudPairingPublisher } from './services/devicePairingPublisher';
 import { primeActiveUserId } from './store/userScopedStorage';
 import './styles/theme.css';
 import { APP_VERSION } from './utils/config';
@@ -19,6 +20,12 @@ import { getActiveUserIdFromCore } from './utils/tauriCommands';
 import { isTauri as tauriRuntimeAvailable } from './utils/tauriCommands/common';
 
 setStoreForApiClient(() => getCoreStateSnapshot().snapshot.sessionToken);
+
+// Account pairing: resume publishing this desktop's pairing payload if the
+// user enabled Cloud Pairing (Devices panel). No-op when disabled, when
+// Supabase isn't configured, or on mobile (the publisher requires the
+// desktop core RPC).
+startCloudPairingPublisher();
 
 const currentWindowLabel = tauriRuntimeAvailable() ? getCurrentWindow().label : 'main';
 const isOverlayWindow = currentWindowLabel === 'overlay';

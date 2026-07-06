@@ -20,7 +20,7 @@ vi.mock('../services/api/aiSettingsApi', async () => {
   return { ...actual, loadAISettings: () => mockLoadAISettings() };
 });
 
-// All chat workloads routed to OpenHuman — the default for every existing
+// All chat workloads routed to CloserEdge AI — the default for every existing
 // test case (matches the legacy "you have a hosted-backend budget" world).
 const ALL_OPENHUMAN_AI_SETTINGS = {
   cloudProviders: [],
@@ -123,7 +123,7 @@ describe('useUsageState', () => {
     mockGetCurrentPlan.mockReset();
     mockGetTeamUsage.mockReset();
     mockLoadAISettings.mockReset();
-    // Default: keep the OpenHuman-routed world so every legacy assertion
+    // Default: keep the CloserEdge AI-routed world so every legacy assertion
     // about budget gating stays identical until a test opts into the
     // routed-away scenarios below.
     mockLoadAISettings.mockResolvedValue(ALL_OPENHUMAN_AI_SETTINGS);
@@ -259,7 +259,7 @@ describe('useUsageState', () => {
     // OpenRouter key and routed reasoning/agentic/coding away from
     // openhuman. The banner that previously said "Your included budget is
     // complete" should NOT show, because the user is paying OpenRouter,
-    // not OpenHuman, for chat inference.
+    // not CloserEdge AI, for chat inference.
     mockGetCurrentPlan.mockResolvedValue({
       plan: 'BASIC',
       hasActiveSubscription: true,
@@ -322,7 +322,7 @@ describe('useUsageState', () => {
     expect(result.current.isAtLimit).toBe(false);
   });
 
-  it('still shows the budget banner when at least one chat workload remains on OpenHuman', async () => {
+  it('still shows the budget banner when at least one chat workload remains on CloserEdge AI', async () => {
     const { useUsageState } = await import('./useUsageState');
 
     // User has saved an OpenRouter key for agentic+coding but left reasoning
@@ -490,7 +490,7 @@ describe('useUsageState', () => {
     expect(result.current.isAtLimit).toBe(false);
   });
 
-  it('does not fetch billing usage when every workload routes away from OpenHuman (#2020)', async () => {
+  it('does not fetch billing usage when every workload routes away from CloserEdge AI (#2020)', async () => {
     const { useUsageState } = await import('./useUsageState');
 
     mockLoadAISettings.mockResolvedValue(ALL_LOCAL_AI_SETTINGS);
@@ -542,7 +542,7 @@ describe('useUsageState', () => {
     expect(mockGetTeamUsage).not.toHaveBeenCalled();
   });
 
-  it('still fetches billing when a background workload remains on OpenHuman', async () => {
+  it('still fetches billing when a background workload remains on CloserEdge AI', async () => {
     const { useUsageState } = await import('./useUsageState');
 
     mockLoadAISettings.mockResolvedValue({

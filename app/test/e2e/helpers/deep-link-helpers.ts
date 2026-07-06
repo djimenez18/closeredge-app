@@ -182,8 +182,8 @@ function resolveBuiltAppPath(): string | null {
   const repoRoot = process.cwd();
   const appDir = path.join(repoRoot, 'app');
   const candidates = [
-    path.join(appDir, 'src-tauri', 'target', 'debug', 'bundle', 'macos', 'OpenHuman.app'),
-    path.join(repoRoot, 'target', 'debug', 'bundle', 'macos', 'OpenHuman.app'),
+    path.join(appDir, 'src-tauri', 'target', 'debug', 'bundle', 'macos', 'CloserEdge AI.app'),
+    path.join(repoRoot, 'target', 'debug', 'bundle', 'macos', 'CloserEdge AI.app'),
   ];
 
   for (const candidate of candidates) {
