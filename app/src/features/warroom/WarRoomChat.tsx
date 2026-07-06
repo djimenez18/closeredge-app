@@ -29,7 +29,7 @@ interface WarRoomChatProps {
 // ── @mention highlighting ────────────────────────────────────────────
 
 function highlightMentions(text: string, agentNames: Record<string, string>): React.ReactNode {
-  const mentionRegex = /(?:^|(?<=[\s,(\[{:;]))@([a-z][a-z0-9_-]{0,29})\b/gi;
+  const mentionRegex = /(?:^|(?<=[\s,([{:;]))@([a-z][a-z0-9_-]{0,29})\b/gi;
   const parts: React.ReactNode[] = [];
   let lastIdx = 0;
   let match: RegExpExecArray | null;

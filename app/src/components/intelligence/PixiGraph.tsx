@@ -93,7 +93,6 @@ export function PixiGraph({
       mountedModeRef.current = null;
       void pending.then(handle => handle?.destroy());
     };
-     
   }, [nodes, edges, mode]);
 
   useEffect(() => {

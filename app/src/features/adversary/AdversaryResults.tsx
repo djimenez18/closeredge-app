@@ -1,7 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import type { AdversaryReport, Finding, Severity } from './adversaryService';
-import { exportReport, getCounterArgument } from './adversaryService';
+import {
+  type AdversaryReport,
+  exportReport,
+  type Finding,
+  getCounterArgument,
+  type Severity,
+} from './adversaryService';
 
 // ── Severity colours (crimson palette) ──────────────────────────────
 

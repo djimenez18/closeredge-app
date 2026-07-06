@@ -1,7 +1,6 @@
 import React, { createContext, useContext } from 'react';
 
-import { useAuth } from '../../hooks/useAuth';
-import type { UseAuthReturn } from '../../hooks/useAuth';
+import { useAuth, type UseAuthReturn } from '../../hooks/useAuth';
 import AuthScreen from './AuthScreen';
 
 // ---------------------------------------------------------------------------

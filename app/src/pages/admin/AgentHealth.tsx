@@ -136,7 +136,7 @@ export default function AgentHealth() {
         )
       );
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Action failed');
+      window.alert(err instanceof Error ? err.message : 'Action failed');
     } finally {
       setActionLoading(null);
     }
@@ -285,9 +285,9 @@ function AgentCard({
 
   // Health check staleness
   const lastCheck = d.last_health_check ? new Date(d.last_health_check) : null;
-  const minutesSinceCheck = lastCheck
-    ? Math.floor((Date.now() - lastCheck.getTime()) / 60000)
-    : null;
+  // eslint-disable-next-line react-hooks/purity -- intentional render-time clock read for a relative "staleness" display
+  const nowMs = Date.now();
+  const minutesSinceCheck = lastCheck ? Math.floor((nowMs - lastCheck.getTime()) / 60000) : null;
   const checkStale = minutesSinceCheck !== null && minutesSinceCheck > 10;
 
   return (

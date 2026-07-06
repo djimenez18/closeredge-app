@@ -1,9 +1,7 @@
-import type { ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { openPricingPage, PORTAL_UNCONFIGURED_HINT } from '../../constants/links';
-import { useSubscription } from '../../hooks/useSubscription';
-import type { AccessLevel } from '../../hooks/useSubscription';
+import { type AccessLevel, useSubscription } from '../../hooks/useSubscription';
 import { supabaseConfigured } from '../../lib/supabase';
 import { openUrl } from '../../utils/openUrl';
 import PaymentBanner from './PaymentBanner';

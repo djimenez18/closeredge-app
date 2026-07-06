@@ -86,6 +86,7 @@ function StatusDot({ lastActive }: { lastActive: string | null }) {
       </span>
     );
   }
+  // eslint-disable-next-line react-hooks/purity -- intentional render-time clock read for a relative "active/idle" indicator
   const elapsed = Date.now() - new Date(lastActive).getTime();
   const isActive = elapsed < 3600000; // 1 hour
   const isRecent = elapsed < 86400000; // 24 hours

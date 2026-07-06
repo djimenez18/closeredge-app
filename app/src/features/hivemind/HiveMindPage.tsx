@@ -49,6 +49,7 @@ function AgentRosterStrip({
       {Object.entries(AGENT_META).map(([id, meta]) => {
         const s = statsMap[id];
         const isActive = activeFilter === id;
+        // eslint-disable-next-line react-hooks/purity -- intentional render-time clock read for a relative "online" indicator
         const now = Date.now();
         const lastMs = s?.last_active ? now - new Date(s.last_active).getTime() : Infinity;
         const online = lastMs < 3600000;
@@ -297,6 +298,7 @@ export function HiveMindPage() {
   const totalEntries = useMemo(() => stats.reduce((sum, s) => sum + s.total_entries, 0), [stats]);
 
   const activeAgents = useMemo(() => {
+    // eslint-disable-next-line react-hooks/purity -- intentional render-time clock read to count agents active within the last hour
     const now = Date.now();
     return stats.filter(s => s.last_active && now - new Date(s.last_active).getTime() < 3600000)
       .length;
