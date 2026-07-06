@@ -11,9 +11,47 @@ use crate::openhuman::config::UpdateRestartStrategy;
 use crate::openhuman::update::types::{GitHubAsset, GitHubRelease, UpdateApplyResult, UpdateInfo};
 use crate::openhuman::util::utf8_safe_prefix_at_byte_boundary;
 
-/// GitHub owner/repo for the core binary releases.
-const GITHUB_OWNER: &str = "tinyhumansai";
-const GITHUB_REPO: &str = "openhuman";
+/// Default GitHub owner/repo for the CloserEdge core-binary release feed.
+///
+/// CloserEdge is a white-label fork; the release feed must be CloserEdge-owned,
+/// **never** the upstream `tinyhumansai/openhuman` repo (pointing at upstream
+/// surfaces a phantom "newer" version that has no installable CloserEdge asset).
+///
+/// Both halves are overridable at runtime — without recompiling — via the
+/// `OPENHUMAN_AUTO_UPDATE_GITHUB_OWNER` / `OPENHUMAN_AUTO_UPDATE_GITHUB_REPO`
+/// env vars, so a real release pipeline can be wired up by config alone. See
+/// [`github_repo_slug`].
+const DEFAULT_GITHUB_OWNER: &str = "closeredgeai";
+const DEFAULT_GITHUB_REPO: &str = "closeredge-app";
+
+/// Env var overriding the release-feed owner ([`DEFAULT_GITHUB_OWNER`]).
+const ENV_GITHUB_OWNER: &str = "OPENHUMAN_AUTO_UPDATE_GITHUB_OWNER";
+/// Env var overriding the release-feed repo ([`DEFAULT_GITHUB_REPO`]).
+const ENV_GITHUB_REPO: &str = "OPENHUMAN_AUTO_UPDATE_GITHUB_REPO";
+
+/// Resolve the `(owner, repo)` slug for the release feed, preferring the env
+/// overrides and falling back to the CloserEdge defaults. Empty / whitespace
+/// env values are ignored so a blank override can't blank out the slug.
+fn github_repo_slug() -> (String, String) {
+    resolve_repo_slug(
+        std::env::var(ENV_GITHUB_OWNER).ok(),
+        std::env::var(ENV_GITHUB_REPO).ok(),
+    )
+}
+
+/// Pure core of [`github_repo_slug`] — extracted so it can be unit-tested
+/// without mutating process-global env (which races other tests).
+fn resolve_repo_slug(owner_env: Option<String>, repo_env: Option<String>) -> (String, String) {
+    let pick = |env: Option<String>, default: &str| {
+        env.map(|v| v.trim().to_string())
+            .filter(|v| !v.is_empty())
+            .unwrap_or_else(|| default.to_string())
+    };
+    (
+        pick(owner_env, DEFAULT_GITHUB_OWNER),
+        pick(repo_env, DEFAULT_GITHUB_REPO),
+    )
+}
 
 /// Current binary version (set at compile time from Cargo.toml).
 pub fn current_version() -> &'static str {
@@ -86,12 +124,15 @@ fn is_newer(latest: &str, current: &str) -> bool {
 /// Check GitHub Releases for a newer version of openhuman-core.
 pub async fn check_available() -> Result<UpdateInfo, String> {
     let current = current_version();
+    let (owner, repo) = github_repo_slug();
     log::info!(
-        "[update] checking for updates — current version: {}",
-        current
+        "[update] checking for updates — current version: {} feed: {}/{}",
+        current,
+        owner,
+        repo
     );
 
-    let url = format!("https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest");
+    let url = format!("https://api.github.com/repos/{owner}/{repo}/releases/latest");
 
     let client = reqwest::Client::builder()
         .user_agent("openhuman-core-updater")
@@ -376,6 +417,40 @@ mod tests {
     #[test]
     fn current_version_is_not_empty() {
         assert!(!current_version().is_empty());
+    }
+
+    #[test]
+    fn repo_slug_defaults_to_closeredge_not_upstream() {
+        // The release feed must never fall back to the upstream OpenHuman repo
+        // — that's what produced the phantom "0.57.40" update with no asset.
+        let (owner, repo) = resolve_repo_slug(None, None);
+        assert_eq!(owner, "closeredgeai");
+        assert_eq!(repo, "closeredge-app");
+        assert_ne!(owner, "tinyhumansai");
+    }
+
+    #[test]
+    fn repo_slug_env_overrides_win() {
+        let (owner, repo) =
+            resolve_repo_slug(Some("acme".to_string()), Some("acme-desktop".to_string()));
+        assert_eq!(owner, "acme");
+        assert_eq!(repo, "acme-desktop");
+    }
+
+    #[test]
+    fn repo_slug_blank_env_falls_back_to_default() {
+        // A blank / whitespace override must not blank out the slug.
+        let (owner, repo) = resolve_repo_slug(Some("   ".to_string()), Some(String::new()));
+        assert_eq!(owner, "closeredgeai");
+        assert_eq!(repo, "closeredge-app");
+    }
+
+    #[test]
+    fn repo_slug_trims_env_whitespace() {
+        let (owner, repo) =
+            resolve_repo_slug(Some("  acme \n".to_string()), Some(" repo ".to_string()));
+        assert_eq!(owner, "acme");
+        assert_eq!(repo, "repo");
     }
 
     /// OPENHUMAN-TAURI-2F regression guard. A reqwest call to an unroutable

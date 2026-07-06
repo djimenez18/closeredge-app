@@ -7,6 +7,37 @@ icon: ship
 
 This runbook describes how we avoid users completing **OAuth** (including **Gmail**) on **outdated desktop installers** while the canonical flow is the **latest** release.
 
+> **Heads-up (white-label):** much of this page below still describes the upstream OpenHuman release pipeline. CloserEdge is a white-label fork and **does not yet have its own release pipeline**, so both auto-updaters ship **disabled by default** — see [Auto-update feed (CloserEdge)](#auto-update-feed-closeredge) for the current, authoritative state. Re-point the rest of this doc as the CloserEdge pipeline lands.
+
+## Auto-update feed (CloserEdge)
+
+CloserEdge has **two independent updaters**, both of which used to point at the upstream `tinyhumansai/openhuman` feed (the source of the phantom "newer version" with no installable asset). Both are now repointed off upstream onto CloserEdge-owned, env-overridable feeds, and both are **OFF by default** until a CloserEdge release pipeline publishes signed artifacts.
+
+| Updater | What it updates | Feed (default) | Disable/enable flag |
+| --- | --- | --- | --- |
+| **Tauri shell updater** (`app/src-tauri/tauri.conf.json` → `plugins.updater`, surfaced by `<AppUpdatePrompt />`) | The whole `.exe`/`.app`/`.AppImage` bundle | `https://github.com/closeredgeai/closeredge-app/releases/latest/download/latest.json` | Frontend flag `VITE_APP_UPDATES_ENABLED` (default `false`) — gates the launch + periodic auto-check in `App.tsx`. |
+| **Rust core self-updater** (`src/openhuman/update/`) | The in-process `openhuman-core` binary | GitHub Releases of `closeredgeai/closeredge-app` (overridable via `OPENHUMAN_AUTO_UPDATE_GITHUB_OWNER` / `OPENHUMAN_AUTO_UPDATE_GITHUB_REPO`) | `config.update.enabled` (default `false`) / env `OPENHUMAN_AUTO_UPDATE_ENABLED=1`. |
+
+**Why both default off:** with no published feed, the Tauri endpoint 404s (logging `update endpoint did not respond with a successful status code` on every launch) and the core checker would either surface a phantom upstream version or hammer an empty feed. Disabled, the core scheduler logs `auto-update checks disabled by config` and returns; the Tauri prompt never probes.
+
+**To turn updates on once a CloserEdge release pipeline exists:**
+
+1. Publish signed release artifacts + a `latest.json` updater manifest under the CloserEdge feed repo (default `closeredgeai/closeredge-app`).
+2. Set `VITE_APP_UPDATES_ENABLED=true` at build time (GitHub Actions variable) for the shell updater.
+3. Set `OPENHUMAN_AUTO_UPDATE_ENABLED=1` (or `config.update.enabled = true`) for the core self-updater; point it with `OPENHUMAN_AUTO_UPDATE_GITHUB_OWNER` / `OPENHUMAN_AUTO_UPDATE_GITHUB_REPO` if the feed repo differs from the default.
+
+### Tauri updater signing key (minisign / Tauri updater keypair)
+
+The Tauri updater verifies every downloaded bundle against the **public key** embedded in `tauri.conf.json` (`plugins.updater.pubkey`). A CloserEdge feed needs its **own** keypair — do **not** reuse the upstream OpenHuman key.
+
+- **Public key:** already present in `app/src-tauri/tauri.conf.json` (`plugins.updater.pubkey`, base64 minisign). Replace it with the CloserEdge public key when you generate the real keypair (`pnpm tauri signer generate -w <out>` / `cargo tauri signer generate`).
+- **Private key — keep OUT of git.** Store it as a CI secret only:
+  - GitHub Actions secret **`TAURI_SIGNING_PRIVATE_KEY`** (the key contents) and **`TAURI_SIGNING_PRIVATE_KEY_PASSWORD`** (its passphrase), consumed by `tauri-action` at release-build time.
+  - For local one-off signing, keep the `.key` file under a path that is **gitignored** (e.g. `~/.closeredge/tauri-updater.key`, never inside the repo). It is referenced via the `TAURI_SIGNING_PRIVATE_KEY` env var, not committed.
+- Rotating the keypair invalidates already-shipped installers' ability to auto-update to bundles signed by the new key — plan a rotation the same way as a minimum-version bump (ship a build carrying the new pubkey first).
+
+> Until the pipeline + keys exist, leave `createUpdaterArtifacts: false` (current setting) so release builds don't emit unsigned/wrongly-signed updater artifacts.
+
 ## Distribution
 
 - **GitHub Releases** for [tinyhumansai/openhuman](https://github.com/tinyhumansai/openhuman/releases) are the primary source for desktop builds.

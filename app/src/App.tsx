@@ -50,7 +50,7 @@ import {
 import { persistor, store } from './store';
 import { useAppSelector } from './store/hooks';
 import { isAccountsFullscreen } from './utils/accountsFullscreen';
-import { DEV_FORCE_ONBOARDING } from './utils/config';
+import { APP_UPDATES_ENABLED, DEV_FORCE_ONBOARDING } from './utils/config';
 
 // Null when VITE_STRIPE_CUSTOMER_PORTAL_URL is unset or still the test
 // placeholder — portal CTAs render disabled with a tooltip in that case.
@@ -113,7 +113,7 @@ function App() {
                                 <AppShell />
                                 {!onMobile && <DictationHotkeyManager />}
                                 {!onMobile && <LocalAIDownloadSnackbar />}
-                                {!onMobile && <AppUpdatePrompt />}
+                                {!onMobile && APP_UPDATES_ENABLED && <AppUpdatePrompt />}
                                 <KeyringConsentOverlay />
                                 <SecretPromptDialog />
                               </ServiceBlockingGate>
