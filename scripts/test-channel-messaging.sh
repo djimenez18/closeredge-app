@@ -12,7 +12,7 @@
 # Prerequisites:
 #   - Active session token (login via the app first)
 #   - Telegram account linked (completed managed DM flow)
-#   - Core binary built: cargo build --bin openhuman-core
+#   - Core binary built: cargo build --bin closeredge-core
 # ──────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
@@ -26,10 +26,10 @@ fi
 
 CORE_BIN="${OPENHUMAN_CORE_BIN:-}"
 if [[ -z "$CORE_BIN" ]]; then
-  CORE_BIN="$ROOT_DIR/target/debug/openhuman-core"
+  CORE_BIN="$ROOT_DIR/target/debug/closeredge-core"
   if [[ ! -x "$CORE_BIN" ]]; then
-    echo "Building openhuman-core..."
-    cargo build --manifest-path "$ROOT_DIR/Cargo.toml" --bin openhuman-core 2>&1 | tail -2
+    echo "Building closeredge-core..."
+    cargo build --manifest-path "$ROOT_DIR/Cargo.toml" --bin closeredge-core 2>&1 | tail -2
   fi
 fi
 
