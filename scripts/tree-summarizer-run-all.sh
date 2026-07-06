@@ -13,7 +13,7 @@
 # Options:
 #   -v, --verbose    Enable debug logging
 #   --workspace DIR  Override OPENHUMAN_WORKSPACE
-#   --binary PATH    Override the openhuman-core binary path
+#   --binary PATH    Override the closeredge-core binary path
 
 set -euo pipefail
 
@@ -37,16 +37,16 @@ resolve_binary() {
     esac
 
     for bin in \
-        "$REPO_ROOT/app/src-tauri/binaries/openhuman-core-$arch" \
-        "$REPO_ROOT/target/debug/openhuman-core" \
-        "$REPO_ROOT/target/release/openhuman-core"; do
+        "$REPO_ROOT/app/src-tauri/binaries/closeredge-core-$arch" \
+        "$REPO_ROOT/target/debug/closeredge-core" \
+        "$REPO_ROOT/target/release/closeredge-core"; do
         if [ -x "$bin" ]; then
             echo "$bin"
             return
         fi
     done
 
-    echo >&2 "error: could not find openhuman-core binary. Build with: cargo build --bin openhuman-core"
+    echo >&2 "error: could not find closeredge-core binary. Build with: cargo build --bin closeredge-core"
     exit 1
 }
 
