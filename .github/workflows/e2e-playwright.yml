@@ -53,10 +53,10 @@ jobs:
           touch app/.env
 
       - name: Build Playwright web E2E bundle + standalone core
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:web:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:web:build
 
       - name: Install Playwright Chromium headless shell
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app exec playwright install chromium-headless-shell
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app exec playwright install chromium-headless-shell
 
       - name: Run Playwright web E2E suite
         env:

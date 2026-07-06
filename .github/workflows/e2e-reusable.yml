@@ -7,7 +7,7 @@
 #   - `.github/workflows/release-production.yml` — pretest gate, all 3 OS, full suite.
 #
 # Recipe per OS (identical across platforms — see e2e-run-session.sh):
-#   1. Build the CEF app via `pnpm --filter openhuman-app test:e2e:build`.
+#   1. Build the CEF app via `pnpm --filter closeredge-app test:e2e:build`.
 #   2. Install Appium 3.x + the `chromium` driver.
 #   3. Run `app/scripts/e2e-run-session.sh` which:
 #        - launches the built binary,
@@ -135,7 +135,7 @@ jobs:
           bash scripts/ci-cancel-aware.sh appium driver install --source=npm appium-chromium-driver >/dev/null 2>&1 || true
 
       - name: Build E2E app
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:build
 
       - name: Run E2E (mega-flow)
         if: ${{ !inputs.full }}
@@ -227,7 +227,7 @@ jobs:
           touch app/.env
 
       - name: Build E2E app
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:build
 
       - name: Package build artifact
         run: |
@@ -238,7 +238,7 @@ jobs:
           mkdir -p "$STAGE/repo/app/src-tauri/target/debug"
           mkdir -p "$STAGE/repo/app/dist"
           mkdir -p "$STAGE/home/Library/Caches"
-          cp -a app/src-tauri/target/debug/OpenHuman "$STAGE/repo/app/src-tauri/target/debug/"
+          cp -a app/src-tauri/target/debug/CloserEdgeAI "$STAGE/repo/app/src-tauri/target/debug/"
           cp -a app/dist/. "$STAGE/repo/app/dist/"
           cp -a "$HOME/Library/Caches/tauri-cef" "$STAGE/home/Library/Caches/tauri-cef"
           tar -czf e2e-build-linux.tar.gz -C "$STAGE" repo home
@@ -313,15 +313,15 @@ jobs:
       - name: Restore build artifact into workspace + $HOME
         run: |
           tar -xzf e2e-build-linux.tar.gz
-          # The artifact contains: repo/{app/src-tauri/target/debug/OpenHuman, app/dist/...}
+          # The artifact contains: repo/{app/src-tauri/target/debug/CloserEdgeAI, app/dist/...}
           # and home/Library/Caches/tauri-cef/...
           mkdir -p app/src-tauri/target/debug app/dist "$HOME/Library/Caches"
-          cp -a repo/app/src-tauri/target/debug/OpenHuman app/src-tauri/target/debug/
+          cp -a repo/app/src-tauri/target/debug/CloserEdgeAI app/src-tauri/target/debug/
           cp -a repo/app/dist/. app/dist/
           cp -a home/Library/Caches/tauri-cef "$HOME/Library/Caches/"
           rm -rf repo home e2e-build-linux.tar.gz
-          chmod +x app/src-tauri/target/debug/OpenHuman
-          ls -la app/src-tauri/target/debug/OpenHuman app/dist | head
+          chmod +x app/src-tauri/target/debug/CloserEdgeAI
+          ls -la app/src-tauri/target/debug/CloserEdgeAI app/dist | head
           ls -la "$HOME/Library/Caches/tauri-cef" | head
 
       - name: Run E2E shard (${{ matrix.shard.name }} — suites=${{ matrix.shard.suites }})
@@ -495,16 +495,16 @@ jobs:
           bash scripts/ci-cancel-aware.sh appium driver install --source=npm appium-chromium-driver >/dev/null 2>&1 || true
 
       - name: Build E2E app
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:build
 
       # macOS rejects dynamic-framework loads from unsigned bundles — adhoc
       # signing satisfies the loader without a real developer-ID cert.
       - name: Adhoc-sign the .app bundle
         run: |
           codesign --force --deep --sign - \
-            app/src-tauri/target/debug/bundle/macos/OpenHuman.app
+            "app/src-tauri/target/debug/bundle/macos/CloserEdge AI.app"
           codesign --verify --deep --verbose=2 \
-            app/src-tauri/target/debug/bundle/macos/OpenHuman.app
+            "app/src-tauri/target/debug/bundle/macos/CloserEdge AI.app"
 
       - name: Run E2E (mega-flow)
         run: |
@@ -584,7 +584,7 @@ jobs:
           bash scripts/ci-cancel-aware.sh appium driver install --source=npm appium-chromium-driver >/dev/null 2>&1 || true
 
       - name: Build E2E app
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:build
 
       - name: Run E2E (mega-flow)
         shell: bash
@@ -686,18 +686,18 @@ jobs:
 
       # Binary cache — see Linux full job for the rationale. Mac caches the
       # entire .app bundle (self-contained including frontend assets + CEF
-      # Frameworks/OpenHuman Helper.app embedded by tauri-bundler).
+      # Frameworks/CloserEdge AI Helper.app embedded by tauri-bundler).
       - name: Cache built E2E binary (macOS)
         id: e2e-binary-cache
         uses: actions/cache@v5
         with:
           path: |
-            app/src-tauri/target/debug/bundle/macos/OpenHuman.app
+            app/src-tauri/target/debug/bundle/macos/CloserEdge AI.app
           key: e2e-binary-${{ runner.os }}-${{ hashFiles('src/**/*.rs', 'app/src-tauri/src/**', 'app/src-tauri/build.rs', 'app/src-tauri/tauri.conf.json', 'Cargo.lock', 'app/src-tauri/Cargo.lock', 'app/src-tauri/vendor/tauri-cef/Cargo.lock', 'rust-toolchain.toml', 'app/src/**', 'app/index.html', 'app/vite.config.*', 'app/tailwind.config.*', 'app/postcss.config.*', 'app/package.json', 'pnpm-lock.yaml', 'app/scripts/e2e-build.sh') }}
 
       - name: Build E2E app
         if: steps.e2e-binary-cache.outputs.cache-hit != 'true'
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:build
 
       # Adhoc-sign runs unconditionally — codesign is idempotent and a
       # restored .app bundle from cache also needs to be (re-)signed for
@@ -705,9 +705,9 @@ jobs:
       - name: Adhoc-sign the .app bundle
         run: |
           codesign --force --deep --sign - \
-            app/src-tauri/target/debug/bundle/macos/OpenHuman.app
+            "app/src-tauri/target/debug/bundle/macos/CloserEdge AI.app"
           codesign --verify --deep --verbose=2 \
-            app/src-tauri/target/debug/bundle/macos/OpenHuman.app
+            "app/src-tauri/target/debug/bundle/macos/CloserEdge AI.app"
 
       - name: Run E2E shard (${{ matrix.shard.name }} — suites=${{ matrix.shard.suites }})
         env:
@@ -838,7 +838,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: |
-            app/src-tauri/target/debug/OpenHuman.exe
+            app/src-tauri/target/debug/CloserEdgeAI.exe
             app/dist
           key: e2e-binary-${{ runner.os }}-${{ hashFiles('src/**/*.rs', 'app/src-tauri/src/**', 'app/src-tauri/build.rs', 'app/src-tauri/tauri.conf.json', 'Cargo.lock', 'app/src-tauri/Cargo.lock', 'app/src-tauri/vendor/tauri-cef/Cargo.lock', 'rust-toolchain.toml', 'app/src/**', 'app/index.html', 'app/vite.config.*', 'app/tailwind.config.*', 'app/postcss.config.*', 'app/package.json', 'pnpm-lock.yaml', 'app/scripts/e2e-build.sh') }}
 
@@ -846,7 +846,7 @@ jobs:
       # hit (see Linux full job for the rationale).
       - name: Build E2E app
         if: steps.e2e-binary-cache.outputs.cache-hit != 'true' || steps.cef-cache.outputs.cache-hit != 'true'
-        run: bash scripts/ci-cancel-aware.sh pnpm --filter openhuman-app test:e2e:build
+        run: bash scripts/ci-cancel-aware.sh pnpm --filter closeredge-app test:e2e:build
 
       - name: Run E2E shard (${{ matrix.shard.name }} — suites=${{ matrix.shard.suites }})
         shell: bash

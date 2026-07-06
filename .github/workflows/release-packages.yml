@@ -76,10 +76,10 @@ jobs:
           OPENHUMAN_BUILD_SHA: ${{ github.sha }}
           OPENHUMAN_APP_ENV: production
         run: |
-          bash scripts/ci-cancel-aware.sh cargo build --release --bin openhuman-core
+          bash scripts/ci-cancel-aware.sh cargo build --release --bin closeredge-core
           VERSION="${{ github.event.release.tag_name }}"
           bash scripts/release/package-cli-tarball.sh \
-            target/release/openhuman-core \
+            target/release/closeredge-core \
             "${VERSION#v}" \
             aarch64-unknown-linux-gnu
 

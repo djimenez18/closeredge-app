@@ -311,17 +311,17 @@ jobs:
           MATRIX_TARGET: ${{ matrix.settings.target }}
           PROFILE: ${{ inputs.build_profile }}
         run: |
-          if [ -f "openhuman_core/Cargo.toml" ]; then
-            CORE_DIR="openhuman_core"
+          if [ -f "closeredge_core/Cargo.toml" ]; then
+            CORE_DIR="closeredge_core"
           elif [ -f "rust-core/Cargo.toml" ]; then
             CORE_DIR="rust-core"
-          elif [ -f "Cargo.toml" ] && grep -q '^name = "openhuman"' Cargo.toml; then
+          elif [ -f "Cargo.toml" ] && grep -q '^name = "closeredge"' Cargo.toml; then
             CORE_DIR="."
           else
-            echo "No core Cargo manifest found (expected root Cargo.toml with openhuman, openhuman_core/Cargo.toml, or rust-core/Cargo.toml)"
+            echo "No core Cargo manifest found (expected root Cargo.toml with closeredge, closeredge_core/Cargo.toml, or rust-core/Cargo.toml)"
             exit 1
           fi
-          SIDE_CAR_BASE="$(node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('app/src-tauri/tauri.conf.json','utf8'));const b=(c.bundle&&Array.isArray(c.bundle.externalBin)&&c.bundle.externalBin[0])||'binaries/openhuman-core';process.stdout.write(String(b).split('/').pop());")"
+          SIDE_CAR_BASE="$(node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('app/src-tauri/tauri.conf.json','utf8'));const b=(c.bundle&&Array.isArray(c.bundle.externalBin)&&c.bundle.externalBin[0])||'binaries/closeredge-core';process.stdout.write(String(b).split('/').pop());")"
           CORE_BIN_NAME="${SIDE_CAR_BASE}"
           echo "core_dir=$CORE_DIR" >> "$GITHUB_OUTPUT"
           echo "core_manifest=$CORE_DIR/Cargo.toml" >> "$GITHUB_OUTPUT"
@@ -469,9 +469,9 @@ jobs:
         run: |
           set +e
           for BIN in \
-            "app/src-tauri/target/${MATRIX_TARGET}/${PROFILE}/OpenHuman" \
-            "app/src-tauri/target/${MATRIX_TARGET}/${PROFILE}/bundle/appimage_deb/data/usr/bin/OpenHuman" \
-            "target/${MATRIX_TARGET}/${PROFILE}/OpenHuman"; do
+            "app/src-tauri/target/${MATRIX_TARGET}/${PROFILE}/CloserEdgeAI" \
+            "app/src-tauri/target/${MATRIX_TARGET}/${PROFILE}/bundle/appimage_deb/data/usr/bin/CloserEdgeAI" \
+            "target/${MATRIX_TARGET}/${PROFILE}/CloserEdgeAI"; do
             if [ -x "$BIN" ]; then
               echo "==> ldd $BIN"
               ldd "$BIN" || true
@@ -622,7 +622,7 @@ jobs:
           fi
           echo "Uploading:"
           printf '  %s\n' "${UPLOAD[@]}"
-          gh release upload "$TAG" "${UPLOAD[@]}" --repo tinyhumansai/openhuman --clobber
+          gh release upload "$TAG" "${UPLOAD[@]}" --repo "${{ github.repository }}" --clobber
 
       # ---- macOS sign / notarize / repackage --------------------------------
       - name: Locate macOS .app bundle
@@ -636,19 +636,19 @@ jobs:
           set -euo pipefail
           APP_PATH=""
           for candidate in \
-            "app/src-tauri/target/${MATRIX_TARGET}/${PROFILE}/bundle/macos/OpenHuman.app" \
-            "target/${MATRIX_TARGET}/${PROFILE}/bundle/macos/OpenHuman.app"; do
+            "app/src-tauri/target/${MATRIX_TARGET}/${PROFILE}/bundle/macos/CloserEdge AI.app" \
+            "target/${MATRIX_TARGET}/${PROFILE}/bundle/macos/CloserEdge AI.app"; do
             if [ -d "$candidate" ]; then
               APP_PATH="$candidate"
               break
             fi
           done
           if [ -z "$APP_PATH" ]; then
-            APP_PATH="$(find . -path "*/${PROFILE}/bundle/macos/OpenHuman.app" -type d 2>/dev/null | head -1)"
+            APP_PATH="$(find . -path "*/${PROFILE}/bundle/macos/CloserEdge AI.app" -type d 2>/dev/null | head -1)"
           fi
           if [ -z "$APP_PATH" ]; then
-            echo "ERROR: Could not find OpenHuman.app bundle anywhere"
-            find . -name 'OpenHuman.app' -type d 2>/dev/null || true
+            echo "ERROR: Could not find CloserEdge AI.app bundle anywhere"
+            find . -name 'CloserEdge AI.app' -type d 2>/dev/null || true
             exit 1
           fi
           BUNDLE_DIR="$(dirname "$(dirname "$APP_PATH")")"
