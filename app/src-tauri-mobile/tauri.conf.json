@@ -4,9 +4,9 @@
   "version": "0.54.10",
   "identifier": "com.closeredge.ai",
   "build": {
-    "beforeDevCommand": "pnpm --filter openhuman-app run dev",
+    "beforeDevCommand": "pnpm --filter closeredge-app run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm --filter openhuman-app run build:app",
+    "beforeBuildCommand": "pnpm --filter closeredge-app run build:app",
     "frontendDist": "../dist"
   },
   "app": {
